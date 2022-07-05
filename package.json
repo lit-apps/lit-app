@@ -1,0 +1,39 @@
+{
+  "name": "lit-app",
+  "version": "0.0.1",
+  "description": "mono-repo of builing components for lit-app",
+  "main": "index",
+  "scripts": {
+    "test": "wireit",
+    "init": "./init-app.sh", 
+    "lint": "eslint \"**/*.{js,ts}\"",
+    "build": "wireit"
+  },
+  "keywords": [
+    "lit",
+    "vitejs",
+    "web-components", 
+    "application"
+  ],
+  "workspaces": [
+    "packages/*"
+  ],
+  "author": "christophe.geiser <christophe@preignition.org>",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.19.0",
+    "vite": "^2.9.13",
+    "vitest": "^0.16.0",
+    "wireit": "^0.7.1"
+  },
+  "wireit": {
+    "test": {
+      "command": "vitest",
+      "dependencies": ["./packages/state:test"]
+    },
+    "build": {
+      "command": "tsc",
+      "dependencies": ["./packages/state"]
+    }
+  }
+}

@@ -1,0 +1,142 @@
+
+:root {
+  --color-primary-dark: rgb(0, 77, 128);
+  --color-primary: rgb(0, 119, 179);
+  --color-primary-lighter: rgb(230, 242, 248);
+  --color-primary-lightest: rgb(243, 249, 252);
+  --color-secondary: rgb(0, 41, 77);
+  --color-gray-darker: rgb(101, 119, 135);
+  --color-gray-dark: rgb(144, 149, 153);
+  --color-gray: rgb(207, 210, 212);
+  --color-gray-light: rgb(225, 227, 230);
+  --color-gray-lighter: rgb(245, 248, 250);
+  --color-gray-lightest: rgb(255, 255, 255);
+  --color-brand-blue: rgb(0, 161, 212);
+  
+  /*--color-category-family: rgb(11, 114, 136);
+  --color-category-finance: rgb(122, 1, 196);
+  --color-category-vehicle: rgb(54, 74, 129);
+  --color-category-home: rgb(211, 36, 131);
+  --color-primary-light: rgb(205, 229, 241);
+  --color-category-travel: rgb(213, 66, 3);
+  --color-category-pet: rgb(168, 1, 78);
+  */
+  --color-success: rgb(0, 135, 90);
+  --color-warning: rgb(247, 178, 40);
+  --color-danger: rgb(222, 35, 98);
+  
+/*  --color-gray-darker-turva: rgb(69, 69, 69);
+  --color-gray-lighter-turva: rgb(247, 247, 247);
+  --color-category-home-turva: rgb(161, 10, 78);
+  --color-primary-turva: rgb(198, 12, 48);
+  --color-category-vehicle-turva: rgb(62, 85, 173);
+  --color-success-turva: rgb(8, 135, 78);
+  --color-primary-lightest-turva: rgb(252, 243, 244);
+  --color-category-family-turva: rgb(199, 12, 112);
+  --color-category-union-turva: rgb(132, 68, 148);
+  --color-primary-lighter-turva: rgb(249, 230, 234);
+  --color-primary-dark-turva: rgb(148, 9, 37);
+  --color-gray-lightest-turva: rgb(255, 255, 255);
+  --color-gray-dark-turva: rgb(117, 117, 117);
+  --color-gray-light-turva: rgb(230, 230, 230);
+  --color-brand-gray-turva: rgb(178, 180, 179);
+  --color-secondary-turva: rgb(17, 17, 17);
+  --color-primary-light-turva: rgb(244, 207, 214);
+  --color-category-travel-turva: rgb(9, 129, 148);
+  --color-gray-turva: rgb(209, 209, 209);
+  --color-danger-turva: rgb(224, 42, 13);
+  --color-warning-turva: rgb(250, 164, 15);
+*/
+  --letter-spacing-heading: -0.01rem;
+  
+  /*--font-family-heading-turva: 'turva-sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';*/
+  /*--font-family-text-turva: 'turva-sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';*/
+  
+  /*--font-family-heading: 'localtapiola-sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';*/
+  /*--font-family-text: 'localtapiola-sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';*/
+  --font-family-heading: 'Roboto', 'Noto', sans-serif;
+  --font-family-text: 'Roboto', 'Noto', sans-serif;
+  --font-weight-extra-bold: 800;
+  --font-weight-bold: 700;
+  --font-weight-normal: 400;
+  --font-weight-semi-bold: 600;
+  --font-size-xxxx-large: 4.5rem;
+  --font-size-xxx-large: 3rem;
+  --font-size-xx-large: 2.25rem;
+  --font-size-x-large: 1.5rem;
+  --font-size-large: 1.25rem;
+  --font-size-medium: 1rem;
+  --font-size-small: 0.875rem;
+  --font-size-x-small: 0.75rem;
+  --radius-sharp: 0;
+  --radius-default: 4px;
+  --radius-circle: 50%;
+  --radius-pill: 20rem;
+  --shadow-tooltip-turva: 0 2px 10px 0 rgba(117, 117, 117, 0.13);
+  --shadow-default: 0 2px 6px 0 rgba(0, 41, 77, 0.07);
+  --shadow-tooltip: 0 2px 10px 0 rgba(0, 41, 77, 0.07);
+  --shadow-card-turva: 0 2px 6px 0 rgba(117, 117, 117, 0.13), 0 -1px 0 0 rgba(0, 0, 0, 0.09), -1px 0 0 0 rgba(0, 0, 0, 0.07), 1px 0 0 0 rgba(0, 0, 0, 0.07), 0 1px 0 0 rgba(0, 0, 0, 0.07);
+  --shadow-modal: 0 2px 20px 0 rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 2px 6px 0 rgba(0, 41, 77, 0.07), 0 -1px 0 0 rgba(0, 0, 0, 0.09), -1px 0 0 0 rgba(0, 0, 0, 0.07), 1px 0 0 0 rgba(0, 0, 0, 0.07), 0 1px 0 0 rgba(0, 0, 0, 0.07);
+  --shadow-hover-turva: 0 2px 10px 0 rgba(117, 117, 117, 0.15);
+  --shadow-hover: 0 2px 10px 0 rgba(0, 41, 77, 0.1);
+  --shadow-default-turva: 0 2px 6px 0 rgba(117, 117, 117, 0.13);
+  --shadow-solid: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);;;
+  --space-xx-small: 4px;
+  --space-large: 20px;
+  --space-x-small: 9px;
+  --space-xxx-small: 2px;
+  --space-small: 12px;
+  --space-medium: 16px;
+  --space-xx-large: 36px;
+  --space-xxxx-large: 72px;
+  --space-xxx-large: 48px;
+  --space-x-large: 28px;
+  --size-icon-xx-large: 48px;
+  --size-form-border: 1px;
+  --size-step-medium: 40px;
+  --size-button-min-width: 8rem;
+  --size-header: 4rem;
+  --size-icon-xxx-large: 72px;
+  --size-icon-x-large: 36px;
+  --size-icon-xx-small: 10px;
+  --size-step-small: 30px;
+  --size-navigation: 3rem;
+  --size-icon-large: 30px;
+  --size-layout-max-width: 1110px;
+  --size-tappable-square: 48px;
+  --size-icon-x-small: 16px;
+  --size-icon-xxx-small: 7px;
+  --size-button-border: 2px;
+  --size-icon-medium: 24px;
+  --size-icon-small: 20px;
+  --opacity-85: 0.85;
+  --opacity-75: 0.75;
+  --opacity-50: 0.50;
+  --opacity-30: 0.30;
+  --z-index-dropdown: 600;
+  --z-index-spinner: 800;
+  --z-index-default: 1;
+  --z-index-toast: 500;
+  --z-index-popup: 950;
+  --z-index-modal: 900;
+  --z-index-sticky: 300;
+  --z-index-masked: 100;
+  --z-index-deep: -999999;
+  --z-index-overlay: 700;
+  --z-index-mask: 200;
+  --z-index-header: 400;
+  --line-height-medium: 1.5;
+  --line-height-small: 1.25;
+  --line-height-x-small: 1.1;
+  --transition-quickly: 300ms ease;
+  --transition-slowly: 600ms ease;
+  --media-query-xx-small: 'only screen and (max-width: 22.5em)';
+  --media-query-x-small: 'only screen and (max-width: 35.9375em)';
+  --media-query-small: 'only screen and (min-width: 36em)';
+  --media-query-medium: 'only screen and (min-width: 48em)';
+  --media-query-large: 'only screen and (min-width: 62em)';
+  --media-query-x-large: 'only screen and (min-width: 64.0625em)';
+  --media-query-xx-large: 'only screen and (min-width: 76.25em)';
+  --media-query-xxx-large: 'only screen and (min-width: 106.25em)';
+}
