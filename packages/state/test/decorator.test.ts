@@ -8,8 +8,9 @@ import { beforeEach, describe, it, vi, assert, expect } from 'vitest'
 import { State } from "../src/state";
 import { LitStateEvent } from "../src/state-event";
 import { StateController } from "../src/state-controller";
-import {property} from '../src/decorators/property'
-import { storage } from '../src/decorators/local-storage';
+import { property } from '../src/decorators/property'
+import { query } from '../src/decorators/query'
+import { storage } from '../src/decorators/storage';
 
 
 class MyState extends State {
@@ -44,6 +45,7 @@ describe("decorator", () => {
 
   beforeEach(async () => {
     document.body.innerHTML = '<state-el></state-el>'
+		window.location.href="http://localhost:3000/index?aa=5"
     await window.happyDOM.whenAsyncComplete()
     await new Promise(resolve => setTimeout(resolve, 0))
   })
@@ -53,13 +55,13 @@ describe("decorator", () => {
   }
 
 
-  it("does not shares typemap between instances between subclasses", () => {
-		expect(MyState.typeMap).not.toBe(YourState.typeMap)
+  it("does not shares propertymap between instances between subclasses", () => {
+		expect(MyState.propertyMap).not.toBe(YourState.propertyMap)
   });
 
-	it("stores types in typeMap", () => {
-		expect(MyState.typeMap.get('a')).toBe(Number)
-		expect(YourState.typeMap.get('a')).toBe(String)
+	it("stores types in propertyMap", () => {
+		expect(MyState.propertyMap.get('a')?.type).toBe(Number)
+		expect(YourState.propertyMap.get('a')?.type).toBe(String)
   });
 
 	it("instantiate @property({value})", () => {
@@ -70,12 +72,51 @@ describe("decorator", () => {
 		expect(s.a).toBe(1)
   });
 
-	it("instantiate @property({value})", () => {
+	it("sync @property({value}) with local storage", () => {
 		class S extends State {
-			@storage({storageKey: 'aa'})
+			@storage({key: 'aa'})
 			@property({value: 1}) a;
 		}
 		const s = new S()
 		expect(localStorage.getItem('_ls_aa')).toBe(1)
+		s.a = 2
+		expect(localStorage.getItem('_ls_aa')).toBe(2)
   });
+
+	it("sync @query({value}) ", async () => {
+		class S extends State {
+			@query({parameter: 'aa'})
+			@property({value: 1}) a;
+		}
+		const s = new S()
+		expect(s.a).toEqual('5')
+		
+  });
+
+	it("saves query to storage", async () => {
+		class S extends State {
+			@query({parameter: 'aa'})
+			@storage({key: 'aaa'})
+			@property({value: 1}) a;
+		}
+		const s = new S()
+		expect(s.a).toEqual('5')
+		expect(localStorage.getItem('_ls_aaa')).toBe('5')
+		s.a = 2
+		expect(localStorage.getItem('_ls_aaa')).toBe(2)
+  });
+	
+	it("converts query to storage, according to type", async () => {
+		class S extends State {
+			@query({parameter: 'aa'})
+			@storage({key: 'aaa'})
+			@property({value: 1, type: Number}) a;
+		}
+		const s = new S()
+		expect(s.a).toEqual(5)
+		expect(localStorage.getItem('_ls_aaa')).toBe(5)
+		
+  });
+
+	
 });

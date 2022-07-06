@@ -95,7 +95,7 @@ describe("state", () => {
   });
 
   it("extended states include properties from ancestors", async () => {
-    expect(myExtendedState.propertyKeys.length).toBe(3)
+    expect(Object.getPrototypeOf(myExtendedState).constructor.propertyMap.size).toBe(3)
   });
 
   it("properly handles sub-classing", async () => {
@@ -141,8 +141,8 @@ describe("state", () => {
     expect(myState.b).toBe('bbb') 
   });
 
-  it("inherited @property({value: 'bbb'}) are not set on child class", async () => {
-    expect(myExtendedState.b).toBeUndefined()
+  it("inherited @property({value: 'bbb'}) are set on child class", async () => {
+    expect(myExtendedState.b).toBe('bbb')
   });
 
   it("can be listened to", async () => {
@@ -154,5 +154,84 @@ describe("state", () => {
     myExtendedState.a = '___'
   });
 
+  it("handles initMap with initial values", async () => {
+    class S extends State {
+			@property({value: 1}) a;
+			@property({value: 1, skipReset: true}) b;
+		}
+    expect([...S.propertyMap.keys()].length).toEqual(2)
+		
+  });
 
+
+  it("initiate values for multiple instances of same class", async () => {
+    class S extends State {
+			@property({value: 1}) a;
+		}
+
+    const s1 = new S()
+    const s2 = new S()
+    expect(s1.a).toEqual(1)
+    expect(s2.a).toEqual(1)
+		
+  });
+
+  it("handled reset as expected", async () => {
+    class S extends State {
+			@property({value: 1}) a;
+			@property({value: 1, skipReset: true}) b;
+			@property({}) c;
+		}
+
+    const s = new S()
+    
+    expect(s.a).toEqual(1)
+    expect(s.b).toEqual(1)
+    expect(s.c).toBeUndefined()
+
+    s.a = 2
+    s.b = 2
+    s.c = 2
+
+    expect(s.a).toEqual(2)
+    expect(s.b).toEqual(2)
+    expect(s.c).toEqual(2)
+    
+    s.reset()
+
+    expect(s.a).toEqual(1)
+    expect(s.b).toEqual(2)
+    expect(s.c).toEqual(2)
+	
+  });
+  
+  it("can subscribe and unsubscribe", async () => {
+    class S extends State {
+			@property({value: 1}) a;
+			@property({value: 1}) b;
+		}
+
+    const s = new S()
+    const cb = (key, value, state) => {}
+    const spy = vi.fn(cb)
+    const unsubscribe = s.subscribe(spy, 'a')
+    s.a = 2
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith('a', 2, s)
+    
+    s.b = 2
+    expect(spy).toHaveBeenCalledTimes(1)
+    
+    s.a = 2
+    expect(spy).toHaveBeenCalledTimes(1)
+    
+    s.a = 3
+    expect(spy).toHaveBeenCalledTimes(2)
+    expect(spy).toHaveBeenCalledWith('a', 3, s)
+    
+    unsubscribe()
+    s.a = 4
+    expect(spy).toHaveBeenCalledTimes(2)
+    
+  })
 });

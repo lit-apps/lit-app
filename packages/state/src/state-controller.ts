@@ -1,6 +1,6 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { State } from './state'
-
+import {LitStateEvent} from './state-event'
 /**
  * A reactive-controller holding a state
  */
@@ -22,11 +22,11 @@ export class StateController<T extends State>
 	}
 
 	hostConnected(): void {
-		this.state.addEventListener('lit-state-changed', this.callback);
+		this.state.addEventListener(LitStateEvent.eventName, this.callback);
 		this.callback();
 
 	}
 	hostDisconnected(): void {
-		this.state.removeEventListener('lit-state-changed', this.callback);
+		this.state.removeEventListener(LitStateEvent.eventName, this.callback);
 	}
 }
