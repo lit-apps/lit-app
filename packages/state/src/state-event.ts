@@ -3,7 +3,7 @@ import { State } from './state';
 /**
  * This event is fired to inform a state has updated one of its value
  */
- export class LitStateEvent extends Event {
+ export class StateEvent extends Event {
   static readonly eventName = 'lit-state-changed';
   readonly key: PropertyKey;
   readonly state: State;
@@ -15,7 +15,7 @@ import { State } from './state';
    * @param  {unknown} value for the changed key
    */
   constructor(key: PropertyKey, value: unknown, state: State) {
-    super(LitStateEvent.eventName, {
+    super(StateEvent.eventName, {
       cancelable: false,
     });
     this.key = key;
@@ -26,10 +26,10 @@ import { State } from './state';
 
 declare global {
   interface HTMLElementEventMap {
-    [LitStateEvent.eventName]: LitStateEvent;
+    [StateEvent.eventName]: StateEvent;
   }
   interface EventTargetEventMap {
-    [LitStateEvent.eventName]: LitStateEvent;
+    [StateEvent.eventName]: StateEvent;
   }
 }
 

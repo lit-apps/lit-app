@@ -44,7 +44,7 @@
 
 ## Exports
 
-| Kind                        | Name         | Declaration | Module            | Package |
-| --------------------------- | ------------ | ----------- | ----------------- | ------- |
-| `js`                        | `AptState`  | AptState   | src/apt-state.js |         |
-| `custom-element-definition` | `apt-state` | AptState   | src/apt-state.js |         |
+| Kind                        | Name        | Declaration | Module           | Package |
+| --------------------------- | ----------- | ----------- | ---------------- | ------- |
+| `js`                        | `AptState`  | AptState    | src/apt-state.js |         |
+| `custom-element-definition` | `apt-state` | AptState    | src/apt-state.js |         |

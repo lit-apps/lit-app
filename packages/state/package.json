@@ -1,7 +1,7 @@
 {
-  "name": "@lit-shape/state",
+  "name": "@lit-app/state",
   "description": "state management for lit-app",
-  "repository": "https://github.com/lit-shape/state",
+  "repository": "https://github.com/lit-app/state",
   "homepage": "https://lit-shape-state.netlify.app/",
   "version": "0.1.0",
   "type": "module",
@@ -32,8 +32,8 @@
     "analyze": "npm run analyze-md && npm run analyze-json && npm run copy-to-public",
     "lint": "eslint 'src/**/*.js'",
     "format": "prettier \"src/**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
-    "prepublishOnly": "npm run analyze",
-    "install": "npm run build"
+    "prepublishOnly": "npm run analyze"
+    
   },
   "dependencies": {
     "@lit-labs/context": "^0.1.2",

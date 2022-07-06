@@ -1,9 +1,8 @@
 import { functionValue } from './functionValue';
-import { LitStateEvent } from './state-event';
+import { StateEvent } from './state-event';
 import { PropertyOptions } from './decorators/property';
 import { StorageOptions } from './decorators/storage';
 import { QueryOptions } from './decorators/query';
-import { FirebaseOptions } from './decorators/firebase';
 
 export interface HasChanged {
   (value: unknown, old: unknown): boolean;
@@ -20,9 +19,8 @@ export const notEqual: HasChanged = (value: unknown, old: unknown): boolean => {
 
 export type PropertyMapOptions = PropertyOptions &
    StorageOptions &
-   FirebaseOptions &
    QueryOptions &
-   { computedValue: unknown}
+   { computedValue: unknown, hook?: {[key:string]: unknown}}
 
 /**
  * Callback function - used as callback subscription to a state change 
@@ -41,13 +39,17 @@ export class State extends EventTarget {
   static properties: PropertyOptions;
   static finalized: boolean = false;
 
+  get propertyMap() {
+   return (this.constructor as typeof State).propertyMap
+  }
+
   constructor() {
     super();
     (this.constructor as typeof State).finalize();
     // make sure all getter and setters are called once as some owrk is 
     // being done in @decorator getter and setter. For instance, @storage 
     // stores the value to local storage in setter. 
-    [...(this.constructor as typeof State).propertyMap].forEach(([key, definition]) => {
+    [...this.propertyMap].forEach(([key, definition]) => {
       if (definition.computedValue !== undefined) {
         (this as {} as { [key: string]: unknown })[key as string] = functionValue(definition.computedValue)
       }
@@ -114,7 +116,7 @@ export class State extends EventTarget {
    * properties marked as skipReset
    */
   reset() {
-    [...(this.constructor as typeof State).propertyMap]
+    [...this.propertyMap]
       // @ts-ignore
       .filter(([key, definition]) => definition.skipReset !== true )
       .forEach(([key, definition]) => {
@@ -124,21 +126,30 @@ export class State extends EventTarget {
       })
   }
 
-  subscribe(callback: Callback, nameOrNames: PropertyKey | PropertyKey[]): () => void {
-    if (!Array.isArray(nameOrNames)) {
+  /**
+   * subscribe to state change event. The callback will be called anytime 
+   * a state property change if `nameOrNames` is undefined, or only for matching
+   * property values specified by `nameOrNames`
+   * @param callback the callback function to call
+   * @param nameOrNames 
+   * @returns a unsubscribe function. 
+   */
+  subscribe(callback: Callback, nameOrNames?: PropertyKey | PropertyKey[] ): () => void {
+    
+    if (nameOrNames && !Array.isArray(nameOrNames)) {
       nameOrNames = [nameOrNames]
     }
-    const cb = (event: LitStateEvent) => {
-      if((nameOrNames as PropertyKey[]).includes(event.key)) {
+    const cb = (event: StateEvent) => {
+      if(!nameOrNames || (nameOrNames as PropertyKey[]).includes(event.key)) {
         callback(event.key, event.value, this)
       }
     }
-    this.addEventListener(LitStateEvent.eventName, cb as EventListener) 
-    return () => this.removeEventListener(LitStateEvent.eventName, cb as EventListener) 
+    this.addEventListener(StateEvent.eventName, cb as EventListener) 
+    return () => this.removeEventListener(StateEvent.eventName, cb as EventListener) 
   }
 
   private dispatchStateEvent(key: PropertyKey, eventValue: unknown, state: State) {
-    this.dispatchEvent(new LitStateEvent(key, eventValue, state))
+    this.dispatchEvent(new StateEvent(key, eventValue, state))
   }
 }
 

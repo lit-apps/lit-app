@@ -6,7 +6,7 @@ import type { IWindow } from 'happy-dom'
 import { beforeEach, describe, it, vi, assert, expect } from 'vitest'
 
 import { State } from "../src/state";
-import { LitStateEvent } from "../src/state-event";
+import { StateEvent } from "../src/state-event";
 import { StateController } from "../src/state-controller";
 import { property } from '../src/decorators/property'
 import { query } from '../src/decorators/query'
@@ -26,17 +26,6 @@ class YourState extends State {
 
 const myState = new MyState()
 
-@customElement('state-el')
-class StateEl extends LitElement {
-
-  state = new StateController<MyState>(this, myState)
-  override render() {
-    return html`
-      <div>${myState.a}</div>
-    `;
-  }
-}
-
 declare global {
   interface Window extends IWindow { }
 }
@@ -44,15 +33,10 @@ declare global {
 describe("decorator", () => {
 
   beforeEach(async () => {
-    document.body.innerHTML = '<state-el></state-el>'
-		window.location.href="http://localhost:3000/index?aa=5"
+    window.location.href="http://localhost:3000/index?aa=5"
     await window.happyDOM.whenAsyncComplete()
     await new Promise(resolve => setTimeout(resolve, 0))
   })
-
-  function getEl(): StateEl | null | undefined {
-    return document.body.querySelector('state-el') as StateEl
-  }
 
 
   it("does not shares propertymap between instances between subclasses", () => {

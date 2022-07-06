@@ -6,7 +6,7 @@ import type { IWindow } from 'happy-dom'
 import { beforeEach, describe, it, vi, assert, expect } from 'vitest'
 
 import { State } from "../src/state";
-import { LitStateEvent } from "../src/state-event";
+import { StateEvent } from "../src/state-event";
 import { StateController } from "../src/state-controller";
 import {property} from '../src/decorators/property'
 
@@ -146,7 +146,7 @@ describe("state", () => {
   });
 
   it("can be listened to", async () => {
-    myExtendedState.addEventListener(LitStateEvent.eventName, ((event: LitStateEvent) => {
+    myExtendedState.addEventListener(StateEvent.eventName, ((event: StateEvent) => {
       expect(event.key).toBe('a')
       expect(event.state).toBe(myExtendedState)
       expect(event.value).toBe('___')

@@ -1,4 +1,4 @@
-import { PropertyTypes } from '../state';
+import { PropertyTypes } from './property';
 
 export function parse(value: string | null, type: PropertyTypes| undefined): any {
 	if (value !== null && (
