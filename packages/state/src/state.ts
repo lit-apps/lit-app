@@ -25,7 +25,7 @@ export type PropertyMapOptions = PropertyOptions &
 /**
  * Callback function - used as callback subscription to a state change 
  */
-export type Callback = (key: PropertyKey, value: unknown, state: State) => void
+export type Callback = (key: string, value: unknown, state: State) => void
 
 /**
  * A state, fireing `lit-state-change` when any of it property changes
@@ -34,7 +34,7 @@ export type Callback = (key: PropertyKey, value: unknown, state: State) => void
 export class State extends EventTarget {
 
   // a map holding decorators definition.
-  static propertyMap: Map<PropertyKey, PropertyMapOptions>
+  static propertyMap: Map<string, PropertyMapOptions>
     
   static properties: PropertyOptions;
   static finalized: boolean = false;
@@ -76,7 +76,7 @@ export class State extends EventTarget {
   }
 
   static createProperty(
-    name: PropertyKey,
+    name: string,
     options?: PropertyOptions
   ) {
     // Note, since this can be called by the `@property` decorator which
@@ -88,7 +88,7 @@ export class State extends EventTarget {
   }
 
   protected static getPropertyDescriptor(
-    name: PropertyKey,
+    name: string,
     key: string | symbol,
     options?: PropertyOptions
   ): PropertyDescriptor {
@@ -134,13 +134,13 @@ export class State extends EventTarget {
    * @param nameOrNames 
    * @returns a unsubscribe function. 
    */
-  subscribe(callback: Callback, nameOrNames?: PropertyKey | PropertyKey[] ): () => void {
+  subscribe(callback: Callback, nameOrNames?: string | string[] ): () => void {
     
     if (nameOrNames && !Array.isArray(nameOrNames)) {
       nameOrNames = [nameOrNames]
     }
     const cb = (event: StateEvent) => {
-      if(!nameOrNames || (nameOrNames as PropertyKey[]).includes(event.key)) {
+      if(!nameOrNames || (nameOrNames as string[]).includes(event.key)) {
         callback(event.key, event.value, this)
       }
     }
@@ -148,7 +148,7 @@ export class State extends EventTarget {
     return () => this.removeEventListener(StateEvent.eventName, cb as EventListener) 
   }
 
-  private dispatchStateEvent(key: PropertyKey, eventValue: unknown, state: State) {
+  private dispatchStateEvent(key: string, eventValue: unknown, state: State) {
     this.dispatchEvent(new StateEvent(key, eventValue, state))
   }
 }

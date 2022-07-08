@@ -5,16 +5,16 @@ import { State } from './state';
  */
  export class StateEvent extends Event {
   static readonly eventName = 'lit-state-changed';
-  readonly key: PropertyKey;
+  readonly key: string;
   readonly state: State;
 
   readonly value: unknown;
   
   /**
-   * @param  {PropertyKey} key of the state that has changed
+   * @param  {string} key of the state that has changed
    * @param  {unknown} value for the changed key
    */
-  constructor(key: PropertyKey, value: unknown, state: State) {
+  constructor(key: string, value: unknown, state: State) {
     super(StateEvent.eventName, {
       cancelable: false,
     });

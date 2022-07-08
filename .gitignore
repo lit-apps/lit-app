@@ -4,6 +4,7 @@ logs
 npm-debug.log*
 pnpm-debug.log*
 
+.wireit
 node_modules
 *.local
 

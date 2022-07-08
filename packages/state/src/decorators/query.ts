@@ -53,7 +53,7 @@ export function query(options?: QueryOptions) {
 	}
 	return decorateProperty({
 		// @ts-ignore ctor is typof State and not typeof ReactiveElement
-		finisher: (ctor: typeof State, name: PropertyKey) => {
+		finisher: (ctor: typeof State, name: string) => {
 		
 			const descriptor = Object.getOwnPropertyDescriptor(ctor.prototype, name);
 			if (!descriptor) {

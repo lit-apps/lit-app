@@ -51,7 +51,7 @@ export function storage(options?: StorageOptions) {
 	// console.info('storage options', options)
 	return decorateProperty({
 		// @ts-ignore ctor is typof State and not typeof ReactiveElement
-		finisher: (ctor: typeof State, name: PropertyKey) => {
+		finisher: (ctor: typeof State, name: string) => {
 			// console.info('storage ', name)
 			const descriptor = Object.getOwnPropertyDescriptor(ctor.prototype, name);
 			if (!descriptor) {

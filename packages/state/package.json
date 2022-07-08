@@ -33,7 +33,6 @@
     "lint": "eslint 'src/**/*.js'",
     "format": "prettier \"src/**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
     "prepublishOnly": "npm run analyze"
-    
   },
   "dependencies": {
     "@lit-labs/context": "^0.1.2",
@@ -47,6 +46,7 @@
     "@preignition/preignition-demo": "^0.5.0",
     "chai-a11y-axe": "^1.4.0",
     "eslint": "^8.14.0",
+    "firebase": "^9.8.4",
     "router-slot": "^1.5.5",
     "typescript": "^4.7.2",
     "vite": "^2.9.8",

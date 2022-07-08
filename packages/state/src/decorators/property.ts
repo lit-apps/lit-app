@@ -37,13 +37,13 @@ export type PropertyOptions =  {
   hasChanged?(value: unknown, oldValue: unknown): boolean;
 }
 
-export type PropertySignature = (protoOrDescriptor: State, name?: PropertyKey | undefined) => any
+export type PropertySignature = (protoOrDescriptor: State, name?: string | undefined) => any
 
 export function property(options?: PropertyOptions) {
 	// console.info('property options',options)
   return decorateProperty({
 		// @ts-ignore ctor is typof State and not typeof ReactiveElement
-    finisher: (ctor: typeof State, name: PropertyKey) => {
+    finisher: (ctor: typeof State, name: string) => {
 			// console.info('property ', name)
 
       if(Object.getOwnPropertyDescriptor(ctor.prototype, name)) {
@@ -51,7 +51,7 @@ export function property(options?: PropertyOptions) {
 			};
 
 			if(!ctor.propertyMap) {
-				ctor.propertyMap = new Map<PropertyKey, PropertyMapOptions>()
+				ctor.propertyMap = new Map<string, PropertyMapOptions>()
 			}
 			ctor.propertyMap.set(name, {...options, ...{computedValue: options?.value}}) 
 			return ctor.createProperty(name, options )

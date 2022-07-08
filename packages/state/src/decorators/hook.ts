@@ -22,7 +22,7 @@ export function hook(hookName: string, options?: HookOptions) {
 	
 	return decorateProperty({
 		// @ts-ignore ctor is typof State and not typeof ReactiveElement
-		finisher: (ctor: typeof State, name: PropertyKey) => {
+		finisher: (ctor: typeof State, name: strubg) => {
 		
 			const descriptor = Object.getOwnPropertyDescriptor(ctor.prototype, name);
 			if (!descriptor) {
