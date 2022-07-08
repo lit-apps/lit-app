@@ -23,14 +23,14 @@ export function hook(hookName: string, options?: HookOptions) {
 	return decorateProperty({
 		// @ts-ignore ctor is typof State and not typeof ReactiveElement
 		finisher: (ctor: typeof State, name: strubg) => {
-		
+			
 			const descriptor = Object.getOwnPropertyDescriptor(ctor.prototype, name);
 			if (!descriptor) {
 				throw new Error('@hook decorator need to be called after @property')
 			}
 			const definition = ctor.propertyMap.get(name);
 			if(definition) {
-				const hook =  {...definition.hook , ...{[hookName]: options}}
+				const hook =  {...definition.hook , ...{[hookName]: options || {}}}
 				ctor.propertyMap.set(name, {...definition, ...{hook: hook}})
 			}
 		}

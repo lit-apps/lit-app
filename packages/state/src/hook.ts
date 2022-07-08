@@ -19,7 +19,7 @@ export class Hook {
 	}
 
 	subscribe() {
-		return this.state.subscribe(this.fromState, this.hookedProps.map(([key]) => key))
+		return this.state.subscribe(this.fromState.bind(this), this.hookedProps.map(([key]) => key))
 	}
 
 	get hookedProps() {

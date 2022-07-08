@@ -24,6 +24,10 @@ class TestHook extends Hook {
 class MyState extends State {
 	@hook('test', { path: 1 })
 	@property() a = 1
+	
+	@hook('test')
+	@property() hook
+	
 	@property({ value: 'bbb' }) b: string
 }
 
@@ -46,12 +50,16 @@ describe("hook", () => {
 		expect(MyState.propertyMap.get('a')?.hook?.test).toEqual({ path: 1 })
 	});
 
+	it("stores a hook property, event when no config", () => {
+		expect(MyState.propertyMap.get('hook')?.hook?.test).toBeDefined()
+	});
+
 	it("connects with a hook", () => {
 
 		const testHook = new TestHook(myState)
 		// const spy = vi.spyOn(testHook, 'fromState')
-		expect(testHook._unsubscribe).toBeDefined()
-		expect(testHook.hookedProps.length).toEqual(1)
+		expect(testHook.unsubscribe).toBeDefined()
+		expect(testHook.hookedProps.length).toEqual(2)
 
 		expect(spy).toHaveBeenCalledTimes(0)
 
@@ -71,7 +79,7 @@ describe("hook", () => {
 		expect(spy).toHaveBeenCalledTimes(2)
 		expect(spy).toHaveBeenCalledWith('a', 5, myState)
 
-		testHook._unsubscribe()
+		testHook.unsubscribe()
 		myState.a = 3
 		expect(spy).toHaveBeenCalledTimes(2)
 

@@ -2,7 +2,7 @@
  * A hook for @lit-app/state synchronizing with firebase
  */
 
-import { ref, set, child, onValue, DatabaseReference, DataSnapshot, Unsubscribe, Query } from 'firebase/database'
+import { ref, set, child, onValue, DatabaseReference, DataSnapshot, Unsubscribe, query, Query } from 'firebase/database'
 import { Hook } from '../src/hook'
 import { State } from '../src/state'
 
@@ -16,7 +16,7 @@ type hookDef = {
 
 /** DatabaseReference is an interface. We cannot use value instanceof DatabaseReference */
 const isRef = (value: Ref) => {
-	return value.key && value.root && value.parent;
+	return value && value.key && value.root && value.parent;
 };
 const hookName = 'firebase'
 
@@ -28,7 +28,7 @@ const hookName = 'firebase'
  * Synchronisation works like this: 
  * 
  * When the ref is set: 
- * If the value of the database does not exits (onValue retrning null), or the hook property has `forceSet` set to `true` set with current state value
+ * If the value of the database does not exits (onValue returning null), or the hook property has `forceSet` set to `true` set with current state value
  * Otherwise (database value does exist, no `forceSet`), read the value from the database first
  * 
  * Then database write updates on state value and vice-versa.
@@ -62,10 +62,10 @@ const hookName = 'firebase'
  * ```
  * 
  */
-export class FirebaseHook extends Hook {
+export class HookFirebase extends Hook {
 	static override hookName: string = hookName;
 	private _ref: Ref
-	private _hasSynched: Map<string, boolean>
+	private _hasSynched: Map<string, boolean> = new Map()
 	private _unsubscribe: Unsubscribe[] = []
 
 	set ref(ref: Ref) {
@@ -75,28 +75,9 @@ export class FirebaseHook extends Hook {
 		if (ref) {
 			this._ref = ref;
 
-			const callbacks = snap => {
-				const values = {}
-				this.hookedProps.forEach(([key, definition]) => {
-					const hookDef = definition?.hook?.firebase as hookDef
-					const child = hookDef?.path || key
-					const value = snap.child(child).val();
-					if (!this._hasSynched.get(key) &&
-						(value === null || hookDef.forceSet) && this.state[key] !== undefined) {
-						set(snap.child(child), this.state[key])
-							.then(() => this._hasSynched.set(key, true))
-					} else {
-						values[key] = value
-						this._hasSynched.set(key, true)
-					}
-				});
-				this.toState(values)
-			}
-
 			const callback = (key: string) => (snap: DataSnapshot) => {
-				if (this._hasSynched) {
-				}
 				const value = snap.val()
+				// console.info('cb', key, value, this.state[key])
 				const hookDef = this.getDefinition(key)?.hook?.firebase as hookDef
 				if (!this._hasSynched.get(key) &&
 					(value === null || hookDef.forceSet) && this.state[key] !== undefined) {
@@ -107,17 +88,19 @@ export class FirebaseHook extends Hook {
 					this._hasSynched.set(key, true)
 				}
 			}
-			if (isRef(this._ref)) {
-				// Note(CG): ref is a firebase reference., the same for each options
-				this._unsubscribe.push(onValue(this._ref as Query, callbacks))
-			} else if (Object(this._ref) === this._ref) {
-				// Note(CG): ref is an object mapped to option keys
-				Object.keys(this._ref)
-					.filter(k => isRef(this._ref[k]) && this.isHookedProp(k))
-					.forEach(k => {
-						this._unsubscribe.push(onValue(this._ref[k], callback(k)))
-					});
-			}
+
+		  this.hookedProps.forEach(([key, definition]) => {
+				const hookDef = definition?.hook?.firebase as hookDef
+				const r = isRef(this.ref[key]) ? this._ref[key] :
+					isRef(this.ref) ? child(this.ref as DatabaseReference, hookDef?.path || key) :
+					null
+				if(r) {
+					this._unsubscribe.push(onValue(r as Query, callback(key), (error) => {
+						console.error(error)  
+					}))
+					
+				}
+			})
 		}
 	}
 
@@ -133,6 +116,7 @@ export class FirebaseHook extends Hook {
 	}
 
 	override fromState(key: string, value: unknown): void {
+		// console.info('fromState', this, key)
 		if (value !== undefined && this._hasSynched.get(key) && this.ref) {
 			const definition = this.getDefinition(key)
 			set(
