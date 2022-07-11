@@ -48,12 +48,14 @@ export class State extends EventTarget {
     (this.constructor as typeof State).finalize();
     // make sure all getter and setters are called once as some owrk is 
     // being done in @decorator getter and setter. For instance, @storage 
-    // stores the value to local storage in setter. 
-    [...this.propertyMap].forEach(([key, definition]) => {
-      if (definition.computedValue !== undefined) {
-        (this as {} as { [key: string]: unknown })[key as string] = functionValue(definition.computedValue)
-      }
-    })
+    // stores the value to local storage in setter.
+    if(this.propertyMap) {
+      [...this.propertyMap].forEach(([key, definition]) => {
+        if (definition.computedValue !== undefined) {
+          (this as {} as { [key: string]: unknown })[key as string] = functionValue(definition.computedValue)
+        }
+      })
+    }
   }
 
   protected static finalize() {

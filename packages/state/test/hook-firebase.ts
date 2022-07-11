@@ -2,7 +2,7 @@
  * A hook for @lit-app/state synchronizing with firebase
  */
 
-import { ref, set, child, onValue, DatabaseReference, DataSnapshot, Unsubscribe, query, Query } from 'firebase/database'
+import { set, child, onValue, DatabaseReference, DataSnapshot, Unsubscribe, Query } from 'firebase/database'
 import { Hook } from '../src/hook'
 import { State } from '../src/state'
 
