@@ -10,7 +10,7 @@ export type StorageOptions = {
 }
 
 const defaultOptions: StorageOptions = {
-	prefix: import.meta.env.VITE_LOCALSTORAGE_PREFIX || '_ls'
+	prefix: import.meta?.env?.VITE_LOCALSTORAGE_PREFIX || '_ls'
 }
 
 
