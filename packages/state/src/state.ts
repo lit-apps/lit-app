@@ -136,7 +136,7 @@ export class State extends EventTarget {
    * @param nameOrNames 
    * @returns a unsubscribe function. 
    */
-  subscribe(callback: Callback, nameOrNames?: string | string[] ): () => void {
+  subscribe(callback: Callback, nameOrNames?: string | string[], options?: AddEventListenerOptions ): () => void {
     
     if (nameOrNames && !Array.isArray(nameOrNames)) {
       nameOrNames = [nameOrNames]
@@ -146,7 +146,7 @@ export class State extends EventTarget {
         callback(event.key, event.value, this)
       }
     }
-    this.addEventListener(StateEvent.eventName, cb as EventListener) 
+    this.addEventListener(StateEvent.eventName, cb as EventListener, options) 
     return () => this.removeEventListener(StateEvent.eventName, cb as EventListener) 
   }
 
