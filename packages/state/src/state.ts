@@ -1,5 +1,6 @@
 import { functionValue } from './functionValue';
 import { StateEvent } from './state-event';
+import { Hook } from './hook';
 import { PropertyOptions } from './decorators/property';
 import { StorageOptions } from './decorators/storage';
 import { QueryOptions } from './decorators/query';
@@ -42,6 +43,13 @@ export class State extends EventTarget {
   get propertyMap() {
    return (this.constructor as typeof State).propertyMap
   }
+
+  get stateValue() {
+    return Object.fromEntries([...this.propertyMap].map(([key]) => [key, (this as {} as { [key: string]: unknown })[key as string]]))
+  }
+
+  // hold a reference to hooks
+  hookMap: Map<string, Hook> = new Map()
 
   constructor() {
     super();

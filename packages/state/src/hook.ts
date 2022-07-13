@@ -16,6 +16,7 @@ export class Hook {
 			throw new Error('hook subclass must have their own hookName')
 		}
 		this.unsubscribe = this.subscribe()
+		state.hookMap.set((this.constructor as typeof Hook).hookName, this)
 	}
 
 	subscribe() {
