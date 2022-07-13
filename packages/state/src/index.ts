@@ -1,4 +1,4 @@
-export { State } from './state'
+export { State, Unsubscribe } from './state'
 export { Hook } from './hook'
 export { StateEvent } from './state-event'
 export { StateController } from './state-controller'

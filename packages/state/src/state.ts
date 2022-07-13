@@ -9,6 +9,8 @@ export interface HasChanged {
   (value: unknown, old: unknown): boolean;
 }
 
+export type Unsubscribe = () => void
+
 /**
  * Change function that returns true if `value` is different from `oldValue`.
  * This method is used as the default for a property's `hasChanged` function.
@@ -144,7 +146,7 @@ export class State extends EventTarget {
    * @param nameOrNames 
    * @returns a unsubscribe function. 
    */
-  subscribe(callback: Callback, nameOrNames?: string | string[], options?: AddEventListenerOptions ): () => void {
+  subscribe(callback: Callback, nameOrNames?: string | string[], options?: AddEventListenerOptions ): Unsubscribe {
     
     if (nameOrNames && !Array.isArray(nameOrNames)) {
       nameOrNames = [nameOrNames]
