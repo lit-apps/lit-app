@@ -33,6 +33,7 @@ class MyState extends State {
 	@property() a
 	@hook('firebase', { path: 'bPath'})
 	@property() b
+	@property() c
 } 
 
 const myState = new MyState()
@@ -134,6 +135,35 @@ describe("hook", () => {
 		valueB = await get(child(testRef, 'bPath')).then(snap => snap.val())
 		expect(valueB).toBe('iexist')
 		expect(s.b).toBe('iexist')
+	});
+
+	it("stores all hooked stateValue through a call to store", async () => {
+		
+		const s = new MyState()
+		const hookFirebase = new HookFirebase(s)
+		s.a = 1;
+		s.b = 2;
+		s.c = 3;
+
+		hookFirebase.ref = testRef
+		hookFirebase.store()
+		await wait(500)
+		const value = await get(testRef).then(snap => snap.val())
+		expect(value).toEqual({a: 1, bPath: 2})
+	});
+
+	it("can be reset", async () => {
+		
+		const s = new MyState()
+		const hookFirebase = new HookFirebase(s)
+		s.a = 1;
+		s.b = 2;
+		s.c = 3;
+
+		hookFirebase.ref = testRef
+		await wait(500)
+		s.reset()
+		expect(hookFirebase.ref).toBe(undefined)
 	});
 
 });

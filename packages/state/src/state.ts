@@ -9,7 +9,9 @@ export interface HasChanged {
   (value: unknown, old: unknown): boolean;
 }
 
-export type Unsubscribe = () => void
+export interface Unsubscribe {
+  (): void
+} 
 
 /**
  * Change function that returns true if `value` is different from `oldValue`.
@@ -23,7 +25,7 @@ export const notEqual: HasChanged = (value: unknown, old: unknown): boolean => {
 export type PropertyMapOptions = PropertyOptions &
    StorageOptions &
    QueryOptions &
-   { computedValue: unknown, hook?: {[key:string]: unknown}}
+   { initialValue: unknown, hook?: {[key:string]: unknown}}
 
 /**
  * Callback function - used as callback subscription to a state change 
@@ -56,13 +58,13 @@ export class State extends EventTarget {
   constructor() {
     super();
     (this.constructor as typeof State).finalize();
-    // make sure all getter and setters are called once as some owrk is 
+    // make sure all getter and setters are called once as some work is 
     // being done in @decorator getter and setter. For instance, @storage 
     // stores the value to local storage in setter.
     if(this.propertyMap) {
       [...this.propertyMap].forEach(([key, definition]) => {
-        if (definition.computedValue !== undefined) {
-          (this as {} as { [key: string]: unknown })[key as string] = functionValue(definition.computedValue)
+        if (definition.initialValue !== undefined) {
+          (this as {} as { [key: string]: unknown })[key as string] = functionValue(definition.initialValue)
         }
       })
     }
@@ -128,12 +130,16 @@ export class State extends EventTarget {
    * properties marked as skipReset
    */
   reset() {
+    // reset all hooks first;
+    this.hookMap.forEach(hook =>  hook.reset());
+
     [...this.propertyMap]
       // @ts-ignore
       .filter(([key, definition]) => definition.skipReset !== true )
       .forEach(([key, definition]) => {
-        if (definition.computedValue !== undefined) {
-          (this as {} as { [key: string]: unknown })[key as string] = functionValue(definition.computedValue)
+        if (definition.value !== undefined ) {
+          // (this as {} as { [key: string]: unknown })[key as string] = functionValue(definition.initialValue)
+          (this as {} as { [key: string]: unknown })[key as string] = functionValue(definition.value)
         }
       })
   }

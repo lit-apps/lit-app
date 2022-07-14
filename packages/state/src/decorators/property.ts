@@ -53,7 +53,7 @@ export function property(options?: PropertyOptions) {
 			if(!ctor.propertyMap) {
 				ctor.propertyMap = new Map<string, PropertyMapOptions>()
 			}
-			ctor.propertyMap.set(name, {...options, ...{computedValue: options?.value}}) 
+			ctor.propertyMap.set(name, {...options, ...{initialValue: options?.value}}) 
 			return ctor.createProperty(name, options )
     }
 	}) as unknown as PropertySignature

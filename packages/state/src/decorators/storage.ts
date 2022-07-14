@@ -10,7 +10,7 @@ export type StorageOptions = {
 }
 
 const defaultOptions: StorageOptions = {
-	prefix: import.meta?.env?.VITE_LOCALSTORAGE_PREFIX || '_ls'
+	prefix: import.meta.env.VITE_LOCALSTORAGE_PREFIX || '_ls'
 }
 
 
@@ -61,8 +61,8 @@ export function storage(options?: StorageOptions) {
 			const definition = ctor.propertyMap.get(name);
 			const type = definition?.type
 			if(definition) {
-				const previousValue = definition.computedValue
-				definition.computedValue = () => parse(localStorage.getItem(key), type) || functionValue(previousValue);
+				const previousValue = definition.initialValue
+				definition.initialValue = () => parse(localStorage.getItem(key), type) ?? functionValue(previousValue);
 				ctor.propertyMap.set(name, {...definition, ...options})
 			}
 			// const oldGetter = descriptor?.get;

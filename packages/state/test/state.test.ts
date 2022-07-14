@@ -164,6 +164,18 @@ describe("state", () => {
   });
 
 
+  it("returns all values via stateValue", async () => {
+    class S extends State {
+			@property({value: 1}) a;
+			@property({value: 2}) b;
+			@property({value: {a: 1}}) c;
+		}
+    const s = new S()
+    expect(s.stateValue).toEqual({a: 1, b: 2, c: {a: 1}})
+		
+  });
+
+
   it("initiate values for multiple instances of same class", async () => {
     class S extends State {
 			@property({value: 1}) a;
@@ -232,6 +244,14 @@ describe("state", () => {
     unsubscribe()
     s.a = 4
     expect(spy).toHaveBeenCalledTimes(2)
+    
+  })
+  it("can reset", async () => {
+    myState.a = '123'
+    myState.b = '123'
+    myState.reset()
+    expect(myState.a).toBe('123') // a does not have a {value} set on @property
+    expect(myState.b).toBe('bbb')
     
   })
 });

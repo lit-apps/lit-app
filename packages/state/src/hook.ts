@@ -51,4 +51,9 @@ export class Hook {
 	fromState(key: string, value: unknown, state: State) {
 		throw ('fromState must be implemented in subclasses')
 	}
+	
+	// @ts-ignore 
+	reset() {
+		throw ('reset hook must be implemented in subclasses')
+	}
 }

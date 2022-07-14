@@ -6,7 +6,7 @@ import { set, child, onValue, DatabaseReference, DataSnapshot, Unsubscribe, Quer
 import { Hook } from '../src/hook'
 import { State } from '../src/state'
 
-type Ref = DatabaseReference | { [key: string]: DatabaseReference }
+type Ref = DatabaseReference | { [key: string]: DatabaseReference } | undefined
 type hookDef = {
 	path?: string,
 	forceSet?: boolean
@@ -72,8 +72,8 @@ export class HookFirebase extends Hook {
 		this._unsubscribe.forEach(unsubscribe => unsubscribe())
 		this._unsubscribe = []
 		this._hasSynched = new Map()
+		this._ref = ref;
 		if (ref) {
-			this._ref = ref;
 
 			const callback = (key: string) => (snap: DataSnapshot) => {
 				const value = snap.val()
@@ -103,6 +103,20 @@ export class HookFirebase extends Hook {
 			})
 		}
 	}
+	
+	store() {
+		if (isRef(this._ref)) {
+			const stateValue = this.state.stateValue
+			const value = {}
+			this.hookedProps.forEach(([key, definition]) => {
+				const hookDef = definition?.hook?.firebase as hookDef
+				const v = stateValue[key]
+				if(v !== undefined) {value[hookDef?.path || key] = v}
+			})
+			set(this._ref as DatabaseReference, value)
+		}
+	}
+
 
 	get ref(): Ref {
 		return this._ref
@@ -116,7 +130,6 @@ export class HookFirebase extends Hook {
 	}
 
 	override fromState(key: string, value: unknown): void {
-		// console.info('fromState', this, key)
 		if (value !== undefined && this._hasSynched.get(key) && this.ref) {
 			const definition = this.getDefinition(key)
 			set(
@@ -124,5 +137,8 @@ export class HookFirebase extends Hook {
 					(definition?.hook?.firebase as hookDef)?.path || key), value
 			)
 		}
+	}
+	override reset():void {
+		this.ref = undefined
 	}
 }
