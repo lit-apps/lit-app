@@ -6,27 +6,30 @@
  *   for localstorate prefix. This only works with vitejs 
  */
 
-import pkg from 'replace-in-file';
-const { sync} = pkg;
-
+import fs from 'fs'
 console.info('Replacing content on post-install');
 
-const r1 = sync({
-  files: 'package.json',
-  from: '"main": "src/index",',
-  to: '"main": "dist/index",',
+const pkg = 'package.json'
+const storage = 'dist/decorators/storage.js'
+fs.readFile(pkg, 'utf8', function (err, data) {
+	if (err) {
+		return console.log(err);
+	}
+	var result = data.replace(/src\/index/g, 'dist/index');
+
+	fs.writeFile(pkg, result, 'utf8', function (err) {
+		if (err) return console.log(err);
+	});
 });
 
-if(r1.hasChanged) {
-	console.log('package.json "main" is now "dist/index" ');
-}
+fs.readFile(storage, 'utf8', function (err, data) {
+	if (err) {
+		return console.log(err);
+	}
+	var result = data.replace(/'import.meta.env.VITE_LOCALSTORAGE_PREFIX'/g, '{}.VITE_LOCALSTORAGE_PREFIX');
 
-const r2 = sync({
-  files: 'dist/decorators/storage.js',
-  from: 'import.meta.env.VITE_LOCALSTORAGE_PREFIX',
-  to: '{}.VITE_LOCALSTORAGE_PREFIX',
+	fs.writeFile(storage, result, 'utf8', function (err) {
+		if (err) return console.log(err);
+	});
 });
 
-if(r2.hasChanged) {
-	console.log('vitejs environment variables have been overriden ');
-}
