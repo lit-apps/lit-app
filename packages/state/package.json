@@ -3,10 +3,11 @@
   "description": "state management for lit-app",
   "repository": "https://github.com/lit-app/state",
   "homepage": "https://lit-shape-state.netlify.app/",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "postinstall.js"
   ],
   "authors": [
     "christophe.geiser <christophe@preignition.org>"
