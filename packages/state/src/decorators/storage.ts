@@ -39,8 +39,7 @@ const defaultOptions: StorageOptions = {
  * const s = new S()
  * 
  * localStorage.getItem('_ls_storage_path') 
- * // returnes 1
- * 
+ *  
  * ```
  * 
  * @param options 

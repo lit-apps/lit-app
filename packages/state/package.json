@@ -22,22 +22,15 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "ts": "tsc",
-    "copy-to-public": "cp -f package.json public/package.json && cp -f README.md public/README.md && mkdir -p public/docs && cp -rf docs/* public/docs ",
-    "build": "npm run ts && npm run analyze && npm run copy-to-public ",
+    "build": "tsc",
     "preview": "vite preview",
+    "postinstall": "node postinstall.js",
     "test": "vitest",
-    "analyze-json": "cem analyze",
-    "analyze-md": "node custom-elements-to-md.mjs",
-    "analyze": "npm run analyze-md && npm run analyze-json && npm run copy-to-public",
     "lint": "eslint 'src/**/*.js'",
-    "format": "prettier \"src/**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
-    "prepublishOnly": "npm run analyze"
+    "format": "prettier \"src/**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write"
   },
   "dependencies": {
-    "@lit-labs/context": "^0.1.2",
     "@lit/reactive-element": "^1.3.3",
-    "happy-dom": "^6.0.0",
     "lit": "^2.2.3"
   },
   "devDependencies": {
@@ -47,16 +40,14 @@
     "chai-a11y-axe": "^1.4.0",
     "eslint": "^8.14.0",
     "firebase": "^9.8.4",
+    "happy-dom": "^6.0.0",
+    "replace-in-file": "^6.3.5",
     "router-slot": "^1.5.5",
     "typescript": "^4.7.2",
     "vite": "^2.9.8",
     "vitest": "^0.13.1"
   },
-  "customElements": "docs/custom-elements.json",
-  "litApp": {
-    "name": "@lit-shape/apt-state",
-    "description": "apt-state kit for building an application on lit-shape infrastructure",
-    "firestore": "firestore.json",
-    "schemas": "schemas.json"
+  "publishConfig": {
+    "access": "public"
   }
 }
