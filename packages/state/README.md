@@ -98,7 +98,10 @@ const myState = new MyState()
 
 
 ## Demo
-To be done on lit-playground once a first preview version is released
+
+[Very simple demo on lit.dev playground](https://lit.dev/playground/#gist=6b45c964c5632f153d046da7ffc9421c)
+
+
 
 
 
