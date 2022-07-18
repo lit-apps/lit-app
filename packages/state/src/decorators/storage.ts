@@ -10,7 +10,7 @@ export type StorageOptions = {
 }
 
 const defaultOptions: StorageOptions = {
-	prefix: import.meta.env.VITE_LOCALSTORAGE_PREFIX || '_ls'
+	prefix: '_ls'
 }
 
 
@@ -24,8 +24,7 @@ const defaultOptions: StorageOptions = {
  * Anytime the state propery changes, the change is reflected 
  * to localStorage. 
  * 
- * A default prefix (`_ls` for `Lit State` which can be overriden 
- * on build with `env` configuration: `VITE_LOCALSTORAGE_PREFIX`)
+ * A default (`_ls` for `Lit State`) prefix is set 
  * 
  * @storage must be placed before @property for this to work.
  * 
