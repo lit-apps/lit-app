@@ -39,7 +39,6 @@ try {
  * const s = new S()
  * 
  * localStorage.getItem('_ls_storage_path') 
- * // returnes 'abc' it the url.href has ?para=abc
  * 
  * ```
  * @param options 

@@ -126,7 +126,7 @@ export class State extends EventTarget {
   }
 
   /**
-   * Reset the state to hte original values, skipping 
+   * Reset the state to its original values, skipping 
    * properties marked as skipReset
    */
   reset() {

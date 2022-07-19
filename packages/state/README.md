@@ -1,21 +1,19 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/def2b202-3a80-469d-9dbc-fc259cc1e712/deploy-status)](https://app.netlify.com/sites/vite-lit-starter/deploys)
-
 # @lit-app/state
 
-@lit-app/state is a global state management, integrating with [lit](lit.dev) web-components. 
+@lit-app/state is a global state management, integrating with [lit](https://lit.dev) web-components. 
 
 ```
 CAUTION
 
-THIS IS A VERY EARLY PREVIEW - NOT SUITABLE FOR PRODUCTION USE
+THIS IS A VERY EARLY PREVIEW - NOT YET SUITABLE FOR PRODUCTION USE
 ```
 
 ## Why a new state-management tool ? 
 
-There are plenty options available for state management, why a new one. 
+There are plenty options available for state management, so why yet another one? 
 
-- Some existing options are too heavy. Managing state should be lean and simple, in my opinion. Redux, for instance fall into this category.
-- Some solutions designed for lit (for instance [lit-state](https://github.com/gitaarik/lit-state)) do not support Typescript and do not take advantages of lit@2 [Reactive Controlers](https://lit.dev/docs/composition/controllers/), very well suited for State Managements. 
+- Some existing options are too heavy. In my opinion, managing state should be lean and simple. Redux, for instance fall into this category.
+- Some solutions designed for lit (for instance [lit-state](https://github.com/gitaarik/lit-state)) do not support Typescript and do not take advantages of lit@2 [Reactive Controlers](https://lit.dev/docs/composition/controllers/), very well suited for hooking external features into templating lifecyce. 
 - Some elegant ideas were worth pursuing (for instance [this tweet](https://twitter.com/passle_/status/1528318552947806212), or [this post](https://dev.to/pfrueh/the-dom-eventtarget-interface-6ak)).
 
 
@@ -46,6 +44,13 @@ class StateEl extends LitElement {
 // changing the state will reflect in the template
 myState.name = 'Alice'
 ```
+[Very simple demo on lit.dev playground](https://lit.dev/playground/#gist=6b45c964c5632f153d046da7ffc9421c)
+
+
+## How does it work?
+`State` extends [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) and dispatch a `StateEvent` when one of its property changes. 
+
+`StateController` listen to `StateEvent` emited by a bound state. By default, it calls a requestUpdate on the lit element; the callback function is configurable. 
 
 ## Decorators
 
@@ -64,7 +69,7 @@ class MyState extends State {
 const myState = new MyState()
 
 ```
-
+[Demo with @storage](https://lit.dev/playground/#gist=8c1b5273fd8449d4c89dd66c9c1e6539)
 
 ### @query
 Init a state property value with an URL parameter, and also persist it 
@@ -82,6 +87,7 @@ const myState = new MyState()
 
 ```
 
+
 ### @hook
 Hook decorator allows to configure state properties for the use of other third parties
 
@@ -97,9 +103,23 @@ const myState = new MyState()
 ```
 
 
-## Demo
+## API
 
-[Very simple demo on lit.dev playground](https://lit.dev/playground/#gist=6b45c964c5632f153d046da7ffc9421c)
+[Documentation and API](./Documentation.md)
+
+## Installation
+
+```
+> pnpm add @lit-state/app
+```
+
+or 
+```
+> npm install @lit-state/app
+```
+
+
+
 
 
 
