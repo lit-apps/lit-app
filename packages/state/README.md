@@ -110,12 +110,12 @@ const myState = new MyState()
 ## Installation
 
 ```
-> pnpm add @lit-state/app
+> pnpm add @lit-app/state
 ```
 
 or 
 ```
-> npm install @lit-state/app
+> npm install @lit-app/state
 ```
 
 
