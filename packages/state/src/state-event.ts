@@ -28,8 +28,5 @@ declare global {
   interface HTMLElementEventMap {
     [StateEvent.eventName]: StateEvent;
   }
-  interface EventTargetEventMap {
-    [StateEvent.eventName]: StateEvent;
-  }
 }
 
