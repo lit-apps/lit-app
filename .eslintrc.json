@@ -1,0 +1,49 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "eslint-plugin-import",
+    "eslint-plugin-no-only-tests",
+    "@typescript-eslint", 
+    "lit",
+    "lit-a11y"
+  ],
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "max-len": [
+      "warn",
+      {
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreComments": true
+      }
+    ],
+    "import/extensions": [
+      "error",
+      "always"
+    ],
+    "no-prototype-builtins": "off",
+    "no-only-tests/no-only-tests": "error",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  }
+}
