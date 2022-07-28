@@ -2,12 +2,6 @@
 
 @lit-app/state is a global state management, integrating with [lit](https://lit.dev) web-components. 
 
-```
-CAUTION
-
-THIS IS A VERY EARLY PREVIEW - NOT YET SUITABLE FOR PRODUCTION USE
-```
-
 ## Why a new state-management tool ? 
 
 There are plenty options available for state management, so why yet another one? 
