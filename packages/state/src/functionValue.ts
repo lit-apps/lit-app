@@ -1,5 +1,5 @@
 /**
- * Returns a value it is is a val;ue, 
+ * Returns a value if it is a value, 
  * or the result of the function if is is a function
  * @param value a value or a function
  * @returns a value
