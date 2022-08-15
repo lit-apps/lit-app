@@ -6,8 +6,8 @@
 
 There are plenty options available for state management, so why yet another one? 
 
-- Some existing options are too heavy. In my opinion, managing state should be lean and simple. Redux, for instance fall into this category.
-- Some solutions designed for lit (for instance [lit-state](https://github.com/gitaarik/lit-state)) do not support Typescript and do not take advantages of lit@2 [Reactive Controlers](https://lit.dev/docs/composition/controllers/), very well suited for hooking external features into templating lifecyce. 
+- Some existing options are too heavy. In my opinion, managing state should be lean and simple. Redux, for instance falls into this category.
+- Some solutions designed for lit (for instance [lit-state](https://github.com/gitaarik/lit-state)) do not support Typescript and do not take advantage of lit@2 [Reactive Controlers](https://lit.dev/docs/composition/controllers/), very well suited for hooking external features into templating lifecyce. 
 - Some elegant ideas were worth pursuing (for instance [this tweet](https://twitter.com/passle_/status/1528318552947806212), or [this post](https://dev.to/pfrueh/the-dom-eventtarget-interface-6ak)).
 
 
@@ -17,7 +17,7 @@ There are plenty options available for state management, so why yet another one?
 import { State, StateController, property } from "@lit-app/state";
 import { LitElement } from "lit";
 
-// declate a state
+// declare some state
 class MyState extends State {
   @property({value: 'Bob'}) name  
 }
@@ -42,9 +42,9 @@ myState.name = 'Alice'
 
 
 ## How does it work?
-`State` extends [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) and dispatch a `StateEvent` when one of its property changes. 
+`State` extends [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) and dispatches a `StateEvent` when one of its properties changes. 
 
-`StateController` listen to `StateEvent` emited by a bound state. By default, it calls a requestUpdate on the lit element; the callback function is configurable. 
+`StateController` listens for a `StateEvent` emited by a bound state. By default, it calls a requestUpdate on the lit element; the callback function is configurable. 
 
 ## Decorators
 
