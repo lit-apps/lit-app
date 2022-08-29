@@ -1,6 +1,6 @@
 {
   "name": "lit-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "mono-repo of builing components for lit-app",
   "main": "index",
   "scripts": {
@@ -38,7 +38,6 @@
       ]
     },
     "build": {
-      "command": "tsc",
       "dependencies": [
         "./packages/state:build"
       ]
