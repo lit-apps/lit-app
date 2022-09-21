@@ -38,7 +38,10 @@ class StateEl extends LitElement {
 // changing the state will reflect in the template
 myState.name = 'Alice'
 ```
-[Very simple demo on lit.dev playground](https://lit.dev/playground/#gist=6b45c964c5632f153d046da7ffc9421c)
+[Very simple demo on lit.dev playground.](https://lit.dev/playground/#gist=6b45c964c5632f153d046da7ffc9421c)
+
+[Another demo, more advanced.](https://lit.dev/playground/?linkId=8223273#gist=184c2d7a658d2fb1ff95aeddf8b09ba0)
+
 
 
 ## How does it work?

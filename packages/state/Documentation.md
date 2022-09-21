@@ -120,6 +120,8 @@ const myState = new MyState()
 ```
 [Demo with @storage](https://lit.dev/playground/#gist=8c1b5273fd8449d4c89dd66c9c1e6539)
 
+[Another demo, more advanced.](https://lit.dev/playground/?linkId=8223273#gist=184c2d7a658d2fb1ff95aeddf8b09ba0)
+
 ### @query
 Init a state property value with an URL parameter, and also persist it 
 to localStorage. 
