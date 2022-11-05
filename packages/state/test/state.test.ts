@@ -40,9 +40,9 @@ class StateElExt extends StateEl {
   stateExt = new StateController<MyExtendedState>(this, myExtendedState)
   override render() {
     return html`
-      <div id="myState.a">${myState.a}</div>
-      <div id="myExtendedState.a">${myExtendedState.a}</div>
-      <div id="myExtendedState.c">${myExtendedState.c}</div>
+      <div id="myState_a">${myState.a}</div>
+      <div id="myExtendedState_a">${myExtendedState.a}</div>
+      <div id="myExtendedState_c">${myExtendedState.c}</div>
     `;
   }
 }
@@ -101,17 +101,17 @@ describe("state", () => {
   it("properly handles sub-classing", async () => {
     const el = getEl() as StateEl;
     const elext = getElExt() as StateElExt;
-    const a = getElExt('myState.a')
-    const extA = getElExt('myExtendedState.a')
-    const extC = getElExt('myExtendedState.c')
-
+    const a = getElExt('myState_a')
+    const extA = getElExt('myExtendedState_a')
+    const extC = getElExt('myExtendedState_c')
+    
     await elext?.updateComplete
     await el?.updateComplete
     expect(a?.innerHTML).toContain('aaa')
     expect(el?.shadowRoot?.innerHTML).toContain('aaa')
     expect(extA?.innerHTML).toContain('aaa')
     expect(extC?.innerHTML).toContain('ccc')
-    
+
     myState.a = '___'
     await elext?.updateComplete
     await el?.updateComplete
@@ -119,7 +119,7 @@ describe("state", () => {
     expect(el?.shadowRoot?.innerHTML).toContain('___')
     expect(extA?.innerHTML).toContain('aaa')
     expect(extC?.innerHTML).toContain('ccc')
-    
+
     myExtendedState.a = '---'
     await elext?.updateComplete
     await el?.updateComplete
@@ -127,7 +127,7 @@ describe("state", () => {
     expect(el?.shadowRoot?.innerHTML).toContain('___')
     expect(extA?.innerHTML).toContain('---')
     expect(extC?.innerHTML).toContain('ccc')
-    
+
     myExtendedState.c = 'xxx'
     await el?.updateComplete
     expect(a?.innerHTML).toContain('___')
@@ -136,9 +136,9 @@ describe("state", () => {
     expect(extC?.innerHTML).toContain('xxx')
 
   });
-  
+
   it("can be instantiatied through @property({value: 'bbb'})", async () => {
-    expect(myState.b).toBe('bbb') 
+    expect(myState.b).toBe('bbb')
   });
 
   it("inherited @property({value: 'bbb'}) are set on child class", async () => {

@@ -17,8 +17,8 @@
     "web-components"
   ],
   "license": "MIT",
-  "main": "dist/index",
-  "types": "dist/index.d.ts",
+  "main": "src/index",
+  "types": "src/index.d.ts",
   "scripts": {
     "start": "vite",
     "dev": "vite",

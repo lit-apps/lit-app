@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+src/**/*.js
+src/**/*.d.ts
+src/**/*.map
+
 public/docs/*
 public/README.md
 public/package.json
