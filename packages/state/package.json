@@ -3,7 +3,7 @@
   "description": "state management for lit-app",
   "repository": "https://github.com/lit-apps/lit-app/tree/main/packages/state",
   "homepage": "https://github.com/lit-apps/lit-app/tree/main/packages/state",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "type": "module",
   "files": [
     "src"
