@@ -7,6 +7,7 @@ import { parse } from './parse';
 
 export type QueryOptions = {
 	parameter?: string,
+	skipAsync?: boolean,
 }
 
 let url: URL;
@@ -63,7 +64,12 @@ export function query(options?: QueryOptions) {
 			const type = definition?.type
 			if(definition) {
 				const previousValue = definition.initialValue
-				definition.initialValue = () => parse(url.searchParams.get(parameter), type) ?? functionValue(previousValue);
+				const parameterValue = url.searchParams.get(parameter)
+				// register the fact that this property is set by a query parameter
+				if(parameterValue !== null) {
+					definition.skipAsync = true
+				}
+				definition.initialValue = () => parse(parameterValue, type) ?? functionValue(previousValue);
 				ctor.propertyMap.set(name, {...definition, ...options})
 			}
 		}
