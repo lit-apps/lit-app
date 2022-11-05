@@ -7,7 +7,7 @@ import { parse } from './parse';
 
 export type QueryOptions = {
 	parameter?: string,
-	skipAsync?: boolean,
+	skipAsync?: boolean
 }
 
 let url: URL;
