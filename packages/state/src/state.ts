@@ -11,7 +11,7 @@ export interface HasChanged {
 
 export interface Unsubscribe {
   (): void
-} 
+}
 
 /**
  * Change function that returns true if `value` is different from `oldValue`.
@@ -23,29 +23,29 @@ export const notEqual: HasChanged = (value: unknown, old: unknown): boolean => {
 };
 
 export type PropertyMapOptions = PropertyOptions &
-   StorageOptions &
-   QueryOptions &
-   { initialValue: unknown, hook?: {[key:string]: unknown}}
+  StorageOptions &
+  QueryOptions &
+{ initialValue: any, hook?: { [key: string]: any } }
 
 /**
  * Callback function - used as callback subscription to a state change 
  */
-export type Callback = (key: string, value: unknown, state: State) => void
+export type Callback = (key: string, value: any, state: State) => void
 
 /**
- * A state, fireing `lit-state-change` when any of it property changes
+ * A state, firing `lit-state-change` when any of it property changes
  *  
  */
 export class State extends EventTarget {
 
   // a map holding decorators definition.
   static propertyMap: Map<string, PropertyMapOptions>
-    
+
   static properties: PropertyOptions;
   static finalized: boolean = false;
 
   get propertyMap() {
-   return (this.constructor as typeof State).propertyMap
+    return (this.constructor as typeof State).propertyMap
   }
 
   get stateValue() {
@@ -61,10 +61,12 @@ export class State extends EventTarget {
     // make sure all getter and setters are called once as some work is 
     // being done in @decorator getter and setter. For instance, @storage 
     // stores the value to local storage in setter.
-    if(this.propertyMap) {
+    if (this.propertyMap) {
       [...this.propertyMap].forEach(([key, definition]) => {
         if (definition.initialValue !== undefined) {
-          (this as {} as { [key: string]: unknown })[key as string] = functionValue(definition.initialValue)
+          const value: any = functionValue(definition.initialValue);
+          (this as {} as { [key: string]: unknown })[key as string] = value;
+          definition.value = value;
         }
       })
     }
@@ -131,15 +133,16 @@ export class State extends EventTarget {
    */
   reset() {
     // reset all hooks first;
-    this.hookMap.forEach(hook =>  hook.reset());
+    this.hookMap.forEach(hook => hook.reset());
 
     [...this.propertyMap]
       // @ts-ignore
-      .filter(([key, definition]) => definition.skipReset !== true )
+      .filter(([key, definition]) => definition.skipReset !== true)
       .forEach(([key, definition]) => {
-        if (definition.value !== undefined ) {
-          // (this as {} as { [key: string]: unknown })[key as string] = functionValue(definition.initialValue)
-          (this as {} as { [key: string]: unknown })[key as string] = functionValue(definition.value)
+        if (definition.value !== undefined) {
+          // note: we take the value as not the initial value because we reset definition.value
+          // in the constructor.
+          (this as {} as { [key: string]: unknown })[key as string] = definition.value;
         }
       })
   }
@@ -152,18 +155,18 @@ export class State extends EventTarget {
    * @param nameOrNames 
    * @returns a unsubscribe function. 
    */
-  subscribe(callback: Callback, nameOrNames?: string | string[], options?: AddEventListenerOptions ): Unsubscribe {
-    
+  subscribe(callback: Callback, nameOrNames?: string | string[], options?: AddEventListenerOptions): Unsubscribe {
+
     if (nameOrNames && !Array.isArray(nameOrNames)) {
       nameOrNames = [nameOrNames]
     }
     const cb = (event: StateEvent) => {
-      if(!nameOrNames || (nameOrNames as string[]).includes(event.key)) {
+      if (!nameOrNames || (nameOrNames as string[]).includes(event.key)) {
         callback(event.key, event.value, this)
       }
     }
-    this.addEventListener(StateEvent.eventName, cb as EventListener, options) 
-    return () => this.removeEventListener(StateEvent.eventName, cb as EventListener) 
+    this.addEventListener(StateEvent.eventName, cb as EventListener, options)
+    return () => this.removeEventListener(StateEvent.eventName, cb as EventListener)
   }
 
   private dispatchStateEvent(key: string, eventValue: unknown, state: State) {
