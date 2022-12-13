@@ -3,7 +3,7 @@
   "description": "state management for lit-app",
   "repository": "https://github.com/lit-apps/lit-app/tree/main/packages/state",
   "homepage": "https://github.com/lit-apps/lit-app/tree/main/packages/state",
-  "version": "0.7.1",
+  "version": "0.7.3",
   "type": "module",
   "files": [
     "src"
@@ -30,18 +30,18 @@
     "format": "prettier \"src/**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write"
   },
   "dependencies": {
-    "@lit/reactive-element": "^1.3.3"
+    "@lit/reactive-element": "^1.5.0"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
     "@preignition/preignition-demo": "^0.5.0",
     "chai-a11y-axe": "^1.4.0",
-    "eslint": "^8.14.0",
-    "firebase": "^9.8.4",
-    "happy-dom": "^6.0.0",
-    "lit": "^2.4.1",
-    "typescript": "^4.7.2",
+    "eslint": "^8.29.0",
+    "firebase": "^9.15.0",
+    "happy-dom": "^8.1.0",
+    "lit": "^2.5.0",
+    "typescript": "^4.9.4",
     "vite": "^2.9.8",
     "vitest": "^0.13.1"
   },
