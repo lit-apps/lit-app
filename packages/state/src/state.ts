@@ -25,7 +25,7 @@ export const notEqual: HasChanged = (value: unknown, old: unknown): boolean => {
 export type PropertyMapOptions = PropertyOptions &
   StorageOptions &
   QueryOptions &
-{ initialValue: any, hook?: { [key: string]: any } }
+{ initialValue: any, hook?: { [key: string]: any }, resetValue: any }
 
 /**
  * Callback function - used as callback subscription to a state change 
@@ -137,13 +137,9 @@ export class State extends EventTarget {
 
     [...this.propertyMap]
       // @ts-ignore
-      .filter(([key, definition]) => definition.skipReset !== true)
+      .filter(([key, definition]) => !(definition.skipReset === true || definition.resetValue === undefined))
       .forEach(([key, definition]) => {
-        if (definition.value !== undefined) {
-          // note: we take the value as not the initial value because we reset definition.value
-          // in the constructor.
-          (this as {} as { [key: string]: unknown })[key as string] = definition.value;
-        }
+          (this as {} as { [key: string]: unknown })[key as string] = definition.resetValue;
       })
   }
 

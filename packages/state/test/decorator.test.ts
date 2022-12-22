@@ -1,3 +1,13 @@
+declare global {
+  interface Window extends IWindow { }
+}
+const url ="http://localhost:3000/index?aa=5"
+Object.defineProperty(window, 'location', {
+  value: {
+    href: url
+  }
+});
+
 import { html, css, LitElement } from "lit";
 import { customElement, state } from 'lit/decorators.js';
 import type { IWindow } from 'happy-dom'
@@ -12,7 +22,7 @@ import { property } from '../src/decorators/property'
 import { query } from '../src/decorators/query'
 import { storage } from '../src/decorators/storage';
 
-
+expect(window.location.href).toEqual(url);  
 class MyState extends State {
   @property({type: Number}) a = 1  
   @property({value: 'bbb'}) b: string
@@ -26,14 +36,12 @@ class YourState extends State {
 
 const myState = new MyState()
 
-declare global {
-  interface Window extends IWindow { }
-}
+
 
 describe("decorator", () => {
 
   beforeEach(async () => {
-    window.location.href="http://localhost:3000/index?aa=5"
+    // window.location.href="http://localhost:3000/index?aa=5"
     await window.happyDOM.whenAsyncComplete()
     await new Promise(resolve => setTimeout(resolve, 0))
   })
@@ -74,6 +82,18 @@ describe("decorator", () => {
 		}
 		const s = new S()
 		expect(s.a).toEqual('5')
+		
+  });
+
+	it("resets to the initial value", async () => {
+		class S extends State {
+			@query({parameter: 'aa'})
+			@property({value: 1}) a;
+		}
+		const s = new S()
+		expect(s.a).toEqual('5')
+		s.reset()
+		expect(s.a).toEqual(1)
 		
   });
 

@@ -10,18 +10,7 @@ export type QueryOptions = {
 	skipAsync?: boolean
 }
 
-let url: URL;
-try {
-	 url = new URL(window.location.href)
-} catch(e){
-	// @ts-ignore - see https://stackoverflow.com/questions/54649465/how-to-do-try-catch-and-finally-statements-in-typescript#54649623
-	if (e.code === 'ERR_INVALID_URL') {
-		console.warn('new URL failing in test')
-	} else {
-		throw(e)
-	}
-}
-
+const url = new URL(window.location.href)
 
 /**
  * A decorator for setting state values from url parameters
@@ -47,10 +36,6 @@ try {
  */
 export function query(options?: QueryOptions) {
 
-	// for tests 
-	if(!url) {
-		url = new URL(window.location.href)
-	}
 	return decorateProperty({
 		// @ts-ignore ctor is typof State and not typeof ReactiveElement
 		finisher: (ctor: typeof State, name: string) => {
@@ -65,6 +50,7 @@ export function query(options?: QueryOptions) {
 			if(definition) {
 				const previousValue = definition.initialValue
 				const parameterValue = url.searchParams.get(parameter)
+
 				// register the fact that this property is set by a query parameter
 				if(parameterValue !== null) {
 					definition.skipAsync = true
