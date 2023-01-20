@@ -4,9 +4,9 @@ import { until } from 'lit/directives/until.js';
 import { EntityAction, AppAction, Create, Delete, MarkDeleted } from '../events';
 import { Dialog } from '@material/mwc-dialog'
 import '@material/mwc-linear-progress'
-import { ToastErrorEvent } from '@preignition/preignition-util'
 import '@material/mwc-button'
 import { ActionController } from '@material/web/controller/action-controller';
+import { AppToastEvent } from '@lit-app/app-event';
 
 
 type Constructor<T = {}> = new (...args: any[]) => T;
@@ -68,7 +68,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 			const dispatchError = (e: Error) => {
 				console.error(e)
 				this.dispatchEvent(
-					new ToastErrorEvent(`There was an error while confirming : ${(e as Error).message}`)
+					new AppToastEvent(`There was an error while confirming : ${(e as Error).message}`, 'error')
 				);
 			}
 			const processAction = async () => {
