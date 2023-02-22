@@ -77,9 +77,6 @@ export class State extends EventTarget {
       return false;
     }
     this.finalized = true;
-    // finalize any superclasses
-    // const superCtor = Object.getPrototypeOf(this) as typeof ReactiveElement;
-    // superCtor.finalize();
     const propKeys = Object.keys(this.properties || {})
     // This for/of is ok because propKeys is an array
     for (const p of propKeys) {
