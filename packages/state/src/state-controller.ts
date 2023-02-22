@@ -5,12 +5,12 @@ import {StateEvent} from './state-event'
  * A reactive-controller holding a state
  */
 
-type callback = () => void
+type callback = () => void | EventListener
 
 export class StateController<T extends State>
 	implements ReactiveController {
 
-	callback: () => void
+	callback: callback
 	
 	constructor(
 		protected host: ReactiveControllerHost,
