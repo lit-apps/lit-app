@@ -102,7 +102,7 @@ const myState = new MyState()
 
 ## API
 
-[Documentation and API](./Documentation.md)
+[Documentation and API](https://github.com/lit-apps/lit-app/blob/main/packages/blob/HEAD/Documentation.md)
 
 ## Installation
 
