@@ -2,7 +2,7 @@
 
 ## Creating State
 
-A `State` is defined by specifing its `@properties`. When state properties changes, the state emits a `StateEvent` which can be listened to.
+A `State` is defined by specifying its `@properties`. When state properties changes, the state emits a `StateEvent` which can be listened to.
 
 **Example**
 ```ts
@@ -27,7 +27,7 @@ The value to initiate the property with. When `@property` is used in conjunction
 
 `type`
 
-The type of the property. Used to Stringify/parse depending on wich other decorators are in use. For instance, `@storage` strignify before storing to localStorage. 
+The type of the property. Used to Stringify/parse depending on which other decorators are in use. For instance, `@storage` stringify before storing to localStorage. 
 
 `skipReset`
 
@@ -40,13 +40,13 @@ The type of the property. Used to Stringify/parse depending on wich other decora
 
 Reset the state to its original values, skipping properties marked as skipReset
 
-`subscribe(callback: (event: StateEvent) => void, nameOrNames: string | string[]): Unsubscribe`
+`subscribe(callback: (key: string, value: any, state: State) => void, nameOrNames: string | string[]): Unsubscribe`
 
-Subscribe to a state change event. The callback will be called anytime a state property change if `nameOrNames` is undefined, or only for matching  property values specified by `nameOrNames`. It returns an `unsubscibe` function to call for endind the subscription.
+Subscribe to a state change event. The callback will be called anytime a state property change if `nameOrNames` is undefined, or only for matching  property values specified by `nameOrNames`. It returns an `unsubscribe` function to call for ending the subscription.
 
 **Example**
 ```js
-const unsubscribe = state.subscribe((event: StateEvent) => {}, ['name'])
+const unsubscribe = state.subscribe((key: string, value: value, state: State) => console.info(`State of key ${key} changed to value ${value}`), ['name'])
 ```
 
 
