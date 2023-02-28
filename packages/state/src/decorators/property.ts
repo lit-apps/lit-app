@@ -1,5 +1,5 @@
 
-import { State, PropertyMapOptions} from '../state'
+import { State, PropertyMapOptions} from '../state.js'
 import { decorateProperty } from '@lit/reactive-element/decorators/base.js';
 
 export type PropertyTypes = Array<unknown> | Boolean | Object | String | Number

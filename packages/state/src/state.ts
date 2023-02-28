@@ -1,9 +1,9 @@
-import { functionValue } from './functionValue';
-import { StateEvent } from './state-event';
-import { Hook } from './hook';
-import { PropertyOptions } from './decorators/property';
-import { StorageOptions } from './decorators/storage';
-import { QueryOptions } from './decorators/query';
+import { functionValue } from './functionValue.js';
+import { StateEvent } from './state-event.js';
+import { Hook } from './hook.js';
+import { PropertyOptions } from './decorators/property.js';
+import { StorageOptions } from './decorators/storage.js';
+import { QueryOptions } from './decorators/query.js';
 
 export interface HasChanged {
   (value: unknown, old: unknown): boolean;

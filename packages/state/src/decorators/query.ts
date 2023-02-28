@@ -1,9 +1,9 @@
 
-import {State } from '../state'
+import {State } from '../state.js'
 import { decorateProperty } from '@lit/reactive-element/decorators/base.js';
-import { PropertySignature } from './property';
-import { functionValue } from '../functionValue';
-import { parse } from './parse';
+import { PropertySignature } from './property.js';
+import { functionValue } from '../functionValue.js';
+import { parse } from './parse.js';
 
 export type QueryOptions = {
 	parameter?: string,

@@ -1,6 +1,6 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { State } from './state'
-import {StateEvent} from './state-event'
+import { State } from './state.js'
+import {StateEvent} from './state-event.js'
 /**
  * A reactive-controller holding a state
  */

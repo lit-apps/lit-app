@@ -1,4 +1,4 @@
-import { State } from './state';
+import { State } from './state.js';
 const DONOTUSE: string = 'DONOTUSE'
 
 type Values = {[key:string]: unknown}

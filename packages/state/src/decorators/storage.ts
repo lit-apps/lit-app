@@ -1,9 +1,9 @@
 
-import {State } from '../state'
+import {State } from '../state.js'
 import { decorateProperty } from '@lit/reactive-element/decorators/base.js';
-import { PropertySignature } from './property';
-import { parse } from './parse';
-import { functionValue } from '../functionValue';
+import { PropertySignature } from './property.js';
+import { parse } from './parse.js';
+import { functionValue } from '../functionValue.js';
 export type StorageOptions = {
 	key?: string,
 	prefix?: string

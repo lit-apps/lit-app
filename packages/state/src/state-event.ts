@@ -1,4 +1,4 @@
-import { State } from './state';
+import { State } from './state.js';
 
 /**
  * This event is fired to inform a state has updated one of its value

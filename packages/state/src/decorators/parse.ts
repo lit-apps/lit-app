@@ -1,4 +1,4 @@
-import { PropertyTypes } from './property';
+import { PropertyTypes } from './property.js';
 
 export function parse(value: string | null, type: PropertyTypes| undefined): any {
 	if (value !== null && (
