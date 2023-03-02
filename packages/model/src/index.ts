@@ -27,6 +27,6 @@ export {
 	BaseDetailMixinInterface,
 	DispatchActionMixin,
 	renderConfirmDialogMixin,
-	RenderConfig, Lookup,  GetAccess, EntityAccess, EntityStatus, ColumnsConfig, Action, MetaData, Data, Model, Ref, Access, EntityRenderer, DataInterface, DefaultInterface, EntityElement, EntityElementList
+	RenderConfig, Lookup, GetAccess, EntityAccess, EntityStatus, ColumnsConfig, Action, MetaData, Data, Model, Ref, Access, EntityRenderer, DataInterface, DefaultInterface, EntityElement, EntityElementList
 }
 export * from './events'
