@@ -14,3 +14,8 @@ It will contain:
 
 The main idea is to allow to compose those components for building complex apps or application ecosystems. 
 
+### Current state
+
+- [x] @lit-app/state - a state management library for lit-based applications (see [packages/state/README.md](packages/state/README.md))
+
+
