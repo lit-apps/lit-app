@@ -1,7 +1,8 @@
-import BaseDetailMixin from './mixin/base-detail-mixin';
+// import BaseDetailMixin from './mixin/base-detail-mixin';
 import type { BaseDetailMixinInterface } from './mixin/base-detail-mixin';
 import DispatchActionMixin from './mixin/dispatch-action-mixin';
 import renderConfirmDialogMixin from './mixin/render-confirm-dialog-mixin';
+import ContextAccessMixin from './mixin/context-access-mixin';
 import Entity, {mergeStatic } from './entity';
 import type {DefaultActions, Actions } from './entity';
 import type { 
@@ -23,7 +24,8 @@ import type {
 	DataInterface, DefaultInterface } from './types';
 export {
 	Entity, mergeStatic, Actions, DefaultActions,
-	BaseDetailMixin,
+	// BaseDetailMixin,
+	ContextAccessMixin,
 	BaseDetailMixinInterface,
 	DispatchActionMixin,
 	renderConfirmDialogMixin,

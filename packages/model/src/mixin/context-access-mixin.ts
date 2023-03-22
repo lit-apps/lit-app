@@ -34,10 +34,10 @@ declare global {
 }
 
 type Constructor<T = {}> = new (...args: any[]) => T;
-export declare class ContextProvideInterface extends DataMixinInterface {
+export declare class ContextAccessMixinInterface extends DataMixinInterface {
 	static getAccess: GetAccess;
-	entityStatus: EntityStatus;
-	entityAccess: EntityAccess;
+	entityStatus: EntityStatus; // context storing document status
+	entityAccess: EntityAccess; // context storing document access rules
 }
 
 const statusInit: EntityStatus = {
@@ -49,12 +49,13 @@ const statusInit: EntityStatus = {
 };
 
 /**
- * ContextProvide 
- * A mixin to be applied to entities at root level. It set context providers for the entity.
+ * ContextAccessMixin 
+ * A mixin to be applied to entities at root level. It set context providers for the entity: 
+ * - entityStatusContext
  */
-export const ContextProvide = <T extends Constructor<LitElement>>(superClass: T, getAccess: GetAccess) => {
+export const ContextAccessMixin = <T extends Constructor<LitElement>>(superClass: T, getAccess: GetAccess) => {
 
-	class ContextProvideClass extends DataMixin(superClass) {
+	class ContextAccessMixinClass extends DataMixin(superClass) {
 		
 		static getAccess = getAccess;
 
@@ -131,7 +132,7 @@ export const ContextProvide = <T extends Constructor<LitElement>>(superClass: T,
 				}
 				return;
 			}
-			const getAccess = (this.constructor as typeof ContextProvideClass).getAccess;
+			const getAccess = (this.constructor as typeof ContextAccessMixinClass).getAccess;
 			this.entityAccess = {
 				isOwner: getAccess.isOwner.call(this, accessData, data),
 				canEdit: getAccess.canEdit.call(this, accessData, data),
@@ -142,8 +143,8 @@ export const ContextProvide = <T extends Constructor<LitElement>>(superClass: T,
 		}
 	};
 	// Cast return type to your mixin's interface intersected with the superClass type
-	return ContextProvideClass as unknown as Constructor<ContextProvideInterface> & T;
+	return ContextAccessMixinClass as unknown as Constructor<ContextAccessMixinInterface> & T;
 }
 
-export default ContextProvide;
+export default ContextAccessMixin;
 
