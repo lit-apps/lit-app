@@ -1,5 +1,12 @@
+// if (import.meta.hot) {
+//   import.meta.hot.on('entity-update', (data) => {
+//     // trying out HMR for entity
+//     console.info('entity-update', data)
+//   })
+// }
+
 import { html, TemplateResult } from 'lit'
-import { get } from '@preignition/preignition-util';
+import { get } from '@preignition/preignition-util/src/deep';
 import { activeItemChanged } from '@preignition/preignition-util/src/grid'
 import '@vaadin/grid/theme/material/vaadin-grid.js';
 
@@ -13,16 +20,13 @@ import {
   FieldConfig,
   ModelComponent,
   ModelComponentSelect,
+  DefaultI,
   ModelComponentText,
-  DefaultInterface,
   EntityStatus,
   EntityAccess,
   EntityElement,
   EntityElementList,
-  MetaData,
-  Data,
   ColumnsConfig,
-  Ref,
   RenderConfig,
   FieldConfigUpload
 } from './types';
@@ -46,6 +50,7 @@ import {
   Update,
   AnyEvent
 } from './events'
+import { MetaData, Ref, DataI } from '@lit-app/base-model';
 import { DocumentReference, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { renderField } from './renderField';
 import {
@@ -111,19 +116,16 @@ const actions: Actions = {
     label: 'Cancel',
     icon: 'cancel',
     event: Reset,
-
   },
   edit: {
     label: 'Edit',
     icon: 'edit',
     event: Edit,
-
   },
   open: {
     label: 'Open',
     icon: 'open_in_new',
     event: Open,
-
   },
   close: {
     label: 'Open',
@@ -172,8 +174,6 @@ const actions: Actions = {
 
 
 
-
-
 /**
  * Base class for entity. 
  * 
@@ -183,10 +183,10 @@ const actions: Actions = {
  * It can also contain renderer helper  
  */
 export default class Entity<
-  Interface extends DefaultInterface = DefaultInterface,
+  Interface extends DefaultI = DefaultI,
   ActionKeys = DefaultActions> {
   static entityName: string
-  static model: Model<DefaultInterface>
+  static model: Model<DefaultI>
   static actions: Record<string, Action> = actions
   static setActions(actions: Actions) {
     const superCtor = Object.getPrototypeOf(this) as typeof Entity;
@@ -212,7 +212,6 @@ export default class Entity<
         }
       })
     }
-
   }
 
   get entityName() {
@@ -575,7 +574,8 @@ export default class Entity<
    * @param organisationOwnerID - the organisation owning the entity (e.g. ida_secretariat)
    * @param appOwnerID - the group owning the entity (e.g. gds)
    */
-  public getNewData(..._args: any[]): Data {
+  public getNewData(..._args: any[]): DataI {
+    // @ts-ignore
     return {}
   }
 

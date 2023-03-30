@@ -1,7 +1,4 @@
 import { LitElement, PropertyValues } from 'lit';
-// import { property } from 'lit/decorators.js'
-// import DataMixin from './data-mixin';
-import BaseDetailMixin,  { BaseDetailMixinInterface } from './base-detail-mixin';
 import Entity from '../entity';
 import { 
 	EntityAction,
@@ -9,7 +6,7 @@ import {
 import { Action, Actions } from '../types';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
-export declare class DispatchActionMixinInterface extends BaseDetailMixinInterface {
+export declare class DispatchActionMixinInterface  {
 	/**
 	 * Creates an event dispatcher for the given action
 	 * @param action 

@@ -1,7 +1,8 @@
 import { html } from 'lit';
-import { get, set, debounce, throttle } from '@preignition/preignition-util';
+import { get, set } from '@preignition/preignition-util/src/deep';
+import { debounce, throttle } from '@preignition/preignition-util/src/debounce';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Model, Actions, FieldConfig,  FieldConfigUpload, ModelComponentSelect, EntityElement, ModelComponent, DefaultInterface } from './types';
+import { Model, Actions, FieldConfig,  FieldConfigUpload, ModelComponentSelect, EntityElement, DefaultI, ModelComponent } from './types';
 import { Dirty, EntityWriteDetail, Write, Update } from './events';
 import Entity from './entity';
 // Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
@@ -30,7 +31,7 @@ const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetai
   element.dispatchEvent(new Update(detail));
 }, 2000, true)
 
-export function renderField<Interface extends DefaultInterface>(this: EntityElement,
+export function renderField<Interface extends DefaultI>(this: EntityElement,
   name: string,
   data: Interface = {} as Interface,
   update: boolean,

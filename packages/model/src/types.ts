@@ -1,26 +1,22 @@
-import { DocumentReference, FieldValue } from 'firebase/firestore'
-import { LitElement, TemplateResult } from 'lit'
-import { AnyEvent, AppAction, BaseEvent, Delete, Dirty, EntityAction, Reset, Restore, TypeofAnyEvent, Write } from './events'
-import Entity, { DefaultActions } from './entity'
-import { Grid, GridItemModel } from '@vaadin/grid';
+import type { DocumentReference } from 'firebase/firestore'
+import type { LitElement, TemplateResult } from 'lit'
+import type { AnyEvent, AppAction, BaseEvent, Delete, Dirty, EntityAction, Reset, Restore, TypeofAnyEvent, Write } from './events'
+import type Entity from './entity'
+import type { DefaultActions } from './entity'
+import type { Grid, GridItemModel } from '@vaadin/grid';
 
-export interface GetAccess {
-	isOwner(access: Access, data: any): boolean
-	canEdit(access: Access, data: any): boolean
-	canView(access: Access, data: any): boolean
-	canDelete(access: Access, data: any): boolean
-	getUid(): string
-}
 
 type roles = 'owner' | 'guest' | 'master'
 type role = { [key in roles]: boolean }
 export type Claims = {
-	organisation?: { [key: string]: role }
+	organisation?: { [key: string]: role } // DEPRECATED
 	admin?: { [key: string]: role }
 	group?: { [key: string]: role }
 	documentation?: { [key: string]: role }
-	active?: string | undefined
-	tenantActive?: string | undefined
+	active?: string | undefined // DEPRECATED
+	tenantActive?: string | undefined // DEPRECATED
+	team: string | undefined // replace active
+	space: string | undefined // replace tenantActive
 	email?: string | undefined
 	name?: string | undefined
 	buid?: string | undefined
@@ -194,65 +190,16 @@ export interface FieldConfigUpload extends FieldConfig {
 	accept?: string
 	maxFileSize?: number
 }
-/**
- * Type for setting data Access
- */
-type GroupAccess = {
-	owner: string
-	read: string[]
-	write: string[]
-}
 
-type OrganisationAccess = {
-	owner: string
-	owners: string[]
-}
-
-type UserAccess = {
-	owner: string
-}
-
-type Status = 'public' | 'private'
-
-export type Access = {
-	app: string
-	group: GroupAccess
-	organisation: OrganisationAccess
-	user: UserAccess
-	status: Status
-
-}
-
-// ref refers to external, not entered by users
-export type Ref = {
-	user: string
-	business?: string
-	organisation?: string
-}
-export interface MetaData {
-	access: Access
-	timestamp: FieldValue
-	deleted: boolean
-	type: string
-	
-}
-export interface Data {
-	metaData?: MetaData,
-	ref?: Ref
-}
-export interface DefaultInterface {
-	// $id: string
-}
-
-export interface DataInterface<R = Ref, M = MetaData> {
-	$id: string
-	ref?: R
-	metaData: M
-}
-interface EntityBase extends LitElement {
+interface EntityBase<T = any> extends LitElement {
 	entity: Entity
-	data?: any
+	data?: T
+	icon?: string
+	heading?: string
 	appID: string
+}
+export interface DefaultI {
+	
 }
 
 export interface EntityElement extends EntityBase {

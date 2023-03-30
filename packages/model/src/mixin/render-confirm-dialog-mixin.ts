@@ -111,12 +111,12 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 
 				<mwc-dialog 
 					id="confirmDialog" 
-					.heading=${action.confirmDialog?.heading || 'Please Confirm'}
+					.heading=${action?.confirmDialog?.heading || 'Please Confirm'}
 					@closed=${onClosed}>
 				
 					${(event as EntityAction).bulkAction ?
-							action.bulk?.render.call(this, this.selectedItems, event.detail.data || this.data) :
-							action.confirmDialog?.render.call(this, event.detail.data || this.data)}
+							action?.bulk?.render.call(this, this.selectedItems, event.detail.data || this.data) :
+							action?.confirmDialog?.render.call(this, event.detail.data || this.data)}
 					<mwc-linear-progress style="margin-top: var(--space-medium);" .indeterminate=${!this._resolved}></mwc-linear-progress>
           <mwc-button
             slot="secondaryAction"
@@ -126,8 +126,8 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 					<mwc-button
             slot="primaryAction"
             unelevated
-						.label=${action.confirmDialog?.confirmLabel || 'Confirm'}
-						.disabled=${action.confirmDialog?.confirmDisabled?.call(this, event.detail.data) || !this._resolved}
+						.label=${action?.confirmDialog?.confirmLabel || 'Confirm'}
+						.disabled=${action?.confirmDialog?.confirmDisabled?.call(this, event.detail.data) || !this._resolved}
             @click=${processAction}></mwc-button>
 				</mwc-dialog>
 				`

@@ -1,12 +1,10 @@
 // import BaseDetailMixin from './mixin/base-detail-mixin';
-import type { BaseDetailMixinInterface } from './mixin/base-detail-mixin';
 import DispatchActionMixin from './mixin/dispatch-action-mixin';
 import renderConfirmDialogMixin from './mixin/render-confirm-dialog-mixin';
 import ContextAccessMixin from './mixin/context-access-mixin';
 import Entity, {mergeStatic } from './entity';
 import type {DefaultActions, Actions } from './entity';
 import type { 
-	GetAccess, 
 	ColumnsConfig,
 	EntityAccess, 
 	EntityStatus, 
@@ -14,21 +12,17 @@ import type {
 	EntityElementList,
 	Action, 
 	Model, 
-	MetaData, 
-	Access,
-	Ref,
-	Data,
 	EntityRenderer,
 	RenderConfig, 
 	Lookup,
-	DataInterface, DefaultInterface } from './types';
+} from './types';
+
 export {
 	Entity, mergeStatic, Actions, DefaultActions,
 	// BaseDetailMixin,
 	ContextAccessMixin,
-	BaseDetailMixinInterface,
 	DispatchActionMixin,
 	renderConfirmDialogMixin,
-	RenderConfig, Lookup, GetAccess, EntityAccess, EntityStatus, ColumnsConfig, Action, MetaData, Data, Model, Ref, Access, EntityRenderer, DataInterface, DefaultInterface, EntityElement, EntityElementList
+	RenderConfig, Lookup, EntityAccess, EntityStatus, ColumnsConfig, Action,  Model,  EntityRenderer, EntityElement, EntityElementList
 }
 export * from './events'

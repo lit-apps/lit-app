@@ -1,16 +1,13 @@
 import { LitElement, PropertyValueMap, PropertyValues } from 'lit';
-// import Base from '../entity/base';
 import { property } from 'lit/decorators.js'
 import { Unsubscribe, State } from '@lit-app/state';
 import { provide, consume } from '@lit-labs/context';
-// import { tokenState, Claims } from '@preignition/preignition-state';
 import {
 	entityStatusContext,
 	entityAccessContext,
 
 } from '../context';
 
-// import { tokenState, Claims } from '@preignition/preignition-state';
 
 import {
 	Dirty,
@@ -24,7 +21,8 @@ import {
 } from '../events';
 
 import { } from '../context';
-import { Access, GetAccess, EntityStatus,	EntityAccess } from '../types';
+import { EntityStatus,	EntityAccess } from '../types';
+import { Access, GetAccess } from '@lit-app/base-model';
 import DataMixin, { DataMixinInterface } from './data-mixin';
 
 declare global {
