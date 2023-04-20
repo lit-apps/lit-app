@@ -20,7 +20,6 @@ import '@preignition/pwi-form-upload'
 
 import '@material/mwc-formfield'
 import('@material/web/switch/switch')
-import('@material/web/formfield/formfield')
 
 interface _Entity {
   entityName: string;
@@ -243,16 +242,14 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
   }
   if (component === 'switch') {
     return html`
-     <md-formfield 
-      .label=${label || ''}
-      class=${cls}
-      >
+    <label class=${cls}>
+      ${label || ''}
       <md-switch 
         .selected=${value}
         .disabled=${disabled}
         @click=${onInputFact('selected')} 
         ></md-switch>
-    </md-formfield>
+      </label>
     `;
   }
   throw new Error(`No component found for ${name}`);
