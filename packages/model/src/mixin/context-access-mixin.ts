@@ -1,116 +1,46 @@
-import { LitElement, PropertyValueMap, PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js'
-import { Unsubscribe, State } from '@lit-app/state';
-import { provide, consume } from '@lit-labs/context';
+import { consume, createContext, provide } from '@lit-labs/context';
+import { ReactiveElement, PropertyValues } from 'lit';
+import { property } from 'lit/decorators.js';
 import {
-	entityStatusContext,
-	entityAccessContext,
-
-} from '../context';
+	EntityAccess
+} from '../types';
 
 
-import {
-	Dirty,
-	Reset,
-	Edit,
-	// Delete,
-	// Create,
-	Write,
-	Close,
-	Open
-} from '../events';
-
-import { } from '../context';
-import { EntityStatus,	EntityAccess } from '../types';
 import { Access, GetAccess } from '@lit-app/base-model';
-import DataMixin, { DataMixinInterface } from './data-mixin';
 
-declare global {
-	interface HTMLElementEventMap {
-
-	}
-}
+export const entityAccessContext = createContext<EntityAccess>('entity-access-context');
 
 type Constructor<T = {}> = new (...args: any[]) => T;
-export declare class ContextAccessMixinInterface extends DataMixinInterface {
-	static getAccess: GetAccess;
-	entityStatus: EntityStatus; // context storing document status
+export declare class AccessMixinInterface {
 	entityAccess: EntityAccess; // context storing document access rules
+	data: any; // entity data - to be evaluated for access
 }
 
-const statusInit: EntityStatus = {
-	isDirty:  false,
-	isEditing: false,
-	isSaving:  false,
-	isLoading: false,
-	isDeleting: false,
-};
+export declare class ProvideAccessMixinInterface extends AccessMixinInterface {
+	static getAccess: GetAccess;
+}
 
 /**
- * ContextAccessMixin 
+ * ProvideAccessMixin 
  * A mixin to be applied to entities at root level. It set context providers for the entity: 
- * - entityStatusContext
  */
-export const ContextAccessMixin = <T extends Constructor<LitElement>>(superClass: T, getAccess: GetAccess) => {
+export const ProvideAccessMixin = <T extends Constructor<ReactiveElement> >(superClass: T, getAccess: GetAccess) => {
 
-	class ContextAccessMixinClass extends DataMixin(superClass) {
-		
+	class ProvideAccessMixinClass extends superClass {
+
 		static getAccess = getAccess;
-
-		/** context storing document status*/
-		@provide({ context: entityStatusContext })
-		@property() entityStatus: EntityStatus = {...statusInit};
-
 		/** context storing document access  */
 		@provide({ context: entityAccessContext })
 		@property() entityAccess!: EntityAccess;
 
-		protected override firstUpdated(props: PropertyValues) {
-			super.firstUpdated(props);
-			this.addEventListener(Dirty.eventName, (e: Dirty) => {
-				if(this.entityStatus.isDirty !== e.detail.dirty) {
-					this.entityStatus.isDirty = e.detail.dirty;
-					this.entityStatus = { ...this.entityStatus }
-				};
-			});
-			this.addEventListener(Edit.eventName, () => {
-				if(this.entityStatus.isDirty !== true) {
-					this.entityStatus.isEditing = true;
-					this.entityStatus = { ...this.entityStatus };
-				}
-			});
-			this.addEventListener(Write.eventName, async (e) => {
-					this.entityStatus.isSaving = true;
-					this.entityStatus = { ...this.entityStatus };
-					await e.detail.promise;
-					this.entityStatus = {...statusInit}
-			});
-			this.addEventListener(Reset.eventName, async (e) => {
-				await e.detail.promise;
-				this.entityStatus = {...statusInit}
-				
-			});
-		}
+		@property() data!: any;
 
 		override willUpdate(changedProperties: PropertyValues) {
 			super.willUpdate(changedProperties);
 			if (changedProperties.has('data')) {
-				// this.updateStatus(this.data);
 				this.updateAccess(this.data)
 			}
 		}
-
-		protected updateStatus(data: any) {
-			const { isDirty, isEditing, isSaving, isLoading, isDeleting } = data;
-			this.entityStatus = {
-				isDirty: isDirty ?? false,
-				isEditing: isEditing ?? false,
-				isSaving: isSaving ?? false,
-				isLoading: isLoading ?? false,
-				isDeleting: isDeleting ?? false,
-			}
-		}
-
 		protected _getAccessData(data: any): Access {
 			return data?.metaData?.access;
 		}
@@ -130,7 +60,7 @@ export const ContextAccessMixin = <T extends Constructor<LitElement>>(superClass
 				}
 				return;
 			}
-			const getAccess = (this.constructor as typeof ContextAccessMixinClass).getAccess;
+			const getAccess = (this.constructor as typeof ProvideAccessMixinClass).getAccess;
 			this.entityAccess = {
 				isOwner: getAccess.isOwner.call(this, accessData, data),
 				canEdit: getAccess.canEdit.call(this, accessData, data),
@@ -141,8 +71,61 @@ export const ContextAccessMixin = <T extends Constructor<LitElement>>(superClass
 		}
 	};
 	// Cast return type to your mixin's interface intersected with the superClass type
-	return ContextAccessMixinClass as unknown as Constructor<ContextAccessMixinInterface> & T;
+	return ProvideAccessMixinClass as unknown as Constructor<ProvideAccessMixinInterface> & T;
 }
 
-export default ContextAccessMixin;
 
+export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
+
+	class ContextConsumeAccessMixinClass extends superClass {
+
+		/** context storing document access  */
+		@consume({ context: entityAccessContext, subscribe: true })
+		@property() entityAccess!: EntityAccess;
+	};
+	return ContextConsumeAccessMixinClass as unknown as Constructor<AccessMixinInterface> & T;
+}
+
+
+// import { html, css,  } from "lit";
+// import { customElement } from 'lit/decorators.js';
+
+// const getAccess = {
+// 	isOwner: (access: Access, data: any) => {
+// 		return access.user.owner === data?.metaData?.owner;
+// 	},
+// 	canEdit: (access: Access, data: any) => {
+// 		return access.user.edit === true;
+// 	}, 
+// 	canView: (access: Access, data: any) => true,
+// 	canDelete: (access: Access, data: any) => true,
+// 	getUid: () => ''
+
+// }
+
+// function identity<T>(value: T): T {
+// 	return value;
+// }
+
+// @customElement('test-test')
+// export  class testTest  extends ProvideAccessMixin(ReactiveElement, getAccess) {
+
+// 	static 	getAccess = getAccess;
+	
+// 	@property() override data: string ='' ;
+
+// 	override render() {
+// 		return html`
+// 			<div>
+				
+// 			</div>
+// 		`;
+// 	}
+
+// }
+
+// declare global {
+// 	interface HTMLElementTagNameMap {
+// 		'test-test': testTest;
+// 	}
+// }
