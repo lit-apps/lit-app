@@ -8,7 +8,7 @@ import { Action } from './types'
  export interface EntityDetail {
   entityName:string,
   id: string, 
-  promise?: Promise<unknown>
+  promise?: Promise<any>
 }
 
 export interface EntityWriteDetail extends EntityDetail {
@@ -20,7 +20,7 @@ export interface EntityCreateDetail {
 	collection?: CollectionReference, // a ref to the collection where the entity is created
   subCollection?: string, // a string representing the subcollection path relative to this.ref
   batch?: WriteBatch,
-  promise?: Promise<unknown>
+  promise?: Promise<any>
 }
 export interface EntityDirtyDetail extends EntityDetail {
 	dirty: boolean
@@ -30,12 +30,12 @@ export interface EntityActionDetail {
 	action: string
 }
 
-export class BaseEvent<T extends {promise?:Promise<unknown>}> extends CustomEvent<T> {
+export class BaseEvent<T extends {promise?:Promise<any>}> extends CustomEvent<T> {
   public action?: Action | undefined
   public confirmed?: boolean // true when the action is confirmed by the user
   public processed?: boolean // true when the action was already processed
   public onActionProcessed?: boolean // true when an `onAction` function was already executed
-  pushPromise(promise: Promise<unknown>) {
+  pushPromise(promise: Promise<any>) {
     this.detail.promise = Promise.all([this.detail.promise, promise]);
   }
   get canProcess() {
@@ -201,7 +201,7 @@ export class Edit extends BaseEvent<EntityDetail> {
   }
 }
 
-class BaseAction<T> extends BaseEvent<T & {promise?:Promise<unknown>}> {
+class BaseAction<T> extends BaseEvent<T & {promise?:Promise<any>}> {
   public bulkAction?: boolean
   
   override get shouldConfirm() {
@@ -215,7 +215,7 @@ export interface ActionDetail {
   id: string,
   data?: any,
   selectedItems?: any[],
-  promise?: Promise<unknown>
+  promise?: Promise<any>
 }
 
 export class EntityAction extends BaseAction<ActionDetail> {
