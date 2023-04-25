@@ -57,6 +57,7 @@ import {
   gridRowDetailsRenderer,
 } from 'lit-vaadin-helpers';
 import { Grid } from '@vaadin/grid';
+import { AppToastEvent } from '@lit-app/app-event';
 
 /**
  * Decorator to merge static properties of a class with the properties of a superclass.
@@ -263,6 +264,9 @@ export default class Entity<
 
   protected onError(error: Error) {
     console.error(error)
+    // TODO: centralize the way we handler errors (see stripe-web-sdk for inspiration)
+    // For the time being, we just dispatch Toast Evnt
+    this.element.dispatchEvent(new AppToastEvent(error.message, 'error')))
   }
 
   public create(details: EntityCreateDetail) {
@@ -427,8 +431,11 @@ export default class Entity<
       try {
         const event = this._getEvent(action, actionName, data);
         this._dispatchTriggerEvent(event);
+        const promise = await event.detail.promise
+        if (promise) {
+          promise.catch((error: Error) => this.onError(error))
+        }
         if (onResolved) {
-          const promise = await event.detail.promise
           onResolved(promise);
         }
       } catch (error) {
