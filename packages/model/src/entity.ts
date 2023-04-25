@@ -184,8 +184,15 @@ const actions: Actions = {
  */
 export default class Entity<
   Interface extends DefaultI = DefaultI,
-  ActionKeys = DefaultActions> {
-  static entityName: string
+  ActionKeys extends DefaultActions = DefaultActions> {
+  static _entityName: string
+  static get entityName(): string {
+    const name = this._entityName || this.name
+    return name.charAt(0).toLowerCase() + name.slice(1);
+  }
+  static set entityName(name): string {
+    this._entityName = name
+  }
   static model: Model<DefaultI>
   static actions: Record<string, Action> = actions
   static setActions(actions: Actions) {
@@ -215,7 +222,8 @@ export default class Entity<
   }
 
   get entityName() {
-    return (this.constructor as typeof Entity).entityName
+    return (this.constructor as typeof Entity).entityName 
+    
   }
   get model() {
     return (this.constructor as typeof Entity).model
