@@ -82,12 +82,15 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
 
   const value = get(name, data);
   const onInputFact = (property: string) => {
-    return (e: CustomEvent) => {
+    return async (e: CustomEvent) => {
       // @ts-ignore
       const v = e.target?.[property];
-      set(name, v, data);
       if(v !== value) {
         this.dispatchEvent(dirtyEvent);
+        await this.updateComplete
+      }
+      set(name, v, data);
+      if(v !== value) {
         if(entity.realTime) {
           debounceWrite(this, { entityName: entity.entityName, id: id, data: data });
         }
