@@ -1,5 +1,5 @@
 import { CollectionReference, DocumentData, DocumentReference, QuerySnapshot, WriteBatch } from 'firebase/firestore'
-import { Action } from './types'
+import { Action } from './types/action'
 
 /**
  * Interface for global entity events

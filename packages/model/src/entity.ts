@@ -1,10 +1,3 @@
-// if (import.meta.hot) {
-//   import.meta.hot.on('entity-update', (data) => {
-//     // trying out HMR for entity
-//     console.info('entity-update', data)
-//   })
-// }
-
 import { html, TemplateResult } from 'lit'
 import { get } from '@preignition/preignition-util/src/deep';
 import { activeItemChanged } from '@preignition/preignition-util/src/grid'
@@ -13,15 +6,8 @@ import '@vaadin/grid/theme/material/vaadin-grid.js';
 import '@material/mwc-button'
 
 import {
-  Model,
-  Action,
-  // Actions,
-  ButtonConfig,
   FieldConfig,
-  ModelComponent,
-  ModelComponentSelect,
   DefaultI,
-  ModelComponentText,
   EntityStatus,
   EntityAccess,
   EntityElement,
@@ -29,7 +15,17 @@ import {
   ColumnsConfig,
   RenderConfig,
   FieldConfigUpload
-} from './types';
+} from './types/entity';
+import {
+  ButtonConfig,
+  Action
+} from './types/action'
+import {
+  Model,
+  ModelComponent,
+  ModelComponentText,
+  ModelComponentSelect,
+} from './types/modelComponent';
 import {
   EntityAction,
   Reset,
@@ -50,7 +46,7 @@ import {
   Update,
   AnyEvent
 } from './events'
-import { MetaData, Ref, DataI } from '@lit-app/base-model';
+import { DataI } from './types/dataI';
 import { DocumentReference, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { renderField } from './renderField';
 import {
@@ -149,11 +145,11 @@ const actions: Actions = {
       }
     },
     handler: async function (this: HTMLElement, ref: DocumentReference, data: any, event) {
-			// update the reporting state for the organisation
-			console.log('MarkDeleted', ref, data, event)
-      event.detail.promise = updateDoc(ref, {'metaData.deleted': true })
-			
-		}
+      // update the reporting state for the organisation
+      console.log('MarkDeleted', ref, data, event)
+      event.detail.promise = updateDoc(ref, { 'metaData.deleted': true })
+
+    }
     ,
   },
   restore: {
@@ -165,15 +161,13 @@ const actions: Actions = {
       index: -8
     },
     handler: async function (this: HTMLElement, ref: DocumentReference, data: any, event) {
-			// update the reporting state for the organisation
-			console.log('Restored', ref, data, event)
-      event.detail.promise = updateDoc(ref, {'metaData.deleted': false })
-			
-		}
+      // update the reporting state for the organisation
+      console.log('Restored', ref, data, event)
+      event.detail.promise = updateDoc(ref, { 'metaData.deleted': false })
+
+    }
   },
 }
-
-
 
 /**
  * Base class for entity. 
@@ -186,14 +180,16 @@ const actions: Actions = {
 export default class Entity<
   Interface extends DefaultI = DefaultI,
   ActionKeys extends DefaultActions = DefaultActions> {
+
   static _entityName: string
   static get entityName(): string {
     const name = this._entityName || this.name
     return name.charAt(0).toLowerCase() + name.slice(1);
   }
-  static set entityName(name): string {
+  static set entityName(name: string) {
     this._entityName = name
   }
+
   static model: Model<DefaultI>
   static actions: Record<string, Action> = actions
   static setActions(actions: Actions) {
@@ -223,8 +219,8 @@ export default class Entity<
   }
 
   get entityName() {
-    return (this.constructor as typeof Entity).entityName 
-    
+    return (this.constructor as typeof Entity).entityName
+
   }
   get model() {
     return (this.constructor as typeof Entity).model
@@ -266,7 +262,7 @@ export default class Entity<
     console.error(error)
     // TODO: centralize the way we handler errors (see stripe-web-sdk for inspiration)
     // For the time being, we just dispatch Toast Evnt
-    this.element.dispatchEvent(new AppToastEvent(error.message, 'error')))
+    this.element?.dispatchEvent(new AppToastEvent(error.message, 'error'))
   }
 
   public create(details: EntityCreateDetail) {
@@ -275,13 +271,13 @@ export default class Entity<
     return this._dispatchTriggerEvent(event);
   }
 
-  public open(entityName: string, id?: string ) {
+  public open(entityName: string, id?: string) {
     if (id) {
-        const event = new Open({ id, entityName }, this.actions.open);
-        return this._dispatchTriggerEvent(event);
+      const event = new Open({ id, entityName }, this.actions.open);
+      return this._dispatchTriggerEvent(event);
     }
     return null
-    
+
   }
 
   public dispatchAction(actionName: ActionKeys | DefaultActions): CustomEvent {
@@ -324,11 +320,12 @@ export default class Entity<
         event = new action.event({ id: id, entityName: data?.metaData?.type || this.entityName }, action);
         break;
       case AppActionEmail:
-        event = new action.event({ 
-          id: id, 
-          entityName: this.entityName, 
-          data: data, 
-          target: {entity: this.entityName, entityId: id} }, action, false, bulkAction);
+        event = new action.event({
+          id: id,
+          entityName: this.entityName,
+          data: data,
+          target: { entity: this.entityName, entityId: id }
+        }, action, false, bulkAction);
         break
       case EntityAction:
       case AppAction:
@@ -432,9 +429,9 @@ export default class Entity<
         const event = this._getEvent(action, actionName, data);
         this._dispatchTriggerEvent(event);
         const promise = await event.detail.promise
-        if (promise) {
-          promise.catch((error: Error) => this.onError(error))
-        }
+        // if (promise) {
+        //   promise?.catch((error: Error) => this.onError(error))
+        // }
         if (onResolved) {
           onResolved(promise);
         }
@@ -564,12 +561,12 @@ export default class Entity<
   }
 
   gridDetailRenderer(item: Interface, _model?: any, _grid?: any): TemplateResult {
-		return html`
+    return html`
 		<div class="layout vertical">
 			${this.renderTable(item)}
 		</div>
 	`
-	}
+  }
   renderContent(_data: Interface, _config?: RenderConfig): TemplateResult {
     return html`Content`
   }

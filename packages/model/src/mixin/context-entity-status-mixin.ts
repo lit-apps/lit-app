@@ -3,7 +3,7 @@ import { ReactiveElement, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import {
 	EntityStatus,
-} from '../types';
+} from '../types/entity';
 
 import {
 	Dirty,

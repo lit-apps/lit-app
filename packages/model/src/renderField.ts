@@ -2,7 +2,9 @@ import { html } from 'lit';
 import { get, set } from '@preignition/preignition-util/src/deep';
 import { debounce, throttle } from '@preignition/preignition-util/src/debounce';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Model, Actions, FieldConfig,  FieldConfigUpload, ModelComponentSelect, EntityElement, DefaultI, ModelComponent } from './types';
+import {   FieldConfig,  FieldConfigUpload,  EntityElement, DefaultI } from './types/entity';
+import {Action } from './types/action'
+import { Model, ModelComponent, ModelComponentSelect } from './types/modelComponent';
 import { Dirty, EntityWriteDetail, Write, Update } from './events';
 import Entity from './entity';
 // Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
@@ -35,7 +37,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
   data: Interface = {} as Interface,
   update: boolean,
   m: Model<unknown>,
-  entity: Entity<Interface, unknown>,
+  entity: Entity<Interface, any>,
   config?: FieldConfig |  FieldConfigUpload
 ) {
   let model = get(name, m);

@@ -3,7 +3,7 @@ import Entity from '../entity';
 import { 
 	EntityAction,
  } from '../events';
-import { Action, Actions } from '../types';
+import { Action, Actions } from '../types/entity';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 export declare class DispatchActionMixinInterface  {

@@ -3,10 +3,11 @@ import { ReactiveElement, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import {
 	EntityAccess
-} from '../types';
+} from '../types/entity';
 
 
-import { Access, GetAccess } from '@lit-app/base-model';
+import type { Access } from '../types/dataI';
+import type { GetAccess } from '../types/getAccess';
 
 export const entityAccessContext = createContext<EntityAccess>('entity-access-context');
 
@@ -86,46 +87,3 @@ export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(super
 	return ContextConsumeAccessMixinClass as unknown as Constructor<AccessMixinInterface> & T;
 }
 
-
-// import { html, css,  } from "lit";
-// import { customElement } from 'lit/decorators.js';
-
-// const getAccess = {
-// 	isOwner: (access: Access, data: any) => {
-// 		return access.user.owner === data?.metaData?.owner;
-// 	},
-// 	canEdit: (access: Access, data: any) => {
-// 		return access.user.edit === true;
-// 	}, 
-// 	canView: (access: Access, data: any) => true,
-// 	canDelete: (access: Access, data: any) => true,
-// 	getUid: () => ''
-
-// }
-
-// function identity<T>(value: T): T {
-// 	return value;
-// }
-
-// @customElement('test-test')
-// export  class testTest  extends ProvideAccessMixin(ReactiveElement, getAccess) {
-
-// 	static 	getAccess = getAccess;
-	
-// 	@property() override data: string ='' ;
-
-// 	override render() {
-// 		return html`
-// 			<div>
-				
-// 			</div>
-// 		`;
-// 	}
-
-// }
-
-// declare global {
-// 	interface HTMLElementTagNameMap {
-// 		'test-test': testTest;
-// 	}
-// }
