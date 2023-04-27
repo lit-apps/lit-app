@@ -32,7 +32,6 @@ export const ConsumeEntityMixin = <T extends Constructor<ReactiveElement>>(super
  */
 export const ProvideEntityMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
-
 	class ContextProvideEntityMixinClass extends superClass {
 		@provide({ context: entityContext })
 		@state() Entity!: typeof Entity;

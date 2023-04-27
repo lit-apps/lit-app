@@ -8,6 +8,7 @@ import {
 
 import type { Access } from '../types/dataI';
 import type { GetAccess } from '../types/getAccess';
+import Entity from '../entity';
 
 export const entityAccessContext = createContext<EntityAccess>('entity-access-context');
 
@@ -25,11 +26,13 @@ export declare class ProvideAccessMixinInterface extends AccessMixinInterface {
  * ProvideAccessMixin 
  * A mixin to be applied to entities at root level. It set context providers for the entity: 
  */
-export const ProvideAccessMixin = <T extends Constructor<ReactiveElement> >(superClass: T, getAccess: GetAccess) => {
+export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: typeof Entity}> >(superClass: T, getAccessFn?: GetAccess) => {
 
 	class ProvideAccessMixinClass extends superClass {
 
-		static getAccess = getAccess;
+		/** entity used to evaluate access */
+		entity!: Entity;
+
 		/** context storing document access  */
 		@provide({ context: entityAccessContext })
 		@property() entityAccess!: EntityAccess;
@@ -45,8 +48,8 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement> >(supe
 		protected _getAccessData(data: any): Access {
 			return data?.metaData?.access;
 		}
+
 		/**
-		 * 
 		 * @param data entity data - to be evaluated for access
 		 * @returns void
 		 */
@@ -61,7 +64,9 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement> >(supe
 				}
 				return;
 			}
-			const getAccess = (this.constructor as typeof ProvideAccessMixinClass).getAccess;
+			// TODO: getAccess should come from Entity
+			const getAccess = this.Entity.getAccess || (this.entity?.constructor as typeof Entity).getAccess || getAccessFn;
+			// const getAccess = this.Entity.getAccess ||  getAccessFn;
 			this.entityAccess = {
 				isOwner: getAccess.isOwner.call(this, accessData, data),
 				canEdit: getAccess.canEdit.call(this, accessData, data),

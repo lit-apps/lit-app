@@ -54,6 +54,7 @@ import {
 } from 'lit-vaadin-helpers';
 import { Grid } from '@vaadin/grid';
 import { AppToastEvent } from '@lit-app/app-event';
+import { GetAccess } from './types/getAccess';
 
 /**
  * Decorator to merge static properties of a class with the properties of a superclass.
@@ -99,7 +100,7 @@ const actions: Actions = {
     label: 'Save',
     event: Write,
     icon: 'save',
-    config: (data: any, entityStatus?: EntityStatus) => {
+    config: (_data: any, entityStatus?: EntityStatus) => {
       return {
         unelevated: entityStatus?.isDirty
       }
@@ -179,7 +180,7 @@ const actions: Actions = {
  */
 export default class Entity<
   Interface extends DefaultI = DefaultI,
-  ActionKeys extends DefaultActions = DefaultActions> {
+  ActionKeys = DefaultActions> {
 
   static _entityName: string
   static get entityName(): string {
@@ -196,6 +197,18 @@ export default class Entity<
     const superCtor = Object.getPrototypeOf(this) as typeof Entity;
     this.actions = Object.assign(superCtor.actions || {}, actions);
   }
+
+  /**
+   * The access control for this entity - this needs to be overridden in subclasses
+   */
+  static getAccess: GetAccess 
+
+  // {
+  //   isOwner: (_access: Access, _data: any) => true,
+  //   canEdit: (_access: Access, _data: any) => true,
+  //   canView: (_access: Access, _data: any) => true,
+  //   canDelete: (_access: Access, _data: any) => true
+  // }
 
   /**
    * @param element the element to render the action on
@@ -225,6 +238,7 @@ export default class Entity<
   get model() {
     return (this.constructor as typeof Entity).model
   }
+
   get actions() {
     return (this.constructor as typeof Entity).actions;
   }
@@ -586,7 +600,7 @@ export default class Entity<
    * @param organisationOwnerID - the organisation owning the entity (e.g. ida_secretariat)
    * @param appOwnerID - the group owning the entity (e.g. gds)
    */
-  public getNewData(..._args: any[]): DataI {
+  public getNewData(..._args: any[]): Partial<DataI> {
     // @ts-ignore
     return {}
   }

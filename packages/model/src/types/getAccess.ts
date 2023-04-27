@@ -4,5 +4,4 @@ export interface GetAccess<D = any, T = Access> {
 	canEdit(access: T, data: D): boolean
 	canView(access: T, data: D): boolean
 	canDelete(access: T, data: D): boolean
-	getUid(): string
 }

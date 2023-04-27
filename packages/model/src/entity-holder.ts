@@ -1,4 +1,4 @@
-import { html, css, LitElement, PropertyValues } from "lit";
+import { html, LitElement, PropertyValues } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
 import Entity from './entity';
 import { ConsumeEntityMixin } from './mixin/context-entity-mixin';
@@ -44,12 +44,21 @@ export default class entityHolder extends
 	}
 
 	override render() {
-		if(!this.entity) {
+		if (!this.entity) {
 			return html`getting entity...`;
 		}
-		return this.renderEntity()
+		
+		if (!this.data) {
+			return html`getting data...`;
+		}
+
+		return [
+			super.render(),
+			this.renderEntity(this.entity)
+		]
 	}
-	renderEntity() {
+
+	renderEntity(entity: Entity) {
 		return html`
 			<div>
 				Entity is there

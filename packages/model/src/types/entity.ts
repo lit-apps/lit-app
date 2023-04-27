@@ -46,9 +46,9 @@ export interface DefaultI {
 }
 
 export interface EntityElement<T = any> extends EntityBase<T> {
-	id: string
-	docId?: string
-	_selected?: number
+	id: string // not sure this is needed
+	docId?: string // not sure this is needed
+	_selected?: number // not sure this is needed
 	entityStatus: EntityStatus
 	entityAccess: EntityAccess
 }

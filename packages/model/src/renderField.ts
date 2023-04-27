@@ -23,10 +23,6 @@ import '@preignition/pwi-form-upload'
 import '@material/mwc-formfield'
 import('@material/web/switch/switch')
 
-interface _Entity {
-  entityName: string;
-  realTime: boolean;
-}
 const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetail) => {
   console.log('debounceWrite', detail.data.detail)
   element.dispatchEvent(new Update(detail));
