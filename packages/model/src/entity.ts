@@ -630,8 +630,15 @@ export default class Entity<
     return html`Title`
   }
 
-  renderHeader(_data: Interface, _config?: RenderConfig): TemplateResult {
-    return html`<h2 style="display: flex; flex-direction: row;" class="underline">${this.renderTitle(_data, _config)}</h2>`
+  renderHeader(data: Interface, config: RenderConfig): TemplateResult {
+    const level = config?.level || 1;
+    if (level === 1) return html`<h2 style="display: flex; flex-direction: row;" class="underline">
+      <mwc-icon>${config.entityStatus.isEditing ? 'edit' : this.icon}</mwc-icon>
+      ${this.renderTitle(data, config)}
+      </h2>`
+    if (level === 2) return html`<h3 style="display: flex; flex-direction: row;">${this.renderTitle(data, config)}</h3>`
+    if (level === 3) return html`<h5 class="secondary">${this.renderTitle(data, config)}</h5>`
+    return html``
   }
 
   renderFooter(_data: Interface, _config?: RenderConfig): TemplateResult {

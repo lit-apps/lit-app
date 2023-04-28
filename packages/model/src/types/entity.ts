@@ -74,6 +74,7 @@ export type ColumnsConfig = {
 export type RenderConfig = {
 	entityAccess: EntityAccess,
 	entityStatus: EntityStatus,
+	level?: number, // level to render the entity
 	options?: {
 		[key: string]: boolean
 	}
