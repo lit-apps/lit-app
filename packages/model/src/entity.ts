@@ -1,9 +1,12 @@
-import { html, TemplateResult } from 'lit'
+import { html, nothing, TemplateResult, ReactiveControllerHost, ReactiveController } from 'lit'
+import {when} from 'lit/directives/when.js';
 import { get } from '@preignition/preignition-util/src/deep';
 import { activeItemChanged } from '@preignition/preignition-util/src/grid'
 import '@vaadin/grid/theme/material/vaadin-grid.js';
 
-import '@material/mwc-button'
+
+import '@lit-app/component/button/button'
+import '@material/web/icon/icon'
 
 import {
   FieldConfig,
@@ -180,7 +183,7 @@ const actions: Actions = {
  */
 export default class Entity<
   Interface extends DefaultI = DefaultI,
-  ActionKeys = DefaultActions> {
+  ActionKeys = DefaultActions>  {
 
   static _entityName: string
   static get entityName(): string {
@@ -198,38 +201,74 @@ export default class Entity<
     this.actions = Object.assign(superCtor.actions || {}, actions);
   }
 
+
+  // define a private _icon property to be used by the icon getter
+  _icon!: string
+  get icon(): string {
+    return this._icon || ''
+  }
+
+  set icon(icon: string) {
+    this._icon = icon
+    this.host.requestUpdate()
+  }
+
+  _selected: number = 0
+  get selected(): number {
+    return this._selected
+  }
+  set selected(selected: number) {
+    this._selected = selected
+    this.host.requestUpdate()
+  }
+
   /**
-   * The access control for this entity - this needs to be overridden in subclasses
-   */
-  static getAccess: GetAccess 
+  * The access control for this entity - this needs to be overridden in subclasses
+  * { 
+  *   isOwner: (_access: Access, _data: any) => true,
+  *   canEdit: (_access: Access, _data: any) => true,
+  *   canView: (_access: Access, _data: any) => true,
+  *   canDelete: (_access: Access, _data: any) => true
+  * }
+  */
+  static getAccess: GetAccess
 
-  // {
-  //   isOwner: (_access: Access, _data: any) => true,
-  //   canEdit: (_access: Access, _data: any) => true,
-  //   canView: (_access: Access, _data: any) => true,
-  //   canDelete: (_access: Access, _data: any) => true
-  // }
+  hostConnected() {
+    // this.subscribe(this.ref)
+  }
 
+  hostDisconnected() {
+    // this.unsubscribe()
+  }
   /**
    * @param element the element to render the action on
    * @param realTime when true, will dispatch update events on data-input 
    *         this also changes the rendering of renderActions
    * @param listenOnAction when true, will listen to action events on the element
    */
-  constructor(protected element: EntityElement | EntityElementList, public realTime: boolean = false, public listenOnAction: boolean = false) {
-
+  constructor(protected host: EntityElement | EntityElementList, public realTime: boolean = false, public listenOnAction: boolean = false) {
+    host.addController(this);
     // we only add event listeners if the element is a dataController (e.g. skip list and grids)
     if (this.listenOnAction) {
       Object.entries(this.actions).forEach(([_k, action]) => {
         if (action.event && action.onAction) {
-          element.addEventListener(action.event.eventName, ((event: AnyEvent) => {
-            action.onAction?.call(this.element, event)
+          host.addEventListener(action.event.eventName, ((event: AnyEvent) => {
+            action.onAction?.call(this.host, event)
             event.onActionProcessed = true;
           }) as EventListener)
         }
       })
     }
-  }
+    if (import.meta.hot) {
+      import.meta.hot.accept((Entity) => {
+        console.info('Entity HMR', Entity)
+        if (Entity) {
+          this.host.requestUpdate()
+        }
+      })
+    }
+
+  } 
 
   get entityName() {
     return (this.constructor as typeof Entity).entityName
@@ -249,34 +288,34 @@ export default class Entity<
    * @param el ReactiveElement
    */
   public bind(el: EntityElement) {
-    this.element = el;
+    this.host = el;
   }
 
   /**
     * renders a data-entry field, depending on the model definition
     */
   public renderField(name: string, config?: FieldConfig | FieldConfigUpload, data?: Interface): TemplateResult | undefined {
-    if (!this.element) {
+    if (!this.host) {
       throw new Error('Entity not bound to element');
     }
-    return (renderField<Interface>).call(this.element as EntityElement, name, data ?? this.element.data, false, this.model, this, config);
+    return (renderField<Interface>).call(this.host as EntityElement, name, data ?? this.host.data, false, this.model, this, config);
   }
   /**
    * renders a data-entry field, depending on the model definition
    * and updates the data object on input
    */
   public renderFieldUpdate(name: string, config?: FieldConfig | FieldConfigUpload, data?: Interface) {
-    if (!this.element) {
+    if (!this.host) {
       throw new Error('Entity not bound to element');
     }
-    return (renderField<Interface>).call(this.element as EntityElement, name, data ?? this.element.data, true, this.model, this, config);
+    return (renderField<Interface>).call(this.host as EntityElement, name, data ?? this.host.data, true, this.model, this, config);
   }
 
   protected onError(error: Error) {
     console.error(error)
     // TODO: centralize the way we handler errors (see stripe-web-sdk for inspiration)
     // For the time being, we just dispatch Toast Evnt
-    this.element?.dispatchEvent(new AppToastEvent(error.message, 'error'))
+    this.host?.dispatchEvent(new AppToastEvent(error.message, 'error'))
   }
 
   public create(details: EntityCreateDetail) {
@@ -297,12 +336,12 @@ export default class Entity<
   public dispatchAction(actionName: ActionKeys | DefaultActions): CustomEvent {
     const action = this.actions[actionName as DefaultActions];
 
-    const event = new EntityAction({ id: this.element.id, entityName: this.entityName }, action, String(actionName));
+    const event = new EntityAction({ id: this.host.id, entityName: this.entityName }, action, String(actionName));
     return this._dispatchTriggerEvent(event);
   }
 
   private _dispatchTriggerEvent(event: CustomEvent) {
-    this.element.dispatchEvent(event);
+    this.host.dispatchEvent(event);
     return event
   }
 
@@ -312,7 +351,7 @@ export default class Entity<
     }
 
     // id is the path after /app/appID, whereas docID is the single id for a document
-    const id = data?.$id || ((this.element as EntityElement).docId ? (this.element as EntityElement).docId : this.element.id) as string;;
+    const id = data?.$id || ((this.host as EntityElement).docId ? (this.host as EntityElement).docId : this.host.id) as string;;
     let event
     switch (action.event) {
       case Delete:
@@ -360,8 +399,8 @@ export default class Entity<
    * @returns 
    */
   public renderActions(data: any, config?: RenderConfig): TemplateResult | undefined {
-    const entityAccess = config?.entityAccess || this.element.entityAccess;
-    const entityStatus = config?.entityStatus || this.element.entityStatus;
+    const entityAccess = config?.entityAccess || this.host.entityAccess;
+    const entityStatus = config?.entityStatus || this.host.entityStatus;
 
     if (!entityAccess?.canEdit || this.realTime) return;
     return html`
@@ -404,22 +443,24 @@ export default class Entity<
     if (!action) {
       console.error(`No action found for ${String(actionName)}`);
     }
-    const actionConfig = typeof (action.config) === 'function' ? action.config(data || this.element.data, this.element.entityStatus) : action.config;
-    config = typeof (config) === 'function' ? config(data || this.element.data, this.element.entityStatus) : config;
+    const actionConfig = typeof (action.config) === 'function' ? action.config(data || this.host.data, this.host.entityStatus) : action.config;
+    config = typeof (config) === 'function' ? config(data || this.host.data, this.host.entityStatus) : config;
     const cfg = Object.assign({}, actionConfig, config);
     // the button is active when: 
     const disabled = cfg?.disabled === true
     const unelevated = cfg?.unelevated ?? false
     const outlined = cfg?.outlined ?? !unelevated
 
-    return html`<mwc-button 
+    return html`<lap-button 
         class="${actionName} action"
         .icon=${action.icon || ''} 
         @click=${this.onActionClick(actionName, data, beforeDispatch, onResolved)}
         .disabled=${disabled}
         .outlined=${outlined}
         .unelevated=${unelevated}
-        >${action.label}</mwc-button>`
+        >
+          ${action.label}
+        </lap-button>`
   }
 
   public onActionClick(actionName: ActionKeys | DefaultActions, data?: any, beforeDispatch?: () => boolean | string | void, onResolved?: (promise: any) => void) {
@@ -464,8 +505,8 @@ export default class Entity<
  * @returns 
  */
   public renderBulkActions(selectedItems: any[], data: any[], entityAccess?: EntityAccess, entityStatus?: EntityStatus): TemplateResult | undefined {
-    // entityAccess ??= this.element.entityAccess;
-    // entityStatus ??= this.element.entityStatus;
+    // entityAccess ??= this.host.entityAccess;
+    // entityStatus ??= this.host.entityStatus;
 
     // if (!entityAccess?.canEdit) return;
 
@@ -487,7 +528,7 @@ export default class Entity<
       const event = this._getEvent(action, actionName, data, true) as EntityAction | AppAction | AppActionEmail;
       event.detail.selectedItems = selectedItems
 
-      // const event = new EntityAction({ id: this.element.id, entityName: this.entityName }, action, actionName);
+      // const event = new EntityAction({ id: this.host.id, entityName: this.entityName }, action, actionName);
       return this._dispatchTriggerEvent(event);
     }
     return html`
@@ -545,11 +586,11 @@ export default class Entity<
    */
   public renderGrid(data: any[], config?: ColumnsConfig) {
     const onSelected = async (e: CustomEvent) => {
-      (this.element as EntityElementList).selectedItems = [...(e.target as Grid).selectedItems];
+      (this.host as EntityElementList).selectedItems = [...(e.target as Grid).selectedItems];
     }
     const onSizeChanged = async (e: CustomEvent) => {
-      await this.element.updateComplete;
-      (this.element as EntityElementList).size = e.detail.value;
+      await this.host.updateComplete;
+      (this.host as EntityElementList).size = e.detail.value;
     }
     return html`<vaadin-grid 
 			id="grid"
@@ -589,6 +630,14 @@ export default class Entity<
     return html`Title`
   }
 
+  renderHeader(_data: Interface, _config?: RenderConfig): TemplateResult {
+    return html`<h2 style="display: flex; flex-direction: row;" class="underline">${this.renderTitle(_data, _config)}</h2>`
+  }
+
+  renderFooter(_data: Interface, _config?: RenderConfig): TemplateResult {
+    return html``
+  }
+
   renderForm(_data: Interface, _config?: RenderConfig): TemplateResult {
     return html`Form`
   }
@@ -608,4 +657,5 @@ export default class Entity<
 
 
 }
+
 

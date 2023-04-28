@@ -5,6 +5,7 @@ import { ConsumeEntityMixin } from './mixin/context-entity-mixin';
 import { ConsumeAccessMixin } from './mixin/context-access-mixin';
 import { ConsumeEntityStatusMixin } from './mixin/context-entity-status-mixin';
 import { ConsumeDataMixin } from './mixin/context-data-mixin';
+import { RenderConfig } from './types/entity';
 
 /**
  *  Base Class holding an Entity
@@ -19,7 +20,6 @@ export default class entityHolder extends
 
 	@state() entity!: Entity;
 
-	@property() icon!: string;
 	@property() heading!: string;
 
 	// true to make input  fields write real-time changes
@@ -28,6 +28,12 @@ export default class entityHolder extends
 	// when true, will listen to action events on the element
 	@property({type: Boolean}) listenOnAction = false
 
+	get renderConfig(): RenderConfig {
+		return {
+			entityAccess: this.entityAccess,
+			entityStatus: this.entityStatus,
+		}
+	}
 	
 	protected override willUpdate(props: PropertyValues){
 		if(props.has('Entity')) {
@@ -58,21 +64,29 @@ export default class entityHolder extends
 		]
 	}
 
-	renderEntity(entity: Entity) {
+	protected renderEntity(entity: Entity) {
 		return html`
-			<div>
-				Entity is there
-			</div>
+			<slot name="header">
+				${this.renderHeader(entity)}
+			</slot>
+			<slot>
+				${this.renderContent(entity)}
+			<slot>
+			<slot name="footer">
+				${this.renderFooter(entity)}
+			</slot>
 		`;
 	}
-	// override connectedCallback() {
-	// 	super.connectedCallback();
-		
-	// }
-	// override disconnectedCallback() {
-	// 	super.disconnectedCallback();
-		
-	// }
+	protected renderHeader(entity: Entity) {
+		return entity.renderHeader(this.data, this.renderConfig);
+	}
+	protected renderContent(entity: Entity) {
+		return entity.renderContent(this.data, this.renderConfig);
+	}
+	protected renderFooter(entity: Entity) {
+		return entity.renderFooter(this.data,  this.renderConfig);
+	}
+
 }
 
 declare global {

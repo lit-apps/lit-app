@@ -1,6 +1,6 @@
 import type { Grid, GridItemModel } from '@vaadin/grid'
 import type { ButtonConfig } from './action'
-import type { LitElement, TemplateResult } from 'lit'
+import type { LitElement, ReactiveControllerHost, TemplateResult } from 'lit'
 import type Entity from '../entity'
 import type { DefaultActions } from '../entity'
 
@@ -72,9 +72,8 @@ export type ColumnsConfig = {
 
 
 export type RenderConfig = {
-	selected?: number,
-	entityAccess?: EntityAccess,
-	entityStatus?: EntityStatus,
+	entityAccess: EntityAccess,
+	entityStatus: EntityStatus,
 	options?: {
 		[key: string]: boolean
 	}
@@ -107,7 +106,7 @@ export interface EntityRenderer<T, A = DefaultActions> {
 	 * @param config
 	 * @returns TemplateResult
 	 */
-	renderTitle(data: T, config?: RenderConfig): TemplateResult
+	renderTitle(data: T, config: RenderConfig): TemplateResult
 
 	/**
 	 * Render content of an entity
@@ -115,7 +114,7 @@ export interface EntityRenderer<T, A = DefaultActions> {
 	 * @param config
 	 * @returns TemplateResult
 	 */
-	renderContent(data: T, config?: RenderConfig): TemplateResult
+	renderContent(data: T, config: RenderConfig): TemplateResult
 
 	/**
 	 * Render a grid of entities
@@ -123,7 +122,7 @@ export interface EntityRenderer<T, A = DefaultActions> {
 	 * @param data - the data for the grid
 	 * @param withOrganisation - true to display organisation column
 	 */
-	renderGrid(data: T[], config?: ColumnsConfig): TemplateResult
+	renderGrid(data: T[], config: ColumnsConfig): TemplateResult
 
 	/**
 	 * Render columns for the grid
