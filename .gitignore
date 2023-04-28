@@ -9,6 +9,8 @@ node_modules
 *.local
 guides.md
 
+__*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

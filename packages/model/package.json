@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "@lit-app/app-event": "link:../../../app/app-event",
+    "@lit-app/component": "link:../component",
     "@lit-app/state": "^0.8.4",
     "@lit-labs/context": "^0.2.0",
     "@material/mwc-button": "0.25.3",

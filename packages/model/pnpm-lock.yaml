@@ -4,12 +4,9 @@ dependencies:
   '@lit-app/app-event':
     specifier: link:../../../app/app-event
     version: link:../../../app/app-event
-  '@lit-app/base-model':
-    specifier: link:../../../app/base-model
-    version: link:../../../app/base-model
-  '@lit-app/model-types':
-    specifier: link:../model-types
-    version: link:../model-types
+  '@lit-app/component':
+    specifier: link:../component
+    version: link:../component
   '@lit-app/state':
     specifier: ^0.8.4
     version: 0.8.4

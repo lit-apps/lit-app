@@ -1,0 +1,9 @@
+{
+  "bootstrap-sha": "41d41cc2788f237f376d32409f51ca59e9b2bf75",
+  "include-component-in-tag": false,
+  "include-v-in-tag": true,
+  "pull-request-title-pattern": "chore: release ${version}",
+  "packages": {
+    ".": {}
+  }
+}

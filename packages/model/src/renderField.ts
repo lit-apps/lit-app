@@ -13,6 +13,7 @@ import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-
 import { MultiSelectComboBox } from '@vaadin/multi-select-combo-box/src/vaadin-multi-select-combo-box'
 
 import '@preignition/preignition-widget/src/extension/pwi-select'
+// import '@lit-app/component/textfield/filled-text-field'
 import '@material/mwc-textfield'
 import '@material/mwc-textarea'
 import '@material/mwc-select'
@@ -114,7 +115,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       .required=${model.required}
       .value=${value || ''}
       @input=${onInputFact('value')}
-    ></mwc-textfield >
+    ></mwc-textfield>
 
     `;
   }
