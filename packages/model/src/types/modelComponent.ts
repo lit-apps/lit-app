@@ -1,4 +1,10 @@
 import type { LitElement } from 'lit'
+import {
+	columnBodyRenderer,
+	columnHeaderRenderer,
+	GridColumnBodyLitRenderer,
+	GridColumnHeaderLitRenderer
+} from 'lit-vaadin-helpers';
 
 type TextComponent = 'textfield' | 'textarea' | 'md'
 type DateComponent = 'datefield'
@@ -6,17 +12,32 @@ type SliderComponent = 'slider'
 type UploadComponent = 'upload'
 type BooleanComponent = 'checkbox' | 'switch'
 type SelectComponent = 'select' | 'multi-select'
+
+type TableConfig = {
+	index: number
+	label?: string,
+	optional?: boolean
+}
+
+type GridConfig = {
+	index: number
+	header?: string
+	path?: string
+	flex?: number
+	width?: string
+	resizable?: boolean
+	sortable?: boolean
+	headerRenderer?: GridColumnHeaderLitRenderer
+	bodyRenderer?: GridColumnBodyLitRenderer
+}
 interface ModelComponentBase {
 	label?: string
 	helper?: string
 	required?: boolean
 	icon?: string
 	class?: string
-	table?: {
-		index: number
-		label?: string,
-		optional?: boolean
-	}
+	table?: TableConfig
+	grid?: GridConfig
 	// set requestUpdate to true to request an update when the value changes
 	requestUpdate?: boolean
 	// do not render component when the function returns true 

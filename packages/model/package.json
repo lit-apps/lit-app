@@ -59,6 +59,7 @@
     "@material/mwc-textfield": "0.25.3",
     "@material/web": "link:../../../app-dependencies/material-web",
     "@polymer/polymer": "^3.5.1",
+    "@preignition/preignition-styles": "link:../../../packages/preignition-styles",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
     "@preignition/preignition-widget": "link:../../../packages/preignition-widget",
     "@preignition/pwi-form-upload": "link:../../../packages/pwi-form-upload",

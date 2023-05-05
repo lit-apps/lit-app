@@ -2,6 +2,7 @@ import { get } from '@preignition/preignition-util/src/deep';
 import { activeItemChanged } from '@preignition/preignition-util/src/grid';
 import '@vaadin/grid/theme/material/vaadin-grid.js';
 import { TemplateResult, html } from 'lit';
+import { html as htmlStatic, literal } from 'lit/static-html.js';
 import { choose } from 'lit/directives/choose.js';
 
 
@@ -13,6 +14,8 @@ import { AppToastEvent } from '@lit-app/app-event';
 import { Grid } from '@vaadin/grid';
 import { DocumentReference, updateDoc } from 'firebase/firestore';
 import {
+  columnBodyRenderer,
+  columnHeaderRenderer,
   gridRowDetailsRenderer,
 } from 'lit-vaadin-helpers';
 import {
@@ -60,6 +63,8 @@ import {
   ModelComponentSelect
 } from './types/modelComponent';
 import entries from './typeUtils/entries';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { ensure } from './types';
 
 /**
  * Actions inherited by all entities (provided they use @mergeStatic('actions'))
@@ -338,7 +343,18 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     return event
   }
 
-  private static _getEvent(actionName: keyof this['actions'], data: any, el:HTMLElement, bulkAction: boolean = false) {
+
+  private getEvent(actionName: keyof this['actions'], data: any, bulkAction: boolean = false) {
+    if (actionName === 'create') {
+      return new Create({ entityName: this.entityName, data: this.getNewData() }, this.actions.create);
+    }
+    return this.constructor.getEvent(String(actionName), data, this.host, bulkAction)
+  }
+
+  static getEvent(actionName: string, data: any, el: HTMLElement, bulkAction: boolean = false) {
+    if (actionName === 'create') {
+      throw new Error('Create is not allowed in static get Event')
+    }
     // @ts-ignore 
     const action = this.actions[actionName];
     if (!action.event) {
@@ -346,7 +362,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     }
 
     // id is the path after /app/appID, whereas docID is the single id for a document
-    const id = data?.$id || ((this.host as EntityElement).docId ? (this.host as EntityElement).docId : this.host.id) as string;;
+    const id = data?.$id || ((el as EntityElement).docId ? (el as EntityElement).docId : el.id) as string;;
     let event
     switch (action.event) {
       case Delete:
@@ -355,9 +371,6 @@ export default class Entity<Interface extends DefaultI = DefaultI>
       case Restore:
       case Write:
         event = new action.event({ id: id, entityName: this.entityName, data: data }, action);
-        break;
-      case Create:
-        event = new action.event({ entityName: this.entityName, data: this.getNewData() }, action);
         break;
       case Edit:
       case Close:
@@ -426,12 +439,12 @@ export default class Entity<Interface extends DefaultI = DefaultI>
   }
 
   static renderAction<K extends { actions: Record<string, Action> }>(
-      actionName: keyof K['actions'], 
-      element: HTMLElement, 
-      data: any = {}, 
-      config?: ButtonConfig & { bulkAction?: boolean }, 
-      beforeDispatch?: () => boolean | string | void, 
-      onResolved?: (promise: any) => void) {
+    actionName: keyof K['actions'],
+    element: HTMLElement,
+    data: any = {},
+    config?: ButtonConfig & { bulkAction?: boolean },
+    beforeDispatch?: () => boolean | string | void,
+    onResolved?: (promise: any) => void) {
     // @ts-ignore
     const action = this.actions[actionName];
     if (!action) {
@@ -443,14 +456,15 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     // the button is active when: 
     const disabled = cfg?.disabled === true
     const unelevated = cfg?.unelevated ?? false
+    const tonal = cfg?.tonal ?? false
     const outlined = cfg?.outlined ?? !unelevated
-    const eventGetter = () => new EntityAction({ entityName: this.entityName }, action, String(actionName), false, config?.bulkAction);
     return html`<lap-button 
       class="${actionName} action"
       .icon=${action.icon || ''} 
-      @click=${this.onActionClick(actionName, element, eventGetter, data, beforeDispatch, onResolved)}
+      @click=${this.onActionClick(actionName, element, data, beforeDispatch, onResolved)}
       .disabled=${disabled}
       .outlined=${outlined}
+      .tonal=${tonal}
       .unelevated=${unelevated}
       >
         ${action.label}
@@ -461,10 +475,10 @@ export default class Entity<Interface extends DefaultI = DefaultI>
   static onActionClick<K extends { actions: Record<string, Action> }>(
     actionName: keyof K['actions'],
     host: HTMLElement,
-    eventGetter: () => CustomEvent,
     data?: any,
     beforeDispatch?: () => boolean | string | void,
     onResolved?: (promise: any) => void,
+    eventGetter?: () => CustomEvent,
   ) {
     // @ts-ignore
     const action = (this.actions)[actionName];
@@ -486,7 +500,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
         return
       }
       try {
-        const event = eventGetter();
+        const event = eventGetter ? eventGetter() : this.getEvent(String(actionName), data, host);
         this._dispatchTriggerEvent(event, host);
         const promise = await event.detail.promise
         if (onResolved) {
@@ -537,7 +551,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
         .icon=${action.icon || ''} 
         
         @click=${this.constructor
-        .onActionClick(actionName, this.host, () => this._getEvent(actionName, data), data, beforeDispatch, onResolved)}
+        .onActionClick(actionName, this.host, data, beforeDispatch, onResolved, () => this.getEvent(actionName, data))}
         .disabled=${disabled}
         .outlined=${outlined}
         .unelevated=${unelevated}
@@ -574,7 +588,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
 
   public renderBulkAction(selectedItems: any[], data: any[], action: Action, actionName: keyof this['actions']) {
     const bulkActionHandler = () => {
-      const event = this._getEvent(actionName, data, true) as EntityAction | AppAction | AppActionEmail;
+      const event = this.getEvent(actionName, data, true) as EntityAction | AppAction | AppActionEmail;
       event.detail.selectedItems = selectedItems
 
       // const event = new EntityAction({ id: this.host.id, entityName: this.entityName }, action, actionName);
@@ -661,7 +675,30 @@ export default class Entity<Interface extends DefaultI = DefaultI>
    * @returns 
    */
   renderGridColumns(_config?: ColumnsConfig) {
-    return html`Grid Columns`
+    console.log('renderGridColumns')
+    const model = this.model;
+    const colTag = literal`vaadin-grid-column`
+    const colSortTag = literal`vaadin-grid-sort-column`
+    // by default, get config from model - for more complex grid, override this method
+    const fields = entries<Model<DefaultI>>(model)
+      .filter(([_key, m]) => !!m.grid)
+      .sort(([_key1, m1], [_key2, m2]) => ((m1 as ModelComponent).grid?.index || 0) - ((m2 as ModelComponent).grid?.index || 0))
+
+    return html`${fields.map(([key, m]) => {
+      const grid = ensure<Required<ModelComponent>['grid']>(m.grid)
+
+      const tagName = grid.sortable ? colSortTag : colTag
+      return htmlStatic`<${tagName} 
+        flex-grow=${ifDefined(grid.width ? '0' : grid.flex)} 
+        width=${ifDefined(grid.width)} 
+        ?resizable=${ifDefined(grid.resizable)} 
+        path=${grid.path || key}
+        header=${grid.header || m.label}
+        ${grid.bodyRenderer ? columnBodyRenderer(grid.bodyRenderer) : null}  
+        ${grid.headerRenderer ? columnHeaderRenderer(grid.headerRenderer) : null}  
+        ></${tagName}>
+      `})
+      }`
   }
 
   gridDetailRenderer(item: Interface, _model?: any, _grid?: any): TemplateResult {

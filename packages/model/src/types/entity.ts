@@ -190,13 +190,19 @@ export abstract class EntityI<Interface extends DefaultI = DefaultI> extends Ent
 	abstract open(entityName: string, id?: string): void
 	abstract dispatchAction(actionName: keyof EntityI['actions']): CustomEvent
 	
+	static getEvent<K extends {actions: Record<string, Action>}>(
+		actionName: keyof K['actions'], 
+		data: any, 
+		host: HTMLElement, 
+		bulkAction?: boolean,
+	){}
 	static onActionClick<K extends {actions: Record<string, Action>}>(
 		actionName: keyof K['actions'], 
 		host: HTMLElement, 
-		event: CustomEvent, 
 		data?: any, 
 		beforeDispatch?: () => boolean | string | void, 
 		onResolved?: (promise: any) => void, 
+		getEvent?: () => CustomEvent, 
 		) {}
 	static renderAction<K extends {actions: Record<string, Action>}>(
 		actionName: keyof K['actions'], 

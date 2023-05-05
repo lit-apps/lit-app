@@ -90,7 +90,6 @@ export class LapButton extends LitElement {
    */
   @property() tonal!: boolean;
 
-
   @property() icon!: string;
   
   @property() loading!: boolean;

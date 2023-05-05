@@ -6,6 +6,7 @@ import { ConsumeAccessMixin } from './mixin/context-access-mixin';
 import { ConsumeEntityStatusMixin } from './mixin/context-entity-status-mixin';
 import { ConsumeDataMixin } from './mixin/context-data-mixin';
 import { RenderConfig } from './types/entity';
+import { form, styleTypography, accessibility } from '@preignition/preignition-styles';
 
 /**
  *  Base Class holding an Entity
@@ -17,6 +18,11 @@ export default class entityHolder extends
 			ConsumeDataMixin(
 				ConsumeEntityStatusMixin(LitElement)))) {
 
+	static override styles = [
+		styleTypography,		
+		accessibility,
+		form
+	]
 
 	@state() entity!: Entity;
 

@@ -43,6 +43,9 @@ dependencies:
   '@polymer/polymer':
     specifier: ^3.5.1
     version: 3.5.1
+  '@preignition/preignition-styles':
+    specifier: link:../../../packages/preignition-styles
+    version: link:../../../packages/preignition-styles
   '@preignition/preignition-util':
     specifier: link:../../../packages/preignition-util
     version: link:../../../packages/preignition-util

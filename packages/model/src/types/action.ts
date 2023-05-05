@@ -8,6 +8,7 @@ type BtnCfg = {
 	disabled?: boolean
 	outlined?: boolean
 	unelevated?: boolean
+	tonal?: boolean
 }
 
 export type ButtonConfig = BtnCfg | ((data: any, entityStatus?: EntityStatus) => BtnCfg)
