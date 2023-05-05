@@ -22,6 +22,14 @@ export default class entityHolder extends
 
 	@property() heading!: string;
 
+	/**
+	 * The level at which this entity should be rendered.
+	 * 1: default - highest level;  title of entity will be h2
+	 * 2: title of entity will be h3
+	 * 3: no title
+	 */
+	@property() level: number = 1;
+
 	// true to make input  fields write real-time changes
 	@property({type: Boolean}) realTime = false
 
@@ -32,6 +40,7 @@ export default class entityHolder extends
 		return {
 			entityAccess: this.entityAccess,
 			entityStatus: this.entityStatus,
+			level: this.level
 		}
 	}
 	
@@ -70,7 +79,7 @@ export default class entityHolder extends
 				${this.renderHeader(entity)}
 			</slot>
 			<slot>
-				${this.renderContent(entity)}
+				${this.renderBody(entity)}
 			<slot>
 			<slot name="footer">
 				${this.renderFooter(entity)}
@@ -80,8 +89,8 @@ export default class entityHolder extends
 	protected renderHeader(entity: Entity) {
 		return entity.renderHeader(this.data, this.renderConfig);
 	}
-	protected renderContent(entity: Entity) {
-		return entity.renderContent(this.data, this.renderConfig);
+	protected renderBody(entity: Entity) {
+		return entity.renderBody(this.data, this.renderConfig);
 	}
 	protected renderFooter(entity: Entity) {
 		return entity.renderFooter(this.data,  this.renderConfig);

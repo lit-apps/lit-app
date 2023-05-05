@@ -1,4 +1,4 @@
-import { CollectionReference, DocumentData, DocumentReference, QuerySnapshot, WriteBatch } from 'firebase/firestore'
+import { CollectionReference, DocumentData, QuerySnapshot, WriteBatch } from 'firebase/firestore'
 import { Action } from './types/action'
 
 /**
@@ -212,7 +212,7 @@ class BaseAction<T> extends BaseEvent<T & {promise?:Promise<any>}> {
 
 export interface ActionDetail {
   entityName:string,
-  id: string,
+  id?: string,
   data?: any,
   selectedItems?: any[],
   promise?: Promise<any>

@@ -6,7 +6,7 @@ import {   FieldConfig,  FieldConfigUpload,  EntityElement, DefaultI } from './t
 import {Action } from './types/action'
 import { Model, ModelComponent, ModelComponentSelect } from './types/modelComponent';
 import { Dirty, EntityWriteDetail, Write, Update } from './events';
-import Entity from './entity';
+import type Entity from './entity';
 // Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
 import '@polymer/polymer';
 import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-box'

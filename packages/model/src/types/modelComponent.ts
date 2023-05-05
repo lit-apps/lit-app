@@ -80,5 +80,5 @@ export type ModelComponent =
 	ModelComponentUpload
 
 export type Model<T> = {
-	[key in keyof T]: ModelComponent | Model<T[key]>
+	[key in keyof Partial<T>]: ModelComponent | Model<T[key]>
 } & { ref?: { [key: string]: ModelComponent } }

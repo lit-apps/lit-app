@@ -34,6 +34,10 @@ export const ProvideDataMixin = <T extends Constructor<ReactiveElement>>(superCl
 		@provide({ context: dataContext })
 		@state() data!: any;
 
+		get dataIsArray() {
+			return Array.isArray(this.data)
+		}
+
 	};
 
 	return ContextProvideDataMixinClass as unknown as Constructor<DataMixinInterface> & T;

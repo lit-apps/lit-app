@@ -1,12 +1,10 @@
-import { LitElement, PropertyValues, html } from 'lit';
-import { state, queryAsync } from 'lit/decorators.js'
-import { until } from 'lit/directives/until.js';
-import { EntityAction, AppAction, Create, Delete, MarkDeleted } from '../events';
-import { Dialog } from '@material/mwc-dialog'
-import '@material/mwc-linear-progress'
-import '@material/mwc-button'
-import { ActionController } from '@material/web/controller/action-controller';
 import { AppToastEvent } from '@lit-app/app-event';
+import '@material/mwc-button';
+import { Dialog } from '@material/mwc-dialog';
+import '@material/mwc-linear-progress';
+import { LitElement, PropertyValues, html } from 'lit';
+import { queryAsync, state } from 'lit/decorators.js';
+import { AppAction, Create, Delete, EntityAction, MarkDeleted } from '../events';
 
 
 type Constructor<T = {}> = new (...args: any[]) => T;

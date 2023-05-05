@@ -8,7 +8,7 @@ import {
 
 import type { Access } from '../types/dataI';
 import type { GetAccess } from '../types/getAccess';
-import Entity from '../entity';
+import type {EntityI} from '../types/entity';
 
 export const entityAccessContext = createContext<EntityAccess>('entity-access-context');
 
@@ -16,22 +16,28 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 export declare class AccessMixinInterface {
 	entityAccess: EntityAccess; // context storing document access rules
 	data: any; // entity data - to be evaluated for access
+	get isOwner(): boolean;
+	get canEdit(): boolean;
+	get canView(): boolean;
+	get canDelete(): boolean;
 }
 
 export declare class ProvideAccessMixinInterface extends AccessMixinInterface {
 	static getAccess: GetAccess;
+
+
 }
 
 /**
  * ProvideAccessMixin 
  * A mixin to be applied to entities at root level. It set context providers for the entity: 
  */
-export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: typeof Entity}> >(superClass: T, getAccessFn?: GetAccess) => {
+export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: typeof EntityI}> >(superClass: T, getAccessFn?: GetAccess) => {
 
 	class ProvideAccessMixinClass extends superClass {
 
 		/** entity used to evaluate access */
-		entity!: Entity;
+		entity!: EntityI;
 
 		/** context storing document access  */
 		@provide({ context: entityAccessContext })
@@ -65,7 +71,7 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 				return;
 			}
 			// TODO: getAccess should come from Entity
-			const getAccess = this.Entity.getAccess || (this.entity?.constructor as typeof Entity).getAccess || getAccessFn;
+			const getAccess = this.Entity.getAccess || (this.entity?.constructor as typeof EntityI).getAccess || getAccessFn;
 			// const getAccess = this.Entity.getAccess ||  getAccessFn;
 			this.entityAccess = {
 				isOwner: getAccess.isOwner.call(this, accessData, data),
@@ -88,6 +94,20 @@ export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(super
 		/** context storing document access  */
 		@consume({ context: entityAccessContext, subscribe: true })
 		@property() entityAccess!: EntityAccess;
+
+		get isOwner() {
+			return this.entityAccess?.isOwner;
+		}
+		get canEdit() {
+			return this.entityAccess?.canEdit;
+		}
+		get canView() {
+			return this.entityAccess?.canView;
+		}
+		get canDelete() {
+			return this.entityAccess?.canDelete;
+		}
+
 	};
 	return ContextConsumeAccessMixinClass as unknown as Constructor<AccessMixinInterface> & T;
 }

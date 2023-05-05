@@ -32,7 +32,7 @@ export type Ref = {
 	app: string,
 }
 
-export interface MetaData<T = Access, TS = number> {
+export interface MetaData<T = Access, TS = any> {
 	access: T
 	timestamp: TS
 	deleted: boolean

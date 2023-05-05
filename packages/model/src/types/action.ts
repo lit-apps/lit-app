@@ -1,4 +1,4 @@
-import type { DocumentReference } from 'firebase/firestore'
+import type {  DocumentReference } from 'firebase/firestore'
 import type { AnyEvent, Dirty, TypeofAnyEvent } from '../events'
 import type { LitElement, TemplateResult } from 'lit'
 import type { EntityStatus } from './entity'
@@ -48,4 +48,8 @@ export type Action = {
 	event?: Exclude<TypeofAnyEvent, typeof Dirty>
 	condition?: (data: any) => boolean
 }
-export type Actions = { [key: string]: Action }
+// export type Actions = { [key: string]: Action }
+
+export type DefaultActions = 'create' | 'edit' | 'write' | 'cancel' | 'delete' | 'restore' | 'open' | 'close'
+// export type ActionRecord<K extends string, T> = { [P in K]: T; }
+export type Actions = Record<DefaultActions, Action>

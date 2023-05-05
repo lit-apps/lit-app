@@ -1,86 +1,65 @@
-import { html, nothing, TemplateResult, ReactiveControllerHost, ReactiveController } from 'lit'
-import {when} from 'lit/directives/when.js';
 import { get } from '@preignition/preignition-util/src/deep';
-import { activeItemChanged } from '@preignition/preignition-util/src/grid'
+import { activeItemChanged } from '@preignition/preignition-util/src/grid';
 import '@vaadin/grid/theme/material/vaadin-grid.js';
+import { TemplateResult, html } from 'lit';
+import { choose } from 'lit/directives/choose.js';
 
 
-import '@lit-app/component/button/button'
-import '@material/web/icon/icon'
+import '@lit-app/component/button/button';
+import type { LapButton } from '@lit-app/component/button/button';
+import '@material/web/icon/icon';
 
-import {
-  FieldConfig,
-  DefaultI,
-  EntityStatus,
-  EntityAccess,
-  EntityElement,
-  EntityElementList,
-  ColumnsConfig,
-  RenderConfig,
-  FieldConfigUpload
-} from './types/entity';
-import {
-  ButtonConfig,
-  Action
-} from './types/action'
-import {
-  Model,
-  ModelComponent,
-  ModelComponentText,
-  ModelComponentSelect,
-} from './types/modelComponent';
-import {
-  EntityAction,
-  Reset,
-  // Delete,
-  // Create,
-  Edit,
-  Write,
-  Create,
-  EntityCreateDetail,
-  Delete,
-  Restore,
-  MarkDeleted,
-  Open,
-  Close,
-  AppAction,
-  Dirty,
-  AppActionEmail,
-  Update,
-  AnyEvent
-} from './events'
-import { DataI } from './types/dataI';
-import { DocumentReference, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { renderField } from './renderField';
+import { AppToastEvent } from '@lit-app/app-event';
+import { Grid } from '@vaadin/grid';
+import { DocumentReference, updateDoc } from 'firebase/firestore';
 import {
   gridRowDetailsRenderer,
 } from 'lit-vaadin-helpers';
-import { Grid } from '@vaadin/grid';
-import { AppToastEvent } from '@lit-app/app-event';
+import {
+  AnyEvent,
+  AppAction,
+  AppActionEmail,
+  Close,
+  Create,
+  Delete,
+  // Delete,
+  // Create,
+  Edit,
+  EntityAction,
+  EntityCreateDetail,
+  MarkDeleted,
+  Open,
+  Reset,
+  Restore,
+  Update,
+  Write
+} from './events';
+import { renderField } from './renderField';
+import {
+  Action,
+  Actions,
+  ButtonConfig
+} from './types/action';
+import { DataI } from './types/dataI';
+import {
+  ColumnsConfig,
+  DefaultI,
+  EntityAccess,
+  EntityElement,
+  EntityElementList,
+  EntityI,
+  EntityStatus,
+  FieldConfig,
+  FieldConfigUpload,
+  RenderConfig
+} from './types/entity';
 import { GetAccess } from './types/getAccess';
-
-/**
- * Decorator to merge static properties of a class with the properties of a superclass.
- * This is used form instance to inherit actions defined in a superclass when extending
- * @param key - the static key to merge
- */
-export function mergeStatic(key: string): ClassDecorator {
-  return (target: any) => {
-    if (target.hasOwnProperty(key)) {
-      const proto = Object.getPrototypeOf(target)[key]
-      // merge individual keys with proto keys
-      Object.keys(target[key]).forEach((k) => {
-        if (proto[k]) {
-          target[key][k] = { ...proto[k], ...target[key][k] }
-        }
-      })
-
-      target[key] = { ...proto, ...target[key] }
-
-    }
-    return target
-  }
-}
+import {
+  Model,
+  ModelComponent,
+  ModelComponentSelect
+} from './types/modelComponent';
+import entries from './typeUtils/entries';
 
 /**
  * Actions inherited by all entities (provided they use @mergeStatic('actions'))
@@ -88,8 +67,6 @@ export function mergeStatic(key: string): ClassDecorator {
  * history and metaData events in `action-handler-mixin.ts`. However, we keep 
  * metaData here to display them in the UI. 
  */
-export type DefaultActions = 'create' | 'edit' | 'write' | 'cancel' | 'delete' | 'restore' | 'open' | 'close'
-export type Actions = Record<DefaultActions, Action>
 const actions: Actions = {
   create: {
     label: 'Create',
@@ -173,6 +150,7 @@ const actions: Actions = {
   },
 }
 
+
 /**
  * Base class for entity. 
  * 
@@ -181,9 +159,15 @@ const actions: Actions = {
  * 
  * It can also contain renderer helper  
  */
-export default class Entity<
-  Interface extends DefaultI = DefaultI,
-  ActionKeys = DefaultActions>  {
+export default class Entity<Interface extends DefaultI = DefaultI>
+  implements EntityI<Interface>  {
+
+  /**
+   * inspired from https://github.com/Microsoft/TypeScript/issues/3841#issuecomment-1488919713
+   * We will need to set the type of constructor on all subclasses so that
+   * the type of actions is properly inferred. 
+   */
+  declare ['constructor']: typeof Entity;
 
   static _entityName: string
   static get entityName(): string {
@@ -195,12 +179,15 @@ export default class Entity<
   }
 
   static model: Model<DefaultI>
-  static actions: Record<string, Action> = actions
+  static actions = actions
+
   static setActions(actions: Actions) {
     const superCtor = Object.getPrototypeOf(this) as typeof Entity;
     this.actions = Object.assign(superCtor.actions || {}, actions);
   }
 
+  showMetaData: boolean = false
+  showActions: boolean = false
 
   // define a private _icon property to be used by the icon getter
   _icon!: string
@@ -220,6 +207,18 @@ export default class Entity<
   set selected(selected: number) {
     this._selected = selected
     this.host.requestUpdate()
+  }
+
+  get entityName() {
+    return (this.constructor).entityName
+
+  }
+  get model() {
+    return (this.constructor).model
+  }
+
+  get actions() {
+    return (this.constructor).actions;
   }
 
   /**
@@ -246,11 +245,11 @@ export default class Entity<
    *         this also changes the rendering of renderActions
    * @param listenOnAction when true, will listen to action events on the element
    */
-  constructor(protected host: EntityElement | EntityElementList, public realTime: boolean = false, public listenOnAction: boolean = false) {
+  constructor(public host: EntityElement | EntityElementList, public realTime: boolean = false, public listenOnAction: boolean = false) {
     host.addController(this);
     // we only add event listeners if the element is a dataController (e.g. skip list and grids)
     if (this.listenOnAction) {
-      Object.entries(this.actions).forEach(([_k, action]) => {
+      entries<Actions>(this.actions).forEach(([_k, action]) => {
         if (action.event && action.onAction) {
           host.addEventListener(action.event.eventName, ((event: AnyEvent) => {
             action.onAction?.call(this.host, event)
@@ -268,19 +267,8 @@ export default class Entity<
       })
     }
 
-  } 
-
-  get entityName() {
-    return (this.constructor as typeof Entity).entityName
-
-  }
-  get model() {
-    return (this.constructor as typeof Entity).model
   }
 
-  get actions() {
-    return (this.constructor as typeof Entity).actions;
-  }
 
   /**
    * Bind an Entity with a LitElement. 
@@ -304,7 +292,7 @@ export default class Entity<
    * renders a data-entry field, depending on the model definition
    * and updates the data object on input
    */
-  public renderFieldUpdate(name: string, config?: FieldConfig | FieldConfigUpload, data?: Interface) {
+  public renderFieldUpdate(name: string, config?: FieldConfig | FieldConfigUpload, data?: Interface): TemplateResult | undefined {
     if (!this.host) {
       throw new Error('Entity not bound to element');
     }
@@ -333,19 +321,26 @@ export default class Entity<
 
   }
 
-  public dispatchAction(actionName: ActionKeys | DefaultActions): CustomEvent {
-    const action = this.actions[actionName as DefaultActions];
+  public dispatchAction(actionName: keyof this['actions']): CustomEvent {
+    // @ts-ignore
+    const action = this.actions[actionName];
 
     const event = new EntityAction({ id: this.host.id, entityName: this.entityName }, action, String(actionName));
     return this._dispatchTriggerEvent(event);
   }
 
-  private _dispatchTriggerEvent(event: CustomEvent) {
-    this.host.dispatchEvent(event);
+  private _dispatchTriggerEvent(event: CustomEvent, el: HTMLElement = this.host) {
+    el.dispatchEvent(event);
+    return event
+  }
+  private static _dispatchTriggerEvent(event: CustomEvent, el: HTMLElement) {
+    el.dispatchEvent(event);
     return event
   }
 
-  private _getEvent(action: Action, actionName: ActionKeys | DefaultActions, data: any, bulkAction: boolean = false) {
+  private static _getEvent(actionName: keyof this['actions'], data: any, el:HTMLElement, bulkAction: boolean = false) {
+    // @ts-ignore 
+    const action = this.actions[actionName];
     if (!action.event) {
       action.event = EntityAction
     }
@@ -420,14 +415,94 @@ export default class Entity<
   }
 
   protected renderEditActions(data: any) {
-    return Object.entries(this.actions)
+    return entries<Actions>(this.actions)
       .filter(([_key, action]) => action.showEdit)
-      .map(([key, _action]) => this.renderAction(key as ActionKeys, data));
+      .map(([key, _action]) => this.renderAction(key, data));
   }
   protected renderDefaultActions(data: any) {
-    return Object.entries(this.actions)
+    return entries<Actions>(this.actions)
       .filter(([_key, action]) => action.showDefault)
-      .map(([key, _action]) => this.renderAction(key as ActionKeys, data));
+      .map(([key, _action]) => this.renderAction(key, data));
+  }
+
+  static renderAction<K extends { actions: Record<string, Action> }>(
+      actionName: keyof K['actions'], 
+      element: HTMLElement, 
+      data: any = {}, 
+      config?: ButtonConfig & { bulkAction?: boolean }, 
+      beforeDispatch?: () => boolean | string | void, 
+      onResolved?: (promise: any) => void) {
+    // @ts-ignore
+    const action = this.actions[actionName];
+    if (!action) {
+      console.error(`No action found for ${String(actionName)}`);
+    }
+    const actionConfig = typeof (action.config) === 'function' ? action.config(data) : action.config;
+    config = typeof (config) === 'function' ? config(data) : config;
+    const cfg = Object.assign({}, actionConfig, config);
+    // the button is active when: 
+    const disabled = cfg?.disabled === true
+    const unelevated = cfg?.unelevated ?? false
+    const outlined = cfg?.outlined ?? !unelevated
+    const eventGetter = () => new EntityAction({ entityName: this.entityName }, action, String(actionName), false, config?.bulkAction);
+    return html`<lap-button 
+      class="${actionName} action"
+      .icon=${action.icon || ''} 
+      @click=${this.onActionClick(actionName, element, eventGetter, data, beforeDispatch, onResolved)}
+      .disabled=${disabled}
+      .outlined=${outlined}
+      .unelevated=${unelevated}
+      >
+        ${action.label}
+      </lap-button>`
+
+  }
+
+  static onActionClick<K extends { actions: Record<string, Action> }>(
+    actionName: keyof K['actions'],
+    host: HTMLElement,
+    eventGetter: () => CustomEvent,
+    data?: any,
+    beforeDispatch?: () => boolean | string | void,
+    onResolved?: (promise: any) => void,
+  ) {
+    // @ts-ignore
+    const action = (this.actions)[actionName];
+    if (!action) {
+      console.error(`No action found for ${String(actionName)}`);
+    }
+    return async (e: Event & { target: LapButton }) => {
+      if (beforeDispatch?.() === false) {
+        console.log('beforeDispatch returned false')
+        return;
+      }
+      const button = e.target
+      button.loading = true
+      // TODO: use icon slot for the button
+      // we can pass a simple handler function to the action
+      if (action.onClick) {
+        await action.onClick.call(host, data)
+        button.loading = false
+        return
+      }
+      try {
+        const event = eventGetter();
+        this._dispatchTriggerEvent(event, host);
+        const promise = await event.detail.promise
+        if (onResolved) {
+          onResolved(promise);
+        }
+        button.loading = false
+
+      } catch (error) {
+        button.loading = false
+        console.error(error)
+        // TODO: centralize the way we handler errors (see stripe-web-sdk for inspiration)
+        // For the time being, we just dispatch Toast Evnt
+        host?.dispatchEvent(new AppToastEvent((error as Error).message, 'error'))
+
+      }
+    }
   }
 
   /**
@@ -438,8 +513,14 @@ export default class Entity<
    * @param onResolved a function called when the action event.detail.promise is resolved
    * @returns 
    */
-  public renderAction(actionName: ActionKeys | DefaultActions, data?: any, config?: ButtonConfig, beforeDispatch?: () => boolean | string | void, onResolved?: (promise: any) => void) {
-    const action = this.actions[actionName as DefaultActions];
+  public renderAction(
+    actionName: keyof this['actions'],
+    data?: any,
+    config?: ButtonConfig,
+    beforeDispatch?: () => boolean | string | void,
+    onResolved?: (promise: any) => void): TemplateResult {
+    // @ts-ignore
+    const action = (this.actions)[actionName];
     if (!action) {
       console.error(`No action found for ${String(actionName)}`);
     }
@@ -454,7 +535,9 @@ export default class Entity<
     return html`<lap-button 
         class="${actionName} action"
         .icon=${action.icon || ''} 
-        @click=${this.onActionClick(actionName, data, beforeDispatch, onResolved)}
+        
+        @click=${this.constructor
+        .onActionClick(actionName, this.host, () => this._getEvent(actionName, data), data, beforeDispatch, onResolved)}
         .disabled=${disabled}
         .outlined=${outlined}
         .unelevated=${unelevated}
@@ -463,54 +546,20 @@ export default class Entity<
         </lap-button>`
   }
 
-  public onActionClick(actionName: ActionKeys | DefaultActions, data?: any, beforeDispatch?: () => boolean | string | void, onResolved?: (promise: any) => void) {
-    const action = this.actions[actionName as DefaultActions];
-    if (!action) {
-      console.error(`No action found for ${String(actionName)}`);
-    }
-    return async () => {
-      if (beforeDispatch) {
-        const _beforeDispatch = beforeDispatch()
-        if (_beforeDispatch === false) {
-          console.log('beforeDispatch returned false')
-          return;
-        }
-      }
-      // we can pass a simple handler function to the action
-      if (action.onClick) {
-        return action.onClick.call(this, data)
-      }
-      try {
-        const event = this._getEvent(action, actionName, data);
-        this._dispatchTriggerEvent(event);
-        const promise = await event.detail.promise
-        // if (promise) {
-        //   promise?.catch((error: Error) => this.onError(error))
-        // }
-        if (onResolved) {
-          onResolved(promise);
-        }
-      } catch (error) {
-        this.onError(error as Error)
-      }
-    }
-  }
-
-
   /**
- * Utility render functions for a group of entity actions to render as buttons icons
- * @param entityAccess 
- * @param entityStatus 
- * @param data 
- * @returns 
- */
+* Utility render functions for a group of entity actions to render as buttons icons
+* @param entityAccess 
+* @param entityStatus 
+* @param data 
+* @returns 
+*/
   public renderBulkActions(selectedItems: any[], data: any[], entityAccess?: EntityAccess, entityStatus?: EntityStatus): TemplateResult | undefined {
     // entityAccess ??= this.host.entityAccess;
     // entityStatus ??= this.host.entityStatus;
 
     // if (!entityAccess?.canEdit) return;
 
-    const bulkActions = Object.entries(this.actions)
+    const bulkActions = entries<Actions>(this.actions)
       .filter(([_key, action]) => action.bulk)
       .sort(([_ka, a], [_kb, b]) => ((a.bulk?.index || 0) - (b.bulk?.index || 0)))
 
@@ -518,14 +567,14 @@ export default class Entity<
 
     return html`
       <div class="layout horizontal">
-        ${bulkActions.map(([key, action]) => this.renderBulkAction(selectedItems, data, action, key as ActionKeys))}
+        ${bulkActions.map(([key, action]) => this.renderBulkAction(selectedItems, data, action, key))}
         
       </div>`
   }
 
-  public renderBulkAction(selectedItems: any[], data: any[], action: Action, actionName: ActionKeys | DefaultActions) {
+  public renderBulkAction(selectedItems: any[], data: any[], action: Action, actionName: keyof this['actions']) {
     const bulkActionHandler = () => {
-      const event = this._getEvent(action, actionName, data, true) as EntityAction | AppAction | AppActionEmail;
+      const event = this._getEvent(actionName, data, true) as EntityAction | AppAction | AppActionEmail;
       event.detail.selectedItems = selectedItems
 
       // const event = new EntityAction({ id: this.host.id, entityName: this.entityName }, action, actionName);
@@ -553,7 +602,7 @@ export default class Entity<
     const model = this.model;
 
     // get the fields to render in table
-    const fields = Object.entries(model)
+    const fields = entries<Model<DefaultI>>(model)
       .filter(([_key, m]) => !!m.table)
       .sort(([_key1, m1], [_key2, m2]) => ((m1 as ModelComponent).table?.index || 0) - ((m2 as ModelComponent).table?.index || 0))
 
@@ -622,8 +671,32 @@ export default class Entity<
 		</div>
 	`
   }
-  renderContent(_data: Interface, _config?: RenderConfig): TemplateResult {
-    return html`Content`
+  renderMetaData(_data: Interface, _config?: RenderConfig): TemplateResult {
+    return html`<meta-data></meta-data>`
+  }
+  renderBody(data: Interface, config?: RenderConfig): TemplateResult {
+    if (Array.isArray(data)) {
+      return this.renderArrayContent(data, config)
+    }
+    return this.renderContent(data, config)
+  }
+
+  renderContent(data: Interface, config?: RenderConfig): TemplateResult {
+    return html`
+    <div class="layout vertical">							
+      ${data === undefined ? html`Loading...` :
+        data === null ? html`<p>${this.entityName} data not found</p>` :
+          [
+            this.showMetaData ? this.renderMetaData(data, config) : html``,
+            this.showActions ? this.renderActions(data, config) : html``,
+            this.renderForm(data, config)
+          ]
+      }
+    </div>`
+  }
+
+  renderArrayContent(data: Interface[], config?: RenderConfig): TemplateResult {
+    return this.renderGrid(data, config)
   }
 
   renderTitle(_data: Interface, _config?: RenderConfig): TemplateResult {
@@ -631,14 +704,20 @@ export default class Entity<
   }
 
   renderHeader(data: Interface, config: RenderConfig): TemplateResult {
-    const level = config?.level || 1;
-    if (level === 1) return html`<h2 style="display: flex; flex-direction: row;" class="underline">
-      <mwc-icon>${config.entityStatus.isEditing ? 'edit' : this.icon}</mwc-icon>
-      ${this.renderTitle(data, config)}
+    const title = this.renderTitle(data, config)
+    return html`${choose(config.level,
+      [
+        [2, () => html`<h3 style="display: flex; flex-direction: row;">${title}</h3>`],
+        [3, () => html`<h5 class="secondary">${title}</h5>`],
+        [4, () => html``]
+      ],
+      () => html`
+      <h2 style="display: flex; flex-direction: row;" class="underline">
+        <mwc-icon>${config.entityStatus.isEditing ? 'edit' : this.icon}</mwc-icon>
+        ${title}
       </h2>`
-    if (level === 2) return html`<h3 style="display: flex; flex-direction: row;">${this.renderTitle(data, config)}</h3>`
-    if (level === 3) return html`<h5 class="secondary">${this.renderTitle(data, config)}</h5>`
-    return html``
+    )}`
+
   }
 
   renderFooter(_data: Interface, _config?: RenderConfig): TemplateResult {
@@ -656,6 +735,7 @@ export default class Entity<
    * @param organisationOwnerID - the organisation owning the entity (e.g. ida_secretariat)
    * @param appOwnerID - the group owning the entity (e.g. gds)
    */
+  // TODO : this should be a static method		
   public getNewData(..._args: any[]): Partial<DataI> {
     // @ts-ignore
     return {}

@@ -1,8 +1,9 @@
 import type { Grid, GridItemModel } from '@vaadin/grid'
-import type { ButtonConfig } from './action'
-import type { LitElement, ReactiveControllerHost, TemplateResult } from 'lit'
-import type Entity from '../entity'
-import type { DefaultActions } from '../entity'
+import type { LitElement, TemplateResult } from 'lit'
+import type { Action, ButtonConfig } from './action'
+import { EntityCreateDetail } from '../events'
+import { GetAccess } from './getAccess'
+import { Model } from './modelComponent'
 
 // storing the state of an entity
 export type EntityStatus = {
@@ -35,20 +36,19 @@ export interface FieldConfigUpload extends FieldConfig {
 }
 
 interface EntityBase<T = any> extends LitElement {
-	entity: Entity
+	entity: EntityI
 	data?: T
 	icon?: string
 	heading?: string
 	appID?: string
 }
 export interface DefaultI {
-	
+
 }
 
 export interface EntityElement<T = any> extends EntityBase<T> {
 	id: string // not sure this is needed
 	docId?: string // not sure this is needed
-	_selected?: number // not sure this is needed
 	entityStatus: EntityStatus
 	entityAccess: EntityAccess
 }
@@ -83,14 +83,14 @@ export type RenderConfig = {
  * Interface for render utility functions
  * to be applied for an entity
  */
-export interface EntityRenderer<T, A = DefaultActions> {
+export abstract class EntityRenderer<T > {
 
 	/**
- 	 * Render a form for an entity
+		 * Render a form for an entity
 	 * @param data - the data for the form
 	 * @param config - the configuration for the form
 	 */
-	renderForm(data: T, config?: RenderConfig): TemplateResult | undefined
+	abstract renderForm(data: T, config?: RenderConfig): TemplateResult | undefined
 
 	/**
 	 * Utility render functions for a group of entity actions to render as buttons
@@ -99,46 +99,7 @@ export interface EntityRenderer<T, A = DefaultActions> {
 	 * @param data 
 	 * @returns 
 	 */
-	renderActions(data: T, config: RenderConfig): TemplateResult | undefined
-
-	/**
-	 * Render title for an entity
-	 * @param data
-	 * @param config
-	 * @returns TemplateResult
-	 */
-	renderTitle(data: T, config: RenderConfig): TemplateResult
-
-	/**
-	 * Render content of an entity
-	 * @param data
-	 * @param config
-	 * @returns TemplateResult
-	 */
-	renderContent(data: T, config: RenderConfig): TemplateResult
-
-	/**
-	 * Render a grid of entities
-	 * 
-	 * @param data - the data for the grid
-	 * @param withOrganisation - true to display organisation column
-	 */
-	renderGrid(data: T[], config: ColumnsConfig): TemplateResult
-
-	/**
-	 * Render columns for the grid
-	 * 
-	 * @param config - columns configuration - ColumnConfig
-	 */
-	renderGridColumns(config: ColumnsConfig): TemplateResult
-
-	/**
-	 * The renderer for gridRowDetailsRenderer 
-	 * 
-	 * @param data - the data for the grid
-	 * @param withOrganisation - true to display organisation column
-	 */
-	gridDetailRenderer(item: T, model?: GridItemModel<T>, grid?: Grid): TemplateResult
+	abstract renderActions(data: any, config?: RenderConfig): TemplateResult | undefined
 
 	/**
 		* Utility render functions for a single entity actions to render as button and trigger an Action event
@@ -148,5 +109,100 @@ export interface EntityRenderer<T, A = DefaultActions> {
 		* @param onResolved a function called when the action event.detail.promise is resolved
 		* @returns 
 		*/
-	renderAction(actionName: A, data?: any, config?: ButtonConfig, beforeDispatch?: () => boolean | string | void, onResolved?: (promise: any) => void): TemplateResult
+	abstract renderAction(actionName: keyof EntityI['actions'], data?: any, config?: ButtonConfig, beforeDispatch?: () => boolean | string | void, onResolved?: (promise: any) => void): TemplateResult | undefined
+	
+	abstract renderBulkActions(selectedItems: any[], data: any[], entityAccess?: EntityAccess, entityStatus?: EntityStatus): TemplateResult | undefined
+	abstract renderBulkAction(selectedItems: any[], data: any[], action: Action, actionName: keyof EntityI['actions']): TemplateResult | undefined
+
+	/**
+	 * Render title for an entity
+	 * @param data
+	 * @param config
+	 * @returns TemplateResult
+	 */
+	abstract renderTitle(data: T, config: RenderConfig): TemplateResult
+
+	/**
+	 * Render content of an entity
+	 * @param data
+	 * @param config
+	 * @returns TemplateResult
+	 */
+	abstract renderContent(data: T, config: RenderConfig): TemplateResult
+
+	/**
+	 * Render a grid of entities
+	 * 
+	 * @param data - the data for the grid
+	 * @param withOrganisation - true to display organisation column
+	 */
+	abstract renderGrid(data: T[], config: ColumnsConfig): TemplateResult
+
+	/**
+	 * render a table derived from the model
+	 * @param data 
+	 */
+	abstract renderTable(data: T): TemplateResult
+
+	/**
+	 * Render columns for the grid
+	 * 
+	 * @param config - columns configuration - ColumnConfig
+	 */
+	abstract renderGridColumns(config: ColumnsConfig): TemplateResult
+
+	/**
+	 * The renderer for gridRowDetailsRenderer 
+	 * 
+	 * @param data - the data for the grid
+	 * @param withOrganisation - true to display organisation column
+	 */
+	abstract gridDetailRenderer(item: T, model?: GridItemModel<T>, grid?: Grid): TemplateResult
+	abstract renderMetaData(_data: T, _config?: RenderConfig): TemplateResult
+	abstract renderBody(_data: T, _config?: RenderConfig): TemplateResult
+	abstract renderArrayContent(_data: T[], _config?: RenderConfig): TemplateResult
+	abstract renderHeader(_data: T, _config?: RenderConfig): TemplateResult
+	abstract renderFooter(_data: T, _config?: RenderConfig): TemplateResult
+
+}
+
+export abstract class EntityI<Interface extends DefaultI = DefaultI> extends EntityRenderer<Interface> {
+	// abstract constructor( host: EntityElement | EntityElementList, realTime: boolean, listenOnAction: boolean): void
+	
+	static getAccess: GetAccess
+	static actions: any
+	static model: Model<DefaultI>
+	static entityName: string
+
+	icon!: string
+	_selected!: number
+	host!: EntityElement | EntityElementList
+	realtime?: boolean
+	listenOnAction?: boolean
+	showMetaData!: boolean
+	showActions!: boolean
+	entityName!: string
+	actions!: unknown
+	abstract renderField(name: string, config?: FieldConfig | FieldConfigUpload, data?: Interface): TemplateResult | undefined
+	abstract renderFieldUpdate(name: string, config?: FieldConfig | FieldConfigUpload, data?: Interface): TemplateResult | undefined
+	// onError(error: Error): void
+	abstract create(details: EntityCreateDetail): void
+	abstract open(entityName: string, id?: string): void
+	abstract dispatchAction(actionName: keyof EntityI['actions']): CustomEvent
+	
+	static onActionClick<K extends {actions: Record<string, Action>}>(
+		actionName: keyof K['actions'], 
+		host: HTMLElement, 
+		event: CustomEvent, 
+		data?: any, 
+		beforeDispatch?: () => boolean | string | void, 
+		onResolved?: (promise: any) => void, 
+		) {}
+	static renderAction<K extends {actions: Record<string, Action>}>(
+		actionName: keyof K['actions'], 
+		element: HTMLElement, 
+		data: any = {}, 
+		config?: ButtonConfig, 
+		beforeDispatch?: () => boolean | string | void, 
+		onResolved?: (promise: any) => void) {}
 }
