@@ -12,7 +12,7 @@ import {MdOutlinedButton} from '@material/web/button/outlined-button';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-outlined-button': PcOutlinedButton;
+    'lap-outlined-button': LapOutlinedButton;
   }
 }
 
@@ -39,6 +39,6 @@ declare global {
  * @suppress {visibility}
  */
 @customElement('lap-outlined-button')
-export class PcOutlinedButton extends MdOutlinedButton {
+export class LapOutlinedButton extends MdOutlinedButton {
   // static override styles= [sharedStyles, outlinedStyles];
 }

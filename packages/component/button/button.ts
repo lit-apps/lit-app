@@ -6,22 +6,34 @@
 
 import { customElement, property } from 'lit/decorators.js';
 import { html, literal } from 'lit/static-html.js';
-import { LitElement } from 'lit';
+import { LitElement, css } from 'lit';
 import { when } from 'lit/directives/when.js';
 
 import './filled-button'
 import './tonal-button'
 import './outlined-button'
 import './text-button'
+import '@material/web/circularprogress/circular-progress'
 
 const filledTag = literal`lap-filled-button`;
 const outlineTag = literal`lap-outlined-button`;
 const tonalTag = literal`lap-tonal-button`;
 const defaultTag = literal`lap-text-button`;
 
+const style = css`
+  :host {
+    --lap-icon-size: 24px;
+    --md-circular-progress-size: var(--lap-icon-size);
+    --md-outlined-button-with-icon-icon-size: var(--lap-icon-size);
+    --md-text-button-with-icon-icon-size: var(--lap-icon-size);
+    --md-filled-button-with-icon-icon-size: var(--lap-icon-size);
+    --md-tonal-button-with-icon-icon-size: var(--lap-icon-size);
+  }
+  `
+
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-button': PcButton;
+    'lap-button': LapButton;
   }
 }
 
@@ -29,7 +41,9 @@ declare global {
  * A generic button to ease migration from MD2
  */
 @customElement('lap-button')
-export class PcButton extends LitElement {
+export class LapButton extends LitElement {
+
+  static override styles = [style];
   /**
    * Whether or not the button is disabled.
    */
@@ -78,10 +92,13 @@ export class PcButton extends LitElement {
 
 
   @property() icon!: string;
+  
+  @property() loading!: boolean;
 
   override render() {
     const tagName = this.unelevated ? filledTag : this.tonal ? tonalTag : this.outlined ? outlineTag : defaultTag;
     
+    // TODO: add aria-support for when loading button
     return html`<${tagName}
 			.disabled=${this.disabled}
 			.href=${this.href}
@@ -90,7 +107,8 @@ export class PcButton extends LitElement {
 			.preventClickDefault=${this.preventClickDefault}
 		>
       <slot></slot>
-      ${when(this.icon, () => html`<md-icon slot="icon">${this.icon}</md->`)} 
+      ${when(this.icon && !this.loading, () => html`<md-icon slot="icon">${this.icon}</md-icon>`)} 
+      ${when(this.loading, () => html`<md-circular-progress indeterminate  slot="icon"></md-circular-progress>`)} 
     </${tagName}>`
   }
 }

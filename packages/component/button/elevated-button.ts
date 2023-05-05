@@ -13,7 +13,7 @@ import {MdElevatedButton} from '@material/web/button/elevated-button';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-elevated-button': PcElevatedButton;
+    'lap-elevated-button': LapElevatedButton;
   }
 }
 
@@ -40,7 +40,7 @@ declare global {
  * @suppress {visibility}
  */
 @customElement('lap-elevated-button')
-export class PcElevatedButton extends MdElevatedButton {
+export class LapElevatedButton extends MdElevatedButton {
   // static override styles=
       // [sharedStyles, sharedElevationStyles, elevatedStyles];
 }
