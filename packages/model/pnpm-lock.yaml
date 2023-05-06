@@ -9,7 +9,7 @@ dependencies:
     version: link:../component
   '@lit-app/state':
     specifier: ^0.8.4
-    version: 0.8.4
+    version: link:../state
   '@lit-labs/context':
     specifier: ^0.2.0
     version: 0.2.0
@@ -91,8 +91,8 @@ devDependencies:
     specifier: ^8.9.0
     version: 8.9.0
   lit:
-    specifier: ^2.7.0
-    version: 2.7.0
+    specifier: ^2.7.4
+    version: 2.7.4
   typescript:
     specifier: ^5.0.2
     version: 5.0.2
@@ -109,7 +109,7 @@ packages:
     resolution: {integrity: sha512-gSHcsckvvp448RW5sHKnyTiYT0F1QQv+XCNcz2/p+OGr/cJcvdaNGoUD2+4EL+C1Poro6JOd9RE4zZfZ0VL7OQ==}
     dependencies:
       custom-elements-manifest: 1.0.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: true
 
@@ -119,7 +119,7 @@ packages:
       '@api-viewer/common': 1.0.0-pre.6
       '@api-viewer/tabs': 1.0.0-pre.6
       highlight-ts: 9.12.1-2
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: true
 
@@ -131,7 +131,7 @@ packages:
       '@types/dompurify': 2.4.0
       '@types/marked': 4.0.7
       dompurify: 2.4.1
-      lit: 2.7.0
+      lit: 2.7.4
       marked: 4.2.2
       tslib: 2.4.1
     dev: true
@@ -886,21 +886,18 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@lit-app/state@0.8.4:
-    resolution: {integrity: sha512-kUZTXLh6FpoXy2nYd7pa9FL+2n6QzQni5ZvTjBqZ9u0HkVYbZShxGxcQ2xdRfV4tk4MWe9BKgpsM+TLl747++A==}
-    dependencies:
-      '@lit/reactive-element': 1.6.1
-    dev: false
-
   /@lit-labs/context@0.2.0:
     resolution: {integrity: sha512-WU01ysdm+6LwLeFRD9PirdbE1OYefL2ZKFZcpOLMJulaQDYqeqZtOUfccO63CTuLrQkG61VGiVycMoHFqgXx8A==}
     dependencies:
       '@lit/reactive-element': 1.6.1
-      lit: 2.7.0
+      lit: 2.7.4
     dev: false
 
   /@lit-labs/ssr-dom-shim@1.1.0:
     resolution: {integrity: sha512-92uQ5ARf7UXYrzaFcAX3T2rTvaS9Z1//ukV+DqjACM4c8s0ZBQd7ayJU5Dh2AFLD/Ayuyz4uMmxQec8q3U4Ong==}
+
+  /@lit-labs/ssr-dom-shim@1.1.1:
+    resolution: {integrity: sha512-kXOeFbfCm4fFf2A3WwVEeQj55tMZa8c8/f9AKHMobQMkzNUfUj+antR3fRPaZJawsa1aZiP/Da3ndpZrwEe4rQ==}
 
   /@lit/reactive-element@1.0.0-rc.4:
     resolution: {integrity: sha512-dJMha+4NFYdpnUJzRrWTFV5Hdp9QHWFuPnaoqonrKl4lGJVnYez9mu8ev9F/5KM47tjAjh22DuRHrdFDHfOijA==}
@@ -1129,7 +1126,7 @@ packages:
       '@lit/reactive-element': 1.0.0-rc.4
       '@material/base': 14.0.0-canary.261f2db59.0
       '@material/dom': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
 
   /@material/mwc-base@0.27.0:
@@ -1137,7 +1134,7 @@ packages:
     dependencies:
       '@material/base': 14.0.0-canary.53b3cad2f.0
       '@material/dom': 14.0.0-canary.53b3cad2f.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1146,7 +1143,7 @@ packages:
     dependencies:
       '@material/mwc-icon': 0.25.3
       '@material/mwc-ripple': 0.25.3
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1155,7 +1152,7 @@ packages:
     dependencies:
       '@material/mwc-base': 0.25.3
       '@material/mwc-ripple': 0.25.3
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1167,7 +1164,7 @@ packages:
       '@material/mwc-base': 0.25.3
       '@material/mwc-button': 0.25.3
       blocking-elements: 0.1.1
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
       wicg-inert: 3.1.2
     dev: false
@@ -1176,7 +1173,7 @@ packages:
     resolution: {integrity: sha512-3uFMi8Y680P0nzP5zih4YuOZJLl/C6Ux9G810Unwo44zblG/ckgJlFiM+T+oR+OH5KM8LbfNlV0ypo7FT5zYJA==}
     dependencies:
       '@material/floating-label': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1185,14 +1182,14 @@ packages:
     dependencies:
       '@material/form-field': 14.0.0-canary.261f2db59.0
       '@material/mwc-base': 0.25.3
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
   /@material/mwc-icon@0.25.3:
     resolution: {integrity: sha512-36076AWZIRSr8qYOLjuDDkxej/HA0XAosrj7TS1ZeLlUBnLUtbDtvc1S7KSa0hqez7ouzOqGaWK24yoNnTa2OA==}
     dependencies:
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1200,7 +1197,7 @@ packages:
     resolution: {integrity: sha512-ANJzSyumb+shBVTIhqF1+YByPU/EpFXxI9CS26qThFqlUDpYXg5xcoZpkMSmZv3Wv/loF1rs2mJfFWOcC6nFnw==}
     dependencies:
       '@material/line-ripple': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1210,7 +1207,7 @@ packages:
       '@material/linear-progress': 14.0.0-canary.261f2db59.0
       '@material/mwc-base': 0.25.3
       '@material/theme': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1224,7 +1221,7 @@ packages:
       '@material/mwc-checkbox': 0.25.3
       '@material/mwc-radio': 0.25.3
       '@material/mwc-ripple': 0.25.3
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1237,7 +1234,7 @@ packages:
       '@material/mwc-list': 0.25.3
       '@material/shape': 14.0.0-canary.261f2db59.0
       '@material/theme': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1246,7 +1243,7 @@ packages:
     dependencies:
       '@material/mwc-base': 0.25.3
       '@material/notched-outline': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1256,7 +1253,7 @@ packages:
       '@material/mwc-base': 0.25.3
       '@material/mwc-ripple': 0.25.3
       '@material/radio': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1266,7 +1263,7 @@ packages:
       '@material/dom': 14.0.0-canary.261f2db59.0
       '@material/mwc-base': 0.25.3
       '@material/ripple': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
 
   /@material/mwc-ripple@0.27.0:
@@ -1275,7 +1272,7 @@ packages:
       '@material/dom': 14.0.0-canary.53b3cad2f.0
       '@material/mwc-base': 0.27.0
       '@material/ripple': 14.0.0-canary.53b3cad2f.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1294,7 +1291,7 @@ packages:
       '@material/mwc-menu': 0.25.3
       '@material/mwc-notched-outline': 0.25.3
       '@material/select': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1305,7 +1302,7 @@ packages:
       '@material/mwc-base': 0.27.0
       '@material/mwc-ripple': 0.27.0
       '@material/slider': 14.0.0-canary.53b3cad2f.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1317,7 +1314,7 @@ packages:
       '@material/mwc-tab-scroller': 0.25.3
       '@material/tab': 14.0.0-canary.261f2db59.0
       '@material/tab-bar': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: true
 
@@ -1326,7 +1323,7 @@ packages:
     dependencies:
       '@material/mwc-base': 0.25.3
       '@material/tab-indicator': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: true
 
@@ -1336,7 +1333,7 @@ packages:
       '@material/dom': 14.0.0-canary.261f2db59.0
       '@material/mwc-base': 0.25.3
       '@material/tab-scroller': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: true
 
@@ -1347,7 +1344,7 @@ packages:
       '@material/mwc-ripple': 0.25.3
       '@material/mwc-tab-indicator': 0.25.3
       '@material/tab': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: true
 
@@ -1356,7 +1353,7 @@ packages:
     dependencies:
       '@material/mwc-base': 0.25.3
       '@material/mwc-textfield': 0.25.3
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1370,7 +1367,7 @@ packages:
       '@material/mwc-line-ripple': 0.25.3
       '@material/mwc-notched-outline': 0.25.3
       '@material/textfield': 14.0.0-canary.261f2db59.0
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: false
 
@@ -1639,7 +1636,7 @@ packages:
       d3-random: 3.0.1
       d3-time: 3.0.0
       dompurify: 2.4.1
-      lit: 2.7.0
+      lit: 2.7.4
       marked: 4.2.2
       pwa-helpers: 0.9.1
       router-slot: 1.5.5
@@ -1856,7 +1853,7 @@ packages:
       '@api-viewer/common': 1.0.0-pre.6
       '@api-viewer/demo': 1.0.0-pre.6
       '@api-viewer/docs': 1.0.0-pre.6
-      lit: 2.7.0
+      lit: 2.7.4
       tslib: 2.4.1
     dev: true
 
@@ -2717,30 +2714,30 @@ packages:
       type-check: 0.4.0
     dev: true
 
-  /lit-element@3.3.0:
-    resolution: {integrity: sha512-M3OIoblNS7LZdRxOIk8g0wyLEA/lRw/UGJ1TX+767OpkuDsRdSoxBIvewpWqCo7sMd9xt1XedUNZIr9jUO1X3g==}
+  /lit-element@3.3.2:
+    resolution: {integrity: sha512-xXAeVWKGr4/njq0rGC9dethMnYCq5hpKYrgQZYTzawt9YQhMiXfD+T1RgrdY3NamOxwq2aXlb0vOI6e29CKgVQ==}
     dependencies:
-      '@lit-labs/ssr-dom-shim': 1.1.0
+      '@lit-labs/ssr-dom-shim': 1.1.1
       '@lit/reactive-element': 1.6.1
-      lit-html: 2.7.0
+      lit-html: 2.7.3
 
-  /lit-html@2.7.0:
-    resolution: {integrity: sha512-/zPOl8EfeB3HHpTzINSpnWgvgQ8N07g/j272EOAIyB0Ys2RzBqTVT23i+JZuUlNbB2WHHeSsTCFi92NtWrtpqQ==}
+  /lit-html@2.7.3:
+    resolution: {integrity: sha512-9DyLzcn/kbRGowz2vFmSANFbRZTxYUgYYFqzie89w6GLpPUiBCDHfcdeRUV/k3Q2ueYxNjfv46yPCtKAEAPOVw==}
     dependencies:
       '@types/trusted-types': 2.0.3
 
   /lit-vaadin-helpers@0.3.1:
     resolution: {integrity: sha512-AhLBgd4fZnH7i7Kc2DKJXZJvlFDZDDI8dxN4O+rLOl8m72kdhoKWwHjheBDXqWPcNItl5Fn9P/TpI9cor/Dmiw==}
     dependencies:
-      lit: 2.7.0
+      lit: 2.7.4
     dev: false
 
-  /lit@2.7.0:
-    resolution: {integrity: sha512-qSy2BAVA+OiWtNptP404egcC/izDdNRw6iHGIbUmkZtbMJvPKfNsaoKrNs8Zmsbjmv5ZX2tur1l9TfzkSWWT4g==}
+  /lit@2.7.4:
+    resolution: {integrity: sha512-cgD7xrZoYr21mbrkZIuIrj98YTMw/snJPg52deWVV4A8icLyNHI3bF70xsJeAgwTuiq5Kkd+ZR8gybSJDCPB7g==}
     dependencies:
       '@lit/reactive-element': 1.6.1
-      lit-element: 3.3.0
-      lit-html: 2.7.0
+      lit-element: 3.3.2
+      lit-html: 2.7.3
 
   /local-pkg@0.4.3:
     resolution: {integrity: sha512-SFppqq5p42fe2qcZQqqEOiVRXl+WCP1MdT6k7BDEW1j++sp5fIY+/fdRQitvKgB5BrBcmrs5m/L0v2FrU5MY1g==}

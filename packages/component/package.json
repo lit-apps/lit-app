@@ -36,7 +36,7 @@
   ],
   "dependencies": {
     "@material/web": "1.0.0-pre.7",
-    "lit": "^2.3.0",
+    "lit": "^2.7.4",
     "safevalues": "^0.4.3",
     "tslib": "^2.4.0"
   },

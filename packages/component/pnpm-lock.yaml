@@ -5,8 +5,8 @@ dependencies:
     specifier: 1.0.0-pre.7
     version: 1.0.0-pre.7
   lit:
-    specifier: ^2.3.0
-    version: 2.3.0
+    specifier: ^2.7.4
+    version: 2.7.4
   safevalues:
     specifier: ^0.4.3
     version: 0.4.3
@@ -103,7 +103,7 @@ packages:
   /@material/web@1.0.0-pre.7:
     resolution: {integrity: sha512-/gHoUq+7Iose64BGyBurSXkAwVv4PNdAawX4SJkeDUObUPgvLH5vZBD8/fVGWu7TEq0xSgh10uqwV81P5r5BAw==}
     dependencies:
-      lit: 2.3.0
+      lit: 2.7.4
       safevalues: 0.4.3
       tslib: 2.4.0
     dev: false
@@ -1580,8 +1580,8 @@ packages:
       '@types/trusted-types': 2.0.3
     dev: false
 
-  /lit@2.3.0:
-    resolution: {integrity: sha512-ynSGsUYKSGN2weFQ1F3SZq0Ihlj+vr/3KAET//Yf8Tz86L7lZizlw9Px+ab5iN8Si4RkVoLqd9YtKQmjdyKHNg==}
+  /lit@2.7.4:
+    resolution: {integrity: sha512-cgD7xrZoYr21mbrkZIuIrj98YTMw/snJPg52deWVV4A8icLyNHI3bF70xsJeAgwTuiq5Kkd+ZR8gybSJDCPB7g==}
     dependencies:
       '@lit/reactive-element': 1.6.1
       lit-element: 3.3.2
