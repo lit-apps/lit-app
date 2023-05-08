@@ -32,7 +32,7 @@ export declare class ProvideAccessMixinInterface extends AccessMixinInterface {
  * ProvideAccessMixin 
  * A mixin to be applied to entities at root level. It set context providers for the entity: 
  */
-export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: typeof EntityI}> >(superClass: T, getAccessFn?: GetAccess) => {
+export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: typeof EntityI, data: any}> >(superClass: T, getAccessFn?: GetAccess) => {
 
 	class ProvideAccessMixinClass extends superClass {
 
@@ -43,7 +43,7 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 		@provide({ context: entityAccessContext })
 		@property() entityAccess!: EntityAccess;
 
-		@property() data!: any;
+		// @property() data!: any;
 
 		override willUpdate(changedProperties: PropertyValues) {
 			super.willUpdate(changedProperties);

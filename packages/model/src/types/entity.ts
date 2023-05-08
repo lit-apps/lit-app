@@ -1,5 +1,5 @@
 import type { Grid, GridItemModel } from '@vaadin/grid'
-import type { LitElement, TemplateResult } from 'lit'
+import { CSSResult, LitElement, TemplateResult } from 'lit'
 import type { Action, ButtonConfig } from './action'
 import { EntityCreateDetail } from '../events'
 import { GetAccess } from './getAccess'
@@ -173,6 +173,8 @@ export abstract class EntityI<Interface extends DefaultI = DefaultI> extends Ent
 	static actions: any
 	static model: Model<DefaultI>
 	static entityName: string
+	
+	static styles: CSSResult | undefined
 
 	icon!: string
 	_selected!: number

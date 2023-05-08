@@ -1,7 +1,7 @@
 import { get } from '@preignition/preignition-util/src/deep';
 import { activeItemChanged } from '@preignition/preignition-util/src/grid';
 import '@vaadin/grid/theme/material/vaadin-grid.js';
-import { TemplateResult, html } from 'lit';
+import { CSSResult, TemplateResult, html } from 'lit';
 import { html as htmlStatic, literal } from 'lit/static-html.js';
 import { choose } from 'lit/directives/choose.js';
 
@@ -64,7 +64,7 @@ import {
 } from './types/modelComponent';
 import entries from './typeUtils/entries';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ensure } from './types';
+import { ensure} from './types';
 
 /**
  * Actions inherited by all entities (provided they use @mergeStatic('actions'))
@@ -173,7 +173,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
    * the type of actions is properly inferred. 
    */
   declare ['constructor']: typeof Entity;
-
+  declare static styles: CSSResult | CSSResult[];  
   static _entityName: string
   static get entityName(): string {
     const name = this._entityName || this.name
@@ -186,10 +186,10 @@ export default class Entity<Interface extends DefaultI = DefaultI>
   static model: Model<DefaultI>
   static actions = actions
 
-  static setActions(actions: Actions) {
-    const superCtor = Object.getPrototypeOf(this) as typeof Entity;
-    this.actions = Object.assign(superCtor.actions || {}, actions);
-  }
+  // static setActions(actions: Actions) {
+  //   const superCtor = Object.getPrototypeOf(this) as typeof Entity;
+  //   this.actions = Object.assign(superCtor.actions || {}, actions);
+  // }
 
   showMetaData: boolean = false
   showActions: boolean = false
@@ -307,7 +307,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
   protected onError(error: Error) {
     console.error(error)
     // TODO: centralize the way we handler errors (see stripe-web-sdk for inspiration)
-    // For the time being, we just dispatch Toast Evnt
+    // For the time being, we just dispatch Toast Event
     this.host?.dispatchEvent(new AppToastEvent(error.message, 'error'))
   }
 
@@ -399,45 +399,6 @@ export default class Entity<Interface extends DefaultI = DefaultI>
 
   }
 
-  /**
-   * Utility render functions for a group of entity actions to render as buttons
-   * @param entityAccess 
-   * @param entityStatus 
-   * @param data 
-   * @returns 
-   */
-  public renderActions(data: any, config?: RenderConfig): TemplateResult | undefined {
-    const entityAccess = config?.entityAccess || this.host.entityAccess;
-    const entityStatus = config?.entityStatus || this.host.entityStatus;
-
-    if (!entityAccess?.canEdit || this.realTime) return;
-    return html`
-		<div class="layout horizontal center">
-			${entityStatus?.isEditing ?
-        html`
-          ${this.renderAction('write', data)}
-          ${this.renderAction('cancel', data)}
-          ` :
-        html`
-          ${this.renderAction('edit', data)}
-          `
-      }
-      <span class="flex"></span>
-      ${entityStatus?.isEditing ? this.renderEditActions(data) : this.renderDefaultActions(data)}
-		</div>`
-  }
-
-  protected renderEditActions(data: any) {
-    return entries<Actions>(this.actions)
-      .filter(([_key, action]) => action.showEdit)
-      .map(([key, _action]) => this.renderAction(key, data));
-  }
-  protected renderDefaultActions(data: any) {
-    return entries<Actions>(this.actions)
-      .filter(([_key, action]) => action.showDefault)
-      .map(([key, _action]) => this.renderAction(key, data));
-  }
-
   static renderAction<K extends { actions: Record<string, Action> }>(
     actionName: keyof K['actions'],
     element: HTMLElement,
@@ -512,12 +473,53 @@ export default class Entity<Interface extends DefaultI = DefaultI>
         button.loading = false
         console.error(error)
         // TODO: centralize the way we handler errors (see stripe-web-sdk for inspiration)
-        // For the time being, we just dispatch Toast Evnt
+        // For the time being, we just dispatch Toast Event
         host?.dispatchEvent(new AppToastEvent((error as Error).message, 'error'))
 
       }
     }
   }
+
+  /**
+   * Utility render functions for a group of entity actions to render as buttons
+   * @param entityAccess 
+   * @param entityStatus 
+   * @param data 
+   * @returns 
+   */
+  public renderActions(data: any, config?: RenderConfig): TemplateResult | undefined {
+    const entityAccess = config?.entityAccess || this.host.entityAccess;
+    const entityStatus = config?.entityStatus || this.host.entityStatus;
+
+    if (!entityAccess?.canEdit || this.realTime) return;
+    return html`
+		<div class="layout horizontal center">
+			${entityStatus?.isEditing ?
+        html`
+          ${this.renderAction('write', data)}
+          ${this.renderAction('cancel', data)}
+          ` :
+        html`
+          ${this.renderAction('edit', data)}
+          `
+      }
+      <span class="flex"></span>
+      ${entityStatus?.isEditing ? this.renderEditActions(data) : this.renderDefaultActions(data)}
+		</div>`
+  }
+
+  protected renderEditActions(data: any) {
+    return entries<Actions>(this.actions)
+      .filter(([_key, action]) => action.showEdit)
+      .map(([key, _action]) => this.renderAction(key, data));
+  }
+  protected renderDefaultActions(data: any) {
+    return entries<Actions>(this.actions)
+      .filter(([_key, action]) => action.showDefault)
+      .map(([key, _action]) => this.renderAction(key, data));
+  }
+
+ 
 
   /**
    * Utility render functions for a single entity actions to render as button and trigger an Action event
@@ -647,7 +649,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
    * @param data - the data for the grid
    * @param withOrganisation - true to display organisation column
    */
-  public renderGrid(data: any[], config?: ColumnsConfig) {
+  public renderGrid(data: Interface[], config?: ColumnsConfig) {
     const onSelected = async (e: CustomEvent) => {
       (this.host as EntityElementList).selectedItems = [...(e.target as Grid).selectedItems];
     }
@@ -655,9 +657,10 @@ export default class Entity<Interface extends DefaultI = DefaultI>
       await this.host.updateComplete;
       (this.host as EntityElementList).size = e.detail.value;
     }
+
     return html`<vaadin-grid 
 			id="grid"
-			class="flex grid ${this.entityName}"
+			class="flex grid entity ${this.entityName}"
 			.itemIdPath=${'$id'}
 			.items=${data}
 			${gridRowDetailsRenderer(this.gridDetailRenderer.bind(this))}
@@ -711,16 +714,19 @@ export default class Entity<Interface extends DefaultI = DefaultI>
   renderMetaData(_data: Interface, _config?: RenderConfig): TemplateResult {
     return html`<meta-data></meta-data>`
   }
+  
   renderBody(data: Interface, config?: RenderConfig): TemplateResult {
     if (Array.isArray(data)) {
+      if(data && data.length === 0) {
+        this.renderEmptyArray(config);
+      }
       return this.renderArrayContent(data, config)
     }
     return this.renderContent(data, config)
   }
 
   renderContent(data: Interface, config?: RenderConfig): TemplateResult {
-    return html`
-    <div class="layout vertical">							
+    return html`<div class="layout vertical">							
       ${data === undefined ? html`Loading...` :
         data === null ? html`<p>${this.entityName} data not found</p>` :
           [
@@ -736,8 +742,12 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     return this.renderGrid(data, config)
   }
 
+  renderEmptyArray(_config?: RenderConfig): TemplateResult {
+    return html`<p><md-icon class="secondary">info</md-icon></md-info>No ${this.entityName} found</p>`
+  }
+
   renderTitle(_data: Interface, _config?: RenderConfig): TemplateResult {
-    return html`Title`
+    return html`${this.entityName}`
   }
 
   renderHeader(data: Interface, config: RenderConfig): TemplateResult {

@@ -1,4 +1,4 @@
-import { html, LitElement, PropertyValues } from "lit";
+import { html, LitElement, PropertyValues, adoptStyles } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
 import Entity from './entity';
 import { ConsumeEntityMixin } from './mixin/context-entity-mixin';
@@ -7,6 +7,26 @@ import { ConsumeEntityStatusMixin } from './mixin/context-entity-status-mixin';
 import { ConsumeDataMixin } from './mixin/context-data-mixin';
 import { RenderConfig } from './types/entity';
 import { form, styleTypography, accessibility } from '@preignition/preignition-styles';
+
+
+/**
+ * This event is fired to trigger the main application hoist an element
+ */
+export class entityEvent extends CustomEvent<Entity> {
+	static readonly eventName = 'entity-ready';
+	constructor(entity: Entity) {
+		super(entityEvent.eventName, {
+			composed: true,
+			detail: entity
+		});
+	}
+}
+
+declare global {
+	interface HTMLElementEventMap {
+		'Entity': entityEvent,
+	}
+}
 
 /**
  *  Base Class holding an Entity
@@ -52,7 +72,24 @@ export default class entityHolder extends
 	
 	protected override willUpdate(props: PropertyValues){
 		if(props.has('Entity')) {
-			this.entity = new this.Entity(this, this.realTime, this.listenOnAction)
+
+			const E = this.Entity as unknown as typeof Entity
+			this.entity = new E(this, this.realTime, this.listenOnAction)
+			if(this.Entity?.styles) {
+				const root = this.renderRoot as ShadowRoot
+				const styles = Array.isArray(this.Entity.styles) ? this.Entity.styles : [this.Entity.styles]
+				adoptStyles(
+					root, 
+					[...root.adoptedStyleSheets,  ...styles] 
+					)
+			}
+			// notify entity is ready
+			this.dispatchEvent(new entityEvent(this.entity))
+			
+			if(import.meta.env.DEV) {
+				this.setAttribute('entity-name', this.Entity.entityName)
+			}
+
 		}
 		if(props.has('realtime') && this.entity) {
 			this.entity.realTime = this.realTime
@@ -84,9 +121,10 @@ export default class entityHolder extends
 			<slot name="header">
 				${this.renderHeader(entity)}
 			</slot>
-			<slot>
+			<slot name="subHeader"></slot>
+			<slot name="body">
 				${this.renderBody(entity)}
-			<slot>
+			</slot>
 			<slot name="footer">
 				${this.renderFooter(entity)}
 			</slot>

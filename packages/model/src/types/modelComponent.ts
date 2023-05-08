@@ -47,11 +47,12 @@ interface ModelComponentBase {
 	show?: (data: any) => boolean
 	onInput?: (data: any, value: any, el: LitElement) => void // function called when the component value is updated
 }
-export interface Lookup {
+export interface Lookup<T = string> {
 	label: string
-	code: string
+	code: T
 	key?: string
 	index?: number
+	class?: string
 }
 
 export interface ModelComponentSlider extends ModelComponentBase {

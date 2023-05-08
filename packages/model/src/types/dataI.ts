@@ -46,8 +46,8 @@ export interface DataI<M = MetaData, R = Ref> {
 	metaData: M
 }
 
-// data interface to be used in lists - the id is added
-export interface DataInListI<M = MetaData, R = Ref > extends DataI<M, R> {
-	$id: string
-}
+
+// a type that is an array of T and has $id and $path properties
+// $id and $path property are added by Firebase controllers on collections
+export type Collection<T> = (T & {$id: string, $path: string})[]
 
