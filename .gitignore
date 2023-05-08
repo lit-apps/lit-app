@@ -11,6 +11,7 @@ guides.md
 
 __*
 
+tmp
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
