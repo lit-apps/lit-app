@@ -409,7 +409,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     // @ts-ignore
     const action = this.actions[actionName];
     if (!action) {
-      console.error(`No action found for ${String(actionName)}`);
+      console.error(`entity ${this.entityName} has no action found for ${String(actionName)}`);
     }
     const actionConfig = typeof (action.config) === 'function' ? action.config(data) : action.config;
     config = typeof (config) === 'function' ? config(data) : config;
@@ -444,7 +444,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     // @ts-ignore
     const action = (this.actions)[actionName];
     if (!action) {
-      console.error(`No action found for ${String(actionName)}`);
+      console.error(`Entity ${this.entityName} has no action found for ${String(actionName)}`);
     }
     return async (e: Event & { target: LapButton }) => {
       if (beforeDispatch?.() === false) {
@@ -538,7 +538,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     // @ts-ignore
     const action = (this.actions)[actionName];
     if (!action) {
-      console.error(`No action found for ${String(actionName)}`);
+      console.error(`Entity ${this.entityName} has no action found for ${String(actionName)}`);
     }
     const actionConfig = typeof (action.config) === 'function' ? action.config(data || this.host.data, this.host.entityStatus) : action.config;
     config = typeof (config) === 'function' ? config(data || this.host.data, this.host.entityStatus) : config;
