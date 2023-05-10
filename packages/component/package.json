@@ -35,7 +35,7 @@
     "!.wireit/**"
   ],
   "dependencies": {
-    "@material/web": "1.0.0-pre.7",
+    "@material/web": "1.0.0-pre.8",
     "lit": "^2.7.4",
     "safevalues": "^0.4.3",
     "tslib": "^2.4.0"

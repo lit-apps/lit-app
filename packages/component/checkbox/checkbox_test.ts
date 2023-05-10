@@ -15,3 +15,5 @@ describe('<md-checkbox>', () => {
     createTokenTests(MdCheckbox.styles);
   });
 });
+
+

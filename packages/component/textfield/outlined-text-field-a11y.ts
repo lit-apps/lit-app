@@ -4,20 +4,20 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import '../field/outlined-field.js';
+import '../field/outlined-field-a11y.js';
 
 import {customElement} from 'lit/decorators.js';
 import {literal} from 'lit/static-html.js';
 
 
 
-import {OutlinedTextField} from './lib/outlined-text-field.js';
+import {OutlinedTextFieldA11y} from './lib/outlined-text-field-a11y.js';
 import {MdOutlinedTextField} from '@material/web/textfield/outlined-text-field.js'
 
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-outlined-text-field': LapOutlinedTextField;
+    'lap-outlined-text-field-a11y': LapOutlinedTextFieldA11y;
   }
 }
 
@@ -27,7 +27,7 @@ declare global {
  * @suppress {visibility}
  */
 @customElement('lap-outlined-text-field')
-export class LapOutlinedTextField extends OutlinedTextField {
+export class LapOutlinedTextFieldA11y extends OutlinedTextFieldA11y {
   static override styles= MdOutlinedTextField.styles;
-  protected override readonly fieldTag = literal`md-outlined-field`;
+  protected override readonly fieldTag = literal`md-outlined-field-a11y`;
 }

@@ -7,11 +7,11 @@
 // import 'jasmine'; (google3-only)
 
 import {html, TemplateResult} from 'lit';
+import {describe, fixture, assert, expect  } from '@open-wc/testing'
 import {customElement} from 'lit/decorators.js';
 
-import {Environment} from '../../testing/environment.js';
 import {FieldHarness} from '../harness.js';
-
+import {Environment} from '../../testing/environment.js';
 import {Field} from './field.js';
 
 declare global {
@@ -36,6 +36,7 @@ describe('Field', () => {
   const env = new Environment();
 
   async function setupTest(props: Partial<Field> = {}) {
+
     // Variant type does not matter for shared tests
     const template = html`
       <md-test-field
@@ -48,13 +49,12 @@ describe('Field', () => {
         <input>
       </md-test-field>
     `;
-    const root = env.render(template);
+    const root = await fixture(template);
     const instance = root.querySelector('md-test-field');
     if (!instance) {
       throw new Error('Could not query rendered <md-test-field>.');
     }
 
-    await env.waitForStability();
     return {
       instance,
       harness: new FieldHarness(instance),

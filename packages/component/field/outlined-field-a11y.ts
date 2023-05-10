@@ -6,13 +6,13 @@
 
 import {customElement} from 'lit/decorators.js';
 
-import {OutlinedField} from './lib/outlined-field.js';
+import {OutlinedFieldA11y} from './lib/outlined-field-a11y.js';
 import {MdOutlinedField} from '@material/web/field/outlined-field.js'
 
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-outlined-field': LapOutlinedField;
+    'lap-outlined-field-a11y': LapOutlinedFieldA11y;
   }
 }
 
@@ -21,7 +21,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-outlined-field')
-export class LapOutlinedField extends OutlinedField {
-   static override styles= MdOutlinedField.styles;
+@customElement('lap-outlined-field-a11y')
+export class LapOutlinedFieldA11y extends OutlinedFieldA11y {
+  static override styles= MdOutlinedField.styles;
 }

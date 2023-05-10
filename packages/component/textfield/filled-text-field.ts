@@ -19,13 +19,25 @@
  * - [ ] improved support for some aria attributes: aria-errormessage, aria-invalid role and aria-live
  */
 
-import {customElement} from 'lit/decorators.js';
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-import {MdFilledTextField} from '@material/web/textfield/filled-text-field';
+import '../field/filled-field.js';
+
+import {customElement} from 'lit/decorators.js';
+import {literal} from 'lit/static-html.js';
+
+
+import {FilledTextField} from './lib/filled-text-field.js';
+import {MdFilledTextField} from '@material/web/textfield/filled-text-field.js'
+
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-filled-text-field': LacFilledTextField;
+    'lap-filled-text-field': LapFilledTextField;
   }
 }
 
@@ -35,9 +47,7 @@ declare global {
  * @suppress {visibility}
  */
 @customElement('lap-filled-text-field')
-export class LacFilledTextField extends MdFilledTextField {
-  // static override styles=
-      // [sharedStyles, filledStyles, filledForcedColorsStyles];
-
-  // protected override readonly fieldTag = literal`md-filled-field`;
+export class LapFilledTextField extends FilledTextField {
+  static override styles= MdFilledTextField.styles;
+  protected override readonly fieldTag = literal`md-filled-field`;
 }

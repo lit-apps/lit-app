@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@material/web':
-    specifier: 1.0.0-pre.7
-    version: 1.0.0-pre.7
+    specifier: 1.0.0-pre.8
+    version: 1.0.0-pre.8
   lit:
     specifier: ^2.7.4
     version: 2.7.4
@@ -100,8 +100,8 @@ packages:
       '@lit-labs/ssr-dom-shim': 1.1.1
     dev: false
 
-  /@material/web@1.0.0-pre.7:
-    resolution: {integrity: sha512-/gHoUq+7Iose64BGyBurSXkAwVv4PNdAawX4SJkeDUObUPgvLH5vZBD8/fVGWu7TEq0xSgh10uqwV81P5r5BAw==}
+  /@material/web@1.0.0-pre.8:
+    resolution: {integrity: sha512-CafOQw/C23SP1DlJVYDbs2Cm9Ct4QV7RxjxMBiWhaqlhqfDyXVpnZnKlTVzD5dVDKZyUu3vHsWK7Y/N8P66DYQ==}
     dependencies:
       lit: 2.7.4
       safevalues: 0.4.3
