@@ -18,8 +18,9 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": false,
     "noImplicitOverride": true,
-    "types": ["vite/client"],
+    "types": ["vite/client", "mocha"],
     "plugins": [
       {
         "name": "ts-lit-plugin",

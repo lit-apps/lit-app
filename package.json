@@ -24,23 +24,24 @@
   "author": "christophe.geiser <christophe@preignition.org>",
   "license": "ISC",
   "devDependencies": {
-    "@changesets/cli": "^2.23.0",
-    "eslint": "^8.19.0",
-    "vite": "^2.9.13",
-    "vitest": "^0.16.0",
-    "wireit": "^0.7.1"
+    "@changesets/cli": "^2.26.1",
+    "eslint": "^8.40.0",
+    "happy-dom": "^9.17.0",
+    "vite": "^4.3.5",
+    "vitest": "^0.31.0",
+    "wireit": "^0.9.5"
   },
   "wireit": {
     "test": {
-      "command": "vitest",
-      "dependencies": [
-        "./packages/state:test"
-      ]
+      "command": "wireit"
     },
     "build": {
       "dependencies": [
         "./packages/state:build"
       ]
     }
+  },
+  "dependencies": {
+    "@types/mocha": "^10.0.1"
   }
 }
