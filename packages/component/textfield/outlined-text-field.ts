@@ -1,18 +1,12 @@
-/**
- * @license
- * Copyright 2021 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
 
 import '../field/outlined-field.js';
 
-import {customElement} from 'lit/decorators.js';
-import {literal} from 'lit/static-html.js';
+import { customElement } from 'lit/decorators.js';
+import { literal } from 'lit/static-html.js';
 
 
-
-import {OutlinedTextField} from './lib/outlined-text-field.js';
-import {MdOutlinedTextField} from '@material/web/textfield/outlined-text-field.js'
+import { OutlinedTextField } from './lib/outlined-text-field.js';
+import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js'
 
 
 declare global {
@@ -28,6 +22,6 @@ declare global {
  */
 @customElement('lap-outlined-text-field')
 export class LapOutlinedTextField extends OutlinedTextField {
-  static override styles= MdOutlinedTextField.styles;
-  protected override readonly fieldTag = literal`md-outlined-field`;
+  static override styles = MdOutlinedTextField.styles;
+  protected override readonly fieldTag = literal`lap-outlined-field`;
 }
