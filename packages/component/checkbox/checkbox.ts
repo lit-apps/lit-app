@@ -6,13 +6,13 @@
 
 import {customElement} from 'lit/decorators.js';
 
-import {Checkbox} from './lib/checkbox.js';
-
+import {MdCheckbox} from '@material/web/checkbox/checkbox';
+   
 
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-checkbox': MdCheckbox;
+    'lap-checkbox': LapCheckbox;
   }
 }
 
@@ -30,6 +30,6 @@ declare global {
  * @suppress {visibility}
  */
 @customElement('lap-checkbox')
-export class MdCheckbox extends Checkbox {
+export class LapCheckbox extends MdCheckbox {
   // static override styles= [styles, forcedColorsStyles];
 }

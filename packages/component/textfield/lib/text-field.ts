@@ -23,8 +23,21 @@ import { PropertyValues } from 'lit';
 
 
 export abstract class TextField extends T {
+	/**
+	 * The variant to use for rendering the field
+	 */
 	@property() variant!: Variant
+
+	/**
+	 * Whether the label should be displayed above the field
+	 * and removes animation on focus
+	 */
 	@property() labelAbove: boolean = false
+
+	/**
+	 * Prevent automatic check validity on blur
+	 */
+	@property({ type: Boolean }) noAutoValidate: boolean = false;
 
 	/**
 	 * The field holding label
@@ -52,8 +65,16 @@ export abstract class TextField extends T {
 		super.firstUpdated(changedProperties);
 	}
 	override willUpdate(changedProperties: PropertyValues) {
+		if(changedProperties.has('noAutoValidate')) {
+			if(!this.noAutoValidate) {
+				this.addEventListener('blur', this.reportValidity)
+			} else {
+				this.removeEventListener('blur', this.reportValidity)
+			 }
+		}
 		this.propagateToField(changedProperties);
 		super.willUpdate(changedProperties);
+
 
 	}
 }

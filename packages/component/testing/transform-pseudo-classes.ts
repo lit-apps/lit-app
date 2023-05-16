@@ -62,25 +62,30 @@ const transformedStyleSheets = new WeakSet<CSSStyleSheet>();
  * @param pseudoClasses An optional array of pseudo class names to transform.
  */
 export function transformPseudoClasses(
-    stylesheets: Iterable<CSSStyleSheet>,
-    pseudoClasses = defaultTransformPseudoClasses) {
-  for (const stylesheet of stylesheets) {
-    if (transformedStyleSheets.has(stylesheet)) {
-      continue;
-    }
+  stylesheets: Iterable<CSSStyleSheet>,
+  pseudoClasses = defaultTransformPseudoClasses) {
+  try {
+    for (const stylesheet of stylesheets) {
+      if (transformedStyleSheets.has(stylesheet)) {
+        continue;
+      }
 
-    let rules: CSSRuleList;
-    try {
-      rules = stylesheet.cssRules;
-    } catch {
-      continue;
-    }
+      let rules: CSSRuleList;
+      try {
+        rules = stylesheet.cssRules;
+      } catch {
+        continue;
+      }
 
-    for (let j = rules.length - 1; j >= 0; j--) {
-      visitRule(rules[j], stylesheet, j, pseudoClasses);
-    }
+      for (let j = rules.length - 1; j >= 0; j--) {
+        visitRule(rules[j], stylesheet, j, pseudoClasses);
+      }
 
-    transformedStyleSheets.add(stylesheet);
+      transformedStyleSheets.add(stylesheet);
+    }
+  } catch(e) {
+    // eslint-disable-next-line no-console
+    console.warn('Failed to transform pseudo classes', e);
   }
 }
 
@@ -94,8 +99,8 @@ export function transformPseudoClasses(
  * @param pseudoClasses An array of pseudo classes to search for and replace.
  */
 function visitRule(
-    rule: CSSRule, stylesheet: CSSStyleSheet|CSSGroupingRule, index: number,
-    pseudoClasses: string[]) {
+  rule: CSSRule, stylesheet: CSSStyleSheet | CSSGroupingRule, index: number,
+  pseudoClasses: string[]) {
   if (rule instanceof CSSMediaRule || rule instanceof CSSSupportsRule) {
     for (let i = rule.cssRules.length - 1; i >= 0; i--) {
       visitRule(rule.cssRules[i], rule, i, pseudoClasses);
@@ -108,7 +113,7 @@ function visitRule(
   }
 
   try {
-    let {selectorText} = rule;
+    let { selectorText } = rule;
     // match :foo, ensuring that it does not have a paren at the end
     // (no pseudo class functions like :foo())
     const regex = /(:(?![\w-]+\()[\w-]+)/g;
@@ -128,8 +133,8 @@ function visitRule(
     selectorText = rearrangePseudoElements(selectorText);
     for (const match of matches) {
       selectorText = selectorText.substring(0, match.index!) +
-          `.${getTransformedPseudoClass(match[1])}` +
-          selectorText.substring(match.index! + match[1].length);
+        `.${getTransformedPseudoClass(match[1])}` +
+        selectorText.substring(match.index! + match[1].length);
     }
 
     const css = `${selectorText} {${rule.style.cssText}}`;
@@ -156,18 +161,18 @@ function visitRule(
  */
 function rearrangePseudoElements(selectorText: string) {
   const pseudoElementsBeforeClasses =
-      Array.from(selectorText.matchAll(/(?:::[\w-]+)+(?=:[\w-])/g));
+    Array.from(selectorText.matchAll(/(?:::[\w-]+)+(?=:[\w-])/g));
   pseudoElementsBeforeClasses.reverse();
   for (const match of pseudoElementsBeforeClasses) {
     const pseudoElement = match[0];
     const pseudoElementIndex = match.index!;
     const endOfCompoundSelector = selectorText.substring(pseudoElementIndex)
-                                      .match(/(\s(?!([^\s].)*\))|,|$)/)!;
+      .match(/(\s(?!([^\s].)*\))|,|$)/)!;
     const index = endOfCompoundSelector.index! + pseudoElementIndex;
     selectorText = selectorText.substring(0, index) + pseudoElement +
-        selectorText.substring(index);
+      selectorText.substring(index);
     selectorText = selectorText.substring(0, pseudoElementIndex) +
-        selectorText.substring(pseudoElementIndex + pseudoElement.length);
+      selectorText.substring(pseudoElementIndex + pseudoElement.length);
   }
 
   return selectorText;
