@@ -35,7 +35,7 @@ const fixture = async <T extends LitElement>(template: HTMLTemplateResult) => {
 		render(template, container);
 		const el = container.firstElementChild as T;
 		await el.updateComplete;
-		return el
+		return el as T;
 }
 
 export default fixture;

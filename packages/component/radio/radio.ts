@@ -7,12 +7,12 @@
 import {customElement} from 'lit/decorators.js';
 
 
-import {Radio} from './lib/radio.js';
+import {MdRadio} from '@material/web/radio/radio';
 
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-radio': MdRadio;
+    'lap-radio': LapRadio;
   }
 }
 
@@ -33,6 +33,6 @@ declare global {
  * @suppress {visibility}
  */
 @customElement('lap-radio')
-export class MdRadio extends Radio {
+export class LapRadio extends MdRadio {
   // static override styles= [styles, forcedColorsStyles];
 }
