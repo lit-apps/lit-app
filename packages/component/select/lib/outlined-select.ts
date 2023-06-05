@@ -12,5 +12,5 @@ import {Select} from './select.js';
 
 // tslint:disable-next-line:enforce-comments-on-exported-symbols
 export abstract class OutlinedSelect extends Select {
-  protected readonly fieldTag = literal`md-outlined-field`;
+  protected readonly fieldTag = literal`lap-outlined-field`;
 }

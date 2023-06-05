@@ -13,7 +13,7 @@ import {OutlinedSelect} from './lib/outlined-select.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-outlined-select': MdOutlinedSelect;
+    'lap-outlined-select': LapOutlinedSelect;
   }
 }
 
@@ -45,6 +45,6 @@ declare global {
  * @suppress {visibility}
  */
 @customElement('lap-outlined-select')
-export class MdOutlinedSelect extends OutlinedSelect {
+export class LapOutlinedSelect extends OutlinedSelect {
   // static override styles= [sharedStyles, styles, outlinedForcedColorsStyles];
 }
