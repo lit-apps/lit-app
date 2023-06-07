@@ -15,32 +15,32 @@ import './outlined-button'
 import './text-button'
 import '@material/web/circularprogress/circular-progress'
 
-const filledTag = literal`lap-filled-button`;
-const outlineTag = literal`lap-outlined-button`;
-const tonalTag = literal`lap-tonal-button`;
-const defaultTag = literal`lap-text-button`;
+const filledTag = literal`lapp-filled-button`;
+const outlineTag = literal`lapp-outlined-button`;
+const tonalTag = literal`lapp-tonal-button`;
+const defaultTag = literal`lapp-text-button`;
 
 const style = css`
   :host {
-    --lap-icon-size: 24px;
-    --md-circular-progress-size: var(--lap-icon-size);
-    --md-outlined-button-with-icon-icon-size: var(--lap-icon-size);
-    --md-text-button-with-icon-icon-size: var(--lap-icon-size);
-    --md-filled-button-with-icon-icon-size: var(--lap-icon-size);
-    --md-tonal-button-with-icon-icon-size: var(--lap-icon-size);
+    --lapp-icon-size: 24px;
+    --md-circular-progress-size: var(--lapp-icon-size);
+    --md-outlined-button-with-icon-icon-size: var(--lapp-icon-size);
+    --md-text-button-with-icon-icon-size: var(--lapp-icon-size);
+    --md-filled-button-with-icon-icon-size: var(--lapp-icon-size);
+    --md-tonal-button-with-icon-icon-size: var(--lapp-icon-size);
   }
   `
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-button': LapButton;
+    'lapp-button': LapButton;
   }
 }
 
 /**
  * A generic button to ease migration from MD2
  */
-@customElement('lap-button')
+@customElement('lapp-button')
 export class LapButton extends LitElement {
 
   static override styles = [style];

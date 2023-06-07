@@ -12,7 +12,7 @@ import {SuggestionChip} from './lib/suggestion-chip.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-suggestion-chip': MdSuggestionChip;
+    'lapp-suggestion-chip': MdSuggestionChip;
   }
 }
 
@@ -22,7 +22,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-suggestion-chip')
+@customElement('lapp-suggestion-chip')
 export class MdSuggestionChip extends SuggestionChip {
   // static override styles= [sharedStyles, styles];
 }

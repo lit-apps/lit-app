@@ -14,5 +14,5 @@ import {TextField} from './text-field.js';
  * An outlined text field component
  */
 export class OutlinedTextField extends TextField {
-  protected readonly fieldTag = literal`lap-outlined-field`;
+  protected readonly fieldTag = literal`lapp-outlined-field`;
 }

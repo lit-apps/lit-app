@@ -20,7 +20,7 @@ describe('TextFieldHarness', () => {
   async function setupTest() {
     const root =
         env.render(html`<md-filled-text-field></md-filled-text-field>`);
-    const instance = root.querySelector('lap-filled-text-field');
+    const instance = root.querySelector('lapp-filled-text-field');
     if (!instance) {
       throw new Error('Failed to query md-filled-text-field.');
     }

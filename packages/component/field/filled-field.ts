@@ -30,7 +30,7 @@ const styles = css`
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-filled-field': LapFilledField;
+    'lapp-filled-field': LapFilledField;
   }
 }
 
@@ -39,7 +39,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-filled-field')
+@customElement('lapp-filled-field')
 export class LapFilledField extends FilledField {
   static override styles = [MdFilledField.styles, styles];
 }

@@ -12,7 +12,7 @@ import {MdTextButton} from '@material/web/button/text-button';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-text-button': LapTextButton;
+    'lapp-text-button': LapTextButton;
   }
 }
 
@@ -36,7 +36,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-text-button')
+@customElement('lapp-text-button')
 export class LapTextButton extends MdTextButton {
   // static override styles= [sharedStyles, textStyles];
 }

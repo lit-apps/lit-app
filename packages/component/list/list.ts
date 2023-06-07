@@ -10,7 +10,7 @@ import {MdList} from '@material/web/list/list';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-list': LapList;
+    'lapp-list': LapList;
   }
 }
 
@@ -33,7 +33,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-list')
+@customElement('lapp-list')
 export class LapList extends MdList {
   // static override styles= [styles];
 }

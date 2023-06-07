@@ -14,5 +14,5 @@ import {TextField} from './text-field.js';
  * A filled text field component.
  */
 export class FilledTextField extends TextField {
-  protected readonly fieldTag = literal`lap-filled-field`;
+  protected readonly fieldTag = literal`lapp-filled-field`;
 }

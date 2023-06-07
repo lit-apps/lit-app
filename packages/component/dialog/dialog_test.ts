@@ -57,7 +57,7 @@ describe('<md-dialog>', () => {
     const root = env.render(template(props));
     await env.waitForStability();
     setClockEnabled(false);
-    const dialog = root.querySelector<MdDialog>('lap-dialog')!;
+    const dialog = root.querySelector<MdDialog>('lapp-dialog')!;
     const harness = new DialogHarness(dialog);
     const contentElement = root.querySelector<HTMLElement>('.content')!;
     const focusElement = root.querySelector<HTMLElement>('[dialogFocus]')!;

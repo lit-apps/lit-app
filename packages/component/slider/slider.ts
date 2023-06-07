@@ -12,7 +12,7 @@ import {Slider} from './lib/slider.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-slider': MdSlider;
+    'lapp-slider': MdSlider;
   }
 }
 
@@ -30,7 +30,7 @@ declare global {
  * - Sliders are ideal for adjusting settings such as volume and brightness, or
  * for applying image filters.
  */
-@customElement('lap-slider')
+@customElement('lapp-slider')
 export class MdSlider extends Slider {
   // static override styles= [styles, forcedColorsStyles];
 }

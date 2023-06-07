@@ -12,7 +12,7 @@ import {MdOutlinedField} from '@material/web/field/outlined-field.js'
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-outlined-field': LapOutlinedField;
+    'lapp-outlined-field': LapOutlinedField;
   }
 }
 
@@ -21,7 +21,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-outlined-field')
+@customElement('lapp-outlined-field')
 export class LapOutlinedField extends OutlinedField {
    static override styles= MdOutlinedField.styles;
 }

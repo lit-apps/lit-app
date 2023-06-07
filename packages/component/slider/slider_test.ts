@@ -30,7 +30,7 @@ describe('<md-slider>', () => {
       props?: SliderTestProps, template = getSliderTemplate) {
     const root = env.render(template(props));
     await env.waitForStability();
-    const slider = root.querySelector<MdSlider>('lap-slider')!;
+    const slider = root.querySelector<MdSlider>('lapp-slider')!;
     const harness = new SliderHarness(slider);
     return {harness, root};
   }

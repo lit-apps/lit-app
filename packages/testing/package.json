@@ -1,0 +1,22 @@
+{
+  "name": "@lit-app/testing",
+  "version": "1.0.0",
+  "description": "testing utils for lit-app",
+  "type": "module",
+  "main": "index",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "lit",
+    "vitejs",
+    "web-components"
+  ],
+  "authors": [
+    "christophe.geiser <christophe@preignition.org>"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "lit": "latest"
+  }
+}

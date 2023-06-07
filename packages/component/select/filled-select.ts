@@ -13,7 +13,7 @@ import {FilledSelect} from './lib/filled-select.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-filled-select': LapFilledSelect;
+    'lapp-filled-select': LapFilledSelect;
   }
 }
 
@@ -44,7 +44,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-filled-select')
+@customElement('lapp-filled-select')
 export class LapFilledSelect extends FilledSelect {
   // static override styles= [sharedStyles, styles, filledForcedColorsStyles];
 }

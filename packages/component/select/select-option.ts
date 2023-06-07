@@ -16,7 +16,7 @@ import {SelectOptionEl} from './lib/selectoption/select-option.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-select-option': MdSelectOption;
+    'lapp-select-option': MdSelectOption;
   }
 }
 
@@ -50,7 +50,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-select-option')
+@customElement('lapp-select-option')
 export class MdSelectOption extends SelectOptionEl {
   // static override styles=
       [listItemStyles, styles, listItemForcedColorsStyles, forcedColorsStyles];

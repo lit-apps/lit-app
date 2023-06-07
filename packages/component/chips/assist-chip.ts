@@ -12,7 +12,7 @@ import {AssistChip} from './lib/assist-chip.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-assist-chip': MdAssistChip;
+    'lapp-assist-chip': MdAssistChip;
   }
 }
 
@@ -22,7 +22,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-assist-chip')
+@customElement('lapp-assist-chip')
 export class MdAssistChip extends AssistChip {
   // static override styles= [sharedStyles, styles];
 }

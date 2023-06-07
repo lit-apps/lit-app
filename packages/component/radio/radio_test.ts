@@ -49,7 +49,7 @@ describe('<md-radio>', () => {
   async function setupTest(template = defaultRadio) {
     const root = env.render(template);
     await env.waitForStability();
-    const radios = Array.from(root.querySelectorAll('lap-radio'));
+    const radios = Array.from(root.querySelectorAll('lapp-radio'));
     const harnesses = radios.map(radio => new RadioHarness(radio));
     return {harnesses, root};
   }
@@ -308,11 +308,11 @@ describe('<md-radio>', () => {
       const root = env.render(html`<main></main>`);
       const container = root.querySelector('main')!;
 
-      const r1 = document.createElement('lap-radio');
+      const r1 = document.createElement('lapp-radio');
       r1.setAttribute('name', 'a');
-      const r2 = document.createElement('lap-radio');
+      const r2 = document.createElement('lapp-radio');
       r2.setAttribute('name', 'a');
-      const r3 = document.createElement('lap-radio');
+      const r3 = document.createElement('lapp-radio');
       r3.setAttribute('name', 'a');
 
       // r1 and r2 should both be checked, because even though they have the
@@ -358,7 +358,7 @@ describe('<md-radio>', () => {
           (value) => html`<md-radio value=${value} name="a"></md-radio>`);
       const root = env.render(html`${repeated}`);
       await env.waitForStability();
-      const [a1, a2] = root.querySelectorAll('lap-radio');
+      const [a1, a2] = root.querySelectorAll('lapp-radio');
 
       expect(a1.checked).toBeFalse();
       expect(a2.checked).toBeFalse();
@@ -387,8 +387,8 @@ describe('<md-radio>', () => {
     beforeEach(async () => {
       const root = env.render(defaultRadio);
       await env.waitForStability();
-      element = root.querySelector('lap-radio')!;
-      focusRing = element.shadowRoot!.querySelector('lap-focus-ring')!;
+      element = root.querySelector('lapp-radio')!;
+      focusRing = element.shadowRoot!.querySelector('lapp-focus-ring')!;
       harness = new RadioHarness(element);
     });
 
@@ -424,7 +424,7 @@ describe('<md-radio>', () => {
         </form>`);
       await env.waitForStability();
       const harnesses = new Map<string, RadioHarness>();
-      Array.from(root.querySelectorAll('lap-radio')).forEach((el: MdRadio) => {
+      Array.from(root.querySelectorAll('lapp-radio')).forEach((el: MdRadio) => {
         harnesses.set(el.id, new RadioHarness(el));
       });
       return harnesses;

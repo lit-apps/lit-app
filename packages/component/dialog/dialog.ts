@@ -11,7 +11,7 @@ import {Dialog} from './lib/dialog.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-dialog': MdDialog;
+    'lapp-dialog': MdDialog;
   }
 }
 
@@ -39,7 +39,7 @@ declare global {
  * to complete. One example is creating a calendar entry with the event title,
  * date, location, and time.
  */
-@customElement('lap-dialog')
+@customElement('lapp-dialog')
 export class MdDialog extends Dialog {
   // static override styles= [styles];
 }

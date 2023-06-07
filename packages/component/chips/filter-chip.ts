@@ -12,7 +12,7 @@ import {FilterChip} from './lib/filter-chip.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-filter-chip': MdFilterChip;
+    'lapp-filter-chip': MdFilterChip;
   }
 }
 
@@ -22,7 +22,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-filter-chip')
+@customElement('lapp-filter-chip')
 export class MdFilterChip extends FilterChip {
   // static override styles= [sharedStyles, styles];
 }

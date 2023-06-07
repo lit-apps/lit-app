@@ -12,7 +12,7 @@ import {MdRadio} from '@material/web/radio/radio';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-radio': LapRadio;
+    'lapp-radio': LapRadio;
   }
 }
 
@@ -32,7 +32,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-radio')
+@customElement('lapp-radio')
 export class LapRadio extends MdRadio {
   // static override styles= [styles, forcedColorsStyles];
 }

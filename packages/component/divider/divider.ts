@@ -11,7 +11,7 @@ import {Divider} from './lib/divider.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-divider': MdDivider;
+    'lapp-divider': MdDivider;
   }
 }
 
@@ -25,7 +25,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-divider')
+@customElement('lapp-divider')
 export class MdDivider extends Divider {
   // static override styles= [styles];
 }

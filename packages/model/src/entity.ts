@@ -6,8 +6,8 @@ import { html as htmlStatic, literal } from 'lit/static-html.js';
 import { choose } from 'lit/directives/choose.js';
 
 
-import '@lit-app/component/button/button';
-import type { LapButton } from '@lit-app/component/button/button';
+import '@lit-app/cmp/button/button';
+import type { LappButton } from '@lit-app/cmp/button/button';
 import '@material/web/icon/icon';
 
 import { AppToastEvent } from '@lit-app/app-event';
@@ -419,7 +419,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     const unelevated = cfg?.unelevated ?? false
     const tonal = cfg?.tonal ?? false
     const outlined = cfg?.outlined ?? !unelevated
-    return html`<lap-button 
+    return html`<lapp-button 
       class="${actionName} action"
       .icon=${action.icon || ''} 
       @click=${this.onActionClick(actionName, element, data, beforeDispatch, onResolved)}
@@ -429,7 +429,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
       .unelevated=${unelevated}
       >
         ${action.label}
-      </lap-button>`
+      </lapp-button>`
 
   }
 
@@ -446,7 +446,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     if (!action) {
       console.error(`Entity ${this.entityName} has no action found for ${String(actionName)}`);
     }
-    return async (e: Event & { target: LapButton }) => {
+    return async (e: Event & { target: LappButton }) => {
       if (beforeDispatch?.() === false) {
         console.log('beforeDispatch returned false')
         return;
@@ -548,7 +548,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     const unelevated = cfg?.unelevated ?? false
     const outlined = cfg?.outlined ?? !unelevated
 
-    return html`<lap-button 
+    return html`<lapp-button 
         class="${actionName} action"
         .icon=${action.icon || ''} 
         
@@ -559,7 +559,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
         .unelevated=${unelevated}
         >
           ${action.label}
-        </lap-button>`
+        </lapp-button>`
   }
 
   /**

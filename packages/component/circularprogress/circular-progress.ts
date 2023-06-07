@@ -11,7 +11,7 @@ import {CircularProgress} from './lib/circular-progress.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-circular-progress': MdCircularProgress;
+    'lapp-circular-progress': MdCircularProgress;
   }
 }
 
@@ -25,7 +25,7 @@ declare global {
  * - Determinate indicators display how long a process will take.
  * - Indeterminate indicators express an unspecified amount of wait time.
  */
-@customElement('lap-circular-progress')
+@customElement('lapp-circular-progress')
 export class MdCircularProgress extends CircularProgress {
   // static override styles= [styles];
 }

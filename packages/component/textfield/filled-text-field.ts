@@ -11,7 +11,7 @@ import { MdFilledTextField } from '@material/web/textfield/filled-text-field.js'
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-filled-text-field': LapFilledTextField;
+    'lapp-filled-text-field': LapFilledTextField;
   }
 }
 
@@ -20,8 +20,8 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-filled-text-field')
+@customElement('lapp-filled-text-field')
 export class LapFilledTextField extends FilledTextField {
   static override styles = MdFilledTextField.styles;
-  protected override readonly fieldTag = literal`lap-filled-field`;
+  protected override readonly fieldTag = literal`lapp-filled-field`;
 }

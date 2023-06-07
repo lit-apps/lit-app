@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Vite + Lit App</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta
+      name="description"
+      content="Web site created using create-snowpack-app"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,100..700,0..1" rel="stylesheet">
+   
+    <link rel="stylesheet" type="text/css" href="/index.css" />
+    <link rel="stylesheet" type="text/css" href="/variables.css" />
+    <link rel="stylesheet" type="text/css" href="/theme.css" />
+    <style id="appendStyle">
+      /* 
+        Style to be appended to demo-root shadorRoot 
+        see https://api-viewer.open-wc.org/docs/api/styling/ for styling
+       */
+      api-viewer::part(demo-output) {}
+      body > * {
+        display: flex;
+        margin-top: 20px;
+        width: min(100vw, 1250px);
+      }
+    </style>
+    <script type="module" src="/field/choice-order"></script>
+    <script type="module" src="/field/choice-star"></script>
+    <script type="module" src="/field/choice-checkbox"></script>
+    <script type="module" src="/field/choice-radio"></script>
+    <script type="module" src="/field/select"></script>
+    <!-- <script type="module" src="/field/textfield-select"></script> -->
+    <!-- <script type="module">
+      import "api-viewer-element";
+      import "@preignition/preignition-demo";
+
+      const template = `
+      <template data-element="lapp-radio" data-target="slot">
+        <div>Test Slot</div>
+      </template>`
+
+      const ROUTES = [
+        {
+          path: "/intro",
+          title: "Intro",
+          component: () => document.createElement("demo-readme"),
+        },
+        {
+          path: "/api",
+          title: "Api and Demo",
+          component: () => document.createElement("api-viewer"),
+          setup: (cmp, info) => {
+            cmp.src = "/docs/custom-elements.json"
+            cmp.innerHTML = template;
+          },
+        },
+        {
+          path: "/docs",
+          title: "Documentation",
+          component: () => document.createElement("demo-readme"),
+          setup: (cmp, info) => (cmp.src = "/docs/custom-elements.md"),
+        },
+        {
+          path: "**",
+          redirectTo: "intro",
+        },
+      ];
+
+      window.addEventListener("DOMContentLoaded", (event) => {
+        const demo = document.querySelector("#demo")
+        demo.routes = ROUTES;
+        demo.shadowRoot.appendChild(document.querySelector("#appendStyle"))
+        
+      });
+    </script> -->
+  </head>
+
+  <body>
+    <script type="module">
+
+      import '@material/web/select/select-option';
+      import '@material/web/select/filled-select';
+
+      const options = [
+	      {code: '1', name:'radio', label: 'one', supportingText: 'hello'}, 
+	      {code: '2', name:'radio', label: 'two and two and two', exclusive: true}, 
+	      {code: '3', name:'radio', label: 'three', specify: true},
+	      {code: '4', name:'radio', label: 'quatre is a long label. Does it wrap correctly? '}
+      ] 
+      document.querySelector('lapp-choice-checkbox').options = [...options];
+      document.querySelector('lapp-choice-radio').options = [...options];
+      document.querySelector('lapp-choice-order').options = [...options];
+    </script>
+    <lapp-choice-star 
+      label="star"
+    ></lapp-choice-star> 
+    <lapp-select 
+      label="Select items " 
+      quick
+      supportingText="this is supporting text" 
+      variant="a11y">
+      <md-select-option selected></md-select-option>
+      <md-select-option value="apple" headline="Apple"></md-select-option>
+      <md-select-option value="banana" headline="Banana"></md-select-option>
+      <md-select-option value="kiwi" headline="Kiwi"></md-select-option>
+    </lapp-select>
+    <md-filled-select 
+    label="Select items " 
+    quick
+    supportingText="this is supporting text" 
+    variant="a11y">
+    <md-select-option selected></md-select-option>
+    <md-select-option value="apple" headline="Apple"></md-select-option>
+    <md-select-option value="banana" headline="Banana"></md-select-option>
+    <md-select-option value="kiwi" headline="Kiwi"></md-select-option>
+  </md-filled-select>
+    <lapp-choice-checkbox 
+        required
+        label="this is my choice " 
+        supportingText="this is supporting text" variant="a11y"></lapp-choice-checkbox>
+    <lapp-choice-radio
+
+      required
+      label="this is my choice " 
+      supportingText="this is supporting text" variant="a11y"></lapp-choice-radio>
+    <lapp-choice-order 
+      label="Select items below and order by priority" 
+      supportingText="this is supporting text" variant="a11y"></lapp-choice-order>
+
+    <lapp-filled-text-field required label="lap"></lapp-filled-text-field>
+    <md-filled-text-field required supportingText="this is supporting text" label="md"></md-filled-text-field-->
+    
+  </body>
+</html>

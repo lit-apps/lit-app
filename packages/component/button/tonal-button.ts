@@ -13,7 +13,7 @@ import {MdTonalButton} from '@material/web/button/tonal-button';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-tonal-button': LapTonalButton;
+    'lapp-tonal-button': LapTonalButton;
   }
 }
 
@@ -38,7 +38,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-tonal-button')
+@customElement('lapp-tonal-button')
 export class LapTonalButton extends MdTonalButton {
   // static override styles= [sharedStyles, sharedElevationStyles, tonalStyles];
 }

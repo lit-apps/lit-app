@@ -12,7 +12,7 @@ import illustrationVariant from './lib/illustrationVariantStyles';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-list-item': LapListItem;
+    'lapp-list-item': LapListItem;
   }
 }
 
@@ -56,7 +56,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-list-item')
+@customElement('lapp-list-item')
 export class LapListItem extends MdListItem {
   static override styles = [
     ...MdListItem.styles, 

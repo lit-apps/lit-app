@@ -11,7 +11,7 @@ import {LinearProgress} from './lib/linear-progress.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-linear-progress': MdLinearProgress;
+    'lapp-linear-progress': MdLinearProgress;
   }
 }
 
@@ -24,7 +24,7 @@ declare global {
  * - Determinate indicators display how long a process will take.
  * - Indeterminate indicators express an unspecified amount of wait time.
  */
-@customElement('lap-linear-progress')
+@customElement('lapp-linear-progress')
 export class MdLinearProgress extends LinearProgress {
   // static override styles= [styles];
 }

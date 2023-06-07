@@ -10,22 +10,20 @@ export declare class A11yFieldMixinInterface {
 	// Define the interface for the mixin
 	variant: Variant | undefined;
 	labelAbove: boolean | undefined;
-	renderA11yLabel: RenderLabel;
+	// renderA11yLabel: RenderLabel;
 
 }
 /**
  * A11yFieldMixin Mixin
  * A mixin that renders field more accessible: 
- * - [ ] disable label animation
- * - [ ] allow label to wrap
- * - [ ] larger label
+ * - [x] disable label animation
+ * - [x] allow label to wrap
+ * - [x] larger label
  */
 export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 
 
 	class A11yFieldMixinClass extends superClass {
-
-
 
 		/**
 		 * a variant of the field. Variants are use to render field differently or augment them.
@@ -42,24 +40,13 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 				this.labelAbove = true;
 				this.populated = true;
 			}
+			// always stay populated
+			// this is useful with select field for example
+			if (props.has('populated') && this.variant === 'a11y' && !this.populated) {
+				this.populated = true;
+			}
 			super.willUpdate(props);
 		}
-
-		// private override __renderLabel(isFloating: boolean) {
-		// 	if (this.labelAbove || this.variant === 'a11y') {
-		// 		let labelText = this.label ?? '';
-		// 		// Add '*' if a label is present and the field is required
-		// 		labelText += this.required && labelText ? '*' : '';
-
-		// 		return html`
-		// 			<div class="label label-above"
-    //   			>${labelText}</div>
-		// 		`;
-		// 	}
-		// 	// @ts-ignore
-		// 	return super.renderLabel(isFloating);
-
-		// }
 
 	};
 	// Cast return type to your mixin's interface intersected with the superClass type

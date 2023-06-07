@@ -11,7 +11,7 @@ import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-outlined-text-field': LapOutlinedTextField;
+    'lapp-outlined-text-field': LapOutlinedTextField;
   }
 }
 
@@ -20,8 +20,8 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-outlined-text-field')
+@customElement('lapp-outlined-text-field')
 export class LapOutlinedTextField extends OutlinedTextField {
   static override styles = MdOutlinedTextField.styles;
-  protected override readonly fieldTag = literal`lap-outlined-field`;
+  protected override readonly fieldTag = literal`lapp-outlined-field`;
 }

@@ -7,26 +7,26 @@ import { html } from 'lit';
 
 import { TextField } from './text-field';
 
-@customElement('lap-test-text-field')
+@customElement('lapp-test-text-field')
 class TestTextfield extends TextField {
-	protected override readonly fieldTag = literal`lap-filled-field`;
+	protected override readonly fieldTag = literal`lapp-filled-field`;
  
  }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'lap-test-text-field': TestTextfield;
+		'lapp-test-text-field': TestTextfield;
 	}
 }
 
 describe('text-field', () => {
 
 	async function setupTest(
-		template = html`<lap-test-text-field></lap-test-text-field>`
+		template = html`<lapp-test-text-field></lapp-test-text-field>`
 	) {
 		const element = await fixture<TestTextfield>(template);
 		if (!element) {
-			throw new Error('Could not query rendered <lap-test-text-field>.');
+			throw new Error('Could not query rendered <lapp-test-text-field>.');
 		}
 
 		const field = element.field;
@@ -61,7 +61,7 @@ describe('text-field', () => {
   describe('variant', () => {
 
 		it('reflects variant to field', async () => {
-			const { harness } = await setupTest(html`<lap-test-text-field variant="a11y"></lap-test-text-field>`);
+			const { harness } = await setupTest(html`<lapp-test-text-field variant="a11y"></lapp-test-text-field>`);
 			expect(harness.element.variant).toEqual('a11y');
 			expect(harness.element.field).toEqual('a11y');
 			expect(harness.element.field.labelAbove).toEqual(true);

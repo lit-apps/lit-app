@@ -12,7 +12,7 @@ import {MdCheckbox} from '@material/web/checkbox/checkbox';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-checkbox': LapCheckbox;
+    'lapp-checkbox': LapCheckbox;
   }
 }
 
@@ -29,7 +29,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-checkbox')
+@customElement('lapp-checkbox')
 export class LapCheckbox extends MdCheckbox {
   // static override styles= [styles, forcedColorsStyles];
 }

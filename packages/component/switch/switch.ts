@@ -11,7 +11,7 @@ import {Switch} from './lib/switch.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-switch': MdSwitch;
+    'lapp-switch': MdSwitch;
   }
 }
 
@@ -25,7 +25,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-switch')
+@customElement('lapp-switch')
 export class MdSwitch extends Switch {
   // static override styles= [styles];
 }

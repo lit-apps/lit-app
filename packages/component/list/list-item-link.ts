@@ -12,7 +12,7 @@ import {MdListItemLink} from '@material/web/list/list-item-link';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lap-list-item-link': LapListItemLink;
+    'lapp-list-item-link': LapListItemLink;
   }
 }
 
@@ -55,7 +55,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lap-list-item-link')
+@customElement('lapp-list-item-link')
 export class LapListItemLink extends MdListItemLink {
   // static override styles= [styles, forcedColors];
 }
