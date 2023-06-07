@@ -13,6 +13,16 @@ import  { LappListItem } from '../../list/list-item';
 @customElement('lapp-choice-list-item')
 export default class lappChoiceListItem extends LappListItem {
 
+	static override styles = [
+		...LappListItem.styles,
+		css`
+		/** This is to allow list text to wrap */
+		.label-text {
+			white-space: initial;
+		}
+		`
+	]
+
 
 	@property() selector!: string;
 	@property({ type: Boolean }) isMulti: boolean = false;
