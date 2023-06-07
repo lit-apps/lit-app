@@ -82,7 +82,7 @@ export abstract class Choice extends Translate(Generic, locale, 'readaloud') {
 	 * when true, show each option on their own line
 	 */
 	@property({ type: Boolean, reflect: true })
-	oneLinePerOption = false
+	dense = false
 
 	/**
 	 * The options to render
@@ -167,7 +167,7 @@ export abstract class Choice extends Translate(Generic, locale, 'readaloud') {
 				@keydown=${this.handleKeydown}
 			>
 			${this.renderChoiceOptions((this.options || []).filter(this.filter))}
-			${when(this.oneLinePerOption, () => html`<md-list-item disabled style="flex:1"></md-list-item>`)}			
+			${when(this.dense, () => html`<md-list-item disabled style="flex:1"></md-list-item>`)}			
 			<slot></slot>
 	</ul-choice>
 		`

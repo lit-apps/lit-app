@@ -20,8 +20,8 @@ const styles: CSSResult = css`
   /* background-color: var(--md-list-item-list-item-container-color, var(--md-sys-color-surface, #fef7ff)) */
 }
 
-/** oneLinePerOption */
-:host([onelineperoption]) #list { 
+/** dense */
+:host([dense]) #list { 
 	display: flex;
   flex-flow: row wrap;
   align-items: center;
