@@ -27,7 +27,7 @@
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-styles": "link:../../../packages/preignition-styles",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
-    "lit": "latest"
+    "lit": "^2.7.5"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.8.2",
