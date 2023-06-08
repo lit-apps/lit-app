@@ -14,7 +14,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import './list'
 import { when } from 'lit/directives/when.js';
 import getInnerText from '@preignition/preignition-util/src/getInnerText.js';
-import Translate from '@preignition/preignition-util/src/translate-mixin.js';
+import translate  from '@preignition/preignition-util/translate-mixin.js';
 // @ts-ignore
 import locale  from './readaloud-locale.mjs';
 
@@ -57,7 +57,7 @@ function isNavigableKey(key: string): key is NavigableValues {
  * [x] verify one line per option works
  * [x] verify settings values
  */
-export abstract class Choice extends Translate(Generic, locale, 'readaloud') {
+export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 
 	/** 
 	 * true to allow multiple selection
