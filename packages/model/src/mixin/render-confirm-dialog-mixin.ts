@@ -1,7 +1,8 @@
 import { AppToastEvent } from '@lit-app/app-event';
 import '@material/mwc-button';
 import { Dialog } from '@material/mwc-dialog';
-import '@material/mwc-linear-progress';
+import('@material/web/linearprogress/linear-progress.js')
+
 import { LitElement, PropertyValues, html } from 'lit';
 import { queryAsync, state } from 'lit/decorators.js';
 import { AppAction, Create, Delete, EntityAction, MarkDeleted } from '../events';
@@ -115,7 +116,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 					${(event as EntityAction).bulkAction ?
 							action?.bulk?.render.call(this, this.selectedItems, event.detail.data || this.data) :
 							action?.confirmDialog?.render.call(this, event.detail.data || this.data)}
-					<mwc-linear-progress style="margin-top: var(--space-medium);" .indeterminate=${!this._resolved}></mwc-linear-progress>
+					<md-linear-progress style="margin-top: var(--space-medium);" .indeterminate=${!this._resolved}></md-linear-progress>
           <mwc-button
             slot="secondaryAction"
             outlined
