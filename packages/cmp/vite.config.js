@@ -28,7 +28,7 @@ export default defineConfig({
       "@material/mwc-checkbox",
       "@material/mwc-dialog",
       "@material/mwc-drawer",
-      "@material/mwc-fab",
+       
       "@material/mwc-formfield",
       "@material/mwc-icon-button",
       "@material/mwc-icon",
