@@ -26,8 +26,6 @@ export default defineConfig({
       "@material/mwc-base/form-element.js", 
       "@material/mwc-button",
       "@material/mwc-checkbox",
-      "@material/mwc-circular-progress-four-color",
-      "@material/mwc-circular-progress",
       "@material/mwc-dialog",
       "@material/mwc-drawer",
       "@material/mwc-fab",

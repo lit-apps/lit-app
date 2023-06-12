@@ -28,6 +28,9 @@ const style = css`
     --md-text-button-with-icon-icon-size: var(--lapp-icon-size);
     --md-filled-button-with-icon-icon-size: var(--lapp-icon-size);
     --md-tonal-button-with-icon-icon-size: var(--lapp-icon-size);
+    --md-circular-color: var(--color-on-primary);
+    --md-circular-progress-active-indicator-color: var(--color-on-primary);
+    --md-circular-progress-active-indicator-width: 16;
   }
   `
 
