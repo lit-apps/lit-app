@@ -1,11 +1,11 @@
 // TODO: import from lapp-textfield and remove lapp-textfield
 import {customElement} from 'lit/decorators.js';
 
-import { MdFilledField } from '@material/web/field/filled-field';
+import { LappFilledTextField } from './textfield/filled-text-field.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lapp-textfied': LappTextfield;
+    'lapp-text-field': LappTextfield;
   }
 }
 
@@ -13,7 +13,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-// @customElement('lapp-textfield')
-// export  class LappTextfield extends MdFilledField {
-  
-// }
+@customElement('lapp-text-field')
+export  class LappTextfield extends LappFilledTextField {
+ 
+}

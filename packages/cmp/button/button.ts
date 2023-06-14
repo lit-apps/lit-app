@@ -9,10 +9,10 @@ import { html, literal } from 'lit/static-html.js';
 import { LitElement, css } from 'lit';
 import { when } from 'lit/directives/when.js';
 
-import  '@material/web/button/elevated-button';
-import  '@material/web/button/filled-button';
-import  '@material/web/button/tonal-button';
-import  '@material/web/button/outlined-button';
+import '@material/web/button/elevated-button';
+import '@material/web/button/filled-button';
+import '@material/web/button/tonal-button';
+import '@material/web/button/outlined-button';
 import '@material/web/circularprogress/circular-progress'
 
 const filledTag = literal`md-filled-button`;
@@ -94,12 +94,12 @@ export class LappButton extends LitElement {
   @property() tonal!: boolean;
 
   @property() icon!: string;
-  
+
   @property() loading!: boolean;
 
   override render() {
     const tagName = this.unelevated ? filledTag : this.tonal ? tonalTag : this.outlined ? outlineTag : defaultTag;
-    
+
     // TODO: add aria-support for when loading button
     return html`<${tagName}
 			.disabled=${this.disabled}
