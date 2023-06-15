@@ -49,5 +49,6 @@ export interface DataI<M = MetaData, R = Ref> {
 
 // a type that is an array of T and has $id and $path properties
 // $id and $path property are added by Firebase controllers on collections
-export type Collection<T> = (T & {$id: string, $path: string})[]
+export type CollectionI<T> = (T & {$id: string, $path: string})
+export type Collection<T> = CollectionI<T>[]
 
