@@ -10,14 +10,14 @@ export const entityContext = createContext<EntityI>('entity-class-context');
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
-/**
- * ConsumeEntityMixin a mixin that consumes Action context:
- * - @property - Action - true when test
- */
 export declare class EntityMixinInterface {
 	Entity: typeof EntityI;
 }
 
+/**
+ * ConsumeEntityMixin a mixin that consumes an Entity context.
+ * 
+ */
 export const ConsumeEntityMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	class ContextConsumeEntityMixinClass extends superClass {
@@ -28,8 +28,8 @@ export const ConsumeEntityMixin = <T extends Constructor<ReactiveElement>>(super
 }
 
 /**
- * ProvideEntityMixin a mixin that consumes Action context:
- * - @property - Action - true when test
+ * ProvideEntityMixin a mixin that Provides an Entity context.
+ * 
  */
 export const ProvideEntityMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 

@@ -19,7 +19,7 @@ type TableConfig = {
 	optional?: boolean
 }
 
-type GridConfig = {
+type GridConfig<T = any> = {
 	index: number
 	header?: string
 	path?: string
@@ -28,7 +28,7 @@ type GridConfig = {
 	resizable?: boolean
 	sortable?: boolean
 	headerRenderer?: GridColumnHeaderLitRenderer
-	bodyRenderer?: GridColumnBodyLitRenderer
+	bodyRenderer?: GridColumnBodyLitRenderer<T>
 }
 interface ModelComponentBase {
 	label?: string
@@ -82,6 +82,8 @@ export interface ModelComponentSelect extends ModelComponentBase {
 }
 export interface ModelComponentText extends ModelComponentBase {
 	component?: TextComponent | DateComponent
+	maxLength?: number
+	minLength?: number
 	type?: 'text' | 'number' | 'email' | 'password' | 'tel' | 'url' | 'search' | 'color' | 'date' | 'datetime-local' | 'month' | 'time' | 'week'
 }
 export interface ModelComponentTextArea extends ModelComponentBase {

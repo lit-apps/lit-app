@@ -24,15 +24,34 @@ export declare class AccessMixinInterface {
 
 export declare class ProvideAccessMixinInterface extends AccessMixinInterface {
 	static getAccess: GetAccess;
-
-
 }
+
+const defaultAccessFalse = (_access: Access, _data: any) => {
+	if (import.meta.env.DEV) {
+		console.warn('No access function provided for entity');
+	}
+	return false
+}
+const defaultAccessTrue = (_access: Access, _data: any) => {
+	if (import.meta.env.DEV) {
+		console.warn('No access function provided for entity');
+	}
+	return true
+}
+const getAccess: GetAccess = {
+	isOwner: defaultAccessFalse,
+	canDelete: defaultAccessFalse,
+	canEdit: defaultAccessFalse,
+	canView: defaultAccessTrue,
+};
+
 
 /**
  * ProvideAccessMixin 
- * A mixin to be applied to entities at root level. It set context providers for the entity: 
+ * A mixin to be applied to entities at root level. It set entityAccess for the entity: 
+ * Entity Access stores access information about the entity, like `isOwner`, `canEdit`, `canView`, `canDelete`
  */
-export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: typeof EntityI, data: any}> >(superClass: T, getAccessFn?: GetAccess) => {
+export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: typeof EntityI, data: any}> >(superClass: T, getAccessFn: GetAccess = getAccess) => {
 
 	class ProvideAccessMixinClass extends superClass {
 
@@ -71,8 +90,7 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 				return;
 			}
 			// TODO: getAccess should come from Entity
-			const getAccess = this.Entity.getAccess || (this.entity?.constructor as typeof EntityI).getAccess || getAccessFn;
-			// const getAccess = this.Entity.getAccess ||  getAccessFn;
+			const getAccess = this.Entity.getAccess || (this.entity?.constructor as typeof EntityI)?.getAccess || getAccessFn;
 			this.entityAccess = {
 				isOwner: getAccess.isOwner.call(this, accessData, data),
 				canEdit: getAccess.canEdit.call(this, accessData, data),
@@ -87,6 +105,10 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 }
 
 
+/**
+ * ConsumeAccessMixin consumes entityAccessContext for an entity.
+ * Entity Access stores access information about the entity, like `isOwner`, `canEdit`, `canView`, `canDelete`
+ */
 export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	class ContextConsumeAccessMixinClass extends superClass {

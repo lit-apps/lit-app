@@ -22,7 +22,9 @@ export interface EntityCreateDetail {
   batch?: WriteBatch,
   promise?: Promise<any>
 }
-export interface EntityDirtyDetail extends EntityDetail {
+export interface EntityDirtyDetail  {
+  entityName:string,
+  promise?: Promise<any>
 	dirty: boolean
 }
 
@@ -324,7 +326,7 @@ export class AppActionEmail extends BaseAction<ActionEmailDetail> {
 
 
 export type AnyEvent = Write | Update | Reset | Delete | MarkDeleted | Restore | Create | Dirty | Close | Open | Edit | EntityAction | AppAction | AppActionEmail;
-export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset | typeof Delete | typeof MarkDeleted | typeof Restore | typeof Create | typeof Dirty | typeof Close | typeof Open | typeof Edit | typeof EntityAction | typeof AppAction | typeof AppActionEmail;
+export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset | typeof Delete | typeof MarkDeleted | typeof Restore | typeof Create | typeof Dirty | typeof Close | typeof Open | typeof Edit | typeof EntityAction | typeof AppAction | typeof AppActionEmail ; 
 declare global {
   interface HTMLElementEventMap {
     'entity-reset': Reset, // reset entity to original state (database state)

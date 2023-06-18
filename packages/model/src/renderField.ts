@@ -2,8 +2,8 @@ import { html } from 'lit';
 import { get, set } from '@preignition/preignition-util/src/deep';
 import { debounce, throttle } from '@preignition/preignition-util/src/debounce';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import {   FieldConfig,  FieldConfigUpload,  EntityElement, DefaultI } from './types/entity';
-import {Action } from './types/action'
+import { FieldConfig, FieldConfigUpload, EntityElement, DefaultI } from './types/entity';
+import { Action } from './types/action'
 import { Model, ModelComponent, ModelComponentSelect } from './types/modelComponent';
 import { Dirty, EntityWriteDetail, Write, Update } from './events';
 import type Entity from './entity';
@@ -13,14 +13,15 @@ import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-
 import { MultiSelectComboBox } from '@vaadin/multi-select-combo-box/src/vaadin-multi-select-combo-box'
 
 import '@preignition/preignition-widget/src/extension/pwi-select'
-import '@material/mwc-textfield'
-import '@material/mwc-textarea'
-import '@material/mwc-select'
-import '@material/mwc-slider'
-import '@preignition/pwi-md/src/pwi-md-editor'
-import '@preignition/pwi-form-upload'
-
-import '@material/mwc-formfield'
+import('@material/mwc-textfield')
+import('@material/mwc-textarea')
+import('@material/mwc-select')
+import('@material/mwc-slider')
+import('@preignition/pwi-md/src/pwi-md-editor')
+import('@preignition/pwi-form-upload')
+import('@preignition/pwi-input/src/pwi-input-translation')
+import('@preignition/pwi-input/src/pwi-input-translation-textarea')
+import('@material/mwc-formfield')
 import('@material/web/switch/switch')
 
 const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetail) => {
@@ -28,24 +29,38 @@ const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetai
   element.dispatchEvent(new Update(detail));
 }, 2000, true)
 
+
+/**
+ * Renders a data entry field for a given model. It also handles the update of the data.
+ * 
+ * @param this 
+ * @param name - the name of the model
+ * @param data - current data
+ * @param update - when true, updates the data automatically
+ * @param m - the model
+ * @param entity - the entity
+ * @param config - additional config
+ * @returns 
+ */
 export function renderField<Interface extends DefaultI>(this: EntityElement,
   name: string,
   data: Interface = {} as Interface,
   update: boolean,
   m: Model<unknown>,
-  entity: Entity<Interface, any>,
-  config?: FieldConfig |  FieldConfigUpload
+  entity: Entity<Interface>,
+  config?: FieldConfig | FieldConfigUpload,
+  mode: 'edit' | 'translate' | 'view' = 'edit'
 ) {
   let model = get(name, m);
-  if(!model && import.meta.env.DEV) {
+  if (!model && import.meta.env.DEV) {
     console.warn(`No model found for ${name}`);
-    return html`<i class="field" style="color:var(--color-warning);">Missing model for "${name}" in "${entity.entityName}"</i>` 
+    return html`<i class="field" style="color:var(--color-warning);">Missing model for "${name}" in "${entity.entityName}"</i>`
   }
-  if(config) {
-    model = {...model, ...config}
+  if (config) {
+    model = { ...model, ...config }
   }
   const key = name.split('.').pop();
-  
+
   let { component } = model;
   if (!component) {
     component = 'textfield';
@@ -67,7 +82,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
   }
 
   const id = this.docId ? this.docId : this.id;
-  const dirtyEvent = new Dirty({ entityName: entity.entityName, id: id, dirty: true });
+  const dirtyEvent = new Dirty({ entityName: entity.entityName, dirty: true });
 
   const canEdit = (this.entityStatus?.isEditing || (entity.realTime && this.entityAccess.canEdit)) && !(config?.disabled === true);
   const disabled = !canEdit;
@@ -83,13 +98,13 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
     return async (e: CustomEvent) => {
       // @ts-ignore
       const v = e.target?.[property];
-      if(v !== value) {
+      if (v !== value) {
         this.dispatchEvent(dirtyEvent);
         await this.updateComplete
       }
       set(name, v, data);
-      if(v !== value) {
-        if(entity.realTime) {
+      if (v !== value) {
+        if (entity.realTime) {
           debounceWrite(this, { entityName: entity.entityName, id: id, data: data });
         }
       }
@@ -102,7 +117,57 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
     };
   };
 
+  if (mode === 'translate') {
+    const origin = get(name,Object.getPrototypeOf(data));
+    if (component === 'textfield') {
+      return html`
+      <pwi-input-translation 
+        class=${cls}
+        .readOnly=${disabled}
+        .label=${label}
+        .value=${origin}
+        .translated=${value || ''}
+        .maxLength=${model.maxLength}
+        .minLength=${model.minLength}
+        .charCounter=${!!model.maxLength}
+        @translated-changed=${onInputFact('translated')} 
+      ></pwi-input-translation>`
+    }
+    if (component === 'textarea') {
+      return html`
+      <pwi-input-translation-textarea 
+        class=${cls}
+        .readOnly=${disabled}
+        .label=${label}
+        .value=${origin}
+        .translated=${value || ''}
+        .maxLength=${model.maxLength}
+        .charCounter=${!!model.maxLength}
+        @translated-changed=${onInputFact('translated')} 
+      ></pwi-input-translation-textarea>`
+    }
+    if (component === 'md') {
+      return html`
+      <pwi-md-editor 
+        .rows=${3}
+        .writeLabel=${label}
+        .translate=${true} 
+        .readOnly=${disabled}
+        .md=${origin} 
+        .mdtranslate=${origin} 
+        @mdtranslate-changed=${onInputFact('mdtranslated')} 
+        .maxLength=${model.maxLength}
+        .charCounter=${!!model.maxLength}></pwi-md-editor>
+      
+      `
+    }
+    throw new Error(`Translation not allowed for ${name}`);
+
+  }
+
+
   if (component === 'textfield') {
+    // console.log('renderField', name, model.maxLength, model.minLength)
     return html`
     <mwc-textfield
       class=${cls}
@@ -112,6 +177,9 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       .label=${label}
       .helper=${model.helper}
       .required=${model.required}
+      .maxLength=${model.maxLength}
+      .minLength=${model.minLength}
+      .charCounter=${!!model.maxLength}
       .value=${value || ''}
       @input=${onInputFact('value')}
     ></mwc-textfield>
@@ -126,6 +194,9 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       .label=${label}
       .helper=${model.helper}
       .required=${model.required}
+      .maxLength=${model.maxLength}
+      .minLength=${model.minLength}
+      .charCounter=${!!model.maxLength}
       .value=${value || ''}
       @input=${onInputFact('value')}
     ></mwc-textarea >`;
@@ -139,6 +210,9 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       .writeLabel=${label}
       .helper=${model.helper}
       .required=${model.required}
+      .maxLength=${model.maxLength}
+      .minLength=${model.minLength}
+      .charCounter=${!!model.maxLength}
       rows=${ifDefined(model.rows) || undefined}
       resize=${ifDefined(model.resize) || undefined}
       .md=${value || ''}

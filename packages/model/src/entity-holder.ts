@@ -7,6 +7,8 @@ import { ConsumeEntityStatusMixin } from './mixin/context-entity-status-mixin';
 import { ConsumeDataMixin } from './mixin/context-data-mixin';
 import { RenderConfig } from './types/entity';
 import { form, styleTypography, accessibility } from '@preignition/preignition-styles';
+import { camelToDash } from '@preignition/preignition-util';
+import { Strings } from './types';
 
 
 /**
@@ -44,6 +46,9 @@ export default class entityHolder extends
 		form
 	]
 
+	// setLocale must be set to handle translations
+	declare setLocale: (entityName: string, locale: Strings) => void;
+
 	@state() entity!: Entity;
 
 	@property() heading!: string;
@@ -54,7 +59,7 @@ export default class entityHolder extends
 	 * 2: title of entity will be h3
 	 * 3: no title
 	 */
-	@property() level: number = 1;
+	@property({type: Number}) level: number = 1;
 
 	// true to make input  fields write real-time changes
 	@property({type: Boolean}) realTime = false
@@ -83,6 +88,11 @@ export default class entityHolder extends
 					[...root.adoptedStyleSheets,  ...styles] 
 					)
 			}
+			
+			if(this.Entity.locale && this.setLocale) {
+				this.setLocale(camelToDash(this.Entity.entityName), this.Entity.locale);
+			}
+
 			// notify entity is ready
 			this.dispatchEvent(new entityEvent(this.entity))
 			
@@ -90,6 +100,10 @@ export default class entityHolder extends
 				this.setAttribute('entity-name', this.Entity.entityName)
 			}
 
+		}
+		if(props.has('data') && this.data === null) {
+			// data is null when the document doest not exist
+			this.data = {}
 		}
 		if(props.has('realtime') && this.entity) {
 			this.entity.realTime = this.realTime
@@ -106,7 +120,7 @@ export default class entityHolder extends
 			return html`getting entity...`;
 		}
 		
-		if (!this.data) {
+		if (this.data === undefined) {
 			return html`getting data...`;
 		}
 

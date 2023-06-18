@@ -38,7 +38,7 @@ const statusInit: EntityStatus = {
 /**
  * ProvideEntityStatusMixin 
  * A mixin to be applied to entities at root level. It set context providers for the entity status
- * - entityStatusContext
+ * Entity Status stores status information about the entity, like `isDirty`, `isEditing`, `isSaving`, `isLoading`, `isDeleting
  */
 export const ProvideEntityStatusMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
@@ -93,6 +93,10 @@ export const ProvideEntityStatusMixin = <T extends Constructor<ReactiveElement>>
 }
 
 
+/**
+ * A mixin that consume EntityStatus context
+ * Entity Status stores status information about the entity, like `isDirty`, `isEditing`, `isSaving`, `isLoading`, `isDeleting
+ */
 export const ConsumeEntityStatusMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	class ContextConsumeEntityStatusMixinClass extends superClass {

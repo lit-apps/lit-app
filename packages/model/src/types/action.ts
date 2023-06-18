@@ -51,6 +51,6 @@ export type Action = {
 }
 // export type Actions = { [key: string]: Action }
 
-export type DefaultActions = 'create' | 'edit' | 'write' | 'cancel' | 'delete' | 'restore' | 'open' | 'close'
+export type DefaultActions = 'create' | 'edit' | 'write' | 'cancel' | 'delete' | 'restore' | 'open' | 'close' 
 // export type ActionRecord<K extends string, T> = { [P in K]: T; }
 export type Actions = Record<DefaultActions, Action>

@@ -43,6 +43,10 @@ export * from './types/getAccess'
 import entries from './typeUtils/entries';
 import ensure from './typeUtils/ensure';
 
+export type Strings = {
+	[key: string]: string | Strings;
+};
+
 export {
 	entries,
 	ensure

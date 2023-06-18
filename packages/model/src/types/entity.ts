@@ -25,6 +25,7 @@ export type EntityAccess = {
 export interface FieldConfig {
 	disabled?: boolean
 	label?: string
+	class?: string
 }
 
 export interface FieldConfigUpload extends FieldConfig {
@@ -84,9 +85,10 @@ export type RenderConfig = {
  * to be applied for an entity
  */
 export abstract class EntityRenderer<T > {
-
+	
+	
 	/**
-		 * Render a form for an entity
+	 * Render a form for an entity
 	 * @param data - the data for the form
 	 * @param config - the configuration for the form
 	 */
@@ -172,9 +174,14 @@ export abstract class EntityI<Interface extends DefaultI = DefaultI> extends Ent
 	static getAccess: GetAccess
 	static actions: any
 	static model: Model<DefaultI>
+	static locale?: Strings
 	static entityName: string
 	
 	static styles: CSSResult | undefined
+
+	constructor(_host: EntityElement | EntityElementList, _realTime: boolean, _listenOnAction: boolean) {
+			super()
+	}
 
 	icon!: string
 	_selected!: number

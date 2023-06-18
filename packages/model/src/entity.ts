@@ -25,6 +25,7 @@ import {
   Close,
   Create,
   Delete,
+  Dirty,
   // Delete,
   // Create,
   Edit,
@@ -163,8 +164,11 @@ const actions: Actions = {
  * and actions, defining the operations that can be performed on the data.
  * 
  * It can also contain renderer helper  
+ * 
+ * 
  */
-export default class Entity<Interface extends DefaultI = DefaultI>
+export default  class Entity<Interface 
+extends DefaultI = DefaultI>
   implements EntityI<Interface>  {
 
   /**
@@ -183,8 +187,31 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     this._entityName = name
   }
 
+  static locale?: String
   static model: Model<DefaultI>
   static actions = actions
+
+  /**
+  * The access control for this entity - this needs to be overridden in subclasses
+  * Ideally we would like to make this static protected, but TS prevents this
+  * See https://github.com/microsoft/TypeScript/issues/34516 
+  * and https://github.com/Microsoft/TypeScript/issues/14600
+  * { 
+  *   isOwner: (_access: Access, _data: any) => true,
+  *   canEdit: (_access: Access, _data: any) => true,
+  *   canView: (_access: Access, _data: any) => true,
+  *   canDelete: (_access: Access, _data: any) => true
+  * }
+  */
+  static getAccess: GetAccess
+
+  // static {
+  //   setTimeout(() => {
+  //     if (!this.getAccess) {
+  //       throw new Error(`getAccess must be overridden in subclasses (entity: ${this.entityName})`)
+  //     }
+  //   }, 0)
+  // }
 
   // static setActions(actions: Actions) {
   //   const superCtor = Object.getPrototypeOf(this) as typeof Entity;
@@ -226,17 +253,6 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     return (this.constructor).actions;
   }
 
-  /**
-  * The access control for this entity - this needs to be overridden in subclasses
-  * { 
-  *   isOwner: (_access: Access, _data: any) => true,
-  *   canEdit: (_access: Access, _data: any) => true,
-  *   canView: (_access: Access, _data: any) => true,
-  *   canDelete: (_access: Access, _data: any) => true
-  * }
-  */
-  static getAccess: GetAccess
-
   hostConnected() {
     // this.subscribe(this.ref)
   }
@@ -244,6 +260,7 @@ export default class Entity<Interface extends DefaultI = DefaultI>
   hostDisconnected() {
     // this.unsubscribe()
   }
+
   /**
    * @param element the element to render the action on
    * @param realTime when true, will dispatch update events on data-input 
@@ -291,7 +308,13 @@ export default class Entity<Interface extends DefaultI = DefaultI>
     if (!this.host) {
       throw new Error('Entity not bound to element');
     }
-    return (renderField<Interface>).call(this.host as EntityElement, name, data ?? this.host.data, false, this.model, this, config);
+    return (renderField<Interface>).call(this.host as EntityElement, name, data ?? this.host.data ?? {}, false, this.model, this, config);
+  }
+  public renderFieldTranslate(name: string, config?: FieldConfig | FieldConfigUpload, data?: Interface): TemplateResult | undefined {
+    if (!this.host) {
+      throw new Error('Entity not bound to element');
+    }
+    return (renderField<Interface>).call(this.host as EntityElement, name, data ?? this.host.data ?? {}, false, this.model, this, config, 'translate');
   }
   /**
    * renders a data-entry field, depending on the model definition
@@ -323,13 +346,16 @@ export default class Entity<Interface extends DefaultI = DefaultI>
       return this._dispatchTriggerEvent(event);
     }
     return null
+  }
 
+  public markDirty(dirty: boolean = true) {
+    const event = new Dirty({ entityName: this.entityName, dirty: dirty });
+    return this._dispatchTriggerEvent(event);
   }
 
   public dispatchAction(actionName: keyof this['actions']): CustomEvent {
     // @ts-ignore
     const action = this.actions[actionName];
-
     const event = new EntityAction({ id: this.host.id, entityName: this.entityName }, action, String(actionName));
     return this._dispatchTriggerEvent(event);
   }
@@ -728,7 +754,6 @@ export default class Entity<Interface extends DefaultI = DefaultI>
   renderContent(data: Interface, config?: RenderConfig): TemplateResult {
     return html`<div class="layout vertical">							
       ${data === undefined ? html`Loading...` :
-        data === null ? html`<p>${this.entityName} data not found</p>` :
           [
             this.showMetaData ? this.renderMetaData(data, config) : html``,
             this.showActions ? this.renderActions(data, config) : html``,
