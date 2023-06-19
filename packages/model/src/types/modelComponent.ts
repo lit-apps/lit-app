@@ -82,6 +82,7 @@ export interface ModelComponentSelect extends ModelComponentBase {
 }
 export interface ModelComponentText extends ModelComponentBase {
 	component?: TextComponent | DateComponent
+	placeholder?: string
 	maxLength?: number
 	minLength?: number
 	type?: 'text' | 'number' | 'email' | 'password' | 'tel' | 'url' | 'search' | 'color' | 'date' | 'datetime-local' | 'month' | 'time' | 'week'
@@ -89,6 +90,9 @@ export interface ModelComponentText extends ModelComponentBase {
 export interface ModelComponentTextArea extends ModelComponentBase {
 	component: TextComponent 
 	rows?: number
+	placeholder?: string
+	maxLength?: number
+	minLength?: number
 	resize?: 'vertical' | 'horizontal' | 'auto'
 }
 export interface ModelComponentBoolean extends ModelComponentBase {

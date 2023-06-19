@@ -35,16 +35,23 @@ declare global {
  *  Base Class holding an Entity
  */
 @customElement('entity-holder')
-export default class entityHolder extends 
+export default class entityHolder extends
 	ConsumeEntityMixin(
 		ConsumeAccessMixin(
 			ConsumeDataMixin(
 				ConsumeEntityStatusMixin(LitElement)))) {
 
 	static override styles = [
-		styleTypography,		
+		styleTypography,
 		accessibility,
-		form
+		form, 
+		css`
+		:host {
+			display: contents;
+			// flex: 1;
+			// flex-direction: column;
+		}
+		`
 	]
 
 	// setLocale must be set to handle translations
@@ -60,56 +67,60 @@ export default class entityHolder extends
 	 * 2: title of entity will be h3
 	 * 3: no title
 	 */
-	@property({type: Number}) level: number = 1;
+	@property({ type: Number }) level: number = 1;
 
 	// true to make input  fields write real-time changes
-	@property({type: Boolean}) realTime = false
+	@property({ type: Boolean }) realTime = false
 
 	// when true, will listen to action events on the element
-	@property({type: Boolean}) listenOnAction = false
+	@property({ type: Boolean }) listenOnAction = false
 
 	get renderConfig(): RenderConfig {
 		return {
 			entityAccess: this.entityAccess,
 			entityStatus: this.entityStatus,
+			// TODO: remove level
 			level: this.level
 		}
 	}
-	
-	protected override willUpdate(props: PropertyValues){
-		if(props.has('Entity')) {
+
+	protected override willUpdate(props: PropertyValues<this>) {
+		if (props.has('Entity')) {
 
 			const E = this.Entity as unknown as typeof Entity
 			this.entity = new E(this, this.realTime, this.listenOnAction)
-			if(this.Entity?.styles) {
+
+			/** Handle Syles */
+			if (this.Entity?.styles) {
 				const root = this.renderRoot as ShadowRoot
 				const styles = Array.isArray(this.Entity.styles) ? this.Entity.styles : [this.Entity.styles]
 				adoptStyles(
-					root, 
-					[...root.adoptedStyleSheets,  ...styles] 
-					)
+					root,
+					[...root.adoptedStyleSheets, ...styles]
+				)
 			}
-			
-			if(this.Entity.locale && this.setLocale) {
+
+			/** Handle Localization */
+			if (this.Entity.locale && this.setLocale) {
 				this.setLocale(camelToDash(this.Entity.entityName), this.Entity.locale);
 			}
 
 			// notify entity is ready
 			this.dispatchEvent(new entityEvent(this.entity))
-			
-			if(import.meta.env.DEV) {
+
+			if (import.meta.env.DEV) {
 				this.setAttribute('entity-name', this.Entity.entityName)
 			}
 
 		}
-		if(props.has('data') && this.data === null) {
-			// data is null when the document doest not exist
-			this.data = {}
-		}
-		if(props.has('realtime') && this.entity) {
+		// if(props.has('data') && this.data === null) {
+		// 	// data is null when the document doest not exist
+		// 	this.data = {}
+		// }
+		if (props.has('realTime') && this.entity) {
 			this.entity.realTime = this.realTime
 		}
-		if(props.has('listenOnAction') && this.entity) {
+		if (props.has('listenOnAction') && this.entity) {
 			// TODO: activate listeners
 			this.entity.listenOnAction = this.listenOnAction
 		}
@@ -120,7 +131,7 @@ export default class entityHolder extends
 		if (!this.entity) {
 			return html`getting entity...`;
 		}
-		
+
 		if (this.data === undefined) {
 			return html`getting data...`;
 		}
@@ -160,7 +171,7 @@ export default class entityHolder extends
 		return entity.renderBody(this.data, this.renderConfig);
 	}
 	protected renderFooter(entity: Entity) {
-		return entity.renderFooter(this.data,  this.renderConfig);
+		return entity.renderFooter(this.data, this.renderConfig);
 	}
 
 }

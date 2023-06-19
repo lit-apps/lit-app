@@ -112,13 +112,13 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
         model.onInput(data, v, this);
       }
       if (update || model.requestUpdate) {
-        this.requestUpdate();
+        this.requestUpdate('data');
       }
     };
   };
 
   if (mode === 'translate') {
-    const origin = get(name,Object.getPrototypeOf(data));
+    const origin = get(name, Object.getPrototypeOf(data));
     if (component === 'textfield') {
       return html`
       <pwi-input-translation 
@@ -167,13 +167,15 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
 
 
   if (component === 'textfield') {
-    // console.log('renderField', name, model.maxLength, model.minLength)
+    // console.log('renderField', name, value)
+
     return html`
     <mwc-textfield
       class=${cls}
       type=${ifDefined(model.type) || undefined}
       .icon=${model.icon}
       .readOnly=${disabled}
+      .placeholder=${model.placeholder}
       .label=${label}
       .helper=${model.helper}
       .required=${model.required}
@@ -183,14 +185,14 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       .value=${value || ''}
       @input=${onInputFact('value')}
     ></mwc-textfield>
-
-    `;
+    `
   }
   if (component === 'textarea') {
     return html`
     <mwc-textarea
       class=${cls}
       .readOnly=${disabled}
+      .placeholder=${model.placeholder}
       .label=${label}
       .helper=${model.helper}
       .required=${model.required}
@@ -208,6 +210,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       class=${cls}
       .readOnly=${disabled}
       .writeLabel=${label}
+      .placeholder=${model.placeholder}
       .helper=${model.helper}
       .required=${model.required}
       .maxLength=${model.maxLength}
