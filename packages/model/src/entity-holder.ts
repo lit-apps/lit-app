@@ -1,4 +1,4 @@
-import { html, LitElement, PropertyValues, adoptStyles } from "lit";
+import { html, LitElement, PropertyValues, adoptStyles, css } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
 import Entity from './entity';
 import { ConsumeEntityMixin } from './mixin/context-entity-mixin';
@@ -9,6 +9,7 @@ import { RenderConfig } from './types/entity';
 import { form, styleTypography, accessibility } from '@preignition/preignition-styles';
 import { camelToDash } from '@preignition/preignition-util';
 import { Strings } from './types';
+import { Reset, Edit, Write } from './events'
 
 
 /**
@@ -128,6 +129,14 @@ export default class entityHolder extends
 			super.render(),
 			this.renderEntity(this.entity)
 		]
+	}
+
+	override firstUpdated(props: PropertyValues) {
+		super.firstUpdated(props);
+		// without requesting Updates, renderFIeld templates will not be updated when data changes
+		this.addEventListener(Reset.eventName, () => this.requestUpdate());
+		this.addEventListener(Edit.eventName, () => this.requestUpdate());
+		this.addEventListener(Write.eventName, () => this.requestUpdate());
 	}
 
 	protected renderEntity(entity: Entity) {
