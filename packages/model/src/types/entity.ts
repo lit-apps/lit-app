@@ -1,5 +1,6 @@
 import type { Grid, GridItemModel } from '@vaadin/grid'
 import { CSSResult, LitElement, TemplateResult } from 'lit'
+import { Strings } from '../types'
 import type { Action, ButtonConfig } from './action'
 import { EntityCreateDetail } from '../events'
 import { GetAccess } from './getAccess'
@@ -200,24 +201,24 @@ export abstract class EntityI<Interface extends DefaultI = DefaultI> extends Ent
 	abstract dispatchAction(actionName: keyof EntityI['actions']): CustomEvent
 	
 	static getEvent<K extends {actions: Record<string, Action>}>(
-		actionName: keyof K['actions'], 
-		data: any, 
-		host: HTMLElement, 
-		bulkAction?: boolean,
+		_actionName: keyof K['actions'], 
+		_data: any, 
+		_host: HTMLElement, 
+		_bulkAction?: boolean,
 	){}
 	static onActionClick<K extends {actions: Record<string, Action>}>(
-		actionName: keyof K['actions'], 
-		host: HTMLElement, 
-		data?: any, 
-		beforeDispatch?: () => boolean | string | void, 
-		onResolved?: (promise: any) => void, 
-		getEvent?: () => CustomEvent, 
+		_actionName: keyof K['actions'], 
+		_host: HTMLElement, 
+		_data?: any, 
+		_beforeDispatch?: () => boolean | string | void, 
+		_onResolved?: (promise: any) => void, 
+		_getEvent?: () => CustomEvent, 
 		) {}
 	static renderAction<K extends {actions: Record<string, Action>}>(
-		actionName: keyof K['actions'], 
-		element: HTMLElement, 
-		data: any = {}, 
-		config?: ButtonConfig, 
-		beforeDispatch?: () => boolean | string | void, 
-		onResolved?: (promise: any) => void) {}
+		_actionName: keyof K['actions'], 
+		_element: HTMLElement, 
+		_data: any = {}, 
+		_config?: ButtonConfig, 
+		_beforeDispatch?: () => boolean | string | void, 
+		_onResolved?: (promise: any) => void) {}
 }

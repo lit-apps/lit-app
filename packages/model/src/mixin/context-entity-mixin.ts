@@ -2,11 +2,10 @@ import { ReactiveElement } from 'lit';
 import { state } from 'lit/decorators.js';
 import { consume, provide, createContext } from '@lit-labs/context';
 import type {EntityI} from '../types/entity';
-import Entity  from '../entity';
 
 // type Actions = Record<string, Action>;
 // context for holding the entity id
-export const entityContext = createContext<EntityI>('entity-class-context');
+export const entityContext = createContext<typeof EntityI>('entity-class-context');
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 

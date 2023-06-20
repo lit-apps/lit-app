@@ -1,7 +1,5 @@
-import type { LitElement } from 'lit'
+import type { LitElement } from 'lit';
 import {
-	columnBodyRenderer,
-	columnHeaderRenderer,
 	GridColumnBodyLitRenderer,
 	GridColumnHeaderLitRenderer
 } from 'lit-vaadin-helpers';

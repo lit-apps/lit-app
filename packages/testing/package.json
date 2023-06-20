@@ -17,6 +17,6 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "lit": "latest"
+    "lit": "^2.7.5"
   }
 }

@@ -34,21 +34,22 @@
     "@preignition/preignition-demo": "^0.5.0",
     "chai-a11y-axe": "^1.4.0",
     "eslint": "^8.14.0",
-    "firebase": "^9.18.0",
+    "firebase": "^9.22.2",
     "happy-dom": "^8.9.0",
-    "lit": "^2.7.4",
+    
     "typescript": "^5.0.2",
-    "vite": "^4.2.1",
-    "vitest": "^0.29.7"
+    "vite": "^4.3.9",
+    "vitest": "^0.32.2"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
+    "lit": "^2.7.5",
     "@lit-app/app-event": "link:../../../app/app-event",
     "@lit-app/cmp": "link:../cmp",
     "@lit-app/state": "^0.8.4",
-    "@lit-labs/context": "^0.2.0",
+    "@lit-labs/context": "^0.3.3",
     "@material/mwc-button": "0.25.3",
     "@material/mwc-dialog": "0.25.3",
     "@material/mwc-formfield": "0.25.3",

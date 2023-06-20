@@ -1,6 +1,6 @@
+import { consume, ContextProvider, createContext } from '@lit-labs/context';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { state } from 'lit/decorators.js';
-import { consume, provide, createContext, ContextProvider } from '@lit-labs/context';
 
 export const dataContext = createContext('data-context');
 
