@@ -1,12 +1,12 @@
-import { html, LitElement, PropertyValues, adoptStyles, css } from "lit";
-import { customElement, property, state } from 'lit/decorators.js';
+import { html, LitElement, PropertyValues, adoptStyles } from "lit";
+import { property, state } from 'lit/decorators.js';
 import Entity from './entity';
 import { ConsumeEntityMixin } from './mixin/context-entity-mixin';
 import { ConsumeAccessMixin } from './mixin/context-access-mixin';
 import { ConsumeEntityStatusMixin } from './mixin/context-entity-status-mixin';
 import { ConsumeDataMixin } from './mixin/context-data-mixin';
 import { RenderConfig } from './types/entity';
-import { form, styleTypography, accessibility } from '@preignition/preignition-styles';
+
 import { camelToDash } from '@preignition/preignition-util';
 import { Strings } from './types';
 import { Reset, Edit, Write } from './events'
@@ -34,25 +34,11 @@ declare global {
 /**
  *  Base Class holding an Entity
  */
-@customElement('entity-holder')
-export default class entityHolder extends
+export class EntityHolder extends
 	ConsumeEntityMixin(
 		ConsumeAccessMixin(
 			ConsumeDataMixin(
 				ConsumeEntityStatusMixin(LitElement)))) {
-
-	static override styles = [
-		styleTypography,
-		accessibility,
-		form, 
-		css`
-		:host {
-			display: contents;
-			// flex: 1;
-			// flex-direction: column;
-		}
-		`
-	]
 
 	// setLocale must be set to handle translations
 	declare setLocale: (entityName: string, locale: Strings) => void;
@@ -79,7 +65,6 @@ export default class entityHolder extends
 		return {
 			entityAccess: this.entityAccess,
 			entityStatus: this.entityStatus,
-			// TODO: remove level
 			level: this.level
 		}
 	}
@@ -113,10 +98,7 @@ export default class entityHolder extends
 			}
 
 		}
-		// if(props.has('data') && this.data === null) {
-		// 	// data is null when the document doest not exist
-		// 	this.data = {}
-		// }
+
 		if (props.has('realTime') && this.entity) {
 			this.entity.realTime = this.realTime
 		}
@@ -174,10 +156,4 @@ export default class entityHolder extends
 		return entity.renderFooter(this.data, this.renderConfig);
 	}
 
-}
-
-declare global {
-	interface HTMLElementTagNameMap {
-		'entity-holder': entityHolder;
-	}
 }
