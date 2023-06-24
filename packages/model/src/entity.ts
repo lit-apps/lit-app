@@ -6,9 +6,8 @@ import { html as htmlStatic, literal } from 'lit/static-html.js';
 import { choose } from 'lit/directives/choose.js';
 
 
-import '@lit-app/cmp/button/button';
-import type { LappButton } from '@lit-app/cmp/button/button';
-import '@material/web/icon/icon';
+import('@lit-app/cmp/button/button');
+import('@material/web/icon/icon');
 
 import { AppToastEvent } from '@lit-app/app-event';
 import { Grid } from '@vaadin/grid';
@@ -65,7 +64,8 @@ import {
 } from './types/modelComponent';
 import entries from './typeUtils/entries';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ensure} from './types';
+import { ensure, Role} from './types';
+import type { LappButton } from '@lit-app/cmp/button/button';
 
 /**
  * Actions inherited by all entities (provided they use @mergeStatic('actions'))
@@ -163,8 +163,32 @@ const actions: Actions = {
  * And entity has a model, defining the structure of the data,
  * and actions, defining the operations that can be performed on the data.
  * 
- * It can also contain renderer helper  
+ * It also contain renderer helpers organized as such:
  * 
+ * renderEntityAccess() {
+ *		return html`
+ *			<slot name="header">
+ *				${this.renderHeader(){
+ *             this.renderTitle
+ *         }}
+ *			</slot>
+ *			<slot name="sub-header"></slot>
+ *			<slot name="body">
+ *				${this.renderBody() {
+ *          array ? 
+ *              this.renderArrayContent() {
+ *                 this.renderGrid()
+ *               } : 
+ *              this.renderContent() {
+ *                showMeta ? this.renderMetaData() : ''
+ *                showAction ? this.renderAction() : ''
+ *                this.renderForm)}
+ *           }}
+ *			</slot>
+ *			<slot name="footer">
+ *				${this.renderFooter()}
+ *			</slot>
+ *		`;
  * 
  */
 export default  class Entity<Interface 
@@ -190,6 +214,12 @@ extends DefaultI = DefaultI>
   static locale?: String
   static model: Model<DefaultI>
   static actions = actions
+  static roles: Role[] = [
+    {name: 'owner', level: 1}, 
+    {name: 'admin', level: 2}, 
+    {name: 'editor', level: 3}, 
+    {name: 'guest', level: 3}] 
+  static userLoader: (search: string) => Promise<any> 
 
   /**
   * The access control for this entity - this needs to be overridden in subclasses
@@ -704,7 +734,7 @@ extends DefaultI = DefaultI>
    * @returns 
    */
   renderGridColumns(_config?: ColumnsConfig) {
-    console.log('renderGridColumns')
+    // console.log('renderGridColumns')
     const model = this.model;
     const colTag = literal`vaadin-grid-column`
     const colSortTag = literal`vaadin-grid-sort-column`
@@ -785,7 +815,7 @@ extends DefaultI = DefaultI>
       ],
       () => html`
       <h2 style="display: flex; flex-direction: row;" class="underline">
-        <mwc-icon>${config.entityStatus.isEditing ? 'edit' : this.icon}</mwc-icon>
+        <md-icon>${config.entityStatus.isEditing ? 'edit' : this.icon}</md-icon>
         ${title}
       </h2>`
     )}`

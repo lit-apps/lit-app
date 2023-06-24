@@ -4,9 +4,10 @@ export type GroupName = 'admin' | 'editor' | 'viewer' |  'guest' | 'superAdmin'
 
 export type UserAccess = {
 	owner: uid 
-	master?: uid[] // can set editor and viewer
+	admin?: uid[] // can set editor and viewer
 	editor?: uid[] // can edit
 	viewer?: uid[] // can view
+	guest?: uid[] // can view
 }
 // Group is a collection of users with a name 
 // when a user is added as a member, their tokens are modified to include the group group[${teamId}_${groupName}] = timestamp

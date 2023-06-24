@@ -34,7 +34,7 @@ const defaultAccessTrue = (_access: Access, _data: any) => {
 	process.env.DEV && console.warn('No access function provided for entity');
 	return true
 }
-const getAccess: GetAccess = {
+const getAccessDefault: GetAccess = {
 	isOwner: defaultAccessFalse,
 	canDelete: defaultAccessFalse,
 	canEdit: defaultAccessFalse,
@@ -47,7 +47,7 @@ const getAccess: GetAccess = {
  * A mixin to be applied to entities at root level. It set entityAccess for the entity: 
  * Entity Access stores access information about the entity, like `isOwner`, `canEdit`, `canView`, `canDelete`
  */
-export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: typeof EntityI, data: any}> >(superClass: T, getAccessFn: GetAccess = getAccess) => {
+export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: typeof EntityI, data: any}> >(superClass: T, getAccessFn?: GetAccess) => {
 
 	class ProvideAccessMixinClass extends superClass {
 
@@ -60,12 +60,13 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 
 		// @property() data!: any;
 
-		override willUpdate(changedProperties: PropertyValues) {
+		override willUpdate(changedProperties: PropertyValues<this>) {
 			super.willUpdate(changedProperties);
 			if (changedProperties.has('data')) {
 				this.updateAccess(this.data)
 			}
 		}
+
 		protected _getAccessData(data: any): Access {
 			return data?.metaData?.access;
 		}
@@ -85,13 +86,12 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 				}
 				return;
 			}
-			// TODO: getAccess should come from Entity
-			const getAccess = this.Entity.getAccess || (this.entity?.constructor as typeof EntityI)?.getAccess || getAccessFn;
+			const getAccess = getAccessFn || this.Entity.getAccess || (this.entity?.constructor as typeof EntityI)?.getAccess || getAccessDefault;
 			this.entityAccess = {
-				isOwner: getAccess.isOwner.call(this, accessData, data),
-				canEdit: getAccess.canEdit.call(this, accessData, data),
-				canView: getAccess.canView.call(this, accessData, data),
-				canDelete: getAccess.canDelete.call(this, accessData, data)
+				isOwner: typeof getAccess.isOwner === 'function' ? getAccess.isOwner.call(this, accessData, data) : getAccess.isOwner,
+				canEdit: typeof getAccess.canEdit === 'function' ? getAccess.canEdit.call(this, accessData, data) : getAccess.canEdit,
+				canView: typeof getAccess.canView === 'function' ? getAccess.canView.call(this, accessData, data) : getAccess.canView,
+				canDelete: typeof getAccess.canDelete === 'function' ? getAccess.canDelete.call(this, accessData, data) : getAccess.canDelete
 			}
 
 		}

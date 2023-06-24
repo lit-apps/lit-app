@@ -1,6 +1,6 @@
 import type { Grid, GridItemModel } from '@vaadin/grid'
 import { CSSResult, LitElement, TemplateResult } from 'lit'
-import { Strings } from '../types'
+import { Role, Strings } from '../types'
 import type { Action, ButtonConfig } from './action'
 import { EntityCreateDetail } from '../events'
 import { GetAccess } from './getAccess'
@@ -86,7 +86,6 @@ export type RenderConfig = {
  * to be applied for an entity
  */
 export abstract class EntityRenderer<T > {
-	
 	
 	/**
 	 * Render a form for an entity
@@ -174,6 +173,8 @@ export abstract class EntityI<Interface extends DefaultI = DefaultI> extends Ent
 	
 	static getAccess: GetAccess
 	static actions: any
+	static roles: Role[]
+	static userLoader: (search: string) => Promise<any>
 	static model: Model<DefaultI>
 	static locale?: Strings
 	static entityName: string

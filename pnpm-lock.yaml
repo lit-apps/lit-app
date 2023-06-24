@@ -19,7 +19,7 @@ importers:
         version: 9.17.0
       vite:
         specifier: ^4.3.5
-        version: 4.3.5(@types/node@20.1.3)
+        version: 4.3.5
       vitest:
         specifier: ^0.32.2
         version: 0.32.2(@vitest/browser@0.32.2)(happy-dom@9.17.0)(webdriverio@8.10.7)
@@ -58,14 +58,17 @@ importers:
         specifier: ^0.9.5
         version: 0.9.5
 
-  packages/cmp:
+  packages/access:
     dependencies:
+      '@lit-app/cmp':
+        specifier: link:../cmp
+        version: link:../cmp
+      '@lit-app/model':
+        specifier: link:../model
+        version: link:../model
       '@lit-app/testing':
         specifier: link:../testing
         version: link:../testing
-      '@lit-labs/motion':
-        specifier: ^1.0.3
-        version: 1.0.3
       '@material/web':
         specifier: 1.0.0-pre.10
         version: 1.0.0-pre.10
@@ -108,9 +111,82 @@ importers:
         version: 5.0.4
       vite:
         specifier: latest
-        version: 4.3.9(@types/node@20.3.1)
+        version: 4.3.9(@types/node@20.1.3)
       vitest:
         specifier: latest
+        version: 0.32.2(@vitest/browser@0.32.2)(happy-dom@9.17.0)(webdriverio@8.10.7)
+      webdriverio:
+        specifier: ^8.10.7
+        version: 8.10.7(typescript@5.0.4)
+      wireit:
+        specifier: latest
+        version: 0.9.5
+
+  packages/cmp:
+    dependencies:
+      '@lit-app/testing':
+        specifier: link:../testing
+        version: link:../testing
+      '@lit-labs/motion':
+        specifier: ^1.0.3
+        version: 1.0.3
+      '@lit-labs/observers':
+        specifier: ^2.0.0
+        version: 2.0.0
+      '@material/web':
+        specifier: 1.0.0-pre.10
+        version: 1.0.0-pre.10
+      '@preignition/lit-firebase':
+        specifier: link:../../../packages/lit-firebase
+        version: link:../../../packages/lit-firebase
+      '@preignition/preignition-config':
+        specifier: link:../../../packages/preignition-config
+        version: link:../../../packages/preignition-config
+      '@preignition/preignition-styles':
+        specifier: link:../../../packages/preignition-styles
+        version: link:../../../packages/preignition-styles
+      '@preignition/preignition-util':
+        specifier: link:../../../packages/preignition-util
+        version: link:../../../packages/preignition-util
+      '@preignition/pwi-textfield-select':
+        specifier: link:../../../packages/pwi-textfield-select
+        version: link:../../../packages/pwi-textfield-select
+      '@vaadin/grid':
+        specifier: link:../../../app-dependencies/web-components/packages/grid
+        version: link:../../../app-dependencies/web-components/packages/grid
+      lit:
+        specifier: ^2.7.5
+        version: 2.7.5
+      lit-vaadin-helpers:
+        specifier: ^0.3.1
+        version: 0.3.1
+    devDependencies:
+      '@custom-elements-manifest/analyzer':
+        specifier: ^0.8.2
+        version: 0.8.2
+      '@custom-elements-manifest/to-markdown':
+        specifier: ^0.1.0
+        version: 0.1.0
+      '@preignition/preignition-demo':
+        specifier: ^0.5.0
+        version: 0.5.0
+      '@vitest/browser':
+        specifier: latest
+        version: 0.32.2(rollup@2.79.1)(vitest@0.32.2)
+      '@vitest/utils':
+        specifier: latest
+        version: 0.32.2
+      eslint:
+        specifier: ^8.40.0
+        version: 8.40.0
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+      vite:
+        specifier: ^4.3.9
+        version: 4.3.9(@types/node@20.1.3)
+      vitest:
+        specifier: ^0.32.2
         version: 0.32.2(@vitest/browser@0.32.2)(happy-dom@9.17.0)(webdriverio@8.10.7)
       webdriverio:
         specifier: ^8.10.7
@@ -217,7 +293,7 @@ importers:
         version: 5.0.2
       vite:
         specifier: ^4.3.9
-        version: 4.3.9(@types/node@20.3.1)
+        version: 4.3.9(@types/node@20.1.3)
       vitest:
         specifier: ^0.32.2
         version: 0.32.2(@vitest/browser@0.32.2)(happy-dom@9.17.0)(webdriverio@8.10.7)
@@ -257,7 +333,7 @@ importers:
         version: 5.0.4
       vite:
         specifier: ^4.3.5
-        version: 4.3.5(@types/node@20.1.3)
+        version: 4.3.5
       vitest:
         specifier: ^0.31.0
         version: 0.31.0(happy-dom@9.17.0)
@@ -1921,6 +1997,12 @@ packages:
       lit: 2.7.5
     dev: false
 
+  /@lit-labs/observers@2.0.0:
+    resolution: {integrity: sha512-NMbCjJEqp8V9TpTtt8HhzFVymx/WGpTD7iU+FMKSis4u3iBWwu2UYh6KChwFTEPW9xMum70r2IBnaViBINaGTA==}
+    dependencies:
+      '@lit/reactive-element': 1.6.2
+    dev: false
+
   /@lit-labs/ssr-dom-shim@1.1.1:
     resolution: {integrity: sha512-kXOeFbfCm4fFf2A3WwVEeQj55tMZa8c8/f9AKHMobQMkzNUfUj+antR3fRPaZJawsa1aZiP/Da3ndpZrwEe4rQ==}
 
@@ -3133,14 +3215,14 @@ packages:
   /@types/ws@8.5.4:
     resolution: {integrity: sha512-zdQDHKUgcX/zBc4GrwsE/7dVdAD8JR4EuiAXiiUhhfyIJXXb2+PrGshFyeXWQPMmmZ2XxgaqclgpIC7eTXc1mg==}
     dependencies:
-      '@types/node': 20.2.5
+      '@types/node': 20.3.1
     dev: true
 
   /@types/yauzl@2.10.0:
     resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}
     requiresBuild: true
     dependencies:
-      '@types/node': 20.2.5
+      '@types/node': 20.3.1
     dev: true
     optional: true
 
@@ -3178,7 +3260,7 @@ packages:
       '@vitest/utils': 0.31.0
       concordance: 5.0.4
       p-limit: 4.0.0
-      pathe: 1.1.0
+      pathe: 1.1.1
     dev: true
 
   /@vitest/runner@0.32.2:
@@ -3194,7 +3276,7 @@ packages:
     resolution: {integrity: sha512-5dTXhbHnyUMTMOujZPB0wjFjQ6q5x9c8TvAsSPUNKjp1tVU7i9pbqcKPqntyu2oXtmVxKbuHCqrOd+Ft60r4tg==}
     dependencies:
       magic-string: 0.30.0
-      pathe: 1.1.0
+      pathe: 1.1.1
       pretty-format: 27.5.1
     dev: true
 
@@ -3209,7 +3291,7 @@ packages:
   /@vitest/spy@0.31.0:
     resolution: {integrity: sha512-IzCEQ85RN26GqjQNkYahgVLLkULOxOm5H/t364LG0JYb3Apg0PsYCHLBYGA006+SVRMWhQvHlBBCyuByAMFmkg==}
     dependencies:
-      tinyspy: 2.1.0
+      tinyspy: 2.1.1
     dev: true
 
   /@vitest/spy@0.32.2:
@@ -3297,7 +3379,7 @@ packages:
     resolution: {integrity: sha512-XVKH79pk4d3EHRhofete8eAnqto1e8mCRAqPV00KLNFzCWSe8sWmLnqKCqkPNARC6nksMaGrATnA5sPDRllMpQ==}
     engines: {node: '>=10.0.0'}
     dependencies:
-      semver: 7.5.0
+      semver: 7.5.2
     dev: true
 
   /@web/dev-server-core@0.4.1:
@@ -3396,12 +3478,12 @@ packages:
       negotiator: 0.6.3
     dev: true
 
-  /acorn-jsx@5.3.2(acorn@8.8.2):
+  /acorn-jsx@5.3.2(acorn@8.9.0):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
-      acorn: 8.8.2
+      acorn: 8.9.0
     dev: true
 
   /acorn-walk@8.2.0:
@@ -3871,7 +3953,7 @@ packages:
     engines: {node: '>=12.13.0'}
     hasBin: true
     dependencies:
-      '@types/node': 20.2.5
+      '@types/node': 20.3.1
       escape-string-regexp: 4.0.0
       is-wsl: 2.2.0
       lighthouse-logger: 1.4.2
@@ -4972,8 +5054,8 @@ packages:
     resolution: {integrity: sha512-7OASN1Wma5fum5SrNhFMAMJxOUAbhyfQ8dQ//PJaJbNw0URTPWqIghHWt1MmAANKhHZIYOHruW4Kw4ruUWOdGw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
-      acorn: 8.8.2
-      acorn-jsx: 5.3.2(acorn@8.8.2)
+      acorn: 8.9.0
+      acorn-jsx: 5.3.2(acorn@8.9.0)
       eslint-visitor-keys: 3.4.1
     dev: true
 
@@ -6958,20 +7040,11 @@ packages:
     hasBin: true
     dev: true
 
-  /mlly@1.2.1:
-    resolution: {integrity: sha512-1aMEByaWgBPEbWV2BOPEMySRrzl7rIHXmQxam4DM8jVjalTQDjpN2ZKOLUrwyhfZQO7IXHml2StcHMhooDeEEQ==}
+  /mlly@1.4.0:
+    resolution: {integrity: sha512-ua8PAThnTwpprIaU47EPeZ/bPUVp2QYBbWMphUQpVdBI3Lgqzm5KZQ45Agm3YJedHXaIHl6pBGabaLSUPPSptg==}
     dependencies:
       acorn: 8.9.0
-      pathe: 1.1.0
-      pkg-types: 1.0.3
-      ufo: 1.1.2
-    dev: true
-
-  /mlly@1.3.0:
-    resolution: {integrity: sha512-HT5mcgIQKkOrZecOjOX3DJorTikWXwsBfpcr/MGBkhfWcjiqvnaL/9ppxvIUXfjT6xt4DVIAsN9fMUz1ev4bIw==}
-    dependencies:
-      acorn: 8.9.0
-      pathe: 1.1.0
+      pathe: 1.1.1
       pkg-types: 1.0.3
       ufo: 1.1.2
     dev: true
@@ -7346,8 +7419,8 @@ packages:
     resolution: {integrity: sha512-nN7pYi0AQqJnoLPC9eHFQ8AcyaixBUOwvqc5TDnIKCMEE6I0y8P7OKA7fPexsXGCGxQDl/cmrLAp26LhcwxZ4A==}
     dependencies:
       jsonc-parser: 3.2.0
-      mlly: 1.3.0
-      pathe: 1.1.0
+      mlly: 1.4.0
+      pathe: 1.1.1
     dev: true
 
   /postcss@8.4.23:
@@ -7865,14 +7938,6 @@ packages:
     hasBin: true
     dev: true
 
-  /semver@7.5.0:
-    resolution: {integrity: sha512-+XC0AD/R7Q2mPSRuy2Id0+CGTZ98+8f+KvwirxOKIEyid+XSx6HbC63p+O4IndTHuX5Z+JxQ0TghCkO5Cg/2HA==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dependencies:
-      lru-cache: 6.0.0
-    dev: true
-
   /semver@7.5.2:
     resolution: {integrity: sha512-SoftuTROv/cRjCze/scjGyiDtcUyxw1rgYQSZY7XTmtR5hX+dm76iDbTH8TkLPHCQmlbQVSSbNZCPM2hb0knnQ==}
     engines: {node: '>=10'}
@@ -8226,11 +8291,6 @@ packages:
     engines: {node: '>=14.0.0'}
     dev: true
 
-  /tinyspy@2.1.0:
-    resolution: {integrity: sha512-7eORpyqImoOvkQJCSkL0d0mB4NHHIFAy4b1u8PHdDa7SjGS2njzl6/lyGoZLm+eyYEtlUmFGE0rFj66SWxZgQQ==}
-    engines: {node: '>=14.0.0'}
-    dev: true
-
   /tinyspy@2.1.1:
     resolution: {integrity: sha512-XPJL2uSzcOyBMky6OFrusqWlzfFrXtE0hPuMgW8A2HmaqrPo4ZQHRN/V0QXN3FSjKxpsbRrFc5LI7KOwBsT1/w==}
     engines: {node: '>=14.0.0'}
@@ -8539,10 +8599,10 @@ packages:
     dependencies:
       cac: 6.7.14
       debug: 4.3.4
-      mlly: 1.2.1
-      pathe: 1.1.0
+      mlly: 1.4.0
+      pathe: 1.1.1
       picocolors: 1.0.0
-      vite: 4.3.5(@types/node@20.1.3)
+      vite: 4.3.9(@types/node@20.1.3)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -8560,7 +8620,7 @@ packages:
     dependencies:
       cac: 6.7.14
       debug: 4.3.4
-      mlly: 1.3.0
+      mlly: 1.4.0
       pathe: 1.1.1
       picocolors: 1.0.0
       vite: 4.3.9(@types/node@20.3.1)
@@ -8574,7 +8634,7 @@ packages:
       - terser
     dev: true
 
-  /vite@4.3.5(@types/node@20.1.3):
+  /vite@4.3.5:
     resolution: {integrity: sha512-0gEnL9wiRFxgz40o/i/eTBwm+NEbpUeTWhzKrZDSdKm6nplj+z4lKz8ANDgildxHm47Vg8EUia0aicKbawUVVA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -8599,10 +8659,42 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.1.3
       esbuild: 0.17.18
       postcss: 8.4.23
       rollup: 3.21.6
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
+  /vite@4.3.9(@types/node@20.1.3):
+    resolution: {integrity: sha512-qsTNZjO9NoJNW7KnOrgYwczm0WctJ8m/yqYAMAK9Lxt4SoySUfS5S8ia9K7JHpa3KEeMfyF8LoJ3c5NeBJy6pg==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': '>= 14'
+      less: '*'
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      '@types/node': 20.1.3
+      esbuild: 0.17.19
+      postcss: 8.4.24
+      rollup: 3.25.1
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
@@ -8694,7 +8786,7 @@ packages:
       strip-literal: 1.0.1
       tinybench: 2.5.0
       tinypool: 0.5.0
-      vite: 4.3.5(@types/node@20.1.3)
+      vite: 4.3.9(@types/node@20.1.3)
       vite-node: 0.31.0(@types/node@20.1.3)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:

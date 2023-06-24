@@ -6,8 +6,8 @@ import { Action } from './types/action'
  */
 
 export interface EntityDetail {
-  entityName: string,
   id: string,
+  entityName: string,
   promise?: Promise<any>
 }
 
@@ -164,13 +164,18 @@ export class Dirty extends BaseEvent<EntityDirtyDetail> {
   }
 }
 
-export interface EntitySetOwnerDetail extends EntityDetail {
-  uid: string,
+export interface EntityAccessDetail  {
+  entityName: string,
+  uid: string
+  role: string
+  promise?: Promise<any>
+  language?: string // potential language for the role (e.g. translator)
+  type?: 'user' | 'group' // default is user
 }
-export class SetOwner extends BaseEvent<EntitySetOwnerDetail> {
-  static readonly eventName = 'entity-set-owner';
-  constructor(detail: EntitySetOwnerDetail) {
-    super(SetOwner.eventName, {
+export class SetAccess extends BaseEvent<EntityAccessDetail> {
+  static readonly eventName = 'entity-set-access';
+  constructor(detail: EntityAccessDetail) {
+    super(SetAccess.eventName, {
       bubbles: true,
       composed: true,
       detail: detail
@@ -178,11 +183,7 @@ export class SetOwner extends BaseEvent<EntitySetOwnerDetail> {
   }
 }
 
-export interface EntityAccessDetail extends EntitySetOwnerDetail {
-  uid: string
-  role: string
-  type?: 'user' | 'group' // default is user
-}
+
 export interface EntityAccessInviteRevokeDetail extends EntityDetail {
   inviteId: string
 }
@@ -410,7 +411,7 @@ declare global {
     'entity-restore': Restore, // delete entity from database
     'entity-create': Create, // create new entity in database
     'entity-dirty': Dirty, // mark entity as dirty (local changes)
-    'entity-set-owner': SetOwner, // set entity ownership
+    'entity-set-access': SetAccess, // set entity access (e.g. ownership)
     'entity-add-access': AddAccess, // add access to entity
     'entity-remove-access': RemoveAccess, // remove access to entity
     'entity-access-invite': AccessInvite, // set access to entity

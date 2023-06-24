@@ -137,7 +137,7 @@ export class EntityHolder extends
 			<slot name="header">
 				${this.renderHeader(entity)}
 			</slot>
-			<slot name="subHeader"></slot>
+			<slot name="sub-header"></slot>
 			<slot name="body">
 				${this.renderBody(entity)}
 			</slot>
