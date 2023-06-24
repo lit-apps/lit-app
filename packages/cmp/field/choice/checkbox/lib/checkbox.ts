@@ -12,7 +12,7 @@ import IllustrationMixin from '../../illustrationMixin';
 import MultiChoiceMixin from '../../multiMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
 import type { Option } from '../../types';
-import type { HTMLEvent } from '../../../types';
+import type { HTMLEvent } from '../../../../types';
 
 /**
  * Checkbox field 

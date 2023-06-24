@@ -3,7 +3,7 @@ import { Generic } from '../generic/generic';
 import { html, LitElement, nothing } from 'lit';
 import type { TemplateResult } from 'lit';
 import { AriaList, Option } from './types';
-import { HTMLEvent } from '../types';
+import { HTMLEvent } from '../../types';
 import { GenericI } from '../generic/generic'
 import { List as MdList } from '@material/web/list/lib/list'
 import '../../list/list'

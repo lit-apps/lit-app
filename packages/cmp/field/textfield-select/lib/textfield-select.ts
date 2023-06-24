@@ -1,7 +1,7 @@
 import {  LitElement, html } from "lit";
 import { property, state} from 'lit/decorators.js';
 import { Select } from '../../select/lib/select';
-import { HTMLEvent } from '../../types';
+import { HTMLEvent } from '../../../types';
 
 /**
  * A select field, with the ability to enter text

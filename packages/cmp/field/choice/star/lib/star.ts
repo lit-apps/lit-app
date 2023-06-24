@@ -13,7 +13,7 @@ import IllustrationMixin from '../../illustrationMixin';
 import SingleMixin from '../../singleMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
 import { Option } from '../../types';
-import { HTMLEvent } from '../../../types';
+import { HTMLEvent } from '../../../../types';
 import '../../list-item'
 import { property } from 'lit/decorators.js';
 

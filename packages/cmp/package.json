@@ -22,12 +22,16 @@
   "dependencies": {
     "@lit-app/testing": "link:../testing",
     "@lit-labs/motion": "^1.0.3",
+    "@lit-labs/observers": "^2.0.0",
     "@material/web": "1.0.0-pre.10",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-styles": "link:../../../packages/preignition-styles",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
-    "lit": "^2.7.5"
+    "@preignition/pwi-textfield-select": "link:../../../packages/pwi-textfield-select",
+    "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
+    "lit": "^2.7.5",
+    "lit-vaadin-helpers": "^0.3.1"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.8.2",
@@ -37,8 +41,8 @@
     "@vitest/utils": "latest",
     "eslint": "^8.40.0",
     "typescript": "^5.0.4",
-    "vite": "latest",
-    "vitest": "latest",
+    "vite": "^4.3.9",
+    "vitest": "^0.32.2",
     "webdriverio": "^8.10.7",
     "wireit": "latest"
   }
