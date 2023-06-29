@@ -3,7 +3,7 @@ import { html, css, LitElement } from "lit";
 import { when } from 'lit/directives/when.js';
 import { property, state } from 'lit/decorators.js';
 import { HTMLEvent } from '@lit-app/cmp/types';
-import { AddAccess } from '@lit-app/model';
+import { AccessActionI,  Role } from '@lit-app/model';
 import('@lit-app/cmp/user/card')
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')
@@ -34,6 +34,7 @@ export class AddRole  extends LitElement {
 
 			.layout {
 				display: flex;
+				flex-wrap: wrap;
 				flex-direction: row;
 				gap: var(--space-medium);
 				min-height: 56px; 
@@ -47,7 +48,7 @@ export class AddRole  extends LitElement {
 	@property({attribute: false}) Entity!: typeof EntityI;
 	@property({attribute: false}) languages: string[] = []; // for roles supporting languages (e.g. translator)
 	
-	@state() accessRole: string = ''; 
+	@state() accessRole: Role['name'] | '' = ''; 
 	@state() languageRole: string = ''; 
 	@state() isEditing = false;
 	@state() isLoading = false;						
@@ -73,12 +74,15 @@ export class AddRole  extends LitElement {
 
 		const addRole = async () => {
 			this.isLoading = true;
-			const event = new AddAccess({
-				uid: this.newUid,
-				role: this.accessRole,
-				entityName: this.Entity.name,
-				language: this.languageRole
-			})
+			if(!this.accessRole) return;
+			const event = this.Entity.getEntityAction<AccessActionI>({
+				data: {
+					uid: this.newUid,
+					role: this.accessRole as Role['name'],
+					language: this.languageRole
+				}
+			}, 'addAccess')
+
 			this.dispatchEvent(event);
 			const promise = await event.detail.promise;
 			this.isLoading = false;
@@ -89,7 +93,7 @@ export class AddRole  extends LitElement {
 			this.newName = e.detail.selectedText;
 		}
 		const onRoleSelected = (e: HTMLEvent<HTMLInputElement>) => {
-			this.accessRole = e.target.value;
+			this.accessRole = e.target.value as Role['name']	;
 		}
 		const onLanguageRoleSelected = (e: HTMLEvent<HTMLInputElement>) => {
 			this.languageRole = e.target.value;
@@ -152,4 +156,3 @@ export class AddRole  extends LitElement {
 	}
 
 }
-

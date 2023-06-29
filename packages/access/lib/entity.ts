@@ -7,13 +7,21 @@ import {
 	Access,
 	RenderConfig,
 	GetAccess,
-	ConsumeUidMixin
+	ConsumeUidMixin,
+	AccessActionI,
+	entries
 } from '@lit-app/model';
 import { html, LitElement } from "lit";
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import hasUserRole from './hasUserRole';
-import type { UserItem, UserItemRoles } from '@lit-app/cmp/user/lib/types';
+import type { UserItem, UserItemRole } from '@lit-app/cmp/user/lib/types';
+import {
+	columnBodyRenderer,
+} from 'lit-vaadin-helpers';
+// import('@material/web/chips/filter-chip.js')
+import('@material/web/chips/input-chip.js')
+import('@material/web/chips/chip-set.js')
 import('../set-role')
 import('../add-role')
 import('@lit-app/cmp/user/list')
@@ -45,8 +53,8 @@ export class EntityAccess extends
 					ConsumeEntityStatusMixin(
 						ConsumeUidMixin(
 							LitElement))))), getAccess) {
-					
-	private _users!: UserItem[];							
+
+	private _users!: UserItemRole[];
 
 	@property() override icon = 'manage_accounts';
 	@property() override heading = 'Members';
@@ -61,23 +69,26 @@ export class EntityAccess extends
 
 	get users() {
 		// we cache users so that the grid can also cache user names
-		if(this._users) {return this._users}
+		const prev = this._users;
 		// loop through all metaData roles and return users
-		const users: UserItemRoles[] = [];
-		Object.entries(this.metaData?.access?.user || {}).forEach(([role, value]) => {
+		const users: UserItemRole[] = [];
+		entries<Access['user']>(this.metaData?.access?.user || {})
+			.forEach(([role, value]) => {
 			const v = Array.isArray(value) ? value : [value];
 			v.forEach((uid: string) => {
-				const user = users.find((user: UserItemRoles) => user.uid === uid);
+				const user = users.find((user: UserItemRole) => user.uid === uid);
 				if (!user) {
-					users.push({ uid, roles: [role] });
+					const prevUser = prev?.find((user: UserItemRole) => user.uid === uid);
+					users.push({ uid, roles: [role], name: prevUser?.name });
 				} else {
 					user.roles.push(role);
 				}
+
 			})
 		})
-		if(users.length > 0) {
-			this._users = users;
-		}
+
+		this._users = users;
+
 		return users
 	}
 
@@ -122,6 +133,30 @@ export class EntityAccess extends
 
 	protected renderBody(_data: any, renderConfig: RenderConfig) {
 		const currentOwner = this.metaData?.access?.user?.owner;
+
+		const bodyRole = (item: UserItemRole) => html`
+		<md-chip-set>
+			${item.roles.map(it => {
+			const onActionRevoke = (e: CustomEvent) => {
+				// console.log('onActionRevoke', e);
+				e.preventDefault();
+				const event = this.Entity.getEntityAction<AccessActionI>({
+					data: {
+						uid: item.uid,
+						role: it
+					}
+				}, 'removeAccess')
+				this.dispatchEvent(event);
+
+			}
+			return html`<md-input-chip 
+				@remove=${onActionRevoke}
+				.disabled=${!this.canEdit} 
+				.removable=${this.canEdit} 
+				.label=${it}></md-input-chip>`
+			})}
+		</md-chip-set>`;
+
 		return html`
 		<section class="content">
 			<h5 class="secondary">Ownership</h5>
@@ -148,8 +183,12 @@ export class EntityAccess extends
 			<lapp-user-list
 				.items=${this.users}
 				.canEdit=${renderConfig.entityAccess.canEdit}
-				.Entity=${this.Entity}
-			></lapp-user-list>
+			>
+			<vaadin-grid-column flex-grow="1" 
+				.header=${'Role'}
+        ${columnBodyRenderer(bodyRole)}
+        ></vaadin-grid-column>
+		</lapp-user-list>
 			
 		</section>
 		`
@@ -160,3 +199,7 @@ export class EntityAccess extends
 	}
 
 }
+
+
+
+

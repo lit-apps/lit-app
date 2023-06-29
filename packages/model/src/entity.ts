@@ -1,9 +1,12 @@
 import { get } from '@preignition/preignition-util/src/deep';
 import { activeItemChanged } from '@preignition/preignition-util/src/grid';
 import '@vaadin/grid/theme/material/vaadin-grid.js';
+import '@vaadin/grid/theme/material/vaadin-grid-column.js';
+import '@vaadin/grid/theme/material/vaadin-grid-sort-column.js';
 import { CSSResult, TemplateResult, html } from 'lit';
 import { html as htmlStatic, literal } from 'lit/static-html.js';
 import { choose } from 'lit/directives/choose.js';
+import { ActionI } from './events'
 
 
 import('@lit-app/cmp/button/button');
@@ -36,6 +39,7 @@ import {
   Restore,
   Update,
   Write
+
 } from './events';
 import { renderField } from './renderField';
 import {
@@ -43,7 +47,7 @@ import {
   Actions,
   ButtonConfig
 } from './types/action';
-import { DataI } from './types/dataI';
+import { Access, DataI } from './types/dataI';
 import {
   ColumnsConfig,
   DefaultI,
@@ -58,13 +62,14 @@ import {
 } from './types/entity';
 import { GetAccess } from './types/getAccess';
 import {
+  GridConfig,
   Model,
   ModelComponent,
   ModelComponentSelect
 } from './types/modelComponent';
 import entries from './typeUtils/entries';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ensure, Role} from './types';
+import { AccessActionI, ActionDetail, ensure, PartialBy, Role, Strings } from './types';
 import type { LappButton } from '@lit-app/cmp/button/button';
 
 /**
@@ -154,6 +159,24 @@ const actions: Actions = {
 
     }
   },
+  setAccess: {
+    label: 'Set Access',
+    event: EntityAction<AccessActionI>
+  },
+  addAccess: {
+    label: 'Add Access',
+    event: EntityAction<AccessActionI>
+  },
+  removeAccess: {
+    label: 'Revoke Access',
+    event: EntityAction<AccessActionI>,
+    confirmDialog: {
+      heading: 'Confirm Revoke Access',
+      render(data: any): TemplateResult {
+        return html`<p>You are about to revoke access. Please confirm.</p>`;
+      }
+    },
+  }
 }
 
 
@@ -177,7 +200,13 @@ const actions: Actions = {
  *				${this.renderBody() {
  *          array ? 
  *              this.renderArrayContent() {
- *                 this.renderGrid()
+ *                 this.renderGrid() {
+ *                    this.gridDetailRenderer() {
+ *                      this.renderTable() {}
+ *                    }
+ *                    this.renderGridColumn() {}         
+ *                    <slot name="body-grid-column">       
+ *                  }  
  *               } : 
  *              this.renderContent() {
  *                showMeta ? this.renderMetaData() : ''
@@ -191,8 +220,8 @@ const actions: Actions = {
  *		`;
  * 
  */
-export default  class Entity<Interface 
-extends DefaultI = DefaultI>
+export default class Entity<Interface
+  extends DefaultI = DefaultI>
   implements EntityI<Interface>  {
 
   /**
@@ -201,7 +230,7 @@ extends DefaultI = DefaultI>
    * the type of actions is properly inferred. 
    */
   declare ['constructor']: typeof Entity;
-  declare static styles: CSSResult | CSSResult[];  
+  declare static styles: CSSResult | CSSResult[];
   static _entityName: string
   static get entityName(): string {
     const name = this._entityName || this.name
@@ -211,15 +240,15 @@ extends DefaultI = DefaultI>
     this._entityName = name
   }
 
-  static locale?: String
+  static locale?: Strings
   static model: Model<DefaultI>
   static actions = actions
   static roles: Role[] = [
-    {name: 'owner', level: 1}, 
-    {name: 'admin', level: 2}, 
-    {name: 'editor', level: 3}, 
-    {name: 'guest', level: 3}] 
-  static userLoader: (search: string) => Promise<any> 
+    { name: 'owner', level: 1 },
+    { name: 'admin', level: 2 },
+    { name: 'editor', level: 3 },
+    { name: 'guest', level: 3 }]
+  static userLoader: (search: string) => Promise<any>
 
   /**
   * The access control for this entity - this needs to be overridden in subclasses
@@ -235,18 +264,22 @@ extends DefaultI = DefaultI>
   */
   static getAccess: GetAccess
 
-  // static {
-  //   setTimeout(() => {
-  //     if (!this.getAccess) {
-  //       throw new Error(`getAccess must be overridden in subclasses (entity: ${this.entityName})`)
-  //     }
-  //   }, 0)
-  // }
+  /** setActions
+   * Set actions, inheriting Proto.actions as prototype
+   * This is useful when some actions can only be performed 
+   * by a db-ref higher up in the hierarchy
+   */
+  static setActions(actions: Actions, Proto: typeof EntityI) {
+    const _actions = { ...actions }
+    Object.setPrototypeOf(_actions, Object.fromEntries(
+      Object.entries({ ...Proto.actions }).map(([key, value]) => {
+        (value as Action).entityName = Proto.entityName;
+        return [key, value]
+      })
+    ))
 
-  // static setActions(actions: Actions) {
-  //   const superCtor = Object.getPrototypeOf(this) as typeof Entity;
-  //   this.actions = Object.assign(superCtor.actions || {}, actions);
-  // }
+    this.actions = _actions
+  }
 
   showMetaData: boolean = false
   showActions: boolean = false
@@ -386,7 +419,7 @@ extends DefaultI = DefaultI>
   public dispatchAction(actionName: keyof this['actions']): CustomEvent {
     // @ts-ignore
     const action = this.actions[actionName];
-    const event = new EntityAction({ id: this.host.id, entityName: this.entityName }, action, String(actionName));
+    const event = new EntityAction({ id: this.host.id, entityName: action.entityName || this.entityName }, action, String(actionName));
     return this._dispatchTriggerEvent(event);
   }
 
@@ -399,7 +432,6 @@ extends DefaultI = DefaultI>
     return event
   }
 
-
   private getEvent(actionName: keyof this['actions'], data: any, bulkAction: boolean = false) {
     if (actionName === 'create') {
       return new Create({ entityName: this.entityName, data: this.getNewData() }, this.actions.create);
@@ -407,36 +439,77 @@ extends DefaultI = DefaultI>
     return this.constructor.getEvent(String(actionName), data, this.host, bulkAction)
   }
 
-  static getEvent(actionName: string, data: any, el: HTMLElement, bulkAction: boolean = false) {
+  static getEntityAction<T extends ActionI = ActionI>(
+    detail: PartialBy<ActionDetail<T['detail']>, 'entityName'>,
+    actionName: T['actionName'],
+    confirmed?: boolean,
+    bulkAction?: boolean,
+  ) {
+    const action = this.getAction(actionName as keyof Actions);
+    const d: ActionDetail = {
+      entityName: action.entityName || this.entityName,
+      data: detail
+    }
+    // @ts-ignore  
+    return new EntityAction<T>(d as ActionDetail<T['detail']>, action, actionName, confirmed, bulkAction)
+  }
+
+  // static getRemoveAccessEvent(detail: PartialBy<EntityAccessDetail, 'entityName'>) {
+  //   detail.entityName = this.entityName;
+  //   return new RemoveAccess(detail as EntityAccessDetail, this.actions.removeAccess)
+  // }
+  // static getAddAccessEvent(detail: PartialBy<EntityAccessDetail, 'entityName'>) {
+  //   detail.entityName = this.entityName;
+  //   return new AddAccess(detail as EntityAccessDetail, this.actions.addAccess)
+  // }
+  // static getSetAccessEvent(detail: PartialBy<EntityAccessDetail, 'entityName'>) {
+  //   detail.entityName = this.entityName;
+  //   return new SetAccess(detail as EntityAccessDetail, this.actions.setAccess)
+  // }
+
+  static getEvent<K extends { actions: Record<string, Action> }>(actionName: string, data: any, el?: HTMLElement, bulkAction: boolean = false) {
     if (actionName === 'create') {
       throw new Error('Create is not allowed in static get Event')
     }
-    // @ts-ignore 
-    const action = this.actions[actionName];
+    const action = (this as unknown as K).actions[actionName];
     if (!action.event) {
       action.event = EntityAction
     }
 
     // id is the path after /app/appID, whereas docID is the single id for a document
-    const id = data?.$id || ((el as EntityElement).docId ? (el as EntityElement).docId : el.id) as string;;
+    const id: string | null = data?.$id || ((el as EntityElement)?.docId ? (el as EntityElement)?.docId : el?.id) || null;
     let event
     switch (action.event) {
+
+      case Edit:
+      case Close:
+      case Reset:
+        if (!id && import.meta.env.DEV) {
+          console.warn('id is required for Edit, Close and Reset')
+
+        }
+        event = new action.event({ id: id, entityName: this.entityName }, action);
+        break;
       case Delete:
       case MarkDeleted:
       case Update:
       case Restore:
       case Write:
+        if (!id && import.meta.env.DEV) {
+          console.warn('id is required for Delete, MarkDeleted, Update, Restore and Write')
+        }
         event = new action.event({ id: id, entityName: this.entityName, data: data }, action);
         break;
-      case Edit:
-      case Close:
-      case Reset:
-        event = new action.event({ id: id, entityName: this.entityName }, action);
-        break;
       case Open:
+        if (!id && import.meta.env.DEV) {
+          console.warn('id is required for Open')
+        }
         event = new action.event({ id: id, entityName: data?.metaData?.type || this.entityName }, action);
         break;
       case AppActionEmail:
+        if (!id && import.meta.env.DEV) {
+          console.warn('id is required for AppActionEmail')
+        }
         event = new action.event({
           id: id,
           entityName: this.entityName,
@@ -445,6 +518,8 @@ extends DefaultI = DefaultI>
         }, action, false, bulkAction);
         break
       case EntityAction:
+        event = this.getEntityAction(data, actionName, false, bulkAction)
+        break
       case AppAction:
         event = new action.event({ id: id, entityName: this.entityName, data: data }, action, actionName as string, false, bulkAction);
         break
@@ -455,15 +530,14 @@ extends DefaultI = DefaultI>
 
   }
 
-  static renderAction<K extends { actions: Record<string, Action> }>(
+  static renderAction<K extends { actions: Record<keyof K['actions'], Action> }>(
     actionName: keyof K['actions'],
     element: HTMLElement,
     data: any = {},
     config?: ButtonConfig & { bulkAction?: boolean },
     beforeDispatch?: () => boolean | string | void,
     onResolved?: (promise: any) => void) {
-    // @ts-ignore
-    const action = this.actions[actionName];
+    const action = (this as unknown as K).actions[actionName];
     if (!action) {
       console.error(`entity ${this.entityName} has no action found for ${String(actionName)}`);
     }
@@ -517,7 +591,7 @@ extends DefaultI = DefaultI>
         return
       }
       try {
-        const event = eventGetter ? eventGetter() : this.getEvent(String(actionName), data, host);
+        const event = eventGetter ? eventGetter() : this.getEvent<K>(String(actionName), data, host);
         this._dispatchTriggerEvent(event, host);
         const promise = await event.detail.promise
         if (onResolved) {
@@ -564,18 +638,41 @@ extends DefaultI = DefaultI>
 		</div>`
   }
 
-  protected renderEditActions(data: any) {
-    return entries<Actions>(this.actions)
-      .filter(([_key, action]) => action.showEdit)
-      .map(([key, _action]) => this.renderAction(key, data));
+  static getAction(key: keyof Actions): Action {
+    return this.actions[key]
   }
-  protected renderDefaultActions(data: any) {
-    return entries<Actions>(this.actions)
-      .filter(([_key, action]) => action.showDefault)
-      .map(([key, _action]) => this.renderAction(key, data));
+  getAction(key: keyof this['actions']): Action {
+    return this.constructor.getAction(key as keyof Actions)
   }
 
- 
+  protected renderEditActions(data: any) {
+    const edit = []
+    // we loop with key in as we want to include prototype properties
+    for (const key in this.actions) {
+      const action = this.getAction(key as keyof this['actions']);
+      if (action.showEdit) {
+        edit.push(this.renderAction(key as keyof this['actions'], data))
+      }
+    }
+    return edit;
+
+  }
+  protected renderDefaultActions(data: any) {
+    const edit = []
+    // we loop with key in as we want to include prototype properties
+    for (const key in this.actions) {
+      const action = this.getAction(key as keyof this['actions']);
+      if (action.showDefault) {
+        edit.push(this.renderAction(key as keyof this['actions'], data))
+      }
+    }
+    return edit;
+    // return entries<Actions>(this.actions)
+    //   .filter(([_key, action]) => action.showDefault)
+    //   .map(([key, _action]) => this.renderAction(key, data));
+  }
+
+
 
   /**
    * Utility render functions for a single entity actions to render as button and trigger an Action event
@@ -626,10 +723,6 @@ extends DefaultI = DefaultI>
 * @returns 
 */
   public renderBulkActions(selectedItems: any[], data: any[], entityAccess?: EntityAccess, entityStatus?: EntityStatus): TemplateResult | undefined {
-    // entityAccess ??= this.host.entityAccess;
-    // entityStatus ??= this.host.entityStatus;
-
-    // if (!entityAccess?.canEdit) return;
 
     const bulkActions = entries<Actions>(this.actions)
       .filter(([_key, action]) => action.bulk)
@@ -640,7 +733,6 @@ extends DefaultI = DefaultI>
     return html`
       <div class="layout horizontal">
         ${bulkActions.map(([key, action]) => this.renderBulkAction(selectedItems, data, action, key))}
-        
       </div>`
   }
 
@@ -666,37 +758,6 @@ extends DefaultI = DefaultI>
 
   }
 
-  /**
-   * render a table derived from the model
-   * @param data 
-   */
-  public renderTable(data: any) {
-    const model = this.model;
-
-    // get the fields to render in table
-    const fields = entries<Model<DefaultI>>(model)
-      .filter(([_key, m]) => !!m.table)
-      .sort(([_key1, m1], [_key2, m2]) => ((m1 as ModelComponent).table?.index || 0) - ((m2 as ModelComponent).table?.index || 0))
-
-    return html`
-      <table class="entity table ${this.entityName}">
-        ${fields.map(([key, m]) => {
-      const component = (m as ModelComponent).component || 'textfield';
-      const value = get(key, data)
-      let display = value
-      if (((m as ModelComponent).table?.optional === true) && (value == undefined)) {
-        return
-      }
-      if (component === 'select') {
-        const item = (m as ModelComponent as ModelComponentSelect).items?.find(i => i.code === value)
-        display = item?.label || key
-      }
-      return html`<tr class="${key}"><td class="label">${m.table?.label || m.label || key}</td><td>${display}</td></tr>`
-    })
-      }
-      </table>
-   `
-  }
 
   /**
    * grid with commitment list 
@@ -724,6 +785,7 @@ extends DefaultI = DefaultI>
 			@selected-items-changed=${onSelected}
 			@size-changed=${onSizeChanged}>
       ${this.renderGridColumns(config)}
+      <slot name="body-grid-columns"></slot>
 		</vaadin-grid>`
   }
 
@@ -744,7 +806,8 @@ extends DefaultI = DefaultI>
       .sort(([_key1, m1], [_key2, m2]) => ((m1 as ModelComponent).grid?.index || 0) - ((m2 as ModelComponent).grid?.index || 0))
 
     return html`${fields.map(([key, m]) => {
-      const grid = ensure<Required<ModelComponent>['grid']>(m.grid)
+
+      const grid = ensure<GridConfig>(m.grid as GridConfig)
 
       const tagName = grid.sortable ? colSortTag : colTag
       return htmlStatic`<${tagName} 
@@ -767,13 +830,46 @@ extends DefaultI = DefaultI>
 		</div>
 	`
   }
+
+  /**
+   * render a table derived from the model
+   * @param data 
+   */
+  public renderTable(data: any) {
+    const model = this.model;
+    // get the fields to render in table
+    const fields = entries<Model<DefaultI>>(model)
+      // @ts-ignore
+      .filter(([_key, m]) => !!m.table)
+      .sort(([_key1, m1], [_key2, m2]) => ((m1 as ModelComponent).table?.index || 0) - ((m2 as ModelComponent).table?.index || 0))
+
+    return html`
+        <table class="entity table ${this.entityName}">
+          ${fields.map(([key, m]) => {
+            const component = (m as ModelComponent).component || 'textfield';
+            const value = get(key, data)
+            let display = value
+            if (((m as ModelComponent).table?.optional === true) && (value == undefined)) {
+              return
+            }
+            if (component === 'select') {
+              const item = (m as ModelComponent as ModelComponentSelect).items?.find(i => i.code === value)
+              display = item?.label || key
+            }
+            return html`<tr class="${key}"><td class="label">${m.table?.label || m.label || key}</td><td>${display}</td></tr>`
+          })
+            }
+        </table>
+     `
+  }
+
   renderMetaData(_data: Interface, _config?: RenderConfig): TemplateResult {
     return html`<meta-data></meta-data>`
   }
-  
+
   renderBody(data: Interface, config?: RenderConfig): TemplateResult {
     if (Array.isArray(data)) {
-      if(data && data.length === 0) {
+      if (data && data.length === 0) {
         this.renderEmptyArray(config);
       }
       return this.renderArrayContent(data, config)
@@ -784,11 +880,11 @@ extends DefaultI = DefaultI>
   renderContent(data: Interface, config?: RenderConfig): TemplateResult {
     return html`<div class="layout vertical">							
       ${data === undefined ? html`Loading...` :
-          [
-            this.showMetaData ? this.renderMetaData(data, config) : html``,
-            this.showActions ? this.renderActions(data, config) : html``,
-            this.renderForm(data, config)
-          ]
+        [
+          this.showMetaData ? this.renderMetaData(data, config) : html``,
+          this.showActions ? this.renderActions(data, config) : html``,
+          this.renderForm(data, config)
+        ]
       }
     </div>`
   }

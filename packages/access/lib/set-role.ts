@@ -1,7 +1,7 @@
 import { EntityI } from '@lit-app/model/src/types/entity';
 import { html, css, LitElement } from "lit";
 import { when } from 'lit/directives/when.js';
-import {SetAccess} from '@lit-app/model';
+import { AccessActionI,  Role } from '@lit-app/model';
 import { property, state } from 'lit/decorators.js';
 import('@lit-app/cmp/user/card')
 import('@lit-app/cmp/user/search')
@@ -48,7 +48,7 @@ export class SetRole  extends LitElement {
 	@property() uid!: string;	
 	@property() label: string = 'Set Ownership'
 	@property({type: Boolean}) canEdit = false;
-	@property() accessRole: string = 'owner'; 
+	@property() accessRole: Role['name']  = 'owner'; 
 	@property({attribute: false}) Entity!: typeof EntityI;
 	
 	@state() isEditing = false;			
@@ -71,11 +71,13 @@ export class SetRole  extends LitElement {
 
 		const setAccess = async () => {
 			this.isLoading = true;
-			const event = new SetAccess({
-				uid: this.newUid,
-				role: this.accessRole,
-				entityName: this.Entity.name,
-			})
+			const event = this.Entity.getEntityAction<AccessActionI>({
+				data: {
+					uid: this.newUid,
+					role: this.accessRole as Role['name'],
+				}
+			}, 'setAccess')
+			
 			this.dispatchEvent(event);
 			const promise = await event.detail.promise;
 			this.isLoading = false;
