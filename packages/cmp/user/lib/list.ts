@@ -5,7 +5,7 @@ import '@vaadin/grid/theme/material/vaadin-grid-tree-column.js';
 import '@vaadin/grid/theme/material/vaadin-grid.js';
 import { css, html, LitElement } from "lit";
 import { property } from 'lit/decorators.js';
-import { UserItem, UserItemRoles } from './types';
+import { UserItem, UserItemRole } from './types';
 
 import { redispatchEvent } from '@material/web/internal/controller/events.js';
 import {
@@ -34,10 +34,17 @@ export class UserList extends LitElement {
 			vaadin-grid {
 				flex: 1;
 			}
+			lapp-user-card {
+				margin-top: -8px;
+				margin-bottom: -8px;
+			}
+				
 		`;
 
 	/** the  items to display on the list */		
-	@property({attribute: false}) items!: UserItemRoles[];
+	@property({attribute: false}) items!: UserItemRole[];
+
+	// @property({type: Boolean}) canEdit = false;
 
 	/** a renderer for row details */
 	@property({attribute: false}) rowDetailsRenderer!: GridRowDetailsRenderer<UserItem>;
@@ -66,16 +73,14 @@ export class UserList extends LitElement {
 }
 
 const headerUserName = headerFilterText('name', 'user Name', true)
-const bodyUserName = (item: UserItem & {name: string} ) => html`
+const bodyUserName = (item: UserItemRole  ) => html`
   <lapp-dom-observer @content-changed=${(e: CustomEvent) => {
 		const target = e.target as HTMLElement;
 		setTimeout(() => {
-			console.log('content changed', target.innerText);
 			item.name = target.innerText;
 		}, 200)
 		}}>
     <lapp-user-card noninteractive .uid=${item.uid}></lapp-user-card>
   </lapp-dom-observer> 
-
 `;
 

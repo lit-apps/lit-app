@@ -21,15 +21,6 @@ export class UserCard extends userMixin(MdListItem) {
     :host {
       display: flex;
     }
-    // :host([in-grid]) {
-    //   margin-top: -8px;
-    //   margin-bottom: -8px;
-    // }
-    
-    // :host([in-grid]) [part=email] {
-    //   font-size: var(--font-size-x-small);
-    //   line-height: var(--font-size-medium);
-    // }
 
     [data-variant="avatar"] {
       margin-inline-start: var(--_list-item-leading-element-leading-space);
@@ -46,7 +37,7 @@ export class UserCard extends userMixin(MdListItem) {
     `];
 
   @property() email!: string | undefined;
-
+  
   private get _labelText() {
     return this.renderRoot?.querySelector('.label-text')?.textContent;
   }
@@ -58,6 +49,12 @@ export class UserCard extends userMixin(MdListItem) {
     const text = [this._labelText, this._supportingText].filter(d => d);
     return (text.length) ? text[0] + (text[1] ? ` (${text[1]})` : '') :
       'loading ...';
+  }
+
+  // Note(CG): we need this so as to make lapp-user-card work within lapp-content-observer
+  // TODO: MD3 - review if this is still necessary
+  get text() {
+    return this.innerText;
   }
 
   protected override renderStart() {

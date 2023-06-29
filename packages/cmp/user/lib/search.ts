@@ -136,7 +136,7 @@ export class UserSearch extends LitElement {
 		return html`<lapp-user-card 
       @click=${onClick}
       mwc-list-item 
-      twoline 
+      two-line 
       .value=${uid} 
       .uid=${uid} 
       .email=${email}></lapp-user-card>`;
