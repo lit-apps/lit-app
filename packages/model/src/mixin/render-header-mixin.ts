@@ -10,8 +10,8 @@ export declare class RenderHeaderMixinInterface {
 	heading: string
 	icon: string
 	level: number
-	renderTitle(_data: DefaultI, _config?: RenderConfig): TemplateResult
-	renderHeader(data: DefaultI, config: RenderConfig): TemplateResult
+	renderTitle(data?: DefaultI, config?: RenderConfig): TemplateResult
+	renderHeader(data?: DefaultI, config?: RenderConfig): TemplateResult
 }
 
 
@@ -33,11 +33,11 @@ export const RenderHeaderMixin = <T extends Constructor<LitElement>>(superClass:
 		@property({ type: Number }) level: number = 1;
 
 
-		renderTitle(_data: DefaultI, _config?: RenderConfig): TemplateResult {
+		renderTitle(_data?: DefaultI, _config?: RenderConfig): TemplateResult {
 			return html`${this.heading}`
 		}
 	
-		renderHeader(data: DefaultI, config: RenderConfig): TemplateResult {
+		renderHeader(data?: DefaultI, config?: RenderConfig): TemplateResult {
 			const title = this.renderTitle(data, config)
 			return html`${choose(this.level,
 				[
@@ -47,7 +47,7 @@ export const RenderHeaderMixin = <T extends Constructor<LitElement>>(superClass:
 				],
 				() => html`
 				<h2 class="layout horizontal underline">
-					<md-icon>${config.entityStatus.isEditing ? 'edit' : this.icon}</md-icon>
+					<md-icon>${config?.entityStatus.isEditing ? 'edit' : this.icon}</md-icon>
 					${title}
 				</h2>`
 			)}`

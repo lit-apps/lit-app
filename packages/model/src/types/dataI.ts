@@ -6,7 +6,7 @@ export type UserAccess = {
 	owner: uid 
 	admin?: uid[] // can set editor and viewer
 	editor?: uid[] // can edit
-	viewer?: uid[] // can view
+	viewer?: uid[] // can view DEPRECATED
 	guest?: uid[] // can view
 }
 // Group is a collection of users with a name 

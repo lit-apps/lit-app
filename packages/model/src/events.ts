@@ -52,19 +52,16 @@ export class BaseEvent<T extends { promise?: Promise<any> }> extends CustomEvent
 export class Write extends BaseEvent<EntityWriteDetail> {
   static readonly eventName = 'entity-write';
   readonly actionName = 'write'
-  // public debounce: number = 5000;
   public persisted?: boolean // true when the was persisted
   constructor(
     detail: EntityWriteDetail,
-    public override readonly action: Action) {
+    public override readonly action?: Action) {
     super(Write.eventName, {
       bubbles: true,
       composed: true,
       detail: detail
     });
-    // if(debounce) {
-    //   this.debounce = debounce === true ? 5000 : debounce as number;
-    // }
+
   }
 }
 
@@ -72,10 +69,10 @@ export class Write extends BaseEvent<EntityWriteDetail> {
 export class Update extends BaseEvent<EntityWriteDetail> {
   static readonly eventName = 'entity-update';
   readonly actionName = 'update'
-  public persisted?: boolean // true when the was persisted
+  public persisted?: boolean // true when data is persisted
   constructor(
-    detail: EntityWriteDetail
-  ) {
+    detail: EntityWriteDetail,
+    public override readonly action?: Action) {
     super(Update.eventName, {
       bubbles: true,
       composed: true,
@@ -85,6 +82,7 @@ export class Update extends BaseEvent<EntityWriteDetail> {
 }
 export class Reset extends BaseEvent<EntityDetail> {
   static readonly eventName = 'entity-reset';
+  readonly actionName = 'reset'
   public persisted?: boolean // true when the entity was persisted
   constructor(
     detail: EntityDetail,
@@ -164,80 +162,6 @@ export class Dirty extends BaseEvent<EntityDirtyDetail> {
   }
 }
 
-export interface EntityAccessDetail  {
-  entityName: string,
-  uid: string
-  role: string
-  promise?: Promise<any>
-  language?: string // potential language for the role (e.g. translator)
-  type?: 'user' | 'group' // default is user
-}
-export class SetAccess extends BaseEvent<EntityAccessDetail> {
-  static readonly eventName = 'entity-set-access';
-  constructor(detail: EntityAccessDetail) {
-    super(SetAccess.eventName, {
-      bubbles: true,
-      composed: true,
-      detail: detail
-    });
-  }
-}
-
-
-export interface EntityAccessInviteRevokeDetail extends EntityDetail {
-  inviteId: string
-}
-
-export class AccessInvite extends BaseEvent<EntityAccessDetail> {
-  static readonly eventName = 'entity-access-invite';
-  constructor(
-    detail: EntityAccessDetail,
-    public override  readonly action: Action
-  ) {
-    super(AccessInvite.eventName, {
-      bubbles: true,
-      composed: true,
-      detail: detail
-    });
-  }
-}
-export class AccessInviteRevoke extends BaseEvent<EntityAccessInviteRevokeDetail> {
-  static readonly eventName = 'entity-access-invite-revoke';
-  constructor(
-    detail: EntityAccessInviteRevokeDetail,
-    public override readonly action: Action
-  ) {
-    super(AccessInviteRevoke.eventName, {
-      bubbles: true,
-      composed: true,
-      detail: detail
-    });
-  }
-}
-
-export class AddAccess extends BaseEvent<EntityAccessDetail> {
-  static readonly eventName = 'entity-add-access';
-  constructor(detail: EntityAccessDetail) {
-    super(AddAccess.eventName, {
-      bubbles: true,
-      composed: true,
-      detail: detail
-    });
-  }
-}
-export class RemoveAccess extends BaseEvent<EntityAccessDetail> {
-  static readonly eventName = 'entity-remove-access';
-  constructor(
-    detail: EntityAccessDetail
-  ) {
-    super(RemoveAccess.eventName, {
-      bubbles: true,
-      composed: true,
-      detail: detail
-    });
-  }
-}
-
 export class Close extends BaseEvent<EntityDetail> {
   static readonly eventName = 'entity-close';
   constructor(
@@ -286,21 +210,25 @@ class BaseAction<T> extends BaseEvent<T & { promise?: Promise<any> }> {
 
 }
 
-export interface ActionDetail {
+export interface ActionDetail<T = any> {
   entityName: string,
   id?: string,
-  data?: any,
+  data?: T,
   selectedItems?: any[],
   promise?: Promise<any>
 }
 
-export class EntityAction extends BaseAction<ActionDetail> {
+export interface ActionI {
+  actionName: string
+  detail: any
+}
+export class EntityAction<T extends ActionI = ActionI> extends BaseAction<ActionDetail<T['detail']>> {
   static readonly eventName = 'entity-action';
 
   constructor(
-    detail: ActionDetail,
+    detail: ActionDetail<T['detail']>,
     public override readonly action: Action,
-    public readonly actionName: string,
+    public readonly actionName: T['actionName'],
     public override  confirmed?: boolean,
     public override  bulkAction?: boolean) {
     super(EntityAction.eventName, {
@@ -310,6 +238,8 @@ export class EntityAction extends BaseAction<ActionDetail> {
     });
   }
 }
+
+
 
 export class AppAction extends BaseAction<ActionDetail> {
   static readonly eventName = 'app-action';
@@ -399,8 +329,14 @@ export class AppActionEmail extends BaseAction<ActionEmailDetail> {
 }
 
 
-export type AnyEvent = Write | Update | Reset | Delete | MarkDeleted | Restore | Create | Dirty | Close | Open | Edit | EntityAction | AppAction | AppActionEmail;
-export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset | typeof Delete | typeof MarkDeleted | typeof Restore | typeof Create | typeof Dirty | typeof Close | typeof Open | typeof Edit | typeof EntityAction | typeof AppAction | typeof AppActionEmail;
+type AnyEntityEvent =  Write | Update | Reset | Delete | MarkDeleted | Restore | Create | Dirty | Close | Open | Edit  
+type AnyAppEvent =  EntityAction | AppAction | AppActionEmail
+// type AccessEvent = AddAccess | RemoveAccess | SetAccess | AccessInvite | AccessInviteRevoke;
+export type AnyEvent =  AnyEntityEvent | AnyAppEvent 
+export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset | typeof Delete | typeof MarkDeleted | typeof Restore | typeof Create | typeof Dirty | typeof Close | typeof Open | typeof Edit | typeof EntityAction<any> | typeof AppAction | typeof AppActionEmail ; 
+// export type TypeofAnyEvent = {new(detail: any, action: Action, confirmed?: boolean, bulkAction?: boolean): AnyEntityEvent} | 
+//   {new(detail: any, action: Action, actionName: string, confirmed?: boolean, bulkAction?: boolean): AnyAppEvent} |
+//   {new(detail: EntityAccessDetail | EntityAccessInviteRevokeDetail, action: Action): AccessEvent} 
 declare global {
   interface HTMLElementEventMap {
     'entity-reset': Reset, // reset entity to original state (database state)
@@ -411,11 +347,6 @@ declare global {
     'entity-restore': Restore, // delete entity from database
     'entity-create': Create, // create new entity in database
     'entity-dirty': Dirty, // mark entity as dirty (local changes)
-    'entity-set-access': SetAccess, // set entity access (e.g. ownership)
-    'entity-add-access': AddAccess, // add access to entity
-    'entity-remove-access': RemoveAccess, // remove access to entity
-    'entity-access-invite': AccessInvite, // set access to entity
-    'entity-access-invite-revoke': AccessInviteRevoke, // set access to entity
     'entity-edit': Edit, // mark entity as editable
     'entity-open': Open, // open an entity (eg. from list)
     'entity-close': Close, // close an entity (eg. from detail, or from top-menu like in survey-app)

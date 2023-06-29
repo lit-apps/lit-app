@@ -1,6 +1,6 @@
 import type { Grid, GridItemModel } from '@vaadin/grid'
 import { CSSResult, LitElement, TemplateResult } from 'lit'
-import { Role, Strings } from '../types'
+import {  Role, Strings, EntityAction, ActionDetail } from '../types'
 import type { Action, ButtonConfig } from './action'
 import { EntityCreateDetail } from '../events'
 import { GetAccess } from './getAccess'
@@ -168,8 +168,10 @@ export abstract class EntityRenderer<T > {
 
 }
 
+import type { PartialBy } from '../types'
+// import { entityEvent } from '../entity-holder'
+import { AllActionI } from './entityAction'
 export abstract class EntityI<Interface extends DefaultI = DefaultI> extends EntityRenderer<Interface> {
-	// abstract constructor( host: EntityElement | EntityElementList, realTime: boolean, listenOnAction: boolean): void
 	
 	static getAccess: GetAccess
 	static actions: any
@@ -179,7 +181,7 @@ export abstract class EntityI<Interface extends DefaultI = DefaultI> extends Ent
 	static locale?: Strings
 	static entityName: string
 	
-	static styles: CSSResult | undefined
+	static styles:  CSSResult | CSSResult[];
 
 	constructor(_host: EntityElement | EntityElementList, _realTime: boolean, _listenOnAction: boolean) {
 			super()
@@ -201,12 +203,21 @@ export abstract class EntityI<Interface extends DefaultI = DefaultI> extends Ent
 	abstract open(entityName: string, id?: string): void
 	abstract dispatchAction(actionName: keyof EntityI['actions']): CustomEvent
 	
-	static getEvent<K extends {actions: Record<string, Action>}>(
+	static getEntityAction<T extends AllActionI>(
+		_detail: PartialBy<ActionDetail<T['detail']>, 'entityName'>,
+		_actionName: T['actionName'],
+		_confirmed?: boolean,
+		_bulkAction?: boolean,
+		): EntityAction<T>  { 
+			// @ts-ignore
+			return new EntityAction<T>()
+		}
+	static getEvent<K extends {actions: Record<string, Action>}> (
 		_actionName: keyof K['actions'], 
 		_data: any, 
-		_host: HTMLElement, 
+		_host?: HTMLElement, 
 		_bulkAction?: boolean,
-	){}
+	): CustomEvent { return new CustomEvent('action', {}) }
 	static onActionClick<K extends {actions: Record<string, Action>}>(
 		_actionName: keyof K['actions'], 
 		_host: HTMLElement, 

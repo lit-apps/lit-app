@@ -42,6 +42,7 @@ export type Action = {
 		tooltip?: string,
 		disabled?: (data: any[]) => boolean
 	},
+	entityName?: string // the name of the entity - this is useful for actions that need to be handled at the correct db reference
 	pushHistory?: boolean // true to push the action to the history when executed
 	onClick?: (data: any) => void // as simple handler - this will not trigger any entity Event
 	handler?: Handler
@@ -51,6 +52,8 @@ export type Action = {
 }
 // export type Actions = { [key: string]: Action }
 
-export type DefaultActions = 'create' | 'edit' | 'write' | 'cancel' | 'delete' | 'restore' | 'open' | 'close' 
+export type DefaultActions = 
+	'create' | 'edit' | 'write' | 'cancel' | 'delete' | 'restore' | 'open' | 'close' |
+  'removeAccess' | 'setAccess' | 'addAccess'
 // export type ActionRecord<K extends string, T> = { [P in K]: T; }
-export type Actions = Record<DefaultActions, Action>
+export type Actions = Record<DefaultActions , Action>

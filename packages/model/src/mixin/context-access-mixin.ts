@@ -22,6 +22,33 @@ export declare class AccessMixinInterface {
 	get canDelete(): boolean;
 }
 
+/**
+ * ApplyGetterMixin applies access getters to an element.
+ */
+export const ApplyGetterMixin = <T extends Constructor<ReactiveElement >>(superClass: T) => {
+
+	class ApplyGetterMixinClass extends superClass {
+
+		entityAccess!: EntityAccess
+		get isOwner() {
+			return this.entityAccess?.isOwner;
+		}
+		get canEdit() {
+			return this.entityAccess?.canEdit;
+		}
+		get canView() {
+			return this.entityAccess?.canView;
+		}
+		get canDelete() {
+			return this.entityAccess?.canDelete;
+		}
+
+	};
+	return ApplyGetterMixinClass as unknown as Constructor<AccessMixinInterface> & T;
+}
+
+
+
 export declare class ProvideAccessMixinInterface extends AccessMixinInterface {
 	static getAccess: GetAccess;
 }
@@ -49,14 +76,14 @@ const getAccessDefault: GetAccess = {
  */
 export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: typeof EntityI, data: any}> >(superClass: T, getAccessFn?: GetAccess) => {
 
-	class ProvideAccessMixinClass extends superClass {
+	class ProvideAccessMixinClass extends ApplyGetterMixin(superClass) {
 
 		/** entity used to evaluate access */
 		entity!: EntityI;
 
 		/** context storing document access  */
 		@provide({ context: entityAccessContext })
-		@property() entityAccess!: EntityAccess;
+		@property() override entityAccess!: EntityAccess;
 
 		// @property() data!: any;
 
@@ -107,24 +134,13 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
  */
 export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
-	class ContextConsumeAccessMixinClass extends superClass {
+	class ContextConsumeAccessMixinClass extends ApplyGetterMixin(superClass) {
 
 		/** context storing document access  */
 		@consume({ context: entityAccessContext, subscribe: true })
-		@property() entityAccess!: EntityAccess;
+		@property() override entityAccess!: EntityAccess;
 
-		get isOwner() {
-			return this.entityAccess?.isOwner;
-		}
-		get canEdit() {
-			return this.entityAccess?.canEdit;
-		}
-		get canView() {
-			return this.entityAccess?.canView;
-		}
-		get canDelete() {
-			return this.entityAccess?.canDelete;
-		}
+
 
 	};
 	return ContextConsumeAccessMixinClass as unknown as Constructor<AccessMixinInterface> & T;

@@ -27,14 +27,14 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 		data: any
 		selectedItems!: any[]
 
-		@state() private _activeEvent!: EntityAction | AppAction | Create | Delete | MarkDeleted | undefined;
+		@state() private _activeEvent!: EntityAction | AppAction | Create | Delete | MarkDeleted  | undefined;
 		@state() private _resolved: boolean = true;
 		@queryAsync('#confirmDialog') _confirmDialog!: Dialog;
 
 		protected override firstUpdated(_changedProperties: PropertyValues) {
 			super.firstUpdated(_changedProperties);
 
-			const setAction = async (event: Delete | MarkDeleted | Create | EntityAction | AppAction) => {
+			const setAction = async (event: Delete | MarkDeleted | Create | EntityAction | AppAction  ) => {
 				// stop propagation if action is not confirmed and we have a templateDialog
 				if (event.shouldConfirm) {
 					event.stopPropagation();
@@ -60,7 +60,8 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 			]
 		}
 
-		private _renderConfirmDialog(event: EntityAction | AppAction | Create  | Delete | MarkDeleted | undefined) {
+		private _renderConfirmDialog(event: EntityAction | AppAction | Create  | Delete | MarkDeleted 
+			 | undefined) {
 			if (!event) return
 			const action = event.action
 
@@ -106,6 +107,8 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 				this._resolved = true;
 			}
 
+			const data = (event as EntityAction).detail.data || this.data;
+
 			return html`
 
 				<mwc-dialog 
@@ -114,8 +117,8 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 					@closed=${onClosed}>
 				
 					${(event as EntityAction).bulkAction ?
-							action?.bulk?.render.call(this, this.selectedItems, event.detail.data || this.data) :
-							action?.confirmDialog?.render.call(this, event.detail.data || this.data)}
+							action?.bulk?.render.call(this, this.selectedItems, data) :
+							action?.confirmDialog?.render.call(this, data)}
 					<md-linear-progress style="margin-top: var(--space-medium);" .indeterminate=${!this._resolved}></md-linear-progress>
           <mwc-button
             slot="secondaryAction"
@@ -126,7 +129,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
             slot="primaryAction"
             unelevated
 						.label=${action?.confirmDialog?.confirmLabel || 'Confirm'}
-						.disabled=${action?.confirmDialog?.confirmDisabled?.call(this, event.detail.data) || !this._resolved}
+						.disabled=${action?.confirmDialog?.confirmDisabled?.call(this, data) || !this._resolved}
             @click=${processAction}></mwc-button>
 				</mwc-dialog>
 				`

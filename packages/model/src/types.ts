@@ -13,6 +13,7 @@ import type {
 import type {
 	Model,
 	Lookup,
+	GridConfig
 } from './types/modelComponent'
 
 
@@ -39,9 +40,11 @@ export {
 export * from './events'
 export * from './types/dataI'
 export * from './types/getAccess'
+export * from './types/entityAction'
 
 import entries from './typeUtils/entries';
 import ensure from './typeUtils/ensure';
+import type  {PartialBy}  from './typeUtils/partialBy';
 
 export type Strings = {
 	[key: string]: string | Strings;
@@ -49,12 +52,13 @@ export type Strings = {
 
 import {Access} from './types/dataI'
 export type Role = {
-	name: keyof Access['user'] | 'superAdmin' 
+	name: keyof Access['user'] // | 'superAdmin' 
 	level: number // 1: owner, 2: admin, 3: editor, 3: viewer - role level; only higher level can edit lower level can assign lower level	
 	locale?: boolean // true to mark this role as dependent on locale (e.g. translator)
 }
 
 export {
 	entries,
-	ensure
+	ensure, 
+	PartialBy
 }
