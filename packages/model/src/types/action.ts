@@ -9,6 +9,7 @@ type BtnCfg = {
 	outlined?: boolean
 	unelevated?: boolean
 	tonal?: boolean
+	text?: boolean // true to render a text button
 }
 
 export type ButtonConfig = BtnCfg | ((data: any, entityStatus?: EntityStatus) => BtnCfg)

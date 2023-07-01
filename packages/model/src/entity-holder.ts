@@ -58,6 +58,10 @@ export class EntityHolder extends
 	// true to make input  fields write real-time changes
 	@property({ type: Boolean }) realTime = false
 
+
+	/** variant for rendering process */
+	@property({ type: String }) variant: RenderConfig['variant'] = 'default'
+	
 	// when true, will listen to action events on the element
 	@property({ type: Boolean }) listenOnAction = false
 
@@ -65,6 +69,7 @@ export class EntityHolder extends
 		return {
 			entityAccess: this.entityAccess,
 			entityStatus: this.entityStatus,
+			variant: this.variant,
 			level: this.level
 		}
 	}

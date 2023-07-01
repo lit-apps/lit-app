@@ -1,6 +1,6 @@
 import type { Grid, GridItemModel } from '@vaadin/grid'
 import { CSSResult, LitElement, TemplateResult } from 'lit'
-import {  Role, Strings, EntityAction, ActionDetail } from '../types'
+import { Role, Strings, EntityAction, ActionDetail, Collection, CollectionI } from '../types'
 import type { Action, ButtonConfig } from './action'
 import { EntityCreateDetail } from '../events'
 import { GetAccess } from './getAccess'
@@ -77,6 +77,7 @@ export type RenderConfig = {
 	entityAccess: EntityAccess,
 	entityStatus: EntityStatus,
 	level?: number, // level to render the entity
+	variant?: 'card' | 'default'
 	options?: {
 		[key: string]: boolean
 	}
@@ -85,8 +86,8 @@ export type RenderConfig = {
  * Interface for render utility functions
  * to be applied for an entity
  */
-export abstract class EntityRenderer<T > {
-	
+export abstract class EntityRenderer<T> {
+
 	/**
 	 * Render a form for an entity
 	 * @param data - the data for the form
@@ -112,7 +113,7 @@ export abstract class EntityRenderer<T > {
 		* @returns 
 		*/
 	abstract renderAction(actionName: keyof EntityI['actions'], data?: any, config?: ButtonConfig, beforeDispatch?: () => boolean | string | void, onResolved?: (promise: any) => void): TemplateResult | undefined
-	
+
 	abstract renderBulkActions(selectedItems: any[], data: any[], entityAccess?: EntityAccess, entityStatus?: EntityStatus): TemplateResult | undefined
 	abstract renderBulkAction(selectedItems: any[], data: any[], action: Action, actionName: keyof EntityI['actions']): TemplateResult | undefined
 
@@ -136,9 +137,25 @@ export abstract class EntityRenderer<T > {
 	 * Render a grid of entities
 	 * 
 	 * @param data - the data for the grid
-	 * @param withOrganisation - true to display organisation column
+	 * @param config
 	 */
-	abstract renderGrid(data: T[], config: ColumnsConfig): TemplateResult
+	abstract renderGrid(data: Collection<T>, config: RenderConfig): TemplateResult
+
+	/**
+	 * Render a entities as cards - variant to renderGrid when rendering.variant = 'card'
+	 * 
+	 * @param data - the data for the grid
+	 * @param config
+	 */
+	abstract renderCard(data: Collection<T>, config: RenderConfig): TemplateResult
+
+	/**
+	 * Render individual card item 
+	 * 
+	 * @param data - the data for the grid
+	 * @param config
+	 */
+	abstract renderCardItem(data: CollectionI<T>, config: RenderConfig): TemplateResult
 
 	/**
 	 * render a table derived from the model
@@ -151,7 +168,7 @@ export abstract class EntityRenderer<T > {
 	 * 
 	 * @param config - columns configuration - ColumnConfig
 	 */
-	abstract renderGridColumns(config: ColumnsConfig): TemplateResult
+	abstract renderGridColumns(config: RenderConfig): TemplateResult
 
 	/**
 	 * The renderer for gridRowDetailsRenderer 
@@ -172,7 +189,7 @@ import type { PartialBy } from '../types'
 // import { entityEvent } from '../entity-holder'
 import { AllActionI } from './entityAction'
 export abstract class EntityI<Interface extends DefaultI = DefaultI> extends EntityRenderer<Interface> {
-	
+
 	static getAccess: GetAccess
 	static actions: any
 	static roles: Role[]
@@ -180,11 +197,11 @@ export abstract class EntityI<Interface extends DefaultI = DefaultI> extends Ent
 	static model: Model<DefaultI>
 	static locale?: Strings
 	static entityName: string
-	
-	static styles:  CSSResult | CSSResult[];
+
+	static styles: CSSResult | CSSResult[];
 
 	constructor(_host: EntityElement | EntityElementList, _realTime: boolean, _listenOnAction: boolean) {
-			super()
+		super()
 	}
 
 	icon!: string
@@ -202,35 +219,35 @@ export abstract class EntityI<Interface extends DefaultI = DefaultI> extends Ent
 	abstract create(details: EntityCreateDetail): void
 	abstract open(entityName: string, id?: string): void
 	abstract dispatchAction(actionName: keyof EntityI['actions']): CustomEvent
-	
+
 	static getEntityAction<T extends AllActionI>(
 		_detail: PartialBy<ActionDetail<T['detail']>, 'entityName'>,
 		_actionName: T['actionName'],
 		_confirmed?: boolean,
 		_bulkAction?: boolean,
-		): EntityAction<T>  { 
-			// @ts-ignore
-			return new EntityAction<T>()
-		}
-	static getEvent<K extends {actions: Record<string, Action>}> (
-		_actionName: keyof K['actions'], 
-		_data: any, 
-		_host?: HTMLElement, 
+	): EntityAction<T> {
+		// @ts-ignore
+		return new EntityAction<T>()
+	}
+	static getEvent<K extends { actions: Record<string, Action> }>(
+		_actionName: keyof K['actions'],
+		_data: any,
+		_host?: HTMLElement,
 		_bulkAction?: boolean,
 	): CustomEvent { return new CustomEvent('action', {}) }
-	static onActionClick<K extends {actions: Record<string, Action>}>(
-		_actionName: keyof K['actions'], 
-		_host: HTMLElement, 
-		_data?: any, 
-		_beforeDispatch?: () => boolean | string | void, 
-		_onResolved?: (promise: any) => void, 
-		_getEvent?: () => CustomEvent, 
-		) {}
-	static renderAction<K extends {actions: Record<string, Action>}>(
-		_actionName: keyof K['actions'], 
-		_element: HTMLElement, 
-		_data: any = {}, 
-		_config?: ButtonConfig, 
-		_beforeDispatch?: () => boolean | string | void, 
-		_onResolved?: (promise: any) => void) {}
+	static onActionClick<K extends { actions: Record<string, Action> }>(
+		_actionName: keyof K['actions'],
+		_host: HTMLElement,
+		_data?: any,
+		_beforeDispatch?: () => boolean | string | void,
+		_onResolved?: (promise: any) => void,
+		_getEvent?: () => CustomEvent,
+	) { }
+	static renderAction<K extends { actions: Record<string, Action> }>(
+		_actionName: keyof K['actions'],
+		_element: HTMLElement,
+		_data: any = {},
+		_config?: ButtonConfig,
+		_beforeDispatch?: () => boolean | string | void,
+		_onResolved?: (promise: any) => void) { }
 }

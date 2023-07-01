@@ -35,7 +35,7 @@ export {
 export {
 	RenderConfig, EntityAccess, EntityStatus, ColumnsConfig, EntityRenderer, EntityElement, EntityElementList,
 	Action, Actions, DefaultActions,
-	Model, Lookup
+	Model, Lookup, GridConfig
 }
 export * from './events'
 export * from './types/dataI'

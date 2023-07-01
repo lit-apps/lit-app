@@ -17,7 +17,7 @@ type TableConfig = {
 	optional?: boolean
 }
 
-type GridConfig<T = any> = {
+export type GridConfig<T = any> = {
 	index: number
 	header?: string
 	path?: string

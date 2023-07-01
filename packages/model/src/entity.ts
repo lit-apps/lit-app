@@ -200,15 +200,19 @@ const actions: Actions = {
  *				${this.renderBody() {
  *          array ? 
  *              this.renderArrayContent() {
- *                 this.renderGrid() {
- *                    this.gridDetailRenderer() {
- *                      this.renderTable() {}
- *                    }
- *                    this.renderGridColumn() {}         
- *                    <slot name="body-grid-column">       
- *                  }  
- *               } : 
- *              this.renderContent() {
+ *                 variant === 'card' ?
+ *                   this.renderCard() {
+ *                     this.renderCardItem() {}
+ *                   } :     
+ *                   this.renderGrid() {
+ *                      this.gridDetailRenderer() {
+ *                        this.renderTable() {}
+ *                      }
+ *                      this.renderGridColumn() {}         
+ *                      <slot name="body-grid-column">       
+ *                    }  
+  *               } : 
+ *            this.renderContent() {
  *                showMeta ? this.renderMetaData() : ''
  *                showAction ? this.renderAction() : ''
  *                this.renderForm)}
@@ -240,6 +244,7 @@ export default class Entity<Interface
     this._entityName = name
   }
 
+  static icon: string = ''
   static locale?: Strings
   static model: Model<DefaultI>
   static actions = actions
@@ -287,7 +292,7 @@ export default class Entity<Interface
   // define a private _icon property to be used by the icon getter
   _icon!: string
   get icon(): string {
-    return this._icon || ''
+    return this._icon || this.constructor.icon
   }
 
   set icon(icon: string) {
@@ -548,7 +553,8 @@ export default class Entity<Interface
     const disabled = cfg?.disabled === true
     const unelevated = cfg?.unelevated ?? false
     const tonal = cfg?.tonal ?? false
-    const outlined = cfg?.outlined ?? !unelevated
+    const text = cfg?.text ?? false
+    const outlined = cfg?.outlined ?? !text
     return html`<lapp-button 
       class="${actionName} action"
       .icon=${action.icon || ''} 
@@ -584,13 +590,13 @@ export default class Entity<Interface
       const button = e.target
       button.loading = true
       // TODO: use icon slot for the button
-      // we can pass a simple handler function to the action
-      if (action.onClick) {
-        await action.onClick.call(host, data)
-        button.loading = false
-        return
-      }
       try {
+        // we can pass a simple handler function to the action
+        if (action.onClick) {
+          await action.onClick.call(host, data)
+          button.loading = false
+          return
+        }
         const event = eventGetter ? eventGetter() : this.getEvent<K>(String(actionName), data, host);
         this._dispatchTriggerEvent(event, host);
         const promise = await event.detail.promise
@@ -699,7 +705,8 @@ export default class Entity<Interface
     // the button is active when: 
     const disabled = cfg?.disabled === true
     const unelevated = cfg?.unelevated ?? false
-    const outlined = cfg?.outlined ?? !unelevated
+    const text = cfg?.text ?? false
+    const outlined = cfg?.outlined ?? !text
 
     return html`<lapp-button 
         class="${actionName} action"
@@ -890,7 +897,21 @@ export default class Entity<Interface
   }
 
   renderArrayContent(data: Interface[], config?: RenderConfig): TemplateResult {
+    if(config.variant === 'card') { 
+      return this.renderCard(data, config)
+    }
     return this.renderGrid(data, config)
+  }
+
+  renderCard(data: Interface[], config?: RenderConfig): TemplateResult {
+    return html`<div class="layout horizontal large wrap">
+      ${data.map(d => html`<div class="flex">
+        ${this.renderCardItem(d, config)}
+      </div>`)}
+    </div>`
+  }
+
+  renderCardItem(data: Interface, config?: RenderConfig): TemplateResult {
   }
 
   renderEmptyArray(_config?: RenderConfig): TemplateResult {
@@ -910,7 +931,7 @@ export default class Entity<Interface
         [4, () => html``]
       ],
       () => html`
-      <h2 style="display: flex; flex-direction: row;" class="underline">
+      <h2  class="underline layout horizontal">
         <md-icon>${config.entityStatus.isEditing ? 'edit' : this.icon}</md-icon>
         ${title}
       </h2>`
