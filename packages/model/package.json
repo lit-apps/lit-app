@@ -36,7 +36,6 @@
     "eslint": "^8.14.0",
     "firebase": "^9.22.2",
     "happy-dom": "^8.9.0",
-    
     "typescript": "^5.0.2",
     "vite": "^4.3.9",
     "vitest": "^0.32.2"
@@ -45,7 +44,6 @@
     "access": "public"
   },
   "dependencies": {
-    "lit": "^2.7.5",
     "@lit-app/app-event": "link:../../../app/app-event",
     "@lit-app/cmp": "link:../cmp",
     "@lit-app/state": "^0.8.4",
@@ -57,7 +55,7 @@
     "@material/mwc-slider": "^0.27.0",
     "@material/mwc-textarea": "0.25.3",
     "@material/mwc-textfield": "0.25.3",
-    "@material/web": "1.0.0-pre.10",
+    "@material/web": "1.0.0-pre.12",
     "@polymer/polymer": "^3.5.1",
     "@preignition/preignition-styles": "link:../../../packages/preignition-styles",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
@@ -67,6 +65,7 @@
     "@preignition/pwi-md": "link:../../../packages/pwi-md",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/multi-select-combo-box": "link:../../../app-dependencies/web-components/packages/multi-select-combo-box",
+    "lit": "^2.7.5",
     "lit-vaadin-helpers": "^0.3.1"
   }
 }
