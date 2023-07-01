@@ -9,11 +9,12 @@ import { html, literal } from 'lit/static-html.js';
 import { LitElement, css } from 'lit';
 import { when } from 'lit/directives/when.js';
 
-import '@material/web/button/elevated-button';
-import '@material/web/button/filled-button';
-import '@material/web/button/tonal-button';
-import '@material/web/button/outlined-button';
-import '@material/web/circularprogress/circular-progress'
+import '@material/web/button/elevated-button.js';
+import '@material/web/button/filled-button.js';
+import '@material/web/button/tonal-button.js';
+import '@material/web/button/outlined-button.js';
+import '@material/web/button/text-button.js';
+import '@material/web/circularprogress/circular-progress.js';
 
 const filledTag = literal`md-filled-button`;
 const outlineTag = literal`md-outlined-button`;
@@ -28,9 +29,12 @@ const style = css`
     --md-text-button-with-icon-icon-size: var(--lapp-icon-size);
     --md-filled-button-with-icon-icon-size: var(--lapp-icon-size);
     --md-tonal-button-with-icon-icon-size: var(--lapp-icon-size);
+    --md-circular-progress-active-indicator-width: 16;
+  }
+  md-filled-button {
     --md-circular-color: var(--color-on-primary);
     --md-circular-progress-active-indicator-color: var(--color-on-primary);
-    --md-circular-progress-active-indicator-width: 16;
+
   }
   `
 
@@ -76,29 +80,32 @@ export class LappButton extends LitElement {
    * Useful for preventing certain native functionalities like preventing form
    * submissions.
    */
-  @property({ type: Boolean }) preventClickDefault = false;
+  // @property({ type: Boolean }) preventClickDefault = false;
 
   /**
    * True to render a filled-button
    */
-  @property() unelevated!: boolean;
+  @property({type: Boolean}) unelevated!: boolean;
 
   /**
    * True to render a outlined-button
    */
-  @property() outlined!: boolean;
+  @property({type: Boolean}) outlined!: boolean;
 
   /**
    * True to render a tonal-button
    */
-  @property() tonal!: boolean;
+  @property({type: Boolean}) tonal!: boolean;
 
   @property() icon!: string;
 
-  @property() loading!: boolean;
+  @property({type: Boolean}) loading!: boolean;
 
   override render() {
-    const tagName = this.unelevated ? filledTag : this.tonal ? tonalTag : this.outlined ? outlineTag : defaultTag;
+    const tagName = this.unelevated ? filledTag : 
+    this.tonal ? tonalTag : 
+    this.outlined ? outlineTag : 
+    defaultTag;
 
     // TODO: add aria-support for when loading button
     return html`<${tagName}
@@ -106,7 +113,7 @@ export class LappButton extends LitElement {
 			.href=${this.href}
 			.target=${this.target}
 			.trailingIcon=${this.trailingIcon}
-			.preventClickDefault=${this.preventClickDefault}
+			
 		>
       <slot></slot>
       ${when(this.icon && !this.loading, () => html`<md-icon slot="icon">${this.icon}</md-icon>`)} 
