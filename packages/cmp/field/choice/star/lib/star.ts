@@ -76,7 +76,7 @@ export abstract class Star extends
             for="star${st}"
             @click=${this.handleClick}
             >
-            <span class="sr-only">${st} ${st <2 ? this.translate('star') : this.translate('stars')}</span>
+            <span class="sr-only">${st} ${st <2 ? this.tr('star') : this.tr('stars')}</span>
             ${st === 0 ? zeroStarTemplate :  starTemplate}
           </label>
           `
