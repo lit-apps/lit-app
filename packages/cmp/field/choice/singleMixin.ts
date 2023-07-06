@@ -65,9 +65,9 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 		}
 
 		// override handlekeydown so as to allow native radio to handle arrow keys
-		override handleKeydown(event: KeyboardEvent) {
+		// override handleKeydown(event: KeyboardEvent) {
 			// event.preventDefault();
-		}
+		// }
 
 		// we override updated as the super class causes an infinite loop
 		// it checks for a change in getInput.value, which will all ways be true	

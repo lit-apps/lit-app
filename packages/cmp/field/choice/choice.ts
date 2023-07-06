@@ -26,6 +26,10 @@ const ACTIONABLE_KEYS = {
 const NAVIGATION_KEYS = {
 	ArrowLeft: 'ArrowLeft',
 	ArrowRight: 'ArrowRight',
+	End: 'End',
+	Home: 'Home',
+	// ArrowUp: 'ArrowUp',
+	// ArrowDown: 'ArrowDown',
 } as const;
 
 type ActionableValues = typeof ACTIONABLE_KEYS[keyof typeof ACTIONABLE_KEYS];
@@ -119,7 +123,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	 * A filter function to filter out options
 	 * 
 	 */
-	@property({ type: Function, attribute: false }) filter: (option: Option) => boolean = () => true;
+	@property({attribute: false }) filter: (option: Option) => boolean = () => true;
 
 	get items() {
 		// return [...this._queryItems(this.choiceInputSelector) as NodeListOf<HTMLInputElement>]
@@ -192,8 +196,10 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		// prevent left and right arrow to lose focus
 		if (isNavigableKey(key)) {
 			event.preventDefault();
+			event.stopImmediatePropagation();
 		}
 
+		// return MdList.prototype.handleKeydown.call(this, event);
 		return MdList.prototype.handleKeydown.call(this, event);
 	}
 
