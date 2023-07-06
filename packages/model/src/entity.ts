@@ -11,6 +11,7 @@ import { ActionI } from './events'
 
 import('@lit-app/cmp/button/button');
 import('@material/web/icon/icon');
+import('@material/web/iconbutton/filled-icon-button.js');
 
 import { AppToastEvent } from '@lit-app/app-event';
 import { Grid } from '@vaadin/grid';
@@ -753,13 +754,13 @@ export default class Entity<Interface
     }
     return html`
        <pwi-tooltip skipFocus discrete .tipWidth=${120} .message=${action.bulk?.tooltip || action.label} >
-          <mwc-icon-button 
-            style="color: var(--color-accent);" 
+          <md-filled-icon-button 
             aria-haspopup="true" 
-            .ariaLabel=${action.bulk?.tooltip || action.label || ''} 
-            .icon=${action.icon} 
+            aria-label=${action.bulk?.tooltip || action.label || ''} 
             .disabled=${action.bulk?.disabled?.(selectedItems) || false}
-            @click=${bulkActionHandler}></mwc-icon-button>
+            @click=${bulkActionHandler}>
+            <md-icon>${action.icon}</md-icon>
+          </md-filled-icon-button>
         </pwi-tooltip>
       `
 

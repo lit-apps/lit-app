@@ -30,7 +30,7 @@ export default defineConfig({
       "@material/mwc-drawer",
        
       "@material/mwc-formfield",
-      "@material/mwc-icon-button",
+      
       "@material/mwc-icon",
       "@material/mwc-icon",
              "@material/mwc-list",
