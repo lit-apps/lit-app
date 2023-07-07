@@ -38,7 +38,7 @@ import type { HTMLEvent } from '../../../../types';
             .disabled=${this.isDisabled(option)}
             .listItemRole=${'option'}
             @change=${this.onChange} 
-            .headline=${option.label}
+            .headline=${option.md || option.label}
             .supportingText=${option.supportingText || ''}>
             ${this.renderOptionIllustration(option)}
             ${this.renderCheckbox(option, index)}

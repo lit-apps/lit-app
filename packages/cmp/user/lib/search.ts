@@ -26,7 +26,7 @@ export class UserSearch extends LitElement {
 		`;
 
 	@property() label: string = 'Search Users';
-	@property() supportingText!: string;
+	@property({attribute: 'supporting-text'}) supportingText!: string;
 
 	/** a loader for searching Users */
 	@property({ attribute: false }) loader!: Loader;

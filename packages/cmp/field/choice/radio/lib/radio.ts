@@ -36,9 +36,9 @@ export abstract class Radio extends
           .selector=${this.choiceInputSelector}
           data-variant="horizontal"
           .listItemRole=${'presentation'}
-          .disabled=${this.disabled || option.disabled}
+          .disabled=${this.disabled || !!option.disabled}
           @change=${this.onChange} 
-          .headline=${option.label}
+          .headline=${option.md || option.label}
           .supportingText=${option.supportingText || ''}>
           ${this.renderOptionIllustration(option)}
           ${this.renderRadio(option, index)}
@@ -59,7 +59,7 @@ export abstract class Radio extends
       .name=${name}
       .ariaLabel=${option.label}
       .ariaDescription=${option.supportingText || ''}
-      .disabled=${this.disabled || option.disabled}
+      .disabled=${this.disabled || !!option.disabled}
       .readOnly=${this.readOnly}
       .ariaControls=${option.specify ? `specify${index}` : undefined}
       .value=${option.code}
@@ -82,7 +82,7 @@ export abstract class Radio extends
       data-variant="specify"
       slot="end"
 
-      .label=${option.specifyLabel || this.tr('pleaseSpecify')}
+      label=${option.specifyLabel || this.tr('pleaseSpecify')}
       .value=${this.specify || ''}
       @input=${onInput}
       @click=${(e: HTMLEvent) => e.stopPropagation()}

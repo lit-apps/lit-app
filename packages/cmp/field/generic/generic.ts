@@ -26,10 +26,11 @@ export interface GenericI extends TextField {
   renderInput(): TemplateResult
   renderLeadingIcon(): TemplateResult
   renderTrailingIcon(): TemplateResult
-  renderSupportingText(): TemplateResult
-  renderCounter(): TemplateResult
+  // renderSupportingText(): TemplateResult
+  // renderCounter(): TemplateResult
+  // getAriaDescribedBy(): string
   getInputValue(): string
-  getAriaDescribedBy(): string
+  getErrorText(): string
 
   checkValidityAndDispatch(): { valid: boolean, canceled: boolean }
 }
@@ -37,7 +38,7 @@ export interface GenericI extends TextField {
 /**
  * Generic Abstract class for constructing input fields.
  * 
- * This class is meant to be overriden. Subclassed MUST implement the following:
+ * This class is meant to be overridden. Subclasses MUST implement the following:
  * - renderInput - the input element, which is the main element of the field and MUST have teh value for the field
  * - input query getting the input element
  */
@@ -63,12 +64,12 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
       .label=${this.label}
       ?populated=${this.getPopulated()}
       ?required=${this.required}
+      .supportingText=${this.supportingText}
+      .errorText=${this.getErrorText()}
     >
       ${t.renderLeadingIcon()}
       ${prefix}${input}${suffix}
       ${t.renderTrailingIcon()}
-      ${t.renderSupportingText()}
-      ${t.renderCounter()}
     </${this.fieldTag}>`;
   }
 
@@ -95,6 +96,9 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
   }
 
   protected override renderInput(): TemplateResult {
-    return html`<slot><input></input></slot>`;
+    return html`
+      <slot><input></input></slot>
+      <div id="description" slot="aria-describedby"></div>
+      `;
   }
 }

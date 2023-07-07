@@ -17,7 +17,7 @@ declare global {
  */
 @customElement('lapp-filled-radio')
 export class LappFilledRadio extends FilledRadio {
-  static override styles: CSSResult[] = [
+  static styles: CSSResult[] = [
     ...MdFilledTextField.styles,
     filledStyles,
     genericStyles, 

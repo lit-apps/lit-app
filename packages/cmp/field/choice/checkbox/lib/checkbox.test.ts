@@ -28,7 +28,7 @@ const options: Option[] = [
 	{code: '3', label: 'three'}
 ] 
 
-// afterEach(fixtureCleanup);
+afterEach(fixtureCleanup);
 describe('checkbox', () => {
 
 	async function setupTest(
@@ -40,7 +40,8 @@ describe('checkbox', () => {
 		}
 
 		const list = element.input as HTMLInputElement
-		const support = element.renderRoot.querySelector('#support') as HTMLElement
+		const support = element.renderRoot.querySelector('#description') as HTMLElement
+		
 		return {
 			list, 
 			support,
@@ -57,12 +58,12 @@ describe('checkbox', () => {
 		});
 
 		it('should render label and supporting text', async () => {
-			const template = html`<lapp-test-checkbox label="label" supportingText="supportText"></lapp-test-checkbox>`;
-			const { element, list, support} = await setupTest(template);
+			const template = html`<lapp-test-checkbox label="label" supporting-text="supportText"></lapp-test-checkbox>`;
+			const { element, list, support } = await setupTest(template);
 			
 			expect(element.label).toEqual('label');
 			expect(list.getAttribute('aria-label')).toEqual('label');
-			expect(list.getAttribute('aria-describedby')).toEqual('support');
+			expect(list.getAttribute('aria-describedby')).toEqual('description');
 			expect(support.textContent).toContain('supportText');
 		})
 

@@ -162,8 +162,8 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 				.value=${this.selected} 
 				role=${this.listRole}
 				tabindex=${this.listTabIndex}
-				aria-describedby=${(this as unknown as GenericI).getAriaDescribedBy() || nothing}
-       	aria-invalid=${(this as unknown as GenericI).hasError}
+				aria-describedby="description"
+				aria-invalid=${(this as unknown as GenericI).hasError}
        	aria-label=${this.ariaLabel || this.label || nothing}
 				aria-required=${ifDefined(this.required ? 'true' : undefined)}
 				aria-multiselectable=${ifDefined(this.isMulti ? 'true' : undefined)}
@@ -174,6 +174,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 			${when(this.dense, () => html`<md-list-item disabled style="flex:1"></md-list-item>`)}			
 			<slot></slot>
 	</ul-choice>
+	<div id="description" slot="aria-describedby"></div>
 		`
 	}
 

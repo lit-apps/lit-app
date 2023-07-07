@@ -1,16 +1,19 @@
-import { LitElement, PropertyValueMap, PropertyValues, TemplateResult, css, html } from 'lit';
+import { nothing, LitElement, PropertyValueMap, PropertyValues, TemplateResult, css, html } from 'lit';
 import { property } from 'lit/decorators.js'
+import {classMap} from 'lit/directives/class-map.js';
+
 import { Field } from '@material/web/field/lib/field';
+import {parseInline} from '@lit-app/md-parser';
 
 export type Variant = 'a11y'
 
 type Constructor<T = {}> = new (...args: any[]) => T;
-type RenderLabel = (isFloating: boolean) => TemplateResult;
+type RenderLabel = (isFloating: boolean) => TemplateResult | typeof nothing;
 export declare class A11yFieldMixinInterface {
 	// Define the interface for the mixin
 	variant: Variant | undefined;
 	labelAbove: boolean | undefined;
-	// renderA11yLabel: RenderLabel;
+	renderLabel: RenderLabel;
 
 }
 /**
@@ -19,6 +22,7 @@ export declare class A11yFieldMixinInterface {
  * - [x] disable label animation
  * - [x] allow label to wrap
  * - [x] larger label
+ * - [ ] render markdown in label
  */
 export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 
@@ -35,11 +39,19 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 		 */
 		@property({ type: Boolean, reflect: true }) labelAbove = false;
 
+		/** we store mardkow template for label */
+		private _md: TemplateResult | undefined;
+
 		protected override willUpdate(props: PropertyValues) {
 			if (props.has('variant') && this.variant === 'a11y') {
 				this.labelAbove = true;
 				this.populated = true;
 			}
+			// set markdow label as populated
+			if(props.has('label') && this.variant === 'a11y') {
+				this._md = this.label ? parseInline(this.label) : '';
+			}
+
 			// always stay populated
 			// this is useful with select field for example
 			if (props.has('populated') && this.variant === 'a11y' && !this.populated) {
@@ -47,6 +59,43 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 			}
 			super.willUpdate(props);
 		}
+
+		private override renderLabel(isFloating: boolean) {
+			if(this.variant !== 'a11y') {
+				return super.renderLabel(isFloating);
+			}
+
+			if (!this.label) {
+				return nothing;
+			}
+	
+			let visible: boolean;
+			if (isFloating) {
+				// Floating label is visible when focused/populated or when animating.
+				visible = this.focused || this.populated || this.isAnimating;
+			} else {
+				// Resting label is visible when unfocused. It is never visible while
+				// animating.
+				visible = !this.focused && !this.populated && !this.isAnimating;
+			}
+	
+			const classes = {
+				'hidden': !visible,
+				'floating': isFloating,
+				'resting': !isFloating,
+			};
+	
+			// Add '*' if a label is present and the field is required
+			// the difference is that we render a template and not a string
+			const labelHTML = html`${this._md}${this.required ? '*' : ''}`;
+	
+			return html`
+				<span class="label ${classMap(classes)}"
+					aria-hidden=${!visible}
+				>${labelHTML}</span>
+			`;
+		}
+
 
 	};
 	// Cast return type to your mixin's interface intersected with the superClass type

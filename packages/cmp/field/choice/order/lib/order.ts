@@ -162,7 +162,7 @@ export abstract class Order extends
             .listItemRole=${'option'}
             .disabled=${this.isDisabled(option)}
             @change=${(e: HTMLEvent<LitElement>) => this.onChange(e, index, option)}
-            .headline=${option.label}
+            .headline=${option.md || option.label}
             .supportingText=${option.supportingText || ''}>
             ${this.renderOptionIllustration(option)}
             ${this.renderPriority(checked, index)}

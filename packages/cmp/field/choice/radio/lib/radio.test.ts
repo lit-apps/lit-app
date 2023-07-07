@@ -35,7 +35,7 @@ describe('radio', () => {
 			throw new Error('Could not query rendered <lapp-test-radio>.');
 		}
 		const list = element.input as HTMLInputElement
-		const support = element.renderRoot.querySelector('#support') as HTMLElement
+		const support = element.renderRoot.querySelector('#description') as HTMLElement
 		
 	
 		return {
@@ -55,12 +55,12 @@ describe('radio', () => {
 		});
 
 		it('should render label and supporting text', async () => {
-			const template = html`<lapp-test-radio label="label" supportingText="supportText"></lapp-test-radio>`;
+			const template = html`<lapp-test-radio label="label" supporting-text="supportText"></lapp-test-radio>`;
 			const { element, list, support} = await setupTest(template);
 			
 			expect(element.label).toEqual('label');
 			expect(list.getAttribute('aria-label')).toEqual('label');
-			expect(list.getAttribute('aria-describedby')).toEqual('support');
+			expect(list.getAttribute('aria-describedby')).toEqual('description');
 			expect(support.textContent).toContain('supportText');
 		})
 

@@ -1,3 +1,4 @@
+import { TemplateResult } from 'lit'
 
 export type MediaYoutube = {
 	mediaType: 'youtube'
@@ -17,6 +18,7 @@ export type Media = MediaImage | MediaYoutube
 export type Option = {
 	code: string
 	label: string
+	md?: TemplateResult // label rendered as markdown
 	name?: string
 	category?: string
 	description?: string // internal use only
