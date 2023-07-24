@@ -113,11 +113,6 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	 */
 	@property({ type: Number }) listTabIndex = -1;
 
-	/**
-	 * false when options are set via slot
-	 */
-	@state() useShadow = true
-
 	
 	/**
 	 * A filter function to filter out options
@@ -143,38 +138,30 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		return itemElement.querySelector(this.choiceInputSelector) as HTMLInputElement
 	}
 	protected _queryItems(selector: string) {
-		return this.useShadow ?
-			this.renderRoot?.querySelectorAll(selector) ?? [] :
-			this.querySelectorAll(selector);
+		return this.renderRoot?.querySelectorAll(selector) ?? []
 	}
-
-	constructor() {
-		super();
-		this.addEventListener('slotchange', this.onSlotChange);
-		
-	}
-
 
 	override renderInput(): TemplateResult {
-		return html`<ul-choice
-				id="list"
-				.required=${this.required}
-				.value=${this.selected} 
-				role=${this.listRole}
-				tabindex=${this.listTabIndex}
-				aria-describedby="description"
-				aria-invalid=${(this as unknown as GenericI).hasError}
-       	aria-label=${this.ariaLabel || this.label || nothing}
-				aria-required=${ifDefined(this.required ? 'true' : undefined)}
-				aria-multiselectable=${ifDefined(this.isMulti ? 'true' : undefined)}
-				@click=${(e: Event) => e.stopPropagation()}
-				@keydown=${this.handleKeydown}
+		return html`
+		<ul-choice
+			id="list"
+			.required=${this.required}
+			.value=${this.selected} 
+			role=${this.listRole}
+			tabindex=${this.listTabIndex}
+			aria-describedby="description"
+			aria-invalid=${(this as unknown as GenericI).hasError}
+			aria-label=${this.ariaLabel || this.label || nothing}
+			aria-required=${ifDefined(this.required ? 'true' : undefined)}
+			aria-multiselectable=${ifDefined(this.isMulti ? 'true' : undefined)}
+			@click=${(e: Event) => e.stopPropagation()}
+			@keydown=${this.handleKeydown}
 			>
 			${this.renderChoiceOptions((this.options || []).filter(this.filter))}
 			${when(this.dense, () => html`<md-list-item disabled style="flex:1"></md-list-item>`)}			
 			<slot></slot>
-	</ul-choice>
-	<div id="description" slot="aria-describedby"></div>
+		</ul-choice>
+		<div id="description" slot="aria-describedby"></div>
 		`
 	}
 
@@ -230,14 +217,6 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		}
 		this.requestUpdate(); 
 		return
-	}
-
-	private onSlotChange() {
-		this.useShadow = false;
-		// console.info('slotchange', this)
-		if (this._value !== undefined) {
-			this.selected = this._value;
-		}
 	}
 
 	static swap(values: string[], index: number, targetIndex: number) {
