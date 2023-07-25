@@ -1,6 +1,6 @@
 import { css } from 'lit';
 import {customElement} from 'lit/decorators.js';
-import { form, styleTypography, accessibility, page } from '@preignition/preignition-styles';
+import { form, label, page } from '@preignition/preignition-styles';
 
 import {EntityAccess} from './lib/entity';
 
@@ -19,6 +19,7 @@ export default class LappEntityAccess extends EntityAccess {
 	static override styles = [
 		...page,
 		form, 
+		label,
 		css`
 		:host {
 			display: contents;
