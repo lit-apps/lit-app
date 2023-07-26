@@ -1,6 +1,6 @@
 import {customElement} from 'lit/decorators.js';
 
-import { UserCard } from './lib/card.js';
+import { UserCard } from './internal/card.js';
 
 declare global {
   interface HTMLElementTagNameMap {

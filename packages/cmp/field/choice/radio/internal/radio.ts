@@ -24,8 +24,7 @@ export abstract class Radio extends
       Choice)) {
 
   protected fieldName = 'radio';
-  protected override readonly assertiveOnFocus = false;
-
+  
   protected override renderChoiceOptions(options: Option[]) {
     if(options.length === 0) {
       return this.renderEmptyOption()

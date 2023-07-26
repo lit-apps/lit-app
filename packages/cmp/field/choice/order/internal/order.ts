@@ -36,7 +36,7 @@ import '../../list-item'
 import IllustrationMixin from '../../illustrationMixin';
 import type { Option } from '../../types';
 import type { HTMLEvent } from '../../../../types';
-import { Checkbox } from '../../checkbox/lib/checkbox';
+import { Checkbox } from '../../checkbox/internal/checkbox';
 // type Option = O & { initialIndex: number }
 export abstract class Order extends
   MultiChoiceMixin(
@@ -44,8 +44,7 @@ export abstract class Order extends
       Checkbox)) {
 
   protected override fieldName = 'order';
-  protected override readonly assertiveOnFocus = false;
-
+  
   @state() animating: boolean = false;
   private movingIndex: number = -1;
   private targetIndex: number = -1;

@@ -1,5 +1,5 @@
 import { customElement } from 'lit/decorators.js';
-import { FilledSelect } from './lib/filled-select.js';
+import { FilledSelect } from './internal/filled-select.js';
 import filledStyles from './filledStyles';
 import { MdFilledSelect } from '@material/web/select/filled-select.js'
 import genericStyles from '../generic/styles';

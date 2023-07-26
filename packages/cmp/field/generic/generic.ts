@@ -4,7 +4,7 @@
  * 
  * 
  */
-import { TextField } from '../textfield/lib/text-field';
+import { TextField } from '../textfield/internal/text-field';
 import { classMap } from 'lit/directives/class-map.js';
 import { html, LitElement, TemplateResult } from 'lit';
 import { html as staticHtml, StaticValue } from 'lit/static-html.js';
@@ -46,7 +46,7 @@ export interface GenericI extends TextField {
 export abstract class Generic extends CompatMixin(TextField) implements GenericI {
   protected abstract override readonly fieldName: string
 
-  @query('input') protected override readonly input?: HTMLInputElement | null;
+  @query('.input') protected override readonly input?: HTMLInputElement | null;
 
   protected override renderField() {
     const t = this as unknown as GenericI
@@ -97,7 +97,7 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
 
   protected override renderInput(): TemplateResult {
     return html`
-      <slot><input></input></slot>
+      <slot><input class="input"></input></slot>
       <div id="description" slot="aria-describedby"></div>
       `;
   }

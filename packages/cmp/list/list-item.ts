@@ -8,7 +8,7 @@ import {customElement} from 'lit/decorators.js';
 
 
 import {MdListItem} from '@material/web/list/list-item';
-import illustrationVariant from './lib/illustrationVariantStyles';
+import illustrationVariant from './internal/illustrationVariantStyles';
 
 declare global {
   interface HTMLElementTagNameMap {

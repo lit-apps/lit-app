@@ -6,7 +6,7 @@
 
 import {customElement} from 'lit/decorators.js';
 
-import {OutlinedField} from './lib/outlined-field.js';
+import {OutlinedField} from './internal/outlined-field.js';
 import {MdOutlinedField} from '@material/web/field/outlined-field.js'
 
 

@@ -1,8 +1,8 @@
-import { Select as S } from '@material/web/select/lib/select';
-import { Variant } from '../../field/lib/a11y-field-mixin';
+import { Select as S } from '@material/web/select/internal/select';
+import { Variant } from '../../field/internal/a11y-field-mixin';
 import { property, query } from 'lit/decorators.js';
-import type { FilledField } from '../../field/lib/filled-field';
-import type { OutlinedField } from '../../field/lib/outlined-field';
+import type { FilledField } from '../../field/internal/filled-field';
+import type { OutlinedField } from '../../field/internal/outlined-field';
 import { PropertyValues } from 'lit';
 
 /**

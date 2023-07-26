@@ -1,7 +1,7 @@
 
 import { customElement } from 'lit/decorators.js';
 
-import { OutlinedTextfieldSelect } from './lib/outlined-textfield-select.js';
+import { OutlinedTextfieldSelect } from './internal/outlined-textfield-select.js';
 import outlinedStyles from './outlinedStyles';
 import { LappOutlinedSelect } from '../select/outlined-select.js'
 import genericStyles from '../generic/styles';

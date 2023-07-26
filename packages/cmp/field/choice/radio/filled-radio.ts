@@ -1,5 +1,5 @@
 import { customElement } from 'lit/decorators.js';
-import { FilledRadio } from './lib/filled-radio.js';
+import { FilledRadio } from './internal/filled-radio.js';
 import filledStyles from './filledStyles';
 import { MdFilledTextField } from '@material/web/textfield/filled-text-field.js'
 import genericStyles from '../../generic/styles';

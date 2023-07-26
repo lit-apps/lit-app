@@ -1,5 +1,5 @@
 import { customElement } from 'lit/decorators.js';
-import { FilledTextField } from './lib/filled-text-field.js';
+import { FilledTextField } from './internal/filled-text-field.js';
 import filledStyles from './filledStyles';
 import { MdFilledTextField } from '@material/web/textfield/filled-text-field.js'
 import genericStyles from '../generic/styles';

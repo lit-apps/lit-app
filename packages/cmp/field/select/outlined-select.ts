@@ -1,7 +1,7 @@
 
 import { customElement } from 'lit/decorators.js';
 
-import { OutlinedSelect } from './lib/outlined-select.js';
+import { OutlinedSelect } from './internal/outlined-select.js';
 import outlinedStyles from './outlinedStyles';
 import { MdOutlinedSelect } from '@material/web/select/outlined-select.js'
 import genericStyles from '../generic/styles';

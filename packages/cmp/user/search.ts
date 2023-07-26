@@ -1,6 +1,6 @@
 import {customElement} from 'lit/decorators.js';
 
-import { UserSearch } from './lib/search.js';
+import { UserSearch } from './internal/search.js';
 
 declare global {
   interface HTMLElementTagNameMap {

@@ -5,11 +5,11 @@ import type { TemplateResult } from 'lit';
 import { AriaList, Option } from './types';
 import { HTMLEvent } from '../../types';
 import { GenericI } from '../generic/generic'
-import { List as MdList } from '@material/web/list/lib/list'
+import { List as MdList } from '@material/web/list/internal/list'
 import '../../list/list'
 import '../../list/list-item'
 import type { LappListItem } from '../../list/list-item';
-import { Checkbox } from './checkbox/lib/checkbox';
+import { Checkbox } from './checkbox/internal/checkbox';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import './list'
 import { when } from 'lit/directives/when.js';
@@ -68,10 +68,6 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	 */
 	protected abstract readonly isMulti: boolean;
 
-	/**
-	 * when true, announce helper text as `alert` helper on focus
-	 */
-	protected abstract readonly assertiveOnFocus: boolean;
 	protected abstract readonly choiceInputSelector: string;
 	protected abstract readonly listRole: AriaList;
 	protected abstract selected: string | string[];
@@ -80,7 +76,8 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	protected _value!: string | string[]
 
 	@query('#list') override readonly input!: HTMLInputElement;
-
+	@query('#list') override readonly inputOrTextArea!: HTMLInputElement;
+	
 
 	/**
 	 * when true, show each option on their own line
@@ -141,10 +138,15 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		return this.renderRoot?.querySelectorAll(selector) ?? []
 	}
 
+	protected getInputOrTextarea() {
+		return this.input
+	}
+
 	override renderInput(): TemplateResult {
 		return html`
 		<ul-choice
 			id="list"
+
 			.required=${this.required}
 			.value=${this.selected} 
 			role=${this.listRole}

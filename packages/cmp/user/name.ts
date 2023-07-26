@@ -1,6 +1,6 @@
 import {customElement} from 'lit/decorators.js';
 
-import { UserName } from './lib/name.js';
+import { UserName } from './internal/name.js';
 
 declare global {
   interface HTMLElementTagNameMap {

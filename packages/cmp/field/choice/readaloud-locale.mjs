@@ -1,4 +1,4 @@
-import order from './order/lib/locale.mjs';
+import order from './order/internal/locale.mjs';
 export default {
   yourAnswerTo: 'This is your answer to ',
   hint: 'hint',

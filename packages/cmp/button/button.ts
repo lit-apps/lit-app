@@ -14,7 +14,7 @@ import '@material/web/button/filled-button.js';
 import '@material/web/button/tonal-button.js';
 import '@material/web/button/outlined-button.js';
 import '@material/web/button/text-button.js';
-import '@material/web/circularprogress/circular-progress.js';
+import '@material/web/progress/circular-progress.js';
 
 const filledTag = literal`md-filled-button`;
 const outlineTag = literal`md-outlined-button`;

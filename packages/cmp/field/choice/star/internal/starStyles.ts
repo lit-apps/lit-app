@@ -5,6 +5,9 @@ import choiceStyles from '../../styles';
 
 const styles: CSSResult = css`
 
+:host {
+	--_color-star: var(--lapp-star-color, rgba(0, 0, 0, 0.38));
+}
 svg {
 	width: 1.25em;
 	height: 1.2em;
@@ -17,7 +20,7 @@ output {
 	font-size: var(--lapp-star-rating-font-size, 1.5rem);
 	padding: 0px 1em;
 	align-self: center;
-	color: var(--mdc-theme-primary, #6200ee);
+	color: var(--color-primary, #6200ee);
 }
 
 #list {
@@ -30,7 +33,7 @@ label {
 	position: relative;
 	font-size: 1.6em;
 	line-height: 0.6em;
-	color: var(--mdc-text-field-disabled-ink-color, rgba(0, 0, 0, 0.38));
+	color: var(--_color-star);
 	cursor: pointer;
 	/* Transparent border-bottom avoids jumping
 		when a colored border is applied
@@ -53,7 +56,7 @@ input:focus + label {
 }
 
 input[id="star0"] + label {
-	color: var(--mdc-text-field-disabled-ink-color, rgba(0, 0, 0, 0.38));
+	color: var(--_color-star);
 }
 
 input[id="star0"]:checked + label {

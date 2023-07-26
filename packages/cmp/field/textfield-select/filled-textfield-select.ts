@@ -1,5 +1,5 @@
 import { customElement } from 'lit/decorators.js';
-import { FilledTextfieldSelect } from './lib/filled-textfield-select.js';
+import { FilledTextfieldSelect } from './internal/filled-textfield-select.js';
 import filledStyles from './filledStyles';
 import { LappFilledSelect } from '../select/filled-select.js'
 import genericStyles from '../generic/styles';

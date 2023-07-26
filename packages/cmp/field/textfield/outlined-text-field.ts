@@ -1,5 +1,5 @@
 import { customElement } from 'lit/decorators.js';
-import { OutlinedTextField } from './lib/outlined-text-field.js';
+import { OutlinedTextField } from './internal/outlined-text-field.js';
 import outlinedStyles from './outlinedStyles';
 import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js'
 import genericStyles from '../generic/styles';

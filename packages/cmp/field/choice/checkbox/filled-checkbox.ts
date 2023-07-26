@@ -8,7 +8,7 @@ import {customElement} from 'lit/decorators.js';
 
 import { MdFilledTextField } from '@material/web/textfield/filled-text-field.js'
 import filledStyles from './filledStyles';
-import {FilledCheckbox} from './lib/filled-checkbox.js';
+import {FilledCheckbox} from './internal/filled-checkbox.js';
 import genericStyles from '../../generic/styles';
 import choiceStyles from '../styles';
 import { CSSResult } from 'lit';

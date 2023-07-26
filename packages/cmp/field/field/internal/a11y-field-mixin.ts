@@ -2,7 +2,7 @@ import { nothing, LitElement, PropertyValueMap, PropertyValues, TemplateResult, 
 import { property } from 'lit/decorators.js'
 import {classMap} from 'lit/directives/class-map.js';
 
-import { Field } from '@material/web/field/lib/field';
+import { Field } from '@material/web/field/internal/field';
 import {parseInline} from '@lit-app/md-parser';
 
 export type Variant = 'a11y'

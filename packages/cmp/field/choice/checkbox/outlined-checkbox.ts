@@ -8,7 +8,7 @@
 import {customElement} from 'lit/decorators.js';
 
 import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js'
-import {OutlinedCheckbox} from './lib/outlined-checkbox.js';
+import {OutlinedCheckbox} from './internal/outlined-checkbox.js';
 import outlinedStyles from './outlinedStyles';
 import genericStyles from '../../generic/styles';
 import choiceStyles from '../styles';

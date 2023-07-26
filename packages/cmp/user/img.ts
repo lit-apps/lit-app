@@ -1,6 +1,6 @@
 import {customElement} from 'lit/decorators.js';
 
-import { UserImg } from './lib/img.js';
+import { UserImg } from './internal/img.js';
 
 declare global {
   interface HTMLElementTagNameMap {

@@ -8,11 +8,9 @@ const styles: CSSResult = css`
 	border-radius: inherit;
   display: block;
   list-style-type: none;
-  margin: 0;
   min-width: 300px;
   width: 100%;
   outline: none;
-  padding: 	8px 0;
   /* Add position so the elevation overlay (which is absolutely positioned)
    can be positioned relative to the list root. */
   position: relative;

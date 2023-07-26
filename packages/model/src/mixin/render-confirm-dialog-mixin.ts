@@ -1,7 +1,7 @@
 import { AppToastEvent } from '@lit-app/app-event';
 import '@material/mwc-button';
 import { Dialog } from '@material/mwc-dialog';
-import('@material/web/linearprogress/linear-progress.js')
+import('@material/web/progress/linear-progress.js')
 
 import { LitElement, PropertyValues, html } from 'lit';
 import { queryAsync, state } from 'lit/decorators.js';

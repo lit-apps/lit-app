@@ -11,7 +11,7 @@ import('@material/web/button/outlined-button')
 import('@material/web/button/filled-button')
 import('@material/web/button/tonal-button')
 import('@material/web/icon/icon')
-import('@material/web/circularprogress/circular-progress')
+import('@material/web/progress/circular-progress')
 
 /**
  *  Add user role for an entity

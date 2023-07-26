@@ -1,8 +1,8 @@
 import {customElement} from 'lit/decorators.js';
 import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js'
-import {OutlinedOrder} from './lib/outlined-order';
+import {OutlinedOrder} from './internal/outlined-order';
 import outlinedStyles from './outlinedStyles';
-import orderStyles from './lib/orderStyles';
+import orderStyles from './internal/orderStyles';
 
 declare global {
   interface HTMLElementTagNameMap {

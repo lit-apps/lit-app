@@ -23,7 +23,6 @@ import type { HTMLEvent } from '../../../../types';
       Choice)) {
   
   protected fieldName = 'checkbox';
-  protected override readonly assertiveOnFocus = false;
   
   protected override renderChoiceOptions(options: Option[]) {
     if(options.length === 0) {

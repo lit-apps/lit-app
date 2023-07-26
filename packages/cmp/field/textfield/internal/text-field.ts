@@ -1,8 +1,8 @@
-import { TextField as T } from '@material/web/textfield/lib/text-field';
-import { Variant } from '../../field/lib/a11y-field-mixin';
+import { TextField as T } from '@material/web/textfield/internal/text-field';
+import { Variant } from '../../field/internal/a11y-field-mixin';
 import { property, query } from 'lit/decorators.js';
-import type { FilledField } from '../../field/lib/filled-field';
-import type { OutlinedField } from '../../field/lib/outlined-field';
+import type { FilledField } from '../../field/internal/filled-field';
+import type { OutlinedField } from '../../field/internal/outlined-field';
 import { PropertyValues } from 'lit';
 
 
@@ -32,7 +32,7 @@ export abstract class TextField extends T {
 	 * Whether the label should be displayed above the field
 	 * and removes animation on focus
 	 */
-	@property() labelAbove: boolean = false
+	@property({ type: Boolean }) labelAbove: boolean = false
 
 	/**
 	 * Prevent automatic check validity on blur
