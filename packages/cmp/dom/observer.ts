@@ -1,6 +1,6 @@
 import {customElement} from 'lit/decorators.js';
 
-import { DomObserver } from './lib/observer.js';
+import { DomObserver } from './internal/observer.js';
 
 declare global {
   interface HTMLElementTagNameMap {
