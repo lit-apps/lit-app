@@ -19,11 +19,12 @@ export interface GenericI extends TextField {
   fieldName: string
 
   input: HTMLInputElement | null | undefined
+  inputOrTextArea: HTMLInputElement | null | undefined
 
   renderField(): TemplateResult
   renderPrefix(): TemplateResult
   renderSuffix(): TemplateResult
-  renderInput(): TemplateResult
+  renderInputOrTextarea(): TemplateResult
   renderLeadingIcon(): TemplateResult
   renderTrailingIcon(): TemplateResult
   // renderSupportingText(): TemplateResult
@@ -33,6 +34,8 @@ export interface GenericI extends TextField {
   getErrorText(): string
 
   checkValidityAndDispatch(): { valid: boolean, canceled: boolean }
+  getInputOrTextarea(): HTMLInputElement | null
+
 }
 
 /**
@@ -46,13 +49,11 @@ export interface GenericI extends TextField {
 export abstract class Generic extends CompatMixin(TextField) implements GenericI {
   protected abstract override readonly fieldName: string
 
-  @query('.input') protected override readonly input?: HTMLInputElement | null;
-
+  @query('.input') protected override readonly input!: HTMLInputElement | null;
+  @query('.input') override readonly inputOrTextArea!: HTMLInputElement | null;
+  
   protected override renderField() {
     const t = this as unknown as GenericI
-    const prefix = t.renderPrefix();
-    const suffix = t.renderSuffix();
-    const input = t.renderInput();
 
     return staticHtml`<${this.fieldTag}
       class="field"
@@ -68,8 +69,9 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
       .errorText=${this.getErrorText()}
     >
       ${t.renderLeadingIcon()}
-      ${prefix}${input}${suffix}
+      ${t.renderInputOrTextarea()}
       ${t.renderTrailingIcon()}
+      <div id="description" slot="aria-describedby"></div>
     </${this.fieldTag}>`;
   }
 
@@ -95,10 +97,14 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
     return true
   }
 
-  protected override renderInput(): TemplateResult {
+  protected override renderInputOrTextarea(): TemplateResult {
     return html`
-      <slot><input class="input"></input></slot>
-      <div id="description" slot="aria-describedby"></div>
+      <slot><input id="input" class="input"></input></slot>
       `;
   }
+
+  protected override getInputOrTextarea() {
+		return this.input
+	}
+
 }

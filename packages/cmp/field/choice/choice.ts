@@ -138,11 +138,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		return this.renderRoot?.querySelectorAll(selector) ?? []
 	}
 
-	protected getInputOrTextarea() {
-		return this.input
-	}
-
-	override renderInput(): TemplateResult {
+	override renderInputOrTextarea(): TemplateResult {
 		return html`
 		<ul-choice
 			id="list"
@@ -163,7 +159,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 			${when(this.dense, () => html`<md-list-item disabled style="flex:1"></md-list-item>`)}			
 			<slot></slot>
 		</ul-choice>
-		<div id="description" slot="aria-describedby"></div>
+		
 		`
 	}
 

@@ -32,6 +32,7 @@ const styles = css`
     text-overflow: inherit;
     white-space: inherit;
   }
+
   `
 
 declare global {
