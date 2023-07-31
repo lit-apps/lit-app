@@ -1,8 +1,9 @@
 import { EntityI } from '@lit-app/model/src/types/entity';
 import { html, css, LitElement } from "lit";
 import { when } from 'lit/directives/when.js';
-import { AccessActionI,  Role } from '@lit-app/model';
 import { property, state } from 'lit/decorators.js';
+import { HTMLEvent } from '@lit-app/cmp/types';
+import { AccessActionI,  Role } from '@lit-app/model';
 import('@lit-app/cmp/user/card')
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')
@@ -12,12 +13,11 @@ import('@material/web/button/tonal-button')
 import('@material/web/icon/icon')
 import('@material/web/progress/circular-progress')
 
-
 /**
- *  Set the role of an entity
+ *  Add user role for an entity
  */
 
-export class SetRole  extends LitElement {
+export class AddRole  extends LitElement {
 
 	static override styles = css`
 			:host {
@@ -27,38 +27,41 @@ export class SetRole  extends LitElement {
 				--_width: var(--user-card-width, 380px);
 				
 			}
-			lapp-user-card {
-				max-width: var(--_width);
-			}
-
+			
 			lapp-user-search {
 				width: var(--_width);
 			}
 
 			.layout {
 				display: flex;
+				flex-wrap: wrap;
 				flex-direction: row;
 				gap: var(--space-medium);
 				min-height: 56px; 
 				align-items: center;
+				flex-wrap: wrap;
 			}
 		`;
 	
-	/** uid of current user */
-	@property() uid!: string;	
-	@property() label: string = 'Set Ownership'
+	/** uid of current user */	
+	@property() label: string = 'Add Members'
 	@property({type: Boolean}) canEdit = false;
-	@property() accessRole: Role['name']  = 'owner'; 
 	@property({attribute: false}) Entity!: typeof EntityI;
+	@property({attribute: false}) languages: string[] = []; // for roles supporting languages (e.g. translator)
 	
-	@state() isEditing = false;			
-	@state() isLoading = false;			
+	@state() accessRole: Role['name'] | '' = ''; 
+	@state() languageRole: string = ''; 
+	@state() isEditing = false;
+	@state() isLoading = false;						
 	@state() newUid!: string;
 	@state() newName!: string;
 
+	get isLocaleRole() {
+		return this.Entity.roles.find(role => role.name === this.accessRole)?.locale ;
+	}
+
 	override render() {
 		return html`
-		<lapp-user-card noninteractive .uid=${this.uid}></lapp-user-card>
 		${when(this.canEdit, () => this.renderEdit())}`;
 	}
 
@@ -66,28 +69,36 @@ export class SetRole  extends LitElement {
 		const cancel = () => {
 			this.newUid = '';
 			this.newName = '';
+			this.accessRole = '';
 			this.isEditing = false;
 		}
 
-		const setAccess = async () => {
+		const addRole = async () => {
 			this.isLoading = true;
+			if(!this.accessRole) return;
 			const event = this.Entity.getEntityAction<AccessActionI>({
-				data: {
 					uid: this.newUid,
 					role: this.accessRole as Role['name'],
-				}
-			}, 'setAccess')
-			
+					language: this.languageRole
+			}, 'addAccess')
+
 			this.dispatchEvent(event);
 			const promise = await event.detail.promise;
 			this.isLoading = false;
-		}	
+		}
 
 		const onValueChanged = (e: CustomEvent) => {
 			this.newUid = e.detail.value;
 			this.newName = e.detail.selectedText;
 		}
+		const onRoleSelected = (e: HTMLEvent<HTMLInputElement>) => {
+			this.accessRole = e.target.value as Role['name']	;
+		}
+		const onLanguageRoleSelected = (e: HTMLEvent<HTMLInputElement>) => {
+			this.languageRole = e.target.value;
+		}
 
+		const disabled = !this.newUid || !this.accessRole || (!!this.isLocaleRole && !this.languageRole);
 		return html`
 		<div class="layout">
 			${this.isEditing ? 
@@ -100,8 +111,31 @@ export class SetRole  extends LitElement {
 						.loader=${this.Entity?.userLoader}
 						@value-changed=${onValueChanged}
 					></lapp-user-search>
-					<md-filled-button @click=${setAccess} .disabled=${!this.newUid}>
-						set ${this.newName || ''} as ${this.accessRole}</lapp-user-name>
+					<mwc-select
+						.label=${'Select Role'} 
+						.value=${this.accessRole}
+						@selected=${onRoleSelected}>
+						${this.Entity?.roles.filter(role => role.level > 1).map(role => html`
+							<mwc-list-item .value=${role.name}>
+								${role.name}
+							</mwc-list-item>
+						`)}
+					</mwc-select>
+					${when(this.isLocaleRole, () => html`
+					<mwc-select
+						.label=${'Select Langauge'} 
+						.value=${this.languageRole}
+						@selected=${onLanguageRoleSelected}>
+						${this.languages.map(lan => html`<mwc-list-item .value=${lan}>${lan}</mwc-list-item>`)}
+					</mwc-select>
+						`)}
+					<md-filled-button 
+						@click=${addRole} 
+						.disabled=${disabled}>
+						${disabled ? 
+							'Select a User and a Role' :
+							`Add ${this.newName || ''} as ${this.accessRole || ''} ${this.isLocaleRole ? `(${this.languageRole})` : ''}`
+							}</lapp-user-name>
 						${this.isLoading ? 
 							html`<md-circular-progress></md-circular-progress>` :
 							html`<md-icon slot="icon">person</md-icon>`
@@ -121,4 +155,3 @@ export class SetRole  extends LitElement {
 	}
 
 }
-

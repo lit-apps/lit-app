@@ -84,6 +84,7 @@ export abstract class Radio extends
       label=${option.specifyLabel || this.tr('pleaseSpecify')}
       .value=${this.specify || ''}
       @input=${onInput}
+      @keydown=${(e: HTMLEvent) => e.stopPropagation()}
       @click=${(e: HTMLEvent) => e.stopPropagation()}
       ></md-filled-text-field>
     `

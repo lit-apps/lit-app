@@ -15,7 +15,7 @@ import { html, LitElement } from "lit";
 import { property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import hasUserRole from './hasUserRole';
-import type { UserItem, UserItemRole } from '@lit-app/cmp/user/lib/types';
+import type { UserItem, UserItemRole } from '@lit-app/cmp/user/internal/types';
 import {
 	columnBodyRenderer,
 } from 'lit-vaadin-helpers';
@@ -133,7 +133,7 @@ export class EntityAccess extends
 
 	protected renderBody(_data: any, renderConfig: RenderConfig) {
 		const currentOwner = this.metaData?.access?.user?.owner;
-
+		console.log('currentOwner', currentOwner);
 		const bodyRole = (item: UserItemRole) => html`
 		<md-chip-set>
 			${item.roles.map(it => {
@@ -141,10 +141,8 @@ export class EntityAccess extends
 				// console.log('onActionRevoke', e);
 				e.preventDefault();
 				const event = this.Entity.getEntityAction<AccessActionI>({
-					data: {
 						uid: item.uid,
 						role: it
-					}
 				}, 'removeAccess')
 				this.dispatchEvent(event);
 
@@ -157,6 +155,7 @@ export class EntityAccess extends
 			})}
 		</md-chip-set>`;
 
+		const canSetOwnership = renderConfig.entityAccess.isOwner || !currentOwner || this.superAdmin ;
 		return html`
 		<section class="content">
 			<h5 class="secondary">Ownership</h5>
@@ -164,7 +163,7 @@ export class EntityAccess extends
 				.label=${'Modify Ownership'}
 				.accessRole=${'owner'}
 				.uid=${currentOwner}
-				.canEdit=${renderConfig.entityAccess.isOwner || !currentOwner}
+				.canEdit=${canSetOwnership}
 				.Entity=${this.Entity}
 			></lapp-access-set-role>
 			

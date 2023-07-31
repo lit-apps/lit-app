@@ -2,7 +2,7 @@ import { css } from 'lit';
 import {customElement} from 'lit/decorators.js';
 import { form, label, page } from '@preignition/preignition-styles';
 
-import {EntityAccess} from './lib/entity';
+import {EntityAccess} from './internal/entity';
 
 declare global {
   interface HTMLElementTagNameMap {

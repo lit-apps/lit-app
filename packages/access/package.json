@@ -24,7 +24,7 @@
     "@lit-app/cmp": "link:../cmp",
     "@lit-app/model": "link:../model",
     "@lit-app/testing": "link:../testing",
-    "@material/web": "1.0.0-pre.12",
+    "@material/web": "1.0.0-pre.14",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-styles": "link:../../../packages/preignition-styles",

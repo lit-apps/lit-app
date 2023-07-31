@@ -1,6 +1,6 @@
 import type { Grid, GridItemModel } from '@vaadin/grid'
 import { CSSResult, LitElement, TemplateResult } from 'lit'
-import { Role, Strings, EntityAction, ActionDetail, Collection, CollectionI } from '../types'
+import { Role, Strings, EntityAction, Collection, CollectionI } from '../types'
 import type { Action, ButtonConfig } from './action'
 import { EntityCreateDetail } from '../events'
 import { GetAccess } from './getAccess'
@@ -8,19 +8,20 @@ import { Model } from './modelComponent'
 
 // storing the state of an entity
 export type EntityStatus = {
-	isDirty: boolean,
-	isEditing: boolean,
-	isSaving: boolean,
-	isLoading: boolean, // true when the entity is loading data
-	isDeleting: boolean,
+	isDirty: boolean
+	isEditing: boolean
+	isSaving: boolean
+	isLoading: boolean // true when the entity is loading data
+	isDeleting: boolean
 }
 
 // storing the access information for an entity
 export type EntityAccess = {
-	isOwner: boolean,
-	canEdit: boolean,
-	canView: boolean,
-	canDelete: boolean,
+	isOwner: boolean
+	canEdit: boolean
+	canView: boolean
+	canDelete: boolean
+	// isSuper: boolean // true for super Admin 
 }
 
 export interface FieldConfig {
@@ -185,7 +186,7 @@ export abstract class EntityRenderer<T> {
 
 }
 
-import type { PartialBy } from '../types'
+// import type { PartialBy } from '../types'
 // import { entityEvent } from '../entity-holder'
 import { AllActionI } from './entityAction'
 export abstract class EntityI<Interface extends DefaultI = DefaultI> extends EntityRenderer<Interface> {
@@ -221,7 +222,8 @@ export abstract class EntityI<Interface extends DefaultI = DefaultI> extends Ent
 	abstract dispatchAction(actionName: keyof EntityI['actions']): CustomEvent
 
 	static getEntityAction<T extends AllActionI>(
-		_detail: PartialBy<ActionDetail<T['detail']>, 'entityName'>,
+		// _detail: PartialBy<ActionDetail<T['detail']>, 'entityName'>,
+		_detail: T['detail'],
 		_actionName: T['actionName'],
 		_confirmed?: boolean,
 		_bulkAction?: boolean,

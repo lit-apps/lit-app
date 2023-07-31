@@ -446,7 +446,7 @@ export default class Entity<Interface
   }
 
   static getEntityAction<T extends ActionI = ActionI>(
-    detail: PartialBy<ActionDetail<T['detail']>, 'entityName'>,
+    detail: T['detail'],
     actionName: T['actionName'],
     confirmed?: boolean,
     bulkAction?: boolean,

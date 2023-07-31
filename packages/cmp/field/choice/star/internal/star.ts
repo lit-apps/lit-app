@@ -8,10 +8,8 @@ import { html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import '../../../text-field';
 import { Choice } from '../../choice';
-// import { Checkbox } from './checkbox/internal/checkbox';
 import IllustrationMixin from '../../illustrationMixin';
 import SingleMixin from '../../singleMixin';
-import specifyChangedEvent from '../../specifyChangedDetail';
 import { Option } from '../../types';
 import { HTMLEvent } from '../../../../types';
 import '../../list-item'

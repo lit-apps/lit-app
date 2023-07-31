@@ -2,6 +2,6 @@
   "compilerOptions": {
   },
   "extends": "../../tsconfig.json",
-  "include": ["lib/**/*.ts", "*.ts"],
+  "include": ["internal/**/*.ts", "*.ts"],
   "exclude": []
 }

@@ -1,7 +1,7 @@
 // import { css } from 'lit';
 import {customElement} from 'lit/decorators.js';
 
-import {AddRole} from './lib/add-role';
+import {AddRole} from './internal/add-role';
 
 declare global {
   interface HTMLElementTagNameMap {

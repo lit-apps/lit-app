@@ -18,7 +18,7 @@ export const UserMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
   class UserMixinClass extends superClass {
 
-    @property() uid!: String;
+    @property() uid!: string;
 
     get profilePath() {
       return `/userData/profile/${this.uid || ''}`;

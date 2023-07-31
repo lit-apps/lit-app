@@ -48,7 +48,7 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 				this.populated = true;
 			}
 			// set markdow label as populated
-			if(props.has('label') && this.variant === 'a11y') {
+			if((props.has('label') || props.has('variant')) && this.variant === 'a11y') {
 				this._md = this.label ? parseInline(this.label) : '';
 			}
 

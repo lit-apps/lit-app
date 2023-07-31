@@ -31,12 +31,14 @@
         width: min(85vw, 1250px);
       }
     </style>
-    <script type="module" src="/field/choice-order"></script>
+    <!-- <script type="module" src="/field/choice-order"></script>
     <script type="module" src="/field/choice-star"></script>
     <script type="module" src="/field/choice-checkbox"></script>
     <script type="module" src="/field/choice-radio"></script>
-    <script type="module" src="/field/select"></script>
-    <!-- <script type="module" src="/field/textfield-select"></script> -->
+    <script type="module" src="/field/select"></script> -->
+    <!-- <script type="module" src="/field/record/record"></script> -->
+    <script type="module" src="/field/record-field"></script>
+    <script type="module" src="/field/textfield-select"></script>
     <!-- <script type="module">
       import "api-viewer-element";
       import "@preignition/preignition-demo";
@@ -85,8 +87,8 @@
   <body>
     <script type="module">
 
-      import '@material/web/select/select-option';
-      import '@material/web/select/filled-select';
+      // import '@material/web/select/select-option';
+      // import '@material/web/select/filled-select';
 
       const options = [
 	      {code: '1', name:'radio', label: 'one', supportingText: 'hello'}, 
@@ -98,6 +100,8 @@
       document.querySelector('lapp-choice-radio').options = [...options];
       document.querySelector('lapp-choice-order').options = [...options];
     </script>
+    <lapp-record></lapp-record>
+    <lapp-record-field label="test record"></lapp-record-field>
     <lapp-choice-star 
       label="star"
     ></lapp-choice-star> 

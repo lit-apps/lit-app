@@ -1,4 +1,4 @@
-import hasUserRole from './lib/hasUserRole'
+import hasUserRole from './internal/hasUserRole'
 
 export {
 	hasUserRole 

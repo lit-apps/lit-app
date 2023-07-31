@@ -21,6 +21,9 @@ declare global {
  * Lists are continuous, vertical indexes of text or images. Items are placed
  * inside the list.
  *
+ * This implementation of list item is based on MdListItem. It adds support for
+ * illustration variant with wider images (useful in accessiblesurveys).
+ * 
  * @description
  * Lists consist of one or more list items, and can contain actions represented
  * by icons and text. List items come in three sizes: one-line, two-line, and
@@ -43,12 +46,13 @@ declare global {
  *
  *  @example
  * ```html
- * <md-list-item
- *     headline="User Name"
- *     supportingText="user@name.com">
+ * <lapp-list-item
+ *    data-variant="illustration"
+ *    headline="User Name"
+ *    supportingText="user@name.com">
  *   <md-icon data-variant="icon" slot="start">account_circle</md-icon>
  *   <md-icon data-variant="icon" slot="end">check</md-icon>
- * </md-list-item>
+ * </lapp-list-item>
  * ```
  *
  * @example

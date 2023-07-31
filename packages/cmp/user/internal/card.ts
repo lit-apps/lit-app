@@ -6,6 +6,7 @@ import '@preignition/lit-firebase/span';
 import type {LifSpan} from '@preignition/lit-firebase/span';
 import { MdListItem } from '@material/web/list/list-item.js';
 import { HTMLEvent } from '../../types.js';
+import { classMap } from 'lit/directives/class-map.js';
 import('@material/web/list/list-item.js');
 
 
@@ -64,19 +65,31 @@ export class UserCard extends userMixin(MdListItem) {
     </slot></div>`;
   }
 
-  override firstUpdated(props: PropertyValues) {
-    super.firstUpdated(props);
-    if (!this.headline) {
-      // @ts-ignore
-      this.headline = html`<lif-span .path=${this.namePath}></lif-span>`
+    /**
+   * Handles rendering the headline and supporting text.
+   */
+   protected override renderBody() {
+      const supportingText = this.renderSupportingText();
+
+      const headline = this.headline ? this.headline : html`<lif-span .path=${this.namePath}></lif-span>`;
+    
+      return html`<div class="body"
+        ><span class="label-text">${headline}</span>${supportingText}</div>`;
     }
-    if (!this.supportingText) {
-      // @ts-ignore
-      this.supportingText = this.email ?
-        html`<span part="email">${this.email}</span>` :
-        html`<lif-span 
-          @error=${(e: HTMLEvent<LifSpan> ) => e.target.valueController.value = ''}
-          part="email" .defaultValue=${'no email'} .path=${this.emailPath}></lif-span>`
-    }
+
+   /**
+   * Renders the one-line supporting text.
+   */
+  protected override renderSupportingText() {
+    const supportingText = this.supportingText ? this.supportingText : 
+      this.email ? html`<span part="email">${this.email}</span>` :
+      html`<lif-span 
+        @error=${(e: HTMLEvent<LifSpan> ) => e.target.valueController.value = ''}
+        part="email" .defaultValue=${'no email'} .path=${this.emailPath}></lif-span>`
+    return html`<span
+        class="supporting-text ${classMap(this.getSupportingTextClasses())}"
+      >${supportingText}</span>`;
   }
+    
+
 }
