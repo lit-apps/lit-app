@@ -19,8 +19,9 @@ export interface GenericI extends TextField {
   fieldName: string
 
   input: HTMLInputElement | null | undefined
-  inputOrTextArea: HTMLInputElement | null | undefined
+  inputOrTextarea: HTMLInputElement | null | undefined
 
+  
   renderField(): TemplateResult
   renderPrefix(): TemplateResult
   renderSuffix(): TemplateResult
@@ -50,7 +51,7 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
   protected abstract override readonly fieldName: string
 
   @query('.input') protected override readonly input!: HTMLInputElement | null;
-  @query('.input') override readonly inputOrTextArea!: HTMLInputElement | null;
+  @query('.input') override readonly inputOrTextarea!: HTMLInputElement | null;
   
   protected override renderField() {
     const t = this as unknown as GenericI
@@ -75,6 +76,9 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
     </${this.fieldTag}>`;
   }
 
+  get supportingOrErrorText() {
+    return this.error && this.errorText ? this.errorText : this.supportingText;
+  }
   override render() {
     const t = this as unknown as GenericI
     const classes = {

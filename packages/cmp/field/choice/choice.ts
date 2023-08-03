@@ -76,7 +76,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	protected _value!: string | string[]
 
 	@query('#list') override readonly input!: HTMLInputElement;
-	@query('#list') override readonly inputOrTextArea!: HTMLInputElement;
+	@query('#list') override readonly inputOrTextarea!: HTMLInputElement;
 	
 
 	/**

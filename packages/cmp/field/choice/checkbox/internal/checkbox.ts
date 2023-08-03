@@ -1,7 +1,8 @@
-import '../../../checkbox/checkbox';
+// import '../../../checkbox/checkbox';
 import '../../../../list/list';
 import '../../../../list/list-item';
 import '@material/web/icon/icon';
+import '@material/web/checkbox/checkbox';
 import { html } from 'lit';
 import { when } from 'lit/directives/when.js';
 import { GenericI } from '../../../generic/generic';
@@ -55,7 +56,7 @@ import type { HTMLEvent } from '../../../../types';
     const isChecked = Checkbox.isCodeSelected(this._value, option.code)
     return html`
     ${when(option.specify === true && isChecked, () => this.renderSpecify(option, index))}
-    <lapp-checkbox 
+    <md-checkbox 
       data-role="checkbox"
       data-variant="_icon" 
       slot="start"
@@ -66,7 +67,7 @@ import type { HTMLEvent } from '../../../../types';
       .ariaControls=${option.specify ? `specify${index}` : undefined}
       .value=${option.code}
       ?checked=${isChecked}
-      ></lapp-checkbox>
+      ></md-checkbox>
     `
   }
 

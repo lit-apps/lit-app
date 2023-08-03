@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest'
 import { customElement } from 'lit/decorators.js';
 import { html } from 'lit';
-import fixture, {fixtureCleanup} from '@lit-app/component/testing/fixture';
+import fixture, {fixtureCleanup} from '@lit-app/testing/fixture';
 import { Record } from './record';
 
-@customElement('pwi-test-record')
+@customElement('test-record')
 class TestRecord extends Record {
 	
  }
@@ -25,13 +25,9 @@ describe('record', () => {
 		if (!element) {
 			throw new Error('Could not query rendered <test-record>.');
 		}
-		const button = element.renderRoot.querySelector('button');
-		if (!element) {
-			throw new Error('Could not query rendered <button>.');
-		}
+		
 		return {
 			element,
-			button
 		};
 	}
 

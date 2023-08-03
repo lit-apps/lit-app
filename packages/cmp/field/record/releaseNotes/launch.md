@@ -24,7 +24,7 @@ The first time a respondent clicks on the `record` button, the browser asks for 
 
 The respondent can record a voice answer by clicking on the `record` button. He/she can pause the recording by clicking on the same button again. 
 
-A slider indicates the recording time. It turns to a warning color when the recording time reached 80% of the maximum recording time. A warning message is also displayed. 
+A slider indicates the recording time. It turns to a warning color when the recording time reaches 80% of the maximum recording time. A warning message is also displayed. 
 
 A recording field has a maximum recording time. When the maximum recording time is reached, the recording is automatically set as completed. 
 

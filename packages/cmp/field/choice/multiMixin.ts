@@ -1,4 +1,4 @@
-import { LappCheckbox } from '../checkbox/checkbox';
+import { LappCheckbox } from '../__checkbox/checkbox';
 import { PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { Choice } from './choice';

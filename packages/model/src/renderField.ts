@@ -21,8 +21,8 @@ import('@preignition/pwi-md/src/pwi-md-editor')
 import('@preignition/pwi-form-upload')
 import('@preignition/pwi-input/src/pwi-input-translation')
 import('@preignition/pwi-input/src/pwi-input-translation-textarea')
-import('@material/mwc-formfield')
-import('@material/web/switch/switch')
+import('@material/web/switch/switch.js')
+import('@material/web/checkbox/checkbox.js')
 
 const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetail) => {
   console.log('debounceWrite', detail.data.detail)
@@ -307,15 +307,15 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
   }
   if (component === 'checkbox') {
     return html`
-     <mwc-formfield 
-      .label=${label}
-      class=${cls}
-      >
-      <pwi-checkbox 
-        .checked=${value} 
+    <label class=${cls}>
+      <md-checkbox 
+        aria-label=${label||''}
+        .checked=${value}
         .disabled=${disabled}
-        @change=${onInputFact('checked')}></pwi-checkbox>
-    </mwc-formfield>
+        @change=${onInputFact('checked')} 
+        ></md-checkbox>
+        ${label || ''}
+      </label>
     `;
   }
   if (component === 'switch') {

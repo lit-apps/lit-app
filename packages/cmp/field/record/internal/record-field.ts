@@ -25,7 +25,7 @@ export abstract class RecordField extends Generic {
 	protected fieldName = 'record';
 
 	@query('lapp-input-record') override readonly input!: HTMLInputElement;
-	@query('lapp-input-record') override readonly inputOrTextArea!: HTMLInputElement;
+	@query('lapp-input-record') override readonly inputOrTextarea!: HTMLInputElement;
 	
 	@property() src = '';
 

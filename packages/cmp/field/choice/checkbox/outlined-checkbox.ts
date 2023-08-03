@@ -26,7 +26,7 @@ declare global {
  */
 @customElement('lapp-outlined-checkbox')
 export class LappOutlinedCheckbox extends OutlinedCheckbox {
-  static override styles: CSSResult[] = [
+  static styles: CSSResult[] = [
     ...MdOutlinedTextField.styles, 
     outlinedStyles,
     choiceStyles, 

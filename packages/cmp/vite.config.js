@@ -25,11 +25,13 @@ export default defineConfig({
       "@material/mwc-base",
       "@material/mwc-base/form-element.js", 
       "@material/mwc-button",
-      "@material/mwc-checkbox",
+      
+
       "@material/mwc-dialog",
       "@material/mwc-drawer",
        
-      "@material/mwc-formfield",
+      
+
       
       "@material/mwc-icon",
       "@material/mwc-icon",

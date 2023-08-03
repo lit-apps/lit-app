@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest'
 import { customElement } from 'lit/decorators.js';
 import {literal} from 'lit/static-html.js';
 import { html } from 'lit';
-import fixture, {fixtureCleanup} from '@lit-app/component/testing/fixture';
+import fixture, {fixtureCleanup} from '@lit-app/testing/fixture';
 import { RecordField } from './record-field';
 
 @customElement('pwi-test-record-field')
@@ -42,14 +42,8 @@ describe('record-field', () => {
 		it('initializes as an record-field field', async () => {
 			const { element } = await setupTest();
 			expect(element).toBeInstanceOf(RecordField);
-			expect(element.count).toEqual(0);
-			expect(element.name).toEqual('World');
+		
 		});
 
-		it('should increment on click', async () => {
-			const { element, button } = await setupTest();
-			await button.click();
-			expect(element.count).toEqual(1);
-		})
 	})
 })

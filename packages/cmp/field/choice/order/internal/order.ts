@@ -5,7 +5,6 @@ import { property, query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js'
 import '../../../../list/list'
 import '../../../../list/list-item'
-import '../../../checkbox/checkbox'
 import '@material/web/icon/icon'
 import '@material/web/iconbutton/outlined-icon-button'
 import '@material/web/iconbutton/filled-tonal-icon-button'

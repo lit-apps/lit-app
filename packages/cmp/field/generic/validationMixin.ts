@@ -51,7 +51,7 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 
 	abstract  class ValidationMixinClass extends superClass implements ValidationMixinInterface {
 
-		_input: HTMLInputElement;
+		private _input: HTMLInputElement;
 
 		value!: string | string[] 
 		required!: boolean
