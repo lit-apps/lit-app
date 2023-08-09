@@ -24,6 +24,7 @@ output {
 }
 
 #list {
+	margin-block: var(--space-small, 6px);
 	display: flex;
 	flex-direction: row;
 }

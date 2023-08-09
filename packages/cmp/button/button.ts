@@ -11,24 +11,24 @@ import { when } from 'lit/directives/when.js';
 
 import '@material/web/button/elevated-button.js';
 import '@material/web/button/filled-button.js';
-import '@material/web/button/tonal-button.js';
+import '@material/web/button/filled-tonal-button.js';
 import '@material/web/button/outlined-button.js';
 import '@material/web/button/text-button.js';
 import '@material/web/progress/circular-progress.js';
 
 const filledTag = literal`md-filled-button`;
 const outlineTag = literal`md-outlined-button`;
-const tonalTag = literal`md-tonal-button`;
+const tonalTag = literal`md-filled-tonal-button`;
 const defaultTag = literal`md-text-button`;
 
 const style = css`
   :host {
     --lapp-icon-size: 24px;
     --md-circular-progress-size: var(--lapp-icon-size);
-    --md-outlined-button-with-icon-icon-size: var(--lapp-icon-size);
-    --md-text-button-with-icon-icon-size: var(--lapp-icon-size);
-    --md-filled-button-with-icon-icon-size: var(--lapp-icon-size);
-    --md-tonal-button-with-icon-icon-size: var(--lapp-icon-size);
+    --md-outlined-button-icon-size: var(--lapp-icon-size);
+    --md-text-button-icon-size: var(--lapp-icon-size);
+    --md-filled-button-icon-size: var(--lapp-icon-size);
+    --md-filled-tonal-button-icon-size: var(--lapp-icon-size);
     --md-circular-progress-active-indicator-width: 16;
   }
   md-filled-button {
@@ -93,7 +93,7 @@ export class LappButton extends LitElement {
   @property({type: Boolean}) outlined!: boolean;
 
   /**
-   * True to render a tonal-button
+   * True to render a filled-tonal-button
    */
   @property({type: Boolean}) tonal!: boolean;
 

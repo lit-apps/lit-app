@@ -27,7 +27,6 @@ const priorityStyles = css`
  */
 const swapButtonStyles = css`
 	.swap {
-		margin-inline-end: var(--space-x-small);
 		opacity: 0;
 	}
 	.swap:focus,

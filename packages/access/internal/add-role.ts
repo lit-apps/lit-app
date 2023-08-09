@@ -9,7 +9,7 @@ import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')
 import('@material/web/button/outlined-button')
 import('@material/web/button/filled-button')
-import('@material/web/button/tonal-button')
+import('@material/web/button/filled-tonal-button')
 import('@material/web/icon/icon')
 import('@material/web/progress/circular-progress')
 

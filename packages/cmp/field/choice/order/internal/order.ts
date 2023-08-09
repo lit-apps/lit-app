@@ -189,7 +189,7 @@ export abstract class Order extends
      <md-outlined-icon-button 
       slot="end" 
       aria-label=${this.tr('order.moveUp', {label: option.label})}
-      data-variant="icon" 
+      data-variant="_icon" 
       class="swap up" 
       @click=${onClick(index -1)} >
       <md-icon>arrow_upward</md-icon></md-outlined-icon-button>
@@ -197,7 +197,7 @@ export abstract class Order extends
     const down = () => html`
     <md-outlined-icon-button 
      slot="end" 
-     data-variant="icon" 
+     data-variant="_icon" 
      aria-label=${this.tr('order.moveDown', {label: option.label})}
      class="swap down" 
      @click=${onClick(index + 1)} >
