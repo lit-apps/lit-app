@@ -1,6 +1,6 @@
 import { property, state, query } from 'lit/decorators.js';
 import { Generic } from '../../generic/generic';
-import { html,nothing } from 'lit';
+import { html, nothing } from 'lit';
 import type { TemplateResult } from 'lit';
 // import { HTMLEvent } from '../../types';
 import { GenericI } from '../../generic/generic'
@@ -10,6 +10,7 @@ import '../input-record'
 
 // @ts-ignore
 import locale  from './record-field-locale.mjs';
+import { requestUpdateOnAriaChange } from '@material/web/internal/aria/delegate';
 
 
 
@@ -21,6 +22,10 @@ import locale  from './record-field-locale.mjs';
  */
 // export abstract class RecordField extends translate(Generic, locale, 'readaloud') {
 export abstract class RecordField extends Generic {
+	
+	static {
+		requestUpdateOnAriaChange(this);
+	}
 
 	protected fieldName = 'record';
 
@@ -31,7 +36,9 @@ export abstract class RecordField extends Generic {
 
 	override renderInputOrTextarea(): TemplateResult {
 		return html`
-		<lapp-input-record .src=${this.src}></lapp-input-record>
+		<lapp-input-record 
+			aria-label=${this.ariaLabel || nothing}
+			.src=${this.src}></lapp-input-record>
 		
 		`
 	}

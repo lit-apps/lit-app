@@ -785,7 +785,7 @@ export default class Entity<Interface
 
     return html`<vaadin-grid 
 			id="grid"
-			class="flex grid entity ${this.entityName}"
+      class="flex grid entity ${this.entityName}"
 			.itemIdPath=${'$id'}
 			.items=${data}
 			${gridRowDetailsRenderer(this.gridDetailRenderer.bind(this))}
@@ -898,7 +898,7 @@ export default class Entity<Interface
   }
 
   renderArrayContent(data: Interface[], config?: RenderConfig): TemplateResult {
-    if(config.variant === 'card') { 
+    if(config?.variant === 'card') { 
       return this.renderCard(data, config)
     }
     return this.renderGrid(data, config)

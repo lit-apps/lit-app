@@ -15,7 +15,8 @@ import('@material/web/progress/linear-progress.js')
 import { ResizeControllerMixin } from '../../../mixin/resize-controller-mixin';
 import RecordEvent from '../RecordEvent';
 import { getStream } from '../stream';
-
+import locale from './record-locale.mjs';
+import translate from '@preignition/preignition-util/translate-mixin';
 
 type MediaRecorderErrorEvent = Event & {
   error?: Error
@@ -35,22 +36,24 @@ let recorder: MediaRecorder;
  * @fires record-changed - indicates that audio has changed
  
  */
-export class Record extends ResizeControllerMixin(LitElement) {
+export class Record extends ResizeControllerMixin(translate(LitElement, locale)) {
 
   private recorder!: MediaRecorder;
   private chunks!: Blob[];
   private timer!: number;
-  private messageTimeout!: number;
+  private messageTimeout!: NodeJS.Timeout;
 
+  /** a helper text to pass; it will be added as aria-label to main button or icon button */
+  @property({attribute: 'aria-label'}) ariaLabel = '';
 
   /** the label for record button */
-  @property() recordLabel = 'Record';
+  @property() recordLabel = locale.record;
 
   /** the label for clear button */
-  @property() clearLabel = 'Clear Recording';
+  @property() clearLabel = locale.clearLabel;
 
   /** the label for clear button */
-  @property() playLabel = 'Listen';
+  @property() playLabel = locale.playLabel;
 
   /** max duration of recording (in seconds) */
   @property({ type: Number }) maxDuration = 30;
@@ -88,7 +91,7 @@ export class Record extends ResizeControllerMixin(LitElement) {
     if (!isMediaSupported) {
       return html`
         <div class="helper">
-          Your browser does not support recording audio.
+          ${this.tr('notSupported')}
         </div>
       `
     }
@@ -131,21 +134,24 @@ export class Record extends ResizeControllerMixin(LitElement) {
     const onStop = () => {
       this.recorder.stop()
     }
+    const recordLabel = `${this.recordLabel} ${this.ariaLabel}`
     const renderNarrow = () => html`
-     <md-filled-icon-button .selected=${this.recording} aria-label=${this.recordLabel} @click=${this.onRec}>
+     <md-filled-icon-button .selected=${this.recording} aria-label=${recordLabel} @click=${this.onRec}>
         <md-icon>mic</md-icon>
         <md-icon slot="selectedIcon" class="animate">${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}</md-icon>
       </md-filled-icon-button>
    
       <md-outlined-icon-button 
-        aria-label="stop recording" 
+        aria-label=${this.tr('stopRecording')}
         @click=${onStop}
         .disabled=${!this.recording}>
         <md-icon>stop</md-icon>
       </md-outlined-icon-button>
     `
     const renderWide = () => html`
-     <md-filled-button  @click=${this.onRec}>
+     <md-filled-button  
+        aria-label=${recordLabel}
+        @click=${this.onRec}>
         ${this.recordLabel}
         ${this.recording ?
         html`<md-icon slot="icon" class="animate">${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}</md-icon>` :
@@ -156,7 +162,7 @@ export class Record extends ResizeControllerMixin(LitElement) {
       <md-outlined-button 
         @click=${onStop}
         .disabled=${!this.recording}>
-        Stop
+        ${this.tr('stop')}
         <md-icon slot="icon">stop</md-icon>
       </md-outlined-button>
       `
@@ -165,6 +171,7 @@ export class Record extends ResizeControllerMixin(LitElement) {
 
   renderListenControls() {
 
+    const playLabel = `${this.playLabel} ${this.ariaLabel}`
     const onPlay = () => {
       this.audioEl.paused ? this.audioEl.play() : this.audioEl.pause();
       this.requestUpdate();
@@ -173,7 +180,7 @@ export class Record extends ResizeControllerMixin(LitElement) {
     const onCancel = () => this.confirmClear = false;
     const doClear = () => {
       this.src = '';
-      this.announce('Recording cleared - Ready to start again', 'polite', 4000);
+      this.announce(this.getTranslate('announce.clear'), 'polite', 4000);
     }
 
     const renderClearButton = () => html`
@@ -185,17 +192,17 @@ export class Record extends ResizeControllerMixin(LitElement) {
 
     const renderConfirm = () => html`
       <md-filled-button @click=${doClear}>
-        Start Again
+        ${this.tr('startAgain')}
         <md-icon slot="icon">replay</md-icon>
       </md-filled-button>
       <span class="flex"></span>
       <md-outlined-button @click=${onCancel}>
-        Cancel
+        ${this.tr('cancel')}
         <md-icon slot="icon">cancel</md-icon>
       </md-outlined-button>
     `
     const renderNarrow = () => html`
-        <md-filled-icon-button  @click=${onPlay} aria-label=${this.playLabel}>
+        <md-filled-icon-button  @click=${onPlay} aria-label=${playLabel}>
           ${this.audioEl?.paused ?
         html`<md-icon>play_circle</md-icon>` :
         html`<md-icon>pause</md-icon>`
@@ -203,7 +210,9 @@ export class Record extends ResizeControllerMixin(LitElement) {
         </md-filled-icon-button>`
 
     const renderWide = () => html`
-        <md-filled-button  @click=${onPlay}>
+        <md-filled-button  
+            aria-label=${playLabel}
+            @click=${onPlay}>
             ${this.playLabel}
             ${this.audioEl?.paused ?
         html`<md-icon slot="icon" class="animate">play_circle</md-icon>` :
@@ -232,12 +241,12 @@ export class Record extends ResizeControllerMixin(LitElement) {
     }
 
     try {
-      if (!stream) { this.announce('Requesting permission...'); }
+      if (!stream) { this.announce(this.getTranslate('announce.requestingPermission')); }
       stream = await getStream();
       this.supportingText = '';
     } catch (e) {
       console.error(e);
-      const message = e.name === 'NotAllowedError' ? `${e.message} - This page has been blocked from accessing your microphone` : e.message;
+      const message = e.name === 'NotAllowedError' ? `${e.message} - ${this.getTranslate('announce.blocked')}` : e.message;
       this.announce('Error: ' + message, 'alert');
       return;
     }
@@ -266,7 +275,7 @@ export class Record extends ResizeControllerMixin(LitElement) {
       this.recording = false;
       this.pausing = false;
       this.confirmClear = false;
-      this.announce('Recording Completed', 'polite', 4000);
+      this.announce(this.getTranslate('announce.completed'), 'polite', 4000);
       setTimeout(() => {
         this.requestUpdate();
       }, 10);
@@ -279,20 +288,20 @@ export class Record extends ResizeControllerMixin(LitElement) {
         recorder = this.recorder;
       }
       this.recording = true;
-      this.announce('Recording ...');
+      this.announce(this.getTranslate('announce.recording'));
       this.currentDuration = 0;
       this.startTimer();
     });
 
     this.recorder.addEventListener('pause', () => {
       this.pausing = true;
-      this.announce('Recording Paused');
+      this.announce(this.getTranslate('announce.recording'));
       this.stopTimer();
     });
 
     this.recorder.addEventListener('resume', () => {
       this.pausing = false;
-      this.announce('Recording Resumed')
+      this.announce(this.getTranslate('announce.resumed'))
       this.startTimer();
     });
 
@@ -310,7 +319,7 @@ export class Record extends ResizeControllerMixin(LitElement) {
         }
         // set a warning message if the recording is 90% elapsed
         if (this.almostComplete) {
-          this.announce('Recording will stop soon', 'assertive');
+          this.announce(this.getTranslate('announce.stopSoon'), 'assertive');
         }
       }
     }, 200);

@@ -31,58 +31,16 @@
         width: min(85vw, 1250px);
       }
     </style>
-    <!-- <script type="module" src="/field/choice-order"></script>
+    <script type="module" src="/field/choice-order"></script>
     <script type="module" src="/field/choice-star"></script>
     <script type="module" src="/field/choice-checkbox"></script>
     <script type="module" src="/field/choice-radio"></script>
-    <script type="module" src="/field/select"></script> -->
+    <script type="module" src="/field/select"></script>
     <!-- <script type="module" src="/field/record/record"></script> -->
     <script type="module" src="/field/record-field"></script>
     <script type="module" src="/field/textfield-select"></script>
     <script type="module" src="/field/checkbox-field"></script>
-    <!-- <script type="module">
-      import "api-viewer-element";
-      import "@preignition/preignition-demo";
-
-      const template = `
-      <template data-element="lapp-radio" data-target="slot">
-        <div>Test Slot</div>
-      </template>`
-
-      const ROUTES = [
-        {
-          path: "/intro",
-          title: "Intro",
-          component: () => document.createElement("demo-readme"),
-        },
-        {
-          path: "/api",
-          title: "Api and Demo",
-          component: () => document.createElement("api-viewer"),
-          setup: (cmp, info) => {
-            cmp.src = "/docs/custom-elements.json"
-            cmp.innerHTML = template;
-          },
-        },
-        {
-          path: "/docs",
-          title: "Documentation",
-          component: () => document.createElement("demo-readme"),
-          setup: (cmp, info) => (cmp.src = "/docs/custom-elements.md"),
-        },
-        {
-          path: "**",
-          redirectTo: "intro",
-        },
-      ];
-
-      window.addEventListener("DOMContentLoaded", (event) => {
-        const demo = document.querySelector("#demo")
-        demo.routes = ROUTES;
-        demo.shadowRoot.appendChild(document.querySelector("#appendStyle"))
-        
-      });
-    </script> -->
+   
   </head>
 
   <body>
@@ -101,6 +59,7 @@
       document.querySelector('lapp-choice-radio').options = [...options];
       document.querySelector('lapp-choice-order').options = [...options];
     </script>
+    <md-icon>dark_mode</md-icon>
     <lapp-checkbox-field label="test checkbox" required supporting-text="Hey" _checked></lapp-checkbox-field>
     <lapp-record></lapp-record>
     <lapp-record-field label="test record"></lapp-record-field>

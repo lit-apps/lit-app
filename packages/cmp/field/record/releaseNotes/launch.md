@@ -59,8 +59,11 @@ It is also possible to add a switch in a free text in the form that will turn th
 
 The voice recording tool is accessible with the keyboard. The user can tab through the buttons and activate them with the `Enter` or `Space` key. Focused buttons are highlighted with a distinctive border. They are also announced by assistive technologies like screen readers.
 
+The main button (`Record` if no recording was performed, or `Listen`) is announced as `Record` followed by the question label,  or `Listen` followed by the question label by assistive technologies. 
 
 Each action (e.g. `Recording completed` or `Recording Paused`) is reflected by a helper text below the buttons. Those actions are also announced by assistive technologies.
+
+
 
 ### Reactive Layout
 
@@ -115,6 +118,8 @@ When the file is uploaded on the bucket, an automatic voice-to-text transcriptio
 
 The transcript language is dependent on the language selected for answering the survey. A `profanity` setting is turned on; this setting filters out potential profanity words from the transcript.
 
+## Localization
 
+The voice recording tool is localized in all languages supported by accessiblesurveys.com. The language is automatically selected based on the language selected for answering the survey.
 
 
