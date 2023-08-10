@@ -43,6 +43,10 @@ const styles = css`
 	--md-linear-progress-active-indicator-color: var(--color-warning, #ff1100);
 	}
 
+	md-icon {
+    font-variation-settings: 'FILL' 1;
+  }
+
 	.ct {
 		display: flex;
 		flex-direction: row;

@@ -18,6 +18,7 @@ import { getStream } from '../stream';
 import locale from './record-locale.mjs';
 import translate from '@preignition/preignition-util/translate-mixin';
 
+
 type MediaRecorderErrorEvent = Event & {
   error?: Error
 }

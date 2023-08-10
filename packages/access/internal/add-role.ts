@@ -4,6 +4,7 @@ import { when } from 'lit/directives/when.js';
 import { property, state } from 'lit/decorators.js';
 import { HTMLEvent } from '@lit-app/cmp/types';
 import { AccessActionI,  Role } from '@lit-app/model';
+import {icon} from '@preignition/preignition-styles';
 import('@lit-app/cmp/user/card')
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')
@@ -19,7 +20,9 @@ import('@material/web/progress/circular-progress')
 
 export class AddRole  extends LitElement {
 
-	static override styles = css`
+	static override styles = [
+		icon,
+		css`
 			:host {
 				display: flex;
 				flex-direction: column;
@@ -41,7 +44,7 @@ export class AddRole  extends LitElement {
 				align-items: center;
 				flex-wrap: wrap;
 			}
-		`;
+		`];
 	
 	/** uid of current user */	
 	@property() label: string = 'Add Members'

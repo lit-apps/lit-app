@@ -3,6 +3,7 @@ import { html, css, LitElement } from "lit";
 import { when } from 'lit/directives/when.js';
 import { AccessActionI,  Role } from '@lit-app/model';
 import { property, state } from 'lit/decorators.js';
+import {icon} from '@preignition/preignition-styles';
 import('@lit-app/cmp/user/card')
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')
@@ -19,7 +20,9 @@ import('@material/web/progress/circular-progress')
 
 export class SetRole  extends LitElement {
 
-	static override styles = css`
+	static override styles = [
+		icon, 
+		css`
 			:host {
 				display: flex;
 				flex-direction: column;
@@ -44,7 +47,7 @@ export class SetRole  extends LitElement {
 				flex-wrap: wrap;
 
 			}
-		`;
+		`];
 	
 	/** uid of current user */
 	@property() uid!: string;	

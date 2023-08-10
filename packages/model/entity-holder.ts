@@ -1,6 +1,6 @@
 import { css } from 'lit';
 import {customElement} from 'lit/decorators.js';
-import { form, label,styleTypography, accessibility } from '@preignition/preignition-styles';
+import { form, label,styleTypography, accessibility, icon } from '@preignition/preignition-styles';
 
 import {EntityHolder} from './src/entity-holder';
 
@@ -19,6 +19,7 @@ export class LappEntityHolder extends EntityHolder {
 	static override styles = [
 		styleTypography,
 		accessibility,
+		icon,
 		form, 
 		label,
 		css`
