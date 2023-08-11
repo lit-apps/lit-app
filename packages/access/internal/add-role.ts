@@ -88,6 +88,7 @@ export class AddRole  extends LitElement {
 			this.dispatchEvent(event);
 			const promise = await event.detail.promise;
 			this.isLoading = false;
+			this.isEditing = false;
 		}
 
 		const onValueChanged = (e: CustomEvent) => {
