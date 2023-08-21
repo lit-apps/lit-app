@@ -26,6 +26,15 @@ export abstract class InputCheckbox extends ValidationMixin(MdCheckbox) {
     // @ts-ignore
 		this.input.setAttribute('aria-describedby', 'description');
 	}
+	override willUpdate(props: PropertyValues) {
+		super.willUpdate(props);
+		
+		if (props.has('checked')) {
+			// @ts-ignore
+			this._input.value = this.checked;
+		}
+	
+	}
 
 	override render() {
     return html`
