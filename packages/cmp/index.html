@@ -40,6 +40,7 @@
     <script type="module" src="/field/record-field"></script>
     <script type="module" src="/field/textfield-select"></script>
     <script type="module" src="/field/checkbox-field"></script>
+    <script type="module" src="/field/slider-field"></script>
    
   </head>
 
@@ -60,6 +61,7 @@
       document.querySelector('lapp-choice-order').options = [...options];
     </script>
     <md-icon>dark_mode</md-icon>
+    <lapp-slider-field label="test checkbox" required range supporting-text="Hey" _checked></lapp-slider-field>
     <lapp-checkbox-field label="test checkbox" required supporting-text="Hey" _checked></lapp-checkbox-field>
     <lapp-record></lapp-record>
     <lapp-record-field label="test record"></lapp-record-field>
