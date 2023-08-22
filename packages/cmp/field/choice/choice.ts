@@ -100,11 +100,6 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		 */
 	@property() override name!: string;
 
-	// /**
-	//  * `name` name for the input element
-	//  */
-	// @property() readOnly!: boolean;
-
 	/**
 	 * The tabindex of the underlying list.
 	 */
@@ -139,11 +134,22 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	}
 
 	override renderInputOrTextarea(): TemplateResult {
+		
+		// we add an input field so that SR can announce 
+		// the status of the field
+
 		return html`
+		<input
+			style="width: 0px; height: 0px; padding: 0px;"
+			.required=${this.required}
+			value=${String(this.selected)} 
+			aria-describedby="description"
+			aria-invalid=${(this as unknown as GenericI).hasError}
+			aria-label=${this.ariaLabel || this.label || nothing}
+			aria-required=${ifDefined(this.required ? 'true' : undefined)}/>
 		<ul-choice
 			id="list"
-
-			.required=${this.required}
+			?required=${this.required}
 			.value=${this.selected} 
 			role=${this.listRole}
 			tabindex=${this.listTabIndex}
@@ -159,7 +165,6 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 			${when(this.dense, () => html`<md-list-item disabled style="flex:1"></md-list-item>`)}			
 			<slot></slot>
 		</ul-choice>
-		
 		`
 	}
 
@@ -171,7 +176,6 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	protected renderEmptyOption(): TemplateResult {
 		return html`<md-list-item disabled .headline=${this.tr('noOptions')}></md-list-item>`
 	}
-
 
 	protected handleKeydown(event: KeyboardEvent) {
 		const key = event.key;

@@ -66,7 +66,7 @@ export abstract class TextField extends T {
 	}
 	override willUpdate(changedProperties: PropertyValues) {
 		if(changedProperties.has('noAutoValidate')) {
-			if(!this.noAutoValidate) {
+			if (!this.noAutoValidate) {
 				this.addEventListener('blur', this.reportValidity)
 			} else {
 				this.removeEventListener('blur', this.reportValidity)

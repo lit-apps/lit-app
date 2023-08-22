@@ -53,14 +53,71 @@
       const options = [
 	      {code: '1', name:'radio', label: 'one', supportingText: 'hello'}, 
 	      {code: '2', name:'radio', label: 'two and two and two', exclusive: true}, 
+	      {code: '4', name:'radio', label: 'quatre is a long labelquatre is a long labelquatre is a long labelquatre is a long label. Does it wrap correctly? '},
 	      {code: '3', name:'radio', label: 'three', specify: true},
-	      {code: '4', name:'radio', label: 'quatre is a long labelquatre is a long labelquatre is a long labelquatre is a long label. Does it wrap correctly? '}
       ] 
       document.querySelector('lapp-choice-checkbox').options = [...options];
       document.querySelector('lapp-choice-radio').options = [...options];
       document.querySelector('lapp-choice-order').options = [...options];
     </script>
-    <md-icon>dark_mode</md-icon>
+        <fieldset required>
+          <legend>Choose the colors for your flag.</legend>
+          <ul>
+            <li>
+              <label><input  type="checkbox" name="fc" value="red" />Red</label>
+            </li>
+            <li>
+              <label><input type="checkbox" name="fc" value="orange" />Orange</label>
+            </li>
+            <li>
+              <label><input type="checkbox" name="fc" value="yellow" />Yellow</label>
+            </li>
+            <li>
+              <label><input type="checkbox" name="fc" value="green" />Green</label>
+            </li>
+            <li>
+              <label><input type="checkbox" name="fc" value="blue" />Blue</label>
+            </li>
+            <li>
+              <label><input type="checkbox" name="fc" value="purple" />Purple</label>
+            </li>
+            <li>
+              <label><input type="checkbox" name="fc" value="magenta" />Hot pink</label>
+            </li>
+            <li>
+              <label
+                ><input type="checkbox" name="fc" value="lightpink" checked />Light
+                pink</label
+              >
+            </li>
+            <li>
+              <label
+                ><input type="checkbox" name="fc" value="white" checked />White</label
+              >
+            </li>
+            <li>
+              <label
+                ><input type="checkbox" name="fc" value="lightblue" checked />Light
+                blue</label
+              >
+            </li>
+            <li>
+              <label><input type="checkbox" name="fc" value="black" />Black</label>
+            </li>
+            <li>
+              <label><input type="checkbox" name="fc" value="brown" />Brown</label>
+            </li>
+          </ul>
+        </fieldset>
+        <lapp-choice-checkbox 
+        required
+        label="this is my choice " 
+        supporting-text="this is supporting text" variant="a11y"></lapp-choice-checkbox>
+    <lapp-choice-radio
+
+      required
+      label="Radio box " 
+      supporting-text="this is supporting text" variant="a11y"></lapp-choice-radio>
     <lapp-slider-field label="test checkbox" required range supporting-text="Hey" _checked></lapp-slider-field>
     <lapp-checkbox-field label="test checkbox" required supporting-text="Hey" _checked></lapp-checkbox-field>
     <lapp-record></lapp-record>
@@ -88,21 +145,13 @@
     <md-select-option value="banana" headline="Banana"></md-select-option>
     <md-select-option value="kiwi" headline="Kiwi"></md-select-option>
   </md-filled-select>
-    <lapp-choice-checkbox 
-        required
-        label="this is my choice " 
-        supporting-text="this is supporting text" variant="a11y"></lapp-choice-checkbox>
-    <lapp-choice-radio
-
-      required
-      label="this is my choice " 
-      supporting-text="this is supporting text" variant="a11y"></lapp-choice-radio>
+    
     <lapp-choice-order 
       label="Select items below and order by priority" 
       supporting-text="this is supporting text" variant="a11y"></lapp-choice-order>
 
     <lapp-filled-text-field required label="lap"></lapp-filled-text-field>
     <md-filled-text-field required supporting-text="this is supporting text" label="md"></md-filled-text-field-->
-    
+
   </body>
 </html>
