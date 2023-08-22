@@ -16,12 +16,12 @@ import '@preignition/preignition-widget/src/extension/pwi-select'
 import('@material/mwc-textfield')
 import('@material/mwc-textarea')
 import('@material/mwc-select')
-import('@material/mwc-slider')
 import('@preignition/pwi-md/src/pwi-md-editor')
 import('@preignition/pwi-form-upload')
 import('@preignition/pwi-input/src/pwi-input-translation')
 import('@preignition/pwi-input/src/pwi-input-translation-textarea')
 import('@material/web/switch/switch.js')
+import('../../cmp/field/slider-field.js')
 import('@material/web/checkbox/checkbox.js')
 
 const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetail) => {
@@ -245,32 +245,21 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
   if (component === 'slider') {
     // For the time being, we render as number text field as slider is not working
     return html`
-     <mwc-textfield
+     <lapp-slider-field
       class=${cls}
-      type="number"
-      type=${ifDefined(model.type) || undefined}
-      .icon=${model.icon}
-      .readOnly=${disabled}
+      .disabled=${disabled}
       .label=${label}
-      .helper=${model.helper}
+      .supportingText=${model.helper}
       .required=${model.required}
       .value=${value || ''}
-      @input=${onInputFact('value')}
+      @change=${onInputFact('value')}
       .min=${model.min}
       .max=${model.max}
       step=${ifDefined(model.step)}
-    ></mwc-textfield >
+    ></lapp-slider-field>
 
     `;
-    // return html`
-    //   <mwc-slider
-    //     .value=${value} 
-    //     .disabled=${disabled}
-    //     _min=${model.min}
-    //     _ax=${model.max}
-    //     _step=${ifDefined(model.step)}
-    //     @input=${onInputFact('value')}></mwc-slider>
-    // `
+
   }
   if (component === 'select') {
     return html`
