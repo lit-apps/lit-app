@@ -33,8 +33,8 @@ export default defineConfig({
       
 
       
-      "@material/mwc-icon",
-      "@material/mwc-icon",
+       
+       
              "@material/mwc-list",
       "@material/mwc-menu",
       "@material/mwc-notched-outline",

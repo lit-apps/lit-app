@@ -57,7 +57,7 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
   @property() playLabel = locale.playLabel;
 
   /** max duration of recording (in seconds) */
-  @property({ type: Number }) maxDuration = 30;
+  @property({ type: Number }) maxDuration = 180;
 
   /** indicates if we are recording  */
   @property({ reflect: true, type: Boolean }) recording = false;
