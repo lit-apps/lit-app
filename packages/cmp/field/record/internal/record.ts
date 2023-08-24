@@ -138,15 +138,15 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
     const recordLabel = `${this.recordLabel} ${this.ariaLabel}`
     const renderNarrow = () => html`
      <md-filled-icon-button .selected=${this.recording} aria-label=${recordLabel} @click=${this.onRec}>
-        <md-icon>mic</md-icon>
-        <md-icon slot="selectedIcon" class="animate">${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}</md-icon>
+        <lapp-icon>mic</lapp-icon>
+        <lapp-icon slot="selectedIcon" class="animate">${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}</lapp-icon>
       </md-filled-icon-button>
    
       <md-outlined-icon-button 
         aria-label=${this.tr('stopRecording')}
         @click=${onStop}
         .disabled=${!this.recording}>
-        <md-icon>stop</md-icon>
+        <lapp-icon>stop</lapp-icon>
       </md-outlined-icon-button>
     `
     const renderWide = () => html`
@@ -155,8 +155,8 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
         @click=${this.onRec}>
         ${this.recordLabel}
         ${this.recording ?
-        html`<md-icon slot="icon" class="animate">${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}</md-icon>` :
-        html`<md-icon slot="icon">mic</md-icon>`
+        html`<lapp-icon slot="icon" class="animate">${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}</lapp-icon>` :
+        html`<lapp-icon slot="icon">mic</lapp-icon>`
       }
       </md-filled-button>
      
@@ -164,7 +164,7 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
         @click=${onStop}
         .disabled=${!this.recording}>
         ${this.tr('stop')}
-        <md-icon slot="icon">stop</md-icon>
+        <lapp-icon slot="icon">stop</lapp-icon>
       </md-outlined-button>
       `
     return this.isNarrow ? renderNarrow() : renderWide();
@@ -187,26 +187,26 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
     const renderClearButton = () => html`
       <md-text-button @click=${onClear}>
         ${this.clearLabel}
-        <md-icon slot="icon">clear</md-icon>
+        <lapp-icon slot="icon">clear</lapp-icon>
       </md-text-button>
     `
 
     const renderConfirm = () => html`
       <md-filled-button @click=${doClear}>
         ${this.tr('startAgain')}
-        <md-icon slot="icon">replay</md-icon>
+        <lapp-icon slot="icon">replay</lapp-icon>
       </md-filled-button>
       <span class="flex"></span>
       <md-outlined-button @click=${onCancel}>
         ${this.tr('cancel')}
-        <md-icon slot="icon">cancel</md-icon>
+        <lapp-icon slot="icon">cancel</lapp-icon>
       </md-outlined-button>
     `
     const renderNarrow = () => html`
         <md-filled-icon-button  @click=${onPlay} aria-label=${playLabel}>
           ${this.audioEl?.paused ?
-        html`<md-icon>play_circle</md-icon>` :
-        html`<md-icon>pause</md-icon>`
+        html`<lapp-icon>play_circle</lapp-icon>` :
+        html`<lapp-icon>pause</lapp-icon>`
       }
         </md-filled-icon-button>`
 
@@ -216,8 +216,8 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
             @click=${onPlay}>
             ${this.playLabel}
             ${this.audioEl?.paused ?
-        html`<md-icon slot="icon" class="animate">play_circle</md-icon>` :
-        html`<md-icon slot="icon">pause</md-icon>`
+        html`<lapp-icon slot="icon" class="animate">play_circle</lapp-icon>` :
+        html`<lapp-icon slot="icon">pause</lapp-icon>`
       }
           </md-filled-button>
           `

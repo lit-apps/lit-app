@@ -47,7 +47,7 @@ export const RenderHeaderMixin = <T extends Constructor<LitElement>>(superClass:
 				],
 				() => html`
 				<h2 class="layout horizontal underline">
-					<md-icon>${config?.entityStatus.isEditing ? 'edit' : this.icon}</md-icon>
+					<lapp-icon>${config?.entityStatus.isEditing ? 'edit' : this.icon}</lapp-icon>
 					${title}
 				</h2>`
 			)}`

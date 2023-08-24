@@ -31,16 +31,17 @@
         width: min(85vw, 1250px);
       }
     </style>
-    <script type="module" src="/field/choice-order"></script>
-    <script type="module" src="/field/choice-star"></script>
-    <script type="module" src="/field/choice-checkbox"></script>
-    <script type="module" src="/field/choice-radio"></script>
-    <script type="module" src="/field/select"></script>
+    <!-- <script type="module" src="/field/choice-order"></script> -->
+    <!-- <script type="module" src="/field/choice-star"></script> -->
+    <!-- <script type="module" src="/field/choice-checkbox"></script> -->
+    <!-- <script type="module" src="/field/choice-radio"></script> -->
+    <!-- <script type="module" src="/field/select"></script> -->
     <!-- <script type="module" src="/field/record/record"></script> -->
-    <script type="module" src="/field/record-field"></script>
-    <script type="module" src="/field/textfield-select"></script>
-    <script type="module" src="/field/checkbox-field"></script>
-    <script type="module" src="/field/slider-field"></script>
+    <!-- <script type="module" src="/field/record-field"></script> -->
+    <!-- <script type="module" src="/field/textfield-select"></script> -->
+    <!-- <script type="module" src="/field/checkbox-field"></script> -->
+    <!-- <script type="module" src="/field/slider-field"></script> -->
+    <script type="module" src="/icon/icon"></script>
    
   </head>
 
@@ -59,8 +60,13 @@
       document.querySelector('lapp-choice-checkbox').options = [...options];
       document.querySelector('lapp-choice-radio').options = [...options];
       document.querySelector('lapp-choice-order').options = [...options];
+
+      document.querySelectorAll('md-filled-text-field')
+        .forEach(el => el.addEventListener('focusout', e => {
+            e.target.reportValidity();
+        }));  
     </script>
-        <fieldset required>
+        <!--fieldset required>
           <legend>Choose the colors for your flag.</legend>
           <ul>
             <li>
@@ -108,8 +114,12 @@
               <label><input type="checkbox" name="fc" value="brown" />Brown</label>
             </li>
           </ul>
-        </fieldset>
-        <lapp-choice-checkbox 
+        </fieldset-->
+    <lapp-icon>settings</lapp-icon>
+    <lapp-icon>settings</lapp-icon>
+    <md-filled-text-field label="first text"></md-filled-text-field>
+    <md-filled-text-field required label="second text"></md-filled-text-field>
+     <lapp-choice-checkbox 
         required
         label="this is my choice " 
         supporting-text="this is supporting text" variant="a11y"></lapp-choice-checkbox>

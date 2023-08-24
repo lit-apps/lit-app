@@ -759,7 +759,7 @@ export default class Entity<Interface
             aria-label=${action.bulk?.tooltip || action.label || ''} 
             .disabled=${action.bulk?.disabled?.(selectedItems) || false}
             @click=${bulkActionHandler}>
-            <md-icon>${action.icon}</md-icon>
+            <lapp-icon>${action.icon}</lapp-icon>
           </md-filled-icon-button>
         </pwi-tooltip>
       `
@@ -916,7 +916,7 @@ export default class Entity<Interface
   }
 
   renderEmptyArray(_config?: RenderConfig): TemplateResult {
-    return html`<p><md-icon class="secondary">info</md-icon></md-info>No ${this.entityName} found</p>`
+    return html`<p><lapp-icon class="secondary">info</lapp-icon></md-info>No ${this.entityName} found</p>`
   }
 
   renderTitle(_data: Interface, _config?: RenderConfig): TemplateResult {
@@ -933,7 +933,7 @@ export default class Entity<Interface
       ],
       () => html`
       <h2  class="underline layout horizontal">
-        <md-icon>${config.entityStatus.isEditing ? 'edit' : this.icon}</md-icon>
+        <lapp-icon>${config.entityStatus.isEditing ? 'edit' : this.icon}</lapp-icon>
         ${title}
       </h2>`
     )}`

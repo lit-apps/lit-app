@@ -8,8 +8,8 @@ type Weight = 100 | 200 | 300 | 400 | 500 | 600 | 700
 
 const svgCache = {};
 
-function fetchSvgImage(name: string, fetchOptions: RequestInit): Promise<SVGElement> {
-	const url = Icon.getURL(name);
+function fetchSvgImage(name: string, noFill: boolean, fetchOptions: RequestInit): Promise<SVGElement> {
+	const url = Icon.getURL(name, noFill);
 	if (svgCache[url]) {
 		// return cached SVG element
 		return Promise.resolve(svgCache[url].cloneNode(true) as SVGElement);
@@ -24,12 +24,17 @@ function fetchSvgImage(name: string, fetchOptions: RequestInit): Promise<SVGElem
 					if (!svgEl.getAttribute('viewBox') ) {
 						svgEl.setAttribute('viewBox', `0 0 ${Icon.opticalSize} ${Icon.opticalSize}`)
 					}
+					// if(!noFill) {
+					// }
 					svgEl.setAttribute('fill', 'currentColor');
+					svgEl.removeAttribute('width');
+					svgEl.removeAttribute('height');
+					
 					// cache SVG element
 					svgCache[url] = svgEl.cloneNode(true) as SVGElement;
 					return svgEl;
 				} else {
-					throw new Error('SVG element not found in fetched document');
+					throw new Error(`SVG element not found in fetched document (name: ${name})`);
 				}
 			});
 	}
@@ -41,18 +46,18 @@ function fetchSvgImage(name: string, fetchOptions: RequestInit): Promise<SVGElem
  */
 export class Icon extends I {
 
-	static getURL(name: string) {
-		return `https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/${name}/${this.fill ? 'fill1' : 'default'}/${this.opticalSize}px.svg`
+	static getURL(name: string, noFill: boolean) {
+		return `https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/${name}/${noFill  ?'default' :  'fill1'  }/${this.opticalSize}px.svg`
 	}
 
-	static fill: boolean = true
-	static opticalSize: OpticalSize = 40
+	static opticalSize: OpticalSize = 24
 	static grade: Grade = 0
 	static weight: Weight = 400
 	static fetchOptions: RequestInit = { cache: 'default' }
 
 	@query('slot') slotEl: HTMLSlotElement;
 	@property({ attribute: 'aria-label' }) ariaLabel!: string;
+	@property({ attribute: 'no-fill', type: Boolean }) noFill: boolean = false;
 
 	override render() {
 		return html`<slot @slotchange=${this.onSlotChange}></slot>`;
@@ -65,7 +70,7 @@ export class Icon extends I {
 		// prevent codepoints from being rendered via SVG - only works with named icons
 		if (name && name instanceof Text && name.textContent && !name.textContent?.startsWith('&#')) {
 
-			fetchSvgImage(name.textContent, Icon.fetchOptions)
+			fetchSvgImage(name.textContent, this.noFill, Icon.fetchOptions)
 				.then(svgEl => {
 
 					svgEl.setAttribute('aria-label', this.ariaLabel ?? name.textContent);

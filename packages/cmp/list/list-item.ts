@@ -42,7 +42,7 @@ declare global {
  * - `video[data-variant=video]`
  * - `img,span[data-variant=avatar]`
  * - `img[data-variant=image]`
- * - `md-icon[data-variant=icon]`
+ * - `lapp-icon[data-variant=icon]`
  *
  *  @example
  * ```html
@@ -50,8 +50,8 @@ declare global {
  *    data-variant="illustration"
  *    headline="User Name"
  *    supportingText="user@name.com">
- *   <md-icon data-variant="icon" slot="start">account_circle</md-icon>
- *   <md-icon data-variant="icon" slot="end">check</md-icon>
+ *   <lapp-icon data-variant="icon" slot="start">account_circle</lapp-icon>
+ *   <lapp-icon data-variant="icon" slot="end">check</lapp-icon>
  * </lapp-list-item>
  * ```
  *

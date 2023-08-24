@@ -14,7 +14,7 @@ import { PropertyValues } from 'lit';
  * - [x] RTL support - hopefully not needed anymore with MD3 as it should be supported out of the box
  * - [x] support for displaying native validation message - provided out of the box by MD3
  * - [ ] improved support for readonly (style and behavior) 
- * - [ ] check validity on blur
+ * - [x] check validity on blur
  * - [ ] only show supportText on focus
  * - [ ] prevent setting value when value is undefined ?
  * - [ ] possibility to listen when field icon is clicked - see https://github.com/material-components/material-components-web-components/issues/2447

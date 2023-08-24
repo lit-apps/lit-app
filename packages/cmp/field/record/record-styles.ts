@@ -32,10 +32,10 @@ const styles = css`
 		min-height: 56px;
 	}
 
-	:host([recording]) md-icon.animate {
+	:host([recording]) lapp-icon.animate {
 		animation: growShrink 1s ease-in-out infinite;
 	}
-	:host([pausing]) md-icon.animate {
+	:host([pausing]) lapp-icon.animate {
 		animation: unset;
 	}
 	
@@ -43,9 +43,7 @@ const styles = css`
 	--md-linear-progress-active-indicator-color: var(--color-warning, #ff1100);
 	}
 
-	md-icon {
-    font-variation-settings: 'FILL' 1;
-  }
+
 
 	.ct {
 		display: flex;

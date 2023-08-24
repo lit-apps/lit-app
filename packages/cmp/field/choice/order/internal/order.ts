@@ -192,7 +192,7 @@ export abstract class Order extends
       data-variant="_icon" 
       class="swap up" 
       @click=${onClick(index -1)} >
-      <md-icon>arrow_upward</md-icon></md-outlined-icon-button>
+      <lapp-icon>arrow_upward</lapp-icon></md-outlined-icon-button>
     `
     const down = () => html`
     <md-outlined-icon-button 
@@ -201,7 +201,7 @@ export abstract class Order extends
      aria-label=${this.tr('order.moveDown', {label: option.label})}
      class="swap down" 
      @click=${onClick(index + 1)} >
-     <md-icon>arrow_downward</md-icon></md-outlined-icon-button>
+     <lapp-icon>arrow_downward</lapp-icon></md-outlined-icon-button>
    `
     return html`
       ${when(index > 0, up)}

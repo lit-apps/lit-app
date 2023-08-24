@@ -98,7 +98,7 @@ export class SetRole  extends LitElement {
 				html`
 					<md-outlined-button @click=${cancel}>
 						Cancel
-						<md-icon slot="icon">cancel</md-icon>
+						<lapp-icon slot="icon">cancel</lapp-icon>
 					</md-outlined-button>
 					<lapp-user-search
 						.loader=${this.Entity?.userLoader}
@@ -108,14 +108,14 @@ export class SetRole  extends LitElement {
 						set ${this.newName || ''} as ${this.accessRole}</lapp-user-name>
 						${this.isLoading ? 
 							html`<md-circular-progress></md-circular-progress>` :
-							html`<md-icon slot="icon">person</md-icon>`
+							html`<lapp-icon slot="icon">person</lapp-icon>`
 							}
 					</md-filled-button>
 					` :
 				html`
 					<md-outlined-button @click=${() => this.isEditing = true}>
 						${this.label}
-						<md-icon slot="icon">person</md-icon>
+						<lapp-icon slot="icon">person</lapp-icon>
 					</md-outlined-button>
 					
 					` 
