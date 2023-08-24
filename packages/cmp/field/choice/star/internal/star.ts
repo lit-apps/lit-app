@@ -58,7 +58,7 @@ export abstract class Star extends
 
   // @ts-ignore
   override get items() {
-    return [...this._queryItems('input') as NodeListOf<HTMLInputElement>]
+    return [...this._queryItems('input[type=radio]') as NodeListOf<HTMLInputElement>]
   }
 
   override get _selectedItems() {

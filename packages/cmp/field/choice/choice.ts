@@ -113,7 +113,6 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	@property({attribute: false }) filter: (option: Option) => boolean = () => true;
 
 	get items() {
-		// return [...this._queryItems(this.choiceInputSelector) as NodeListOf<HTMLInputElement>]
 		return [...this._queryItems('[md-list-item]')] as LappListItem[];
 	}
 
@@ -149,7 +148,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 			aria-required=${ifDefined(this.required ? 'true' : undefined)}/>
 		<ul-choice
 			id="list"
-			?required=${this.required}
+			.required=${this.required}
 			.value=${this.selected} 
 			role=${this.listRole}
 			tabindex=${this.listTabIndex}

@@ -6,6 +6,7 @@ import outlinedStyles from './outlinedStyles';
 import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js'
 import genericStyles from '../../generic/styles';
 import choiceStyles from '../styles';
+import sharedStyles from './internal/shared-styles';
 import { CSSResult } from 'lit';
 
 declare global {
@@ -23,6 +24,7 @@ export class LappOutlinedRadio extends OutlinedRadio {
   static override styles: CSSResult[] = [
     ...MdOutlinedTextField.styles, 
     outlinedStyles, 
+    sharedStyles,
     genericStyles,
     choiceStyles
   ];

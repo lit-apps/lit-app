@@ -1,14 +1,14 @@
 import { html, css, LitElement, PropertyValues } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
 import ValidationMixin from '../generic/validationMixin';
-import {  Writeable } from '../types';
+// import {  Writeable } from '../types';
 
-const validity: Writeable<Partial<ValidityState>> = {
-	customError: false,
-	badInput: false,
-	valueMissing: false,
-	valid: true,
-};
+// const validity: Writeable<Partial<ValidityState>> = {
+// 	customError: false,
+// 	badInput: false,
+// 	valueMissing: false,
+// 	valid: true,
+// };
 
 /**
  * A proxy list to use with choice

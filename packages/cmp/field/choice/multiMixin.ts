@@ -1,4 +1,3 @@
-import { LappCheckbox } from '../__checkbox/checkbox';
 import { PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { Choice } from './choice';
@@ -49,7 +48,7 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 		@property()
 		set selected(value: string[]) {
 			
-			[...this._queryItems(this.choiceInputSelector) as NodeListOf<LappCheckbox>]
+			[...this._queryItems(this.choiceInputSelector) as NodeListOf<MdCheckbox>]
 			.forEach(check => check.checked = (value || []).indexOf(check.value) > -1 ) ;
 
 			this._value = value;

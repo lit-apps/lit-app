@@ -12,6 +12,7 @@ import {OutlinedCheckbox} from './internal/outlined-checkbox.js';
 import outlinedStyles from './outlinedStyles';
 import genericStyles from '../../generic/styles';
 import choiceStyles from '../styles';
+import sharedStyles from './internal/shared-styles';
 import { CSSResult } from 'lit';
 
 declare global {
@@ -29,6 +30,7 @@ export class LappOutlinedCheckbox extends OutlinedCheckbox {
   static styles: CSSResult[] = [
     ...MdOutlinedTextField.styles, 
     outlinedStyles,
+    sharedStyles,
     choiceStyles, 
     genericStyles
   ];
