@@ -34,7 +34,7 @@ export interface GenericI extends TextField {
   getInputValue(): string
   getErrorText(): string
 
-  checkValidityAndDispatch(): { valid: boolean, canceled: boolean }
+  syncValidity(): void
   getInputOrTextarea(): HTMLInputElement | null
 
 }

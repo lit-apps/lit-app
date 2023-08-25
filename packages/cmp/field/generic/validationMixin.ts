@@ -47,11 +47,13 @@ export declare class ValidationMixinInterface {
  * ValidationMixin A mixin that adds validation support to a LitElement
  * For now, it only adds a `prop` property
  */
-export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T & {internals: ElementInternals}) => {
 
 	abstract  class ValidationMixinClass extends superClass implements ValidationMixinInterface {
 
+		static formAssociated = true;
 		private _input: HTMLInputElement;
+		private internals!: ElementInternals;
 
 		value!: string | string[] 
 		required!: boolean
@@ -64,16 +66,24 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 			this._input = document.createElement('input');
 		}
 
+		override connectedCallback() {
+			super.connectedCallback();
+			if(!this.internals) {
+				this.internals = this.attachInternals();
+			}
+		}
+
 		override willUpdate(props: PropertyValues) {
 			super.willUpdate(props);
 			if (props.has('required')) {
 				this._input.required = this.required;
 			}
 			if (props.has('value')) {
-				this._input.value = Array.isArray(this.value) ? this.value.join(',') : this.value;
+				const value = Array.isArray(this.value) ? this.value.join(',') : this.value;
+				this._input.value = value
 			}
 			if (props.has('customValidity')) {
-				this._input.setCustomValidity(this.customValidity);
+				this.setCustomValidity(this.customValidity);
 			}
 		}
 
@@ -91,7 +101,9 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 			return this._input.validationMessage;
 		}
 	
-	
+
+			
+
 		/**
 		 * Sets the text field's native validation error message. This is used to
 		 * customize `validationMessage`.
@@ -104,7 +116,8 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 		 * @param error The error message to display.
 		 */
 		setCustomValidity(error: string) {
-			return this._input.setCustomValidity(error);
+			this._input.setCustomValidity(error);
+			this.internals?.setValidity( {customError: !!error}, error);
 		}
 	
 	
@@ -117,15 +130,30 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 			return this._input.checkValidity();
 		}
 
-		checkValidityAndDispatch() {
-			const valid = this._input.checkValidity();
-			let canceled = false;
-			if (!valid) {
-				canceled = !this.dispatchEvent(new Event("invalid", { cancelable: true }));
+		// checkValidityAndDispatch() {
+		// 	const valid = this._input.checkValidity();
+		// 	let canceled = false;
+		// 	if (!valid) {
+		// 		canceled = !this.dispatchEvent(new Event("invalid", { cancelable: true }));
+		// 	}
+		// 	return { valid, canceled };
+		// }
+
+		syncValidity() {
+			// Sync the internal <input>'s validity and the host's ElementInternals
+			// validity. We do this to re-use native `<input>` validation messages.
+			const input = this._input
+			if (this.internals.validity.customError) {
+				input.setCustomValidity(this.internals.validationMessage);
+			} else {
+				input.setCustomValidity('');
 			}
-			return { valid, canceled };
+	
+			this.internals.setValidity(input.validity, input.validationMessage);
 		}
 	};
+
+	
 	// Cast return type to your mixin's interface intersected with the superClass type
 	return ValidationMixinClass as unknown as Constructor<ValidationMixinInterface> & T;
 }
