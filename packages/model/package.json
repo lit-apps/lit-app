@@ -53,7 +53,7 @@
     "@material/mwc-select": "0.25.3",
     "@material/mwc-textarea": "0.25.3",
     "@material/mwc-textfield": "0.25.3",
-    "@material/web": "1.0.0-pre.14",
+    "@material/web": "1.0.0-pre.16",
     "@polymer/polymer": "^3.5.1",
     "@preignition/preignition-styles": "link:../../../packages/preignition-styles",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
@@ -63,7 +63,7 @@
     "@preignition/pwi-md": "link:../../../packages/pwi-md",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/multi-select-combo-box": "link:../../../app-dependencies/web-components/packages/multi-select-combo-box",
-    "lit": "^2.7.5",
+    "lit": "^2.8.0",
     "lit-vaadin-helpers": "^0.3.1"
   }
 }

@@ -32,7 +32,7 @@
     "@preignition/pwi-textfield-select": "link:../../../packages/pwi-textfield-select",
     "@vaadin/a11y-base": "24.1.0",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
-    "lit": "^2.7.5",
+    "lit": "^2.8.0",
     "lit-vaadin-helpers": "^0.3.1"
   },
   "devDependencies": {
