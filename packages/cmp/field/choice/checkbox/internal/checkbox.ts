@@ -56,7 +56,7 @@ import type { HTMLEvent } from '../../../../types';
     const isChecked = Checkbox.isCodeSelected(this._value, option.code)
     return html`
     ${when(option.specify === true && isChecked, () => this.renderSpecify(option, index))}
-    <md-checkbox 
+    <md-checkbox touch-target="wrapper" 
       data-role="checkbox"
       data-variant="_icon" 
       slot="start"

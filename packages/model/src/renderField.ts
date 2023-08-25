@@ -297,7 +297,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
   if (component === 'checkbox') {
     return html`
     <label class=${cls}>
-      <md-checkbox 
+      <md-checkbox touch-target="wrapper" 
         aria-label=${label||''}
         .checked=${value}
         .disabled=${disabled}
