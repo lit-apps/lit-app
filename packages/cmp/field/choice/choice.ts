@@ -161,7 +161,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 			@keydown=${this.handleKeydown}
 			>
 			${this.renderChoiceOptions((this.options || []).filter(this.filter))}
-			${when(this.dense, () => html`<md-list-item disabled style="flex:1"></md-list-item>`)}			
+			${when(this.dense, () => html`<md-list-item disabled style="display: flex; flex:1"></md-list-item>`)}			
 			<slot></slot>
 		</ul-choice>
 		`

@@ -5,7 +5,7 @@
  */
 
 import {customElement} from 'lit/decorators.js';
-
+import { css } from 'lit';
 
 import {MdListItem} from '@material/web/list/list-item';
 import illustrationVariant from './internal/illustrationVariantStyles';
@@ -64,6 +64,11 @@ declare global {
 export class LappListItem extends MdListItem {
   static override styles = [
     ...MdListItem.styles, 
-    illustrationVariant
+    illustrationVariant, 
+    css`
+    :host {
+      display: flex;
+    }
+    `
   ];
 }

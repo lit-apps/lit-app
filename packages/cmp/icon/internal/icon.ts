@@ -1,5 +1,5 @@
 import { Icon as I } from '@material/web/icon/internal/icon';
-import { html } from 'lit';
+import { html, css } from 'lit';
 import { query, property } from 'lit/decorators.js';
 
 type OpticalSize = 20 | 24 | 40 | 48;
@@ -56,31 +56,44 @@ export class Icon extends I {
 	static fetchOptions: RequestInit = { cache: 'default' }
 
 	@query('slot') slotEl: HTMLSlotElement;
-	@property({ attribute: 'aria-label' }) ariaLabel!: string;
+	@property({ attribute: 'aria-label' }) override ariaLabel!: string;
 	@property({ attribute: 'no-fill', type: Boolean }) noFill: boolean = false;
+	/** We add icon property as @slotchange does not fire when we update the content of a text node */
+	@property() icon!: string; 
 
 	override render() {
 		return html`<slot @slotchange=${this.onSlotChange}></slot>`;
 	}
 
+	override willUpdate(props: PropertyValues<this>) {
+		super.willUpdate(props);
+		if (props.has('icon')) {
+			this.onIconChange(this.icon);
+		}
+	}
+
+	private onIconChange(icon) {
+		fetchSvgImage(icon, this.noFill, Icon.fetchOptions)
+		.then(svgEl => {
+
+			svgEl.setAttribute('aria-label', this.ariaLabel ?? icon);
+			// replace existing svg element
+			const existing = this.renderRoot.querySelector('svg');
+			if (existing) {
+				this.renderRoot.removeChild(existing);
+			}
+			this.renderRoot.appendChild(svgEl)
+		})
+	}	
+
 	private onSlotChange() {
 		const nodes = this.slotEl?.assignedNodes();
 		const name = nodes?.[0];
-
+		// console.info('slot change', name)
+		
 		// prevent codepoints from being rendered via SVG - only works with named icons
 		if (name && name instanceof Text && name.textContent && !name.textContent?.startsWith('&#')) {
-
-			fetchSvgImage(name.textContent, this.noFill, Icon.fetchOptions)
-				.then(svgEl => {
-
-					svgEl.setAttribute('aria-label', this.ariaLabel ?? name.textContent);
-					// replace existing svg element
-					const existing = this.renderRoot.querySelector('svg');
-					if (existing) {
-						this.renderRoot.removeChild(existing);
-					}
-					this.renderRoot.appendChild(svgEl)
-				})
+			this.icon = name.textContent
 		}
 	}
 }

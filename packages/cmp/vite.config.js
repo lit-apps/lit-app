@@ -27,7 +27,8 @@ export default defineConfig({
       "@material/mwc-button",
       
 
-      "@material/mwc-dialog",
+     
+
       "@material/mwc-drawer",
        
       

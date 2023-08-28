@@ -14,6 +14,8 @@ const styles: CSSResult = css`
   /* Add position so the elevation overlay (which is absolutely positioned)
    can be positioned relative to the list root. */
   position: relative;
+  display: flex;
+  flex-direction: column;
   /* same color as option background */
   /* background-color: var(--md-list-item-list-item-container-color, var(--md-sys-color-surface, #fef7ff)) */
 }

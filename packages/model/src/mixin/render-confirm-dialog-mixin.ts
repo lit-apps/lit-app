@@ -1,7 +1,10 @@
 import { AppToastEvent } from '@lit-app/app-event';
 import '@material/mwc-button';
-import { Dialog } from '@material/mwc-dialog';
+import type { MdDialog } from '@material/web/dialog/dialog';
 import('@material/web/progress/linear-progress.js')
+import('@material/web/dialog/dialog.js')
+import('@material/web/button/outlined-button.js')
+import('@material/web/button/filled-button.js')
 
 import { LitElement, PropertyValues, html } from 'lit';
 import { queryAsync, state } from 'lit/decorators.js';
@@ -29,7 +32,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 
 		@state() private _activeEvent!: EntityAction | AppAction | Create | Delete | MarkDeleted  | undefined;
 		@state() private _resolved: boolean = true;
-		@queryAsync('#confirmDialog') _confirmDialog!: Dialog;
+		@queryAsync('#confirmDialog') _confirmDialog!: MdDialog;
 
 		protected override firstUpdated(_changedProperties: PropertyValues) {
 			super.firstUpdated(_changedProperties);
@@ -102,7 +105,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 				(await this._confirmDialog).close()
 			}
 
-			const onClosed = () => {
+			const onClose = () => {
 				this._activeEvent = undefined;
 				this._resolved = true;
 			}
@@ -111,27 +114,27 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 
 			return html`
 
-				<mwc-dialog 
+				<md-dialog 
 					id="confirmDialog" 
-					.heading=${action?.confirmDialog?.heading || 'Please Confirm'}
-					@closed=${onClosed}>
-				
-					${(event as EntityAction).bulkAction ?
-							action?.bulk?.render.call(this, this.selectedItems, data) :
-							action?.confirmDialog?.render.call(this, data)}
-					<md-linear-progress style="margin-top: var(--space-medium);" .indeterminate=${!this._resolved}></md-linear-progress>
-          <mwc-button
-            slot="secondaryAction"
-            outlined
-						.label=${'Cancel'}
-            dialogAction="close"></mwc-button>
-					<mwc-button
-            slot="primaryAction"
-            unelevated
-						.label=${action?.confirmDialog?.confirmLabel || 'Confirm'}
+					@close=${onClose}>
+					<div slot="headline">${action?.confirmDialog?.heading || 'Please Confirm'}</div>
+						<form slot="content" method="dialog" id="form-confirm">
+						${(event as EntityAction).bulkAction ?
+								action?.bulk?.render.call(this, this.selectedItems, data) :
+								action?.confirmDialog?.render.call(this, data)}
+						<md-linear-progress style="margin-top: var(--space-medium);" .indeterminate=${!this._resolved}></md-linear-progress>
+					</form>
+					<div slot="actions">
+          <md-outlined-button
+            form="form-confirm"
+            value="close">Cancel</md-outlined-button>
+					<md-filled-button
+						form="form-confirm"
+            .label=${action?.confirmDialog?.confirmLabel || 'Confirm'}
 						.disabled=${action?.confirmDialog?.confirmDisabled?.call(this, data) || !this._resolved}
-            @click=${processAction}></mwc-button>
-				</mwc-dialog>
+            @click=${processAction}></md-filled-button>
+					</div>
+				</md-dialog>
 				`
 
 		}

@@ -314,7 +314,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       <md-switch 
         .selected=${value}
         .disabled=${disabled}
-        @click=${onInputFact('selected')} 
+        @change=${onInputFact('selected')} 
         ></md-switch>
       </label>
     `;
