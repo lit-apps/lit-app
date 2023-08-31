@@ -72,16 +72,24 @@ export class Icon extends I {
 		}
 	}
 
-	private onIconChange(icon) {
+	private removeExisting() {
+		const existing = this.renderRoot.querySelector('svg');
+		if (existing) {
+			this.renderRoot.removeChild(existing);
+		}
+	}
+
+	private onIconChange(icon: string) {
+		if(!icon) {
+			this.removeExisting()
+			return;
+		}
 		fetchSvgImage(icon, this.noFill, Icon.fetchOptions)
 		.then(svgEl => {
 
 			svgEl.setAttribute('aria-label', this.ariaLabel ?? icon);
 			// replace existing svg element
-			const existing = this.renderRoot.querySelector('svg');
-			if (existing) {
-				this.renderRoot.removeChild(existing);
-			}
+			this.removeExisting()
 			this.renderRoot.appendChild(svgEl)
 		})
 	}	

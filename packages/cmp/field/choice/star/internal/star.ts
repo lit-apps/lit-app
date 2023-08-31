@@ -141,7 +141,7 @@ export abstract class Star extends
   }
 
   renderOutput() {
-    return html`<output>${this._selectedItems[0]?.nextElementSibling?.textContent}</output>`;
+    return html`<output>${this._selectedItems[0]?.nextElementSibling?.textContent?.trim()}</output>`;
   }
 
   override getReadAloud(readHelper: boolean) {

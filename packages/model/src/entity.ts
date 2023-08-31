@@ -759,7 +759,7 @@ export default class Entity<Interface
             aria-label=${action.bulk?.tooltip || action.label || ''} 
             .disabled=${action.bulk?.disabled?.(selectedItems) || false}
             @click=${bulkActionHandler}>
-            <lapp-icon>${action.icon}</lapp-icon>
+            <lapp-icon .icon=${action.icon}></lapp-icon>
           </md-filled-icon-button>
         </pwi-tooltip>
       `
@@ -933,7 +933,7 @@ export default class Entity<Interface
       ],
       () => html`
       <h2  class="underline layout horizontal">
-        <lapp-icon>${config.entityStatus.isEditing ? 'edit' : this.icon}</lapp-icon>
+        <lapp-icon .icon=${config.entityStatus.isEditing ? 'edit' : this.icon}></lapp-icon>
         ${title}
       </h2>`
     )}`

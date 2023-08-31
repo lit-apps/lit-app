@@ -53,7 +53,6 @@ export abstract class Radio extends
     ${when(option.specify === true && isChecked, () => this.renderSpecify(option, index))}
     <lapp-radio 
       data-role="radio"
-      data-variant="_icon" 
       slot="start"
       .name=${name}
       .ariaLabel=${option.label}

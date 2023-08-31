@@ -58,7 +58,6 @@ import type { HTMLEvent } from '../../../../types';
     ${when(option.specify === true && isChecked, () => this.renderSpecify(option, index))}
     <md-checkbox touch-target="wrapper" 
       data-role="checkbox"
-      data-variant="_icon" 
       slot="start"
       .disabled=${this.isDisabled(option)}
       .ariaLabel=${option.label}

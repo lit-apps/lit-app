@@ -138,34 +138,30 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
     const recordLabel = `${this.recordLabel} ${this.ariaLabel}`
     const renderNarrow = () => html`
      <md-filled-icon-button .selected=${this.recording} aria-label=${recordLabel} @click=${this.onRec}>
-        <lapp-icon>mic</lapp-icon>
-        <lapp-icon slot="selectedIcon" class="animate">${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}</lapp-icon>
+        <lapp-ico slot="icon">mic</lapp-icon>
+        <lapp-icon slot="selectedIcon" class="animate" .icon=${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}></lapp-icon>
       </md-filled-icon-button>
    
       <md-outlined-icon-button 
         aria-label=${this.tr('stopRecording')}
         @click=${onStop}
         .disabled=${!this.recording}>
-        <lapp-icon>stop</lapp-icon>
+        <lapp-icon slot="icon">stop</lapp-icon>
       </md-outlined-icon-button>
     `
     const renderWide = () => html`
      <md-filled-button  
         aria-label=${recordLabel}
-        @click=${this.onRec}>
-        ${this.recordLabel}
-        ${this.recording ?
-        html`<lapp-icon slot="icon" class="animate">${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}</lapp-icon>` :
+        @click=${this.onRec}
+        >${this.recordLabel}${this.recording ?
+        html`<lapp-icon slot="icon" class="animate" .icon=${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}></lapp-icon>` :
         html`<lapp-icon slot="icon">mic</lapp-icon>`
-      }
-      </md-filled-button>
+      }</md-filled-button>
      
       <md-outlined-button 
         @click=${onStop}
-        .disabled=${!this.recording}>
-        ${this.tr('stop')}
-        <lapp-icon slot="icon">stop</lapp-icon>
-      </md-outlined-button>
+        .disabled=${!this.recording}
+        >${this.tr('stop')}<lapp-icon slot="icon">stop</lapp-icon></md-outlined-button>
       `
     return this.isNarrow ? renderNarrow() : renderWide();
   }
@@ -185,41 +181,32 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
     }
 
     const renderClearButton = () => html`
-      <md-text-button @click=${onClear}>
-        ${this.clearLabel}
-        <lapp-icon slot="icon">clear</lapp-icon>
-      </md-text-button>
+      <md-text-button @click=${onClear}
+        >${this.clearLabel}<lapp-icon slot="icon">delete</lapp-icon></md-text-button>
     `
 
     const renderConfirm = () => html`
-      <md-filled-button @click=${doClear}>
-        ${this.tr('startAgain')}
-        <lapp-icon slot="icon">replay</lapp-icon>
-      </md-filled-button>
+      <md-filled-button @click=${doClear}
+        >${this.tr('startAgain')}<lapp-icon slot="icon">replay</lapp-icon></md-filled-button>
       <span class="flex"></span>
-      <md-outlined-button @click=${onCancel}>
-        ${this.tr('cancel')}
-        <lapp-icon slot="icon">cancel</lapp-icon>
-      </md-outlined-button>
+      <md-outlined-button @click=${onCancel}
+        >${this.tr('cancel')}<lapp-icon slot="icon">cancel</lapp-icon></md-outlined-button>
     `
     const renderNarrow = () => html`
         <md-filled-icon-button  @click=${onPlay} aria-label=${playLabel}>
           ${this.audioEl?.paused ?
-        html`<lapp-icon>play_circle</lapp-icon>` :
-        html`<lapp-icon>pause</lapp-icon>`
+        html`<lapp-icon slot="icon">play_circle</lapp-icon>` :
+        html`<lapp-icon slot="icon">pause</lapp-icon>`
       }
         </md-filled-icon-button>`
 
     const renderWide = () => html`
         <md-filled-button  
             aria-label=${playLabel}
-            @click=${onPlay}>
-            ${this.playLabel}
-            ${this.audioEl?.paused ?
+            @click=${onPlay}>${this.playLabel}${this.audioEl?.paused ?
         html`<lapp-icon slot="icon" class="animate">play_circle</lapp-icon>` :
         html`<lapp-icon slot="icon">pause</lapp-icon>`
-      }
-          </md-filled-button>
+      }</md-filled-button>
           `
     const renderClear = () => html`
      ${when(this.isNarrow, renderNarrow, renderWide)}

@@ -117,7 +117,7 @@ export class LappButton extends LitElement {
 			
 		>
       <slot></slot>
-      ${when(this.icon && !this.loading, () => html`<lapp-icon slot="icon">${this.icon}</lapp-icon>`)} 
+      ${when(this.icon && !this.loading, () => html`<lapp-icon slot="icon" .icon=${this.icon}></lapp-icon>`)} 
       ${when(this.loading, () => html`<md-circular-progress indeterminate  slot="icon"></md-circular-progress>`)} 
     </${tagName}>`
   }

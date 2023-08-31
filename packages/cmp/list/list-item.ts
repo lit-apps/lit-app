@@ -21,9 +21,6 @@ declare global {
  * Lists are continuous, vertical indexes of text or images. Items are placed
  * inside the list.
  *
- * This implementation of list item is based on MdListItem. It adds support for
- * illustration variant with wider images (useful in accessiblesurveys).
- * 
  * @description
  * Lists consist of one or more list items, and can contain actions represented
  * by icons and text. List items come in three sizes: one-line, two-line, and
@@ -37,22 +34,27 @@ declare global {
  *   item in a collection and act on it.
  * - Lists should present icons, text, and actions in a consistent format.
  *
- * Acceptable slottable child variants are:
+ * Acceptable slot child variants are:
  *
- * - `video[data-variant=video]`
- * - `img,span[data-variant=avatar]`
- * - `img[data-variant=image]`
- * - `lapp-icon[data-variant=icon]`
+ * - `video[slot=start-video]`
+ * - `video[slot=start-video-large]`
+ * - `img,span[slot=start-avatar]`
+ * - `img[slot=start-image]`
+ * - `md-icon[slot=start-icon]`
+ * - `svg[slot=start-icon]`
+ * - `img[slot=start-icon]`
+ * - `md-icon[slot=end-icon]`
+ * - `svg[slot=end-icon]`
+ * - `img[slot=end-icon]`
  *
  *  @example
  * ```html
- * <lapp-list-item
- *    data-variant="illustration"
- *    headline="User Name"
- *    supportingText="user@name.com">
- *   <lapp-icon data-variant="icon" slot="start">account_circle</lapp-icon>
- *   <lapp-icon data-variant="icon" slot="end">check</lapp-icon>
- * </lapp-list-item>
+ * <md-list-item
+ *     headline="User Name"
+ *     supportingText="user@name.com">
+ *   <md-icon slot="start-icon">account_circle</md-icon>
+ *   <md-icon slot="end-icon">check</md-icon>
+ * </md-list-item>
  * ```
  *
  * @example

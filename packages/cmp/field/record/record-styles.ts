@@ -16,7 +16,7 @@ const styles = css`
 	}
 
 	:host {
-		display: inline-flex;
+		display: inline-flex !important; /** we add important so that all:unset does not affect this. */
 		flex-direction: column;
 		gap: var(--_gap);
 		--md-outlined-button-icon-size: 24px;
@@ -64,7 +64,7 @@ const styles = css`
 	}
 
 	#controls {
-		width: 275px;
+		width: 280px;
 	}
 
 	#controls.narrow {
