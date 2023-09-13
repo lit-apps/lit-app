@@ -7,8 +7,12 @@ const styles = css`
 	}
 
 	label {
+		line-height: 0px;
 		display: flex;
 		align-items: center;
 	}
+
+	
+
 `;
 export default styles;	

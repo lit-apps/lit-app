@@ -74,7 +74,7 @@ export class LappButton extends LitElement {
    *
    * _Note:_ Link buttons cannot have trailing icons.
    */
-  @property({ type: Boolean }) trailingIcon = false;
+  @property({ type: Boolean, attribute: 'trailing-icon' }) trailingIcon = false;
 
   /**
    * Whether `preventDefault()` should be called on the underlying button.

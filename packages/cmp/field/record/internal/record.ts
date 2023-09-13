@@ -139,7 +139,7 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
     const renderNarrow = () => html`
      <md-filled-icon-button .selected=${this.recording} aria-label=${recordLabel} @click=${this.onRec}>
         <lapp-ico slot="icon">mic</lapp-icon>
-        <lapp-icon slot="selectedIcon" class="animate" .icon=${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}></lapp-icon>
+        <lapp-icon slot="selected" class="animate" .icon=${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}></lapp-icon>
       </md-filled-icon-button>
    
       <md-outlined-icon-button 

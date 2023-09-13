@@ -24,15 +24,13 @@ const styles = css`
   
   :host([variant=a11y]) .label-wrapper {
     position: inherit;
-    // font-size: inherit;
-    // padding-bottom: var(--space-small, 8px);
   }
 
   :host([variant=a11y]) .label {
     text-overflow: inherit;
     white-space: inherit;
   }
-
+  
   `
 
 declare global {

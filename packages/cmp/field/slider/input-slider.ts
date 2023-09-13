@@ -29,6 +29,7 @@ export class LappInputSlider extends InputSlider {
 			display: flex;
     	align-items: center;
 		}
+
 		`
 
 	];

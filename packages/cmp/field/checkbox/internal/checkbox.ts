@@ -47,6 +47,7 @@ export abstract class Checkbox extends Generic {
     return html`
     <label>
       <lapp-checkbox
+        touch-target="wrapper"
         .supportingOrErrorText=${this.supportingOrErrorText} 
         aria-label="${this.label} ${this.checkboxlabel || ''}"
         @change=${this.handleChange}
