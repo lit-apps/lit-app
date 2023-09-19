@@ -213,10 +213,9 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		const value = this.selected
 		this.dispatchEvent(new CustomEvent('selected-changed', { detail: { value: value } }));
 		this._value = value; // Note(cg): get _value from the actual selection (dom query).
-		if (this.autoValidate) {
-			this.reportValidity()
-		}
 		this.requestUpdate(); 
+		await this.updateComplete;
+		this.reportValidity()
 		return
 	}
 
