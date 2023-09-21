@@ -47,8 +47,8 @@ export default defineConfig({
       "@material/mwc-select",
       "@material/mwc-snackbar",
        ,
-      "@material/mwc-tab-bar",
-      "@material/mwc-tab",
+
+
       "@material/mwc-textarea",
       "@material/mwc-textfield",
       "@material/mwc-top-app-bar",

@@ -39,7 +39,7 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 		 */
 		@property({ type: Boolean, reflect: true }) labelAbove = false;
 
-		/** we store mardkow template for label */
+		/** we store markdown template for label */
 		private _md: TemplateResult | typeof nothing = nothing;
 
 		protected override willUpdate(props: PropertyValues) {
@@ -47,7 +47,7 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 				this.labelAbove = true;
 				this.populated = true;
 			}
-			// set markdow label as populated
+			// set markdown label as populated
 			if((props.has('label') || props.has('variant')) && this.variant === 'a11y') {
 				this._md = this.label ? parseInline(this.label) : nothing;
 			}

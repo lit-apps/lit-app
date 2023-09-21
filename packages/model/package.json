@@ -44,14 +44,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@lit-app/app-event": "link:../../../app/app-event",
     "@lit-app/cmp": "link:../cmp",
+    "@lit-app/event": "link:../event",
     "@lit-app/state": "^0.8.4",
     "@lit-labs/context": "^0.3.3",
-    
-
-    
-
     "@material/mwc-select": "0.25.3",
     "@material/mwc-textarea": "0.25.3",
     "@material/mwc-textfield": "0.25.3",

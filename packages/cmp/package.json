@@ -20,6 +20,7 @@
   ],
   "license": "ISC",
   "dependencies": {
+    "@lit-app/event": "link:../event",
     "@lit-app/md-parser": "link:../../../packages/md-parser",
     "@lit-app/testing": "link:../testing",
     "@lit-labs/motion": "^1.0.3",

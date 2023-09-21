@@ -13,7 +13,7 @@ import('@lit-app/cmp/button/button');
 import('@material/web/icon/icon');
 import('@material/web/iconbutton/filled-icon-button.js');
 
-import { AppToastEvent } from '@lit-app/app-event';
+import { ToastEvent } from '@lit-app/event';
 import { Grid } from '@vaadin/grid';
 import { DocumentReference, updateDoc } from 'firebase/firestore';
 import {
@@ -400,7 +400,7 @@ export default class Entity<Interface
     console.error(error)
     // TODO: centralize the way we handler errors (see stripe-web-sdk for inspiration)
     // For the time being, we just dispatch Toast Event
-    this.host?.dispatchEvent(new AppToastEvent(error.message, 'error'))
+    this.host?.dispatchEvent(new ToastEvent(error.message, 'error'))
   }
 
   public create(details: EntityCreateDetail) {
@@ -611,7 +611,7 @@ export default class Entity<Interface
         console.error(error)
         // TODO: centralize the way we handler errors (see stripe-web-sdk for inspiration)
         // For the time being, we just dispatch Toast Event
-        host?.dispatchEvent(new AppToastEvent((error as Error).message, 'error'))
+        host?.dispatchEvent(new ToastEvent((error as Error).message, 'error'))
 
       }
     }

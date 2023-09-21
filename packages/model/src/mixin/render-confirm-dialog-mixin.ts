@@ -1,4 +1,4 @@
-import { AppToastEvent } from '@lit-app/app-event';
+import { ToastEvent } from '@lit-app/event';
 
 
 import type { MdDialog } from '@material/web/dialog/dialog';
@@ -72,7 +72,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 			const dispatchError = (e: Error) => {
 				console.error(e)
 				this.dispatchEvent(
-					new AppToastEvent(`There was an error while confirming : ${(e as Error).message}`, 'error')
+					new ToastEvent(`There was an error while confirming : ${(e as Error).message}`, 'error')
 				);
 			}
 			const processAction = async () => {

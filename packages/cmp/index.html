@@ -30,6 +30,9 @@
         margin-top: 20px;
         width: min(85vw, 1250px);
       }
+      body > md-icon-button {
+        display: block;
+      }
     </style>
     <!-- <script type="module" src="/field/choice-order"></script> -->
     <script type="module" src="/field/choice-star"></script>
@@ -42,6 +45,7 @@
     <script type="module" src="/field/checkbox-field"></script>
     <script type="module" src="/field/slider-field"></script>
     <script type="module" src="/icon/icon"></script>
+    <script type="module" src="/tabs/primary-tab-closable"></script>
    
   </head>
 
@@ -49,7 +53,7 @@
     <script type="module">
 
       // import '@material/web/select/select-option';
-      // import '@material/web/select/filled-select';
+      import '@material/web/tabs/tabs.js';
 
       const options = [
 	      {code: '1', name:'radio', label: 'one', supportingText: 'hello'}, 
@@ -66,6 +70,11 @@
             e.target.reportValidity();
         }));  
     </script>
+    <md-tabs>
+      <lapp-primary-tab-closable>settings</lapp-primary-tab-closable>
+      <lapp-primary-tab-closable>settings 2<lapp-icon slot="icon">settings</lapp-icon></lapp-primary-tab-closable>
+      <md-primary-tab>iconButton<md-icon-button slot="icon" toggle><lapp-icon>settings</lapp-icon><lapp-icon slot="selected">close</lapp-icon></md-icon-button></md-primary-tab>
+    </md-tabs>
         <!--fieldset required>
           <legend>Choose the colors for your flag.</legend>
           <ul>
@@ -116,7 +125,7 @@
           </ul>
         </fieldset-->
     <lapp-icon>settings</lapp-icon>
-    <lapp-icon>settings</lapp-icon>
+    <md-icon-button toggle><lapp-icon>settings</lapp-icon><lapp-icon slot="selected">close</lapp-icon></md-icon-button>
     <md-filled-text-field label="first text"></md-filled-text-field>
     <md-filled-text-field required label="second text"></md-filled-text-field>
      <lapp-choice-checkbox 

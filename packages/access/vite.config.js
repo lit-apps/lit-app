@@ -46,9 +46,9 @@ export default defineConfig({
       "@material/mwc-ripple/ripple-directive.js",
       "@material/mwc-select",
       "@material/mwc-snackbar",
-       ,
-      "@material/mwc-tab-bar",
-      "@material/mwc-tab",
+       
+
+
       "@material/mwc-textarea",
       "@material/mwc-textfield",
       "@material/mwc-top-app-bar",
