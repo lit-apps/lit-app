@@ -138,11 +138,12 @@ export class UserSearch extends LitElement {
 		
 		return html`<md-select-option
 			.value=${item.uid}
-			.headline=${headline}
-			.supportingText=${item.email || ''}
+			?selected=${item.uid === this.value}
 			>${item.photoURL ? 
-				html`<img slot="start-avatar" src=${item.photoURL} />` : 
-				html`<lapp-icon slot="start-avatar">person</lapp-icon>`}
+				html`<img slot="start" src=${item.photoURL} />` : 
+				html`<lapp-icon slot="start" class="avatar">person</lapp-icon>`}
+				<div slot="headline">${headline}</div>
+				<div slot="supporting-text">${item.email || ''}</div>
 			</md-select-option>`;
 
 

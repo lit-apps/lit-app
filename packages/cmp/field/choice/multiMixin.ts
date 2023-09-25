@@ -2,6 +2,11 @@ import { PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { Choice } from './choice';
 import { AriaList, OptionMulti } from './types';
+import {ListController, NavigableKeys} from '@material/web/list/internal/list-controller.js';
+import {ListItem } from '@material/web/list/internal/list-navigation-helpers.js';
+
+const NAVIGABLE_KEY_SET = new Set<string>(Object.values(NavigableKeys));
+
 type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare abstract class MultiChoiceMixinInterface {
 	// Define the interface for the mixin
@@ -37,9 +42,27 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 			return value && value.indexOf(code + '') > -1;
 			// return false;
 		}
+
+		private readonly listController = new ListController<ListItem>({
+			isItem: (item: HTMLElement): item is ListItem =>
+					item.hasAttribute('data-role'),
+			getPossibleItems: () => 	[...this._queryItems(this.choiceInputSelector) as NodeListOf<MdCheckbox>],
+			isRtl: () => getComputedStyle(this).direction === 'rtl',
+			deactivateItem:
+					(item) => {
+						item.tabIndex = -1;
+					},
+			activateItem:
+					(item) => {
+						item.tabIndex = 0;
+					},
+			isNavigableKey: (key) => NAVIGABLE_KEY_SET.has(key),
+			isActivatable: (item) => !item.disabled && item.type !== 'text',
+		});
+
 		/**
-			 * The options to render
-			 */
+	   * The options to render
+		 */
 		@property({ type: Array }) override options!: OptionMulti[];
 		@property({ type: Object }) specify: string | {[key: string]: string} = {};
 
@@ -76,6 +99,10 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 			return this?.options?.find(o => o.exclusive)?.code;
 		}
 
+		protected override handleKeydown(event: KeyboardEvent) {
+		 return this.listController.handleKeydown(event);
+		}
+	
 		// we override updated as the super class causes an infinite loop
 		// it checks for a change in getInput.value, which will all ways be true	
 		protected override updated(_changedProperties: PropertyValues) {

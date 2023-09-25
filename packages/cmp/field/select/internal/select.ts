@@ -2,6 +2,10 @@ import { Select as S } from '@material/web/select/internal/select';
 import { Variant } from '../../field/internal/a11y-field-mixin';
 import { property, query } from 'lit/decorators.js';
 import { PropertyValues } from 'lit';
+import { getInnerText } from '@preignition/preignition-util';
+import locale  from '../../choice/readaloud-locale.mjs';
+import translate  from '@preignition/preignition-util/translate-mixin.js';
+
 
 /**
  * @fires input Fired when a selection is made by the user via mouse or keyboard
@@ -9,7 +13,7 @@ import { PropertyValues } from 'lit';
  * @fires change Fired when a selection is made by the user via mouse or
  * keyboard interaction.
  */
-export abstract class Select extends S {
+export abstract class Select extends translate(S, locale, 'readaloud') {
   /**
    * The variant to use for rendering the field
    */
@@ -22,10 +26,12 @@ export abstract class Select extends S {
   @property() labelAbove: boolean = false
 
   /**
-   * The field holding label
+   * Indicates whether or not a user should be able to edit the text field's
+   * value.
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#readonly
    */
-  // @query('.field') override field!: FilledField | OutlinedField;
-
+  @property({type: Boolean, reflect: true}) readOnly = false;
 
   /**
    * propagate variant and labelAbove to field as they are not part of the template
@@ -47,6 +53,29 @@ export abstract class Select extends S {
     super.firstUpdated(changedProperties);
   }
 
+  getReadAloud(readHelper) {
+    return this.value ?
+      `${this.displayText} ${this.getTranslate('isTheAnswerTo')} ${getInnerText(this.label)}` :
+      (getInnerText(this.label) + (readHelper && this.supportingText ? ('. ' + this.getTranslate('hint') + ': ' + this.supportingText) + '.' : '') + this.getReadAloudOptions(readHelper));
+  }
 
+  getReadAloudOptions(readHelper) {
+    const options = [...this.options].map((item, index) => `${this.getTranslate('option')} ${index + 1}: ${item.displayText}.`);
+    return `${this.getTranslate('chooseOption')}: ${options}`;
+  }
+
+  private override handleKeydown(event: KeyboardEvent) {
+    if (this.readOnly) {
+      return;
+    }
+    return super.handleKeydown(event);
+  }
+  
+  private override handleClick() {
+    if (this.readOnly) {
+      return;
+    }
+    return super.handleClick();
+  }
 
 }

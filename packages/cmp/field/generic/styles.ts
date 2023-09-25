@@ -11,5 +11,11 @@ const styles: CSSResult = css`
   --md-filled-field-container-color: var(--mdc-text-field-fill-color, whitesmoke);
 }
 
+/* allow focus ring to display */
+[data-role][slot], 
+md-outlined-icon-button[slot] {
+	overflow: visible;
+}
+
 `
 export default styles;

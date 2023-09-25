@@ -10,6 +10,7 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { html as staticHtml, StaticValue } from 'lit/static-html.js';
 import { property, query } from 'lit/decorators.js';
 import { CompatMixin } from '../compat/compat-mixin.js';
+import { Field } from '@material/web/field/internal/field';
 
 
 // @ts-ignore
@@ -17,6 +18,7 @@ export interface GenericI extends TextField {
   hasError: boolean
   focused: boolean
   fieldName: string
+  field: Field
 
   input: HTMLInputElement | null | undefined
   inputOrTextarea: HTMLInputElement | null | undefined

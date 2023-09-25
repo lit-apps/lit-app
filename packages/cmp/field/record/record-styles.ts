@@ -68,7 +68,7 @@ const styles = css`
 	}
 
 	#controls.narrow {
-		width: 205px;
+		width: 208px;
 	}
 
 

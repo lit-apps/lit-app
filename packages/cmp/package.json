@@ -23,9 +23,9 @@
     "@lit-app/event": "link:../event",
     "@lit-app/md-parser": "link:../../../packages/md-parser",
     "@lit-app/testing": "link:../testing",
-    "@lit-labs/motion": "^1.0.3",
+    "@lit-labs/motion": "^1.0.4",
     "@lit-labs/observers": "^2.0.0",
-    "@material/web": "link:../../../app-dependencies/material-web",
+    "@material/web": "1.0.0",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-styles": "link:../../../packages/preignition-styles",
@@ -44,7 +44,7 @@
     "eslint": "^8.40.0",
     "typescript": "^5.0.4",
     "vite": "^4.4.9",
-    "vitest": "^0.34.3",
+    "vitest": "^0.34.5",
     "webdriverio": "^8.10.7",
     "wireit": "latest"
   }

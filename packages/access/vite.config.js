@@ -37,14 +37,17 @@ export default defineConfig({
       
        
        
-             "@material/mwc-list",
-      "@material/mwc-menu",
+             
+
+      
+
       "@material/mwc-notched-outline",
       
 
       "@material/mwc-ripple",
       "@material/mwc-ripple/ripple-directive.js",
-      "@material/mwc-select",
+      
+
       "@material/mwc-snackbar",
        
 

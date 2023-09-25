@@ -32,16 +32,18 @@ import type { HTMLEvent } from '../../../../types';
     return html `
         ${options.map((option, index) => html`
          <lapp-choice-list-item
+            type="button"
             .isMulti=${true}
             .selector=${this.choiceInputSelector}
             data-variant="horizontal"
             .disabled=${this.isDisabled(option)}
             .listItemRole=${'option'}
             @change=${this.onChange} 
-            .headline=${option.md || option.label}
-            .supportingText=${option.supportingText || ''}>
+            >
             ${this.renderOptionIllustration(option)}
             ${this.renderCheckbox(option, index)}
+            <div slot="headline">${option.md || option.label}</div>
+            ${when(option.supportingText, () => html`<div slot="supportingText">${option.supportingText}</div>`)}
           </lapp-choice-list-item>
         `
         )}

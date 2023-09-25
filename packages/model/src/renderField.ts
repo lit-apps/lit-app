@@ -12,17 +12,17 @@ import '@polymer/polymer';
 import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-box'
 import { MultiSelectComboBox } from '@vaadin/multi-select-combo-box/src/vaadin-multi-select-combo-box'
 
-import '@preignition/preignition-widget/src/extension/pwi-select'
 import('@material/mwc-textfield')
 import('@material/mwc-textarea')
-import('@material/mwc-select')
 import('@preignition/pwi-md/src/pwi-md-editor')
 import('@preignition/pwi-form-upload')
 import('@preignition/pwi-input/src/pwi-input-translation')
 import('@preignition/pwi-input/src/pwi-input-translation-textarea')
-import('@material/web/switch/switch.js')
-import('../../cmp/field/slider-field.js')
 import('@material/web/checkbox/checkbox.js')
+import('@material/web/switch/switch.js')
+import('@material/web/select/select-option.js')
+import('../../cmp/field/slider-field.js')
+import('../../cmp/field/select.js')
 
 const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetail) => {
   console.log('debounceWrite', detail.data.detail)
@@ -263,7 +263,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
   }
   if (component === 'select') {
     return html`
-    <pwi-select
+    <lapp-select
       class=${cls}
       .icon=${model.icon}
       .readonly=${disabled}
@@ -271,9 +271,12 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       .helper=${model.helper}
       .required=${model.required}
       .value=${value || ''}
-      @selected=${onInputFact('value')}
-      >${((model as ModelComponentSelect).items || []).map(item => html`<mwc-list-item .value=${item.code}>${item.label}</mwc-list-item>`)}
-    </pwi-select >
+      @change=${onInputFact('value')}
+      >${((model as ModelComponentSelect).items || []).map(item => html`
+        <md-select-option .value=${item.code} ?selected=${item.code === value}>
+          <div slot="headline">${item.label}</div>
+        </md-select-option>`)}
+    </lapp-select >
   `;
   }
   if (component === 'multi-select') {

@@ -71,12 +71,12 @@ export abstract class SelectInput extends Select {
 
 	protected renderChip(option: SelectOption) {
 		return html`<md-input-chip 
-			.label=${option.headline} 
+			.label=${option.displayText} 
 			remove-only
 			@remove=${this.onRemove(option)}></md-input-chip>`;
 	}
 
-	private  onRemove(option) {
+	private onRemove(option) {
 		return async (e: Event) => {
 			// we need to preventDefault to prevent the chip from being removed by the chip-set
 			e.preventDefault();
@@ -90,7 +90,7 @@ export abstract class SelectInput extends Select {
 		return html`${this.loading ? html`<slot name="loading"></slot>` : html`<slot></slot>`}`;
 	}
 
-	onInput(e) {
+	onInput() {
 		this.dispatchEvent(new CustomEvent('search-input', { composed: true}))
 	}
 

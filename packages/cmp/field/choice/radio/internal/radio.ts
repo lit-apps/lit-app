@@ -12,6 +12,7 @@ import specifyChangedEvent from '../../specifyChangedDetail';
 import type {  Option } from '../../types';
 import type { HTMLEvent } from '../../../../types';
 import '../../list-item'
+import lappChoiceListItem from '../../list-item';
 
 
 /**
@@ -32,15 +33,18 @@ export abstract class Radio extends
     return html`
       ${options.map((option, index) => html`
         <lapp-choice-list-item
+          type="button"
           .selector=${this.choiceInputSelector}
           data-variant="horizontal"
           .listItemRole=${'presentation'}
           .disabled=${this.disabled || !!option.disabled}
           @change=${this.onChange} 
-          .headline=${option.md || option.label}
-          .supportingText=${option.supportingText || ''}>
+          @_focus=${(e: HTMLEvent<lappChoiceListItem>) => e.target.inputElement.focus()}
+          >
           ${this.renderOptionIllustration(option)}
           ${this.renderRadio(option, index)}
+          <div slot="headline">${option.md || option.label}</div>
+          ${when(option.supportingText, () => html`<div slot="supportingText">${option.supportingText}</div>`)}
         </lapp-choice-list-item>`
     )}`
   }
@@ -79,7 +83,6 @@ export abstract class Radio extends
       data-role="specify"
       data-variant="specify"
       slot="end"
-
       label=${option.specifyLabel || this.tr('pleaseSpecify')}
       .value=${this.specify || ''}
       @input=${onInput}

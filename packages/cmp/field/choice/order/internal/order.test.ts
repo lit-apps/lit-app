@@ -39,6 +39,7 @@ describe('order', () => {
 		}
 
 		const list = element.input as HTMLInputElement
+		
 		return {
 			element,
 			list
@@ -84,12 +85,13 @@ describe('order', () => {
 	it('should swap items when clicking the swap button', async () => {
 		const template = html`<lapp-test-order .options=${options}></lapp-test-order>`;
 		const { element } = await setupTest(template);
+		const getCheckbox = item => item.querySelector('md-checkbox');
 		let item1 = element.items[0];
 		let item2 = element.items[1];
 		item1.click();
 		item2.click();
-		expect(item1.headline).toEqual('one');
-		expect(item2.headline).toEqual('two');
+		expect(getCheckbox(item1).value).toEqual('1');
+		expect(getCheckbox(item2).value).toEqual('2');
 		// select and click on the swap button (need some delay for the button to appear)
 		await wait(100); 
 		const button = item1.querySelector('md-outlined-icon-button')
@@ -99,8 +101,8 @@ describe('order', () => {
 		await wait(300); 
 		item1 = element.items[0];
 		item2 = element.items[1];
-		expect(item1.headline).toEqual('two');
-		expect(item2.headline).toEqual('one');
+		expect(getCheckbox(item1).value).toEqual('2');
+		expect(getCheckbox(item2).value).toEqual('1');
 
 
 

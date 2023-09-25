@@ -67,10 +67,6 @@ export class LappListItem extends MdListItem {
   static override styles = [
     ...MdListItem.styles, 
     illustrationVariant, 
-    css`
-    :host {
-      display: flex;
-    }
-    `
+
   ];
 }

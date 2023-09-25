@@ -12,6 +12,8 @@ import('@material/web/button/outlined-button')
 import('@material/web/button/filled-button')
 import('@material/web/button/filled-tonal-button')
 import('@material/web/icon/icon')
+import('@material/web/select/filled-select')
+import('@material/web/select/select-option')
 import('@material/web/progress/circular-progress')
 
 /**
@@ -115,23 +117,25 @@ export class AddRole  extends LitElement {
 						.loader=${this.Entity?.userLoader}
 						@change=${onUserChanged}
 					></lapp-user-search>
-					<mwc-select
+					<md-filled-select
 						.label=${'Select Role'} 
 						.value=${this.accessRole}
-						@selected=${onRoleSelected}>
+						@change=${onRoleSelected}>
 						${this.Entity?.roles.filter(role => role.level > 1).map(role => html`
-							<mwc-list-item .value=${role.name}>
-								${role.name}
-							</mwc-list-item>
+							<md-select-option .value=${role.name} ?selected=${role.name === this.accessRole}>
+								<div slot="headline">${role.name}</div>
+							</md-select-option>
 						`)}
-					</mwc-select>
+					</md-filled-select>
 					${when(this.isLocaleRole, () => html`
-					<mwc-select
+					<md-filled-select
 						.label=${'Select Langauge'} 
 						.value=${this.languageRole}
-						@selected=${onLanguageRoleSelected}>
-						${this.languages.map(lan => html`<mwc-list-item .value=${lan}>${lan}</mwc-list-item>`)}
-					</mwc-select>
+						@change=${onLanguageRoleSelected}>
+						${this.languages.map(lan => html`<md-select-option .value=${lan} ?selected=${lan === this.languageRole}>
+							<div slot="headline">${lan}</div>
+						</md-select-option>`)}
+					</md-filled-select>
 						`)}
 					<md-filled-button 
 						@click=${addRole} 

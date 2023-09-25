@@ -142,6 +142,7 @@ export abstract class Order extends
         // console.log('marginTop', this.animating, index, marginTop, this.movingDistance)
         return html`
            <lapp-choice-list-item
+           type="button"
            .isMulti=${true}
            .selector=${this.choiceInputSelector}
             ${animate({
@@ -160,12 +161,13 @@ export abstract class Order extends
             .listItemRole=${'option'}
             .disabled=${this.isDisabled(option)}
             @change=${(e: HTMLEvent<LitElement>) => this.onChange(e, index, option)}
-            .headline=${option.md || option.label}
-            .supportingText=${option.supportingText || ''}>
+            >
             ${this.renderOptionIllustration(option)}
             ${this.renderPriority(checked, index)}
             ${this.renderUpDown(checked, index, option)}
             ${this.renderCheckbox(option, index)}
+            <div slot="headline">${option.md || option.label}</div>
+            ${when(option.supportingText, () => html`<div slot="supportingText">${option.supportingText}</div>`)}
             </lapp-choice-list-item>`
       })}
   `

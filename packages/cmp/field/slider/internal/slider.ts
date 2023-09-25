@@ -173,7 +173,6 @@ export abstract class Slider extends Generic {
 
 
   handleChange(e: Event) {
-    console.log('handleChange', e, this.value)
     const event = new CustomEvent('input', {
       detail: {value: this.value},
       bubbles: true,

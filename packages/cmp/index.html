@@ -34,7 +34,7 @@
         display: block;
       }
     </style>
-    <!-- <script type="module" src="/field/choice-order"></script> -->
+    <script type="module" src="/field/choice-order"></script>
     <script type="module" src="/field/choice-star"></script>
     <script type="module" src="/field/choice-checkbox"></script>
     <script type="module" src="/field/choice-radio"></script>
@@ -72,15 +72,46 @@
             e.target.reportValidity();
         }));  
     </script>
+    <md-list id="list" class="flex">
+      <md-list-item 
+       type="button"
+       >
+        <div slot="headline">Status 1 </div>
+        
+      </md-list-item>
+      <md-list-item 
+        type="button"
+        >
+        <div slot="overline">TITLE </div>
+        <!-- test -->
+        <md-checkbox touch-target="wrapper" 
+          data-role="checkbox"
+          slot="start"></md-checkbox>
+        <div slot="headline">Status 2 <!-- test --></div>
+        <div slot="start">Hey </div>
+        </md-list-item>
+      </md-list>
+  <lapp-choice-checkbox 
+        required
+        label="this is my choice " 
+        supporting-text="this is supporting text" variant="a11y"></lapp-choice-checkbox>
+      
    <lapp-select 
     label="lapp Select " 
     quick
+    value="apple"
     supporting-text="this is supporting text" 
     variant="a11y">
-    <md-select-option headline=""></md-select-option>
-    <md-select-option value="apple" headline="Apple"></md-select-option>
-    <md-select-option value="banana" headline="Banana"></md-select-option>
-    <md-select-option value="kiwi" headline="Kiwi"></md-select-option>
+    <md-select-option ></md-select-option>
+    <md-select-option value="apple" selected>
+      <div slot="headline">Apple</div>
+    </md-select-option>
+    <md-select-option value="banana" >
+      <div slot="headline">Banana</div>
+    </md-select-option>
+    <md-select-option value="kiwi" >
+      <div slot="headline">Kiwi</div>
+    </md-select-option>
   </lapp-select>
   <lapp-select-input 
     label="lapp Select Input" 
@@ -88,21 +119,33 @@
     supporting-text="this is supporting text" 
     variant="a11y">
     <md-select-option headline=""></md-select-option>
-    <md-select-option value="apple" headline="Apple" supporting-text="this is a fruit">
-      <lapp-icon slot="start-avatar">settings</lapp-icon>
+    <md-select-option value="apple" >
+      <lapp-icon slot="start">settings</lapp-icon>
+      <div slot="headline">Apple</div>
+      <div slot="supporting-text">this is a fruit</div>
     </md-select-option>
-    <md-select-option value="banana" headline="Banana"></md-select-option>
-    <md-select-option value="kiwi" headline="Kiwi"></md-select-option>
+    <md-select-option value="banana" >
+      <div slot="headline">Banana</div>
+    </md-select-option>
+    <md-select-option value="kiwi" >
+      <div slot="headline">Kiwi</div>
+    </md-select-option>
   </lapp-select-input>
   <md-filled-select 
   label="Md filled items " 
   quick
   supporting-text="this is supporting text" 
   >
-  <md-select-option value="" headline=""></md-select-option>
-  <md-select-option value="apple" headline="Apple"></md-select-option>
-  <md-select-option value="banana" headline="Banana"></md-select-option>
-  <md-select-option value="kiwi" headline="Kiwi"></md-select-option>
+  <md-select-option value="" ></md-select-option>
+  <md-select-option value="apple" >
+    <div slot="headline">Apple</div>
+  </md-select-option>
+  <md-select-option value="banana" >
+    <div slot="headline">Banana</div>
+  </md-select-option>
+  <md-select-option value="kiwi" >
+    <div slot="headline">Kiwi</div>
+  </md-select-option>
 </md-filled-select>
 
     <md-tabs>
@@ -163,10 +206,7 @@
     <md-icon-button toggle><lapp-icon>settings</lapp-icon><lapp-icon slot="selected">close</lapp-icon></md-icon-button>
     <md-filled-text-field label="first text"></md-filled-text-field>
     <md-filled-text-field required label="second text"></md-filled-text-field>
-     <lapp-choice-checkbox 
-        required
-        label="this is my choice " 
-        supporting-text="this is supporting text" variant="a11y"></lapp-choice-checkbox>
+     
     <lapp-choice-radio
 
       required

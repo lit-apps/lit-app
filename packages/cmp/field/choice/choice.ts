@@ -15,36 +15,14 @@ import './list'
 import { when } from 'lit/directives/when.js';
 import getInnerText from '@preignition/preignition-util/src/getInnerText.js';
 import translate  from '@preignition/preignition-util/translate-mixin.js';
+import {ListController, NavigableKeys} from '@material/web/list/internal/list-controller.js';
+import {ListItem } from '@material/web/list/internal/list-navigation-helpers.js';
+
+const NAVIGABLE_KEY_SET = new Set<string>(Object.values(NavigableKeys));
+const isNavigableKey = (key: string) => NAVIGABLE_KEY_SET.has(key);
+
 // @ts-ignore
 import locale  from './readaloud-locale.mjs';
-
-const ACTIONABLE_KEYS = {
-	Space: ' ',
-	Enter: 'Enter',
-} as const;
-
-const NAVIGATION_KEYS = {
-	ArrowLeft: 'ArrowLeft',
-	ArrowRight: 'ArrowRight',
-	End: 'End',
-	Home: 'Home',
-	// ArrowUp: 'ArrowUp',
-	// ArrowDown: 'ArrowDown',
-} as const;
-
-type ActionableValues = typeof ACTIONABLE_KEYS[keyof typeof ACTIONABLE_KEYS];
-const actionableKeySet = new Set(Object.values(ACTIONABLE_KEYS));
-
-function isActionableKey(key: string): key is ActionableValues {
-	return actionableKeySet.has(key as ActionableValues);
-}
-
-type NavigableValues = typeof NAVIGATION_KEYS[keyof typeof NAVIGATION_KEYS];
-const navigableKeySet = new Set(Object.values(NAVIGATION_KEYS));
-
-function isNavigableKey(key: string): key is NavigableValues {
-	return navigableKeySet.has(key as NavigableValues);
-}
 
 /**
  * Generic Base abstract class for all choice fields
@@ -132,11 +110,17 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		return this.renderRoot?.querySelectorAll(selector) ?? []
 	}
 
+	constructor() {
+		super();
+		// handle focus events
+		this.addEventListener('focusin', () => this.field.focused = true );
+		this.addEventListener('focusout', () =>	this.field.focused = false);
+	}
+
 	override renderInputOrTextarea(): TemplateResult {
 		
 		// we add an input field so that SR can announce 
 		// the status of the field
-
 		return html`
 		<input
 			style="width: 0px; height: 0px; padding: 0px;"
@@ -173,31 +157,23 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	 * have been filtered out
 	 */
 	protected renderEmptyOption(): TemplateResult {
-		return html`<md-list-item disabled .headline=${this.tr('noOptions')}></md-list-item>`
+		return html`<md-list-item 
+			disabled >
+			<div slot="headline">${this.tr('noOptions')}</div>
+			</md-list-item>`
 	}
 
 	protected handleKeydown(event: KeyboardEvent) {
-		const key = event.key;
-		if (isActionableKey(key)) {
-			this.handleActionableKeydown(event);
-		}
 
-		// prevent left and right arrow to lose focus
-		if (isNavigableKey(key)) {
-			event.preventDefault();
-			event.stopImmediatePropagation();
-		}
+		// do nothing by default
+		// console.info('handleKeydown', event.key)
+		// const key = event.key;
+		// if (isNavigableKey(key)) {
+		// 		event.stopPropagation();
+		// }
 
-		// return MdList.prototype.handleKeydown.call(this, event);
-		return MdList.prototype.handleKeydown.call(this, event);
+		return 
 	}
-
-	protected handleActionableKeydown(event: KeyboardEvent) {
-		event.preventDefault();
-		const target = event.target as HTMLElement;
-		target.click();
-	}
-
 
 	/**	
 	 * React to a change event coming from the list

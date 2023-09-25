@@ -25,12 +25,15 @@ export default defineConfig({
       "@material/mwc-base",
       "@material/mwc-base/form-element.js",
       "@material/mwc-drawer",
-      "@material/mwc-list",
-      "@material/mwc-menu",
+      
+
+      
+
       "@material/mwc-notched-outline",
       "@material/mwc-ripple",
       "@material/mwc-ripple/ripple-directive.js",
-      "@material/mwc-select",
+      
+
       "@material/mwc-snackbar",
       "@material/mwc-textarea",
       "@material/mwc-textfield",

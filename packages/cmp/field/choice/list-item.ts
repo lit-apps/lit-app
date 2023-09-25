@@ -20,6 +20,14 @@ export default class lappChoiceListItem extends LappListItem {
 		.label-text {
 			white-space: initial;
 		}
+		md-item {
+			gap: 4px;
+		}
+
+		/** Style item when re-ordering (host display is block, flex do not have any effect) */
+		button#item {
+			width: 100%;
+		}
 		`
 	]
 
@@ -51,35 +59,7 @@ export default class lappChoiceListItem extends LappListItem {
 		}
 		checkbox.dispatchEvent(new Event('change', { bubbles: true }))
 	}
-	override focus() {
-		this.inputElement?.focus();
-	}
 
-	/**
-	 * Renders the root list item.
-	 *
-	 * @param content {unkown} the child content of the list item.
-	 */
-	 protected override renderListItem(content: unknown) {
-		if (this.isMulti) {
-			return super.renderListItem(content);
-		}
-
-		// we want radio to be directly under radiogroup  role. 
-		// the parent class adds a li element, which is not needed for radio
-		return html`
-				<div
-						id="item"
-						tabindex=${this.disabled ? -1 : this.itemTabIndex}
-						aria-selected=${(this as ARIAMixinStrict).ariaSelected || nothing}
-						aria-checked=${(this as ARIAMixinStrict).ariaChecked || nothing}
-						class="list-item ${classMap(this.getRenderClasses())}"
-						@click=${this.onClick}
-						@pointerenter=${this.onPointerenter}
-						@pointerleave=${this.onPointerleave}
-						@keydown=${this.onKeydown}
-						>${content}</div>`;
-	}
 }
 
 declare global {

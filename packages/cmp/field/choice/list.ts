@@ -26,8 +26,6 @@ export default class ulChoice extends ValidationMixin(LitElement) {
 	override createRenderRoot() {
 		return this;
 	}
-
-
 }
 
 declare global {
