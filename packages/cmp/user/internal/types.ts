@@ -1,8 +1,11 @@
-// import type { TextFieldSelect } from '@preignition/pwi-textfield-select';
 
 export type UserItem = {
 	uid: string;
-	email?: string;
+	created: string
+	provider: string
+	email?: string
+	displayName?: string
+	photoURL?: string
 	
 };
 

@@ -1,8 +1,6 @@
 import { Select as S } from '@material/web/select/internal/select';
 import { Variant } from '../../field/internal/a11y-field-mixin';
 import { property, query } from 'lit/decorators.js';
-import type { FilledField } from '../../field/internal/filled-field';
-import type { OutlinedField } from '../../field/internal/outlined-field';
 import { PropertyValues } from 'lit';
 
 /**
@@ -48,5 +46,7 @@ export abstract class Select extends S {
     this.propagateToField(changedProperties);
     super.firstUpdated(changedProperties);
   }
+
+
 
 }

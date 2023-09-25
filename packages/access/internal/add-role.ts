@@ -5,7 +5,7 @@ import { property, state } from 'lit/decorators.js';
 import { HTMLEvent } from '@lit-app/cmp/types';
 import { AccessActionI,  Role } from '@lit-app/model';
 import {icon} from '@preignition/preignition-styles';
-import('@lit-app/cmp/user/card')
+import { LappUserSearch } from '@lit-app/cmp/user/search';
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')
 import('@material/web/button/outlined-button')
@@ -91,9 +91,9 @@ export class AddRole  extends LitElement {
 			this.isEditing = false;
 		}
 
-		const onValueChanged = (e: CustomEvent) => {
-			this.newUid = e.detail.value;
-			this.newName = e.detail.selectedText;
+		const onUserChanged = (e: HTMLEvent<LappUserSearch>) => {
+			this.newUid = e.target.value;
+			this.newName = e.target.selectedOptions[0]?.headline || '';
 		}
 		const onRoleSelected = (e: HTMLEvent<HTMLInputElement>) => {
 			this.accessRole = e.target.value as Role['name']	;
@@ -113,7 +113,7 @@ export class AddRole  extends LitElement {
 					</md-outlined-button>
 					<lapp-user-search
 						.loader=${this.Entity?.userLoader}
-						@value-changed=${onValueChanged}
+						@change=${onUserChanged}
 					></lapp-user-search>
 					<mwc-select
 						.label=${'Select Role'} 

@@ -38,7 +38,8 @@
     <script type="module" src="/field/choice-star"></script>
     <script type="module" src="/field/choice-checkbox"></script>
     <script type="module" src="/field/choice-radio"></script>
-    <!-- <script type="module" src="/field/select"></script> -->
+    <script type="module" src="/field/select"></script>
+    <script type="module" src="/field/select-input"></script>
     <!-- <script type="module" src="/field/record/record"></script> -->
     <!-- <script type="module" src="/field/record-field"></script> -->
     <!-- <script type="module" src="/field/textfield-select"></script> -->
@@ -52,7 +53,8 @@
   <body>
     <script type="module">
 
-      // import '@material/web/select/select-option';
+      import '@material/web/select/select-option.js';
+      import '@material/web/select/filled-select.js';
       import '@material/web/tabs/tabs.js';
 
       const options = [
@@ -70,6 +72,39 @@
             e.target.reportValidity();
         }));  
     </script>
+   <lapp-select 
+    label="lapp Select " 
+    quick
+    supporting-text="this is supporting text" 
+    variant="a11y">
+    <md-select-option headline=""></md-select-option>
+    <md-select-option value="apple" headline="Apple"></md-select-option>
+    <md-select-option value="banana" headline="Banana"></md-select-option>
+    <md-select-option value="kiwi" headline="Kiwi"></md-select-option>
+  </lapp-select>
+  <lapp-select-input 
+    label="lapp Select Input" 
+    quick
+    supporting-text="this is supporting text" 
+    variant="a11y">
+    <md-select-option headline=""></md-select-option>
+    <md-select-option value="apple" headline="Apple" supporting-text="this is a fruit">
+      <lapp-icon slot="start-avatar">settings</lapp-icon>
+    </md-select-option>
+    <md-select-option value="banana" headline="Banana"></md-select-option>
+    <md-select-option value="kiwi" headline="Kiwi"></md-select-option>
+  </lapp-select-input>
+  <md-filled-select 
+  label="Md filled items " 
+  quick
+  supporting-text="this is supporting text" 
+  >
+  <md-select-option value="" headline=""></md-select-option>
+  <md-select-option value="apple" headline="Apple"></md-select-option>
+  <md-select-option value="banana" headline="Banana"></md-select-option>
+  <md-select-option value="kiwi" headline="Kiwi"></md-select-option>
+</md-filled-select>
+
     <md-tabs>
       <lapp-primary-tab-closable>settings</lapp-primary-tab-closable>
       <lapp-primary-tab-closable>settings 2<lapp-icon slot="icon">settings</lapp-icon></lapp-primary-tab-closable>
@@ -145,26 +180,7 @@
     <lapp-choice-star 
       label="star"
     ></lapp-choice-star> 
-    <lapp-select 
-      label="Select items " 
-      quick
-      supporting-text="this is supporting text" 
-      variant="a11y">
-      <md-select-option selected></md-select-option>
-      <md-select-option value="apple" headline="Apple"></md-select-option>
-      <md-select-option value="banana" headline="Banana"></md-select-option>
-      <md-select-option value="kiwi" headline="Kiwi"></md-select-option>
-    </lapp-select>
-    <md-filled-select 
-    label="Select items " 
-    quick
-    supporting-text="this is supporting text" 
-    variant="a11y">
-    <md-select-option selected></md-select-option>
-    <md-select-option value="apple" headline="Apple"></md-select-option>
-    <md-select-option value="banana" headline="Banana"></md-select-option>
-    <md-select-option value="kiwi" headline="Kiwi"></md-select-option>
-  </md-filled-select>
+
     
     <lapp-choice-order 
       label="Select items below and order by priority" 

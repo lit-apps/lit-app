@@ -4,6 +4,7 @@ import { when } from 'lit/directives/when.js';
 import { AccessActionI,  Role } from '@lit-app/model';
 import { property, state } from 'lit/decorators.js';
 import {icon} from '@preignition/preignition-styles';
+import { LappUserSearch } from '@lit-app/cmp/user/search';
 import('@lit-app/cmp/user/card')
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')
@@ -63,7 +64,7 @@ export class SetRole  extends LitElement {
 
 	override render() {
 		return html`
-		<lapp-user-card noninteractive .uid=${this.uid}></lapp-user-card>
+		<lapp-user-card .uid=${this.uid}></lapp-user-card>
 		${when(this.canEdit, () => this.renderEdit())}`;
 	}
 
@@ -87,9 +88,9 @@ export class SetRole  extends LitElement {
 			this.isLoading = false;
 		}	
 
-		const onValueChanged = (e: CustomEvent) => {
-			this.newUid = e.detail.value;
-			this.newName = e.detail.selectedText;
+		const onUserChanged = (e: HTMLEvent<LappUserSearch>) => {
+			this.newUid = e.target.value;
+			this.newName = e.target.selectedOptions[0]?.headline || '';
 		}
 
 		return html`
@@ -102,7 +103,7 @@ export class SetRole  extends LitElement {
 					</md-outlined-button>
 					<lapp-user-search
 						.loader=${this.Entity?.userLoader}
-						@value-changed=${onValueChanged}
+						@change=${onUserChanged}
 					></lapp-user-search>
 					<md-filled-button @click=${setAccess} .disabled=${!this.newUid}>
 						set ${this.newName || ''} as ${this.accessRole}</lapp-user-name>

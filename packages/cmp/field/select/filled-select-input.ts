@@ -1,12 +1,13 @@
 import { customElement } from 'lit/decorators.js';
-import { FilledSelect } from './internal/filled-select.js';
+import { FilledSelectInput } from './internal/filled-select-input.js';
 import filledStyles from './filledStyles';
 import { MdFilledSelect } from '@material/web/select/filled-select.js'
 import genericStyles from '../generic/styles';
+import SelectInputStyles from './internal/selectInputStyles.js';
 import { CSSResult } from 'lit'; 
 declare global {
   interface HTMLElementTagNameMap {
-    'lapp-filled-select': LappFilledSelect;
+    'lapp-filled-select-input': LappFilledSelectInput;
   }
 }
 
@@ -14,11 +15,12 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('lapp-filled-select')
-export class LappFilledSelect extends FilledSelect {
+@customElement('lapp-filled-select-input')
+export class LappFilledSelectInput extends FilledSelectInput {
   static override styles: CSSResult[] = [
     ...MdFilledSelect.styles,
     filledStyles,
-    genericStyles
+    genericStyles, 
+    SelectInputStyles
   ];
 }

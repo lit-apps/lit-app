@@ -61,7 +61,7 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 		}
 
 		private override renderLabel(isFloating: boolean) {
-			if(this.variant !== 'a11y') {
+			if (this.variant !== 'a11y') {
 				return super.renderLabel(isFloating);
 			}
 

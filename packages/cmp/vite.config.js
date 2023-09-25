@@ -1,11 +1,11 @@
 import { defineConfig } from "vite";
-// import { litHMRPlugin } from './vite-plugin-lit-hmr';
+import { litHMRPlugin } from './vite-plugin-lit-hmr';
 
 // https://vitejs.dev/config/
 export default defineConfig({
 
   test: {
-    onConsoleLog (log) {
+    onConsoleLog(log) {
       if (log.includes('Download the Vue Devtools extension')) return false
       if (log.includes('Lit is in dev mode.')) return false
     },
@@ -15,7 +15,7 @@ export default defineConfig({
       name: 'chrome',
     },
   },
-  // plugins: [litHMRPlugin()],
+  plugins: [litHMRPlugin()],
   resolve: {
     dedupe: [
       "router-slot",
@@ -23,32 +23,15 @@ export default defineConfig({
       "api-viewer-element",
       "@material/web",
       "@material/mwc-base",
-      "@material/mwc-base/form-element.js", 
-      
-
-      
-
-     
-
+      "@material/mwc-base/form-element.js",
       "@material/mwc-drawer",
-       
-      
-
-      
-       
-       
-             "@material/mwc-list",
+      "@material/mwc-list",
       "@material/mwc-menu",
       "@material/mwc-notched-outline",
-      
-
       "@material/mwc-ripple",
       "@material/mwc-ripple/ripple-directive.js",
       "@material/mwc-select",
       "@material/mwc-snackbar",
-       ,
-
-
       "@material/mwc-textarea",
       "@material/mwc-textfield",
       "@material/mwc-top-app-bar",
