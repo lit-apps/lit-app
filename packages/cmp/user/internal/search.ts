@@ -7,6 +7,7 @@ import type { LappSelectInput } from '../../field/select-input';
 import { redispatchEvent } from '@material/web/internal/controller/events.js';
 // import '../card'
 import { Loader, UserItem } from './types';
+import slotList from '@preignition/preignition-styles/src/slot-list.js';
 import('@material/web/progress/linear-progress.js');
 import('@material/web/select/select-option.js');
 // used to validate emails
@@ -20,14 +21,16 @@ inputValidator.required = true;
  */
 export class UserSearch extends LitElement {
 
-	static override styles = css`
+	static override styles = [
+		slotList,
+		css`
 			:host {
 				display: inline-flex;
 			}
 			lapp-select-input {
          flex: 1;
       }
-		`;
+		`];
 
 	@property() label: string = 'Search Users';
 	@property({attribute: 'supporting-text'}) supportingText!: string;
@@ -86,9 +89,7 @@ export class UserSearch extends LitElement {
 	override render() {
 
 		const onSearchInput = async (e: HTMLEvent<LappSelectInput>) => {
-			// if (e.target.localName !== 'input') {
-			// 	return
-			// }
+
 			const token = e.target.searchValue || '';
 			console.info('pwi - onInput', token);
 			// if we have a loader, use it to load the items
@@ -107,10 +108,8 @@ export class UserSearch extends LitElement {
 		const onChange = (e: HTMLEvent<LappSelectInput>) => {
 			this.value = e.target.value;
 			redispatch(e)
-			console.info('pwi - onchange', this.value);
 		}
 
-		
 
 		return html`
 			<lapp-select-input 
@@ -140,7 +139,7 @@ export class UserSearch extends LitElement {
 			.value=${item.uid}
 			?selected=${item.uid === this.value}
 			>${item.photoURL ? 
-				html`<img slot="start" src=${item.photoURL} />` : 
+				html`<img slot="start" class="avatar" src=${item.photoURL} />` : 
 				html`<lapp-icon slot="start" class="avatar">person</lapp-icon>`}
 				<div slot="headline">${headline}</div>
 				<div slot="supporting-text">${item.email || ''}</div>

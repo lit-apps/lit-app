@@ -17,10 +17,10 @@ export class UserName extends userMixin(LifSpan) {
     `;
 
   override willUpdate(props: PropertyValues<this>){
-    super.willUpdate(props);
     if (props.has('uid')) {
       this.path = this.namePath;
     }
+    super.willUpdate(props);
     
   }  
 
