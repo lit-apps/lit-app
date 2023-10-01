@@ -64,6 +64,7 @@ export abstract class TextField extends T {
 		this.propagateToField(changedProperties);
 		super.firstUpdated(changedProperties);
 	}
+
 	override willUpdate(changedProperties: PropertyValues) {
 		if(changedProperties.has('noAutoValidate')) {
 			if (!this.noAutoValidate) {
@@ -74,7 +75,19 @@ export abstract class TextField extends T {
 		}
 		this.propagateToField(changedProperties);
 		super.willUpdate(changedProperties);
+	}
 
 
+	/** overriding checkValidity to ensure errorText is displayed when we have an error */
+	override checkValidity() {
+		const valid = super.checkValidity();
+		if(this.errorText) {
+			if(valid) {
+				this.error = false;
+			} else {
+				this.error = true;
+			}
+		}
+		return valid;
 	}
 }
