@@ -12,6 +12,7 @@ import { Choice } from '../../choice';
 import IllustrationMixin from '../../illustrationMixin';
 import MultiChoiceMixin from '../../multiMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
+import { nothing } from 'lit';
 import type { Option } from '../../types';
 import type { HTMLEvent } from '../../../../types';
 
@@ -32,7 +33,7 @@ import type { HTMLEvent } from '../../../../types';
     return html `
         ${options.map((option, index) => html`
          <lapp-choice-list-item
-            type="button"
+            _type="button"
             .isMulti=${true}
             .selector=${this.choiceInputSelector}
             data-variant="horizontal"
@@ -63,7 +64,7 @@ import type { HTMLEvent } from '../../../../types';
       slot="start"
       .disabled=${this.isDisabled(option)}
       .ariaLabel=${option.label}
-      .ariaDescription=${option.supportingText || ''}
+      aria-description=${option.supportingText || nothing}
       ?aria-invalid=${(this as unknown as GenericI).hasError}
       .ariaControls=${option.specify ? `specify${index}` : undefined}
       .value=${option.code}

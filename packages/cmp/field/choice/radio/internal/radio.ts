@@ -13,7 +13,7 @@ import type {  Option } from '../../types';
 import type { HTMLEvent } from '../../../../types';
 import '../../list-item'
 import lappChoiceListItem from '../../list-item';
-
+import {nothing} from 'lit';
 
 /**
  * Radio group field
@@ -33,7 +33,7 @@ export abstract class Radio extends
     return html`
       ${options.map((option, index) => html`
         <lapp-choice-list-item
-          type="button"
+          _type="button"
           .selector=${this.choiceInputSelector}
           data-variant="horizontal"
           .listItemRole=${'presentation'}
@@ -60,7 +60,7 @@ export abstract class Radio extends
       slot="start"
       .name=${name}
       .ariaLabel=${option.label}
-      .ariaDescription=${option.supportingText || ''}
+      aria-description=${option.supportingText || nothing}
       .disabled=${this.disabled || !!option.disabled}
       .readOnly=${this.readOnly}
       .ariaControls=${option.specify ? `specify${index}` : undefined}
