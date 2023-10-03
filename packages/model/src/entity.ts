@@ -137,13 +137,13 @@ const actions: Actions = {
         return html`<p>You are about to delete an entity. Please confirm.</p>`;
       }
     },
-    handler: async function (this: HTMLElement, ref: DocumentReference, data: any, event) {
-      // update the reporting state for the organisation
-      console.log('MarkDeleted', ref, data, event)
-      event.detail.promise = updateDoc(ref, { 'metaData.deleted': true })
+    // handler: async function (this: HTMLElement, ref: DocumentReference, data: any, event) {
+    //   // update the reporting state for the organisation
+    //   console.log('MarkDeleted', ref, data, event)
+    //   event.detail.promise = updateDoc(ref, { 'metaData.deleted': true })
 
-    }
-    ,
+    // }
+    // ,
   },
   restore: {
     label: 'Restore',
@@ -153,12 +153,12 @@ const actions: Actions = {
       label: 'Restored',
       index: -8
     },
-    handler: async function (this: HTMLElement, ref: DocumentReference, data: any, event) {
-      // update the reporting state for the organisation
-      console.log('Restored', ref, data, event)
-      event.detail.promise = updateDoc(ref, { 'metaData.deleted': false })
+    // handler: async function (this: HTMLElement, ref: DocumentReference, data: any, event) {
+    //   // update the reporting state for the organisation
+    //   console.log('Restored', ref, data, event)
+    //   event.detail.promise = updateDoc(ref, { 'metaData.deleted': false })
 
-    }
+    // }
   },
   setAccess: {
     label: 'Set Access',
@@ -214,7 +214,7 @@ const actions: Actions = {
  *                    }  
   *               } : 
  *            this.renderContent() {
- *                showMeta ? this.renderMetaData() : ''
+ *                showMetaData ? this.renderMetaData() : ''
  *                showAction ? this.renderAction() : ''
  *                this.renderForm)}
  *           }}
@@ -885,7 +885,10 @@ export default class Entity<Interface
     return this.renderContent(data, config)
   }
 
-  renderContent(data: Interface, config?: RenderConfig): TemplateResult {
+  private renderContent(data: Interface, config?: RenderConfig): TemplateResult {
+    if(config?.variant === 'card') { 
+      return this.renderCardItem(data, config)
+    }
     return html`<div class="layout vertical">							
       ${data === undefined ? html`Loading...` :
         [
@@ -897,7 +900,7 @@ export default class Entity<Interface
     </div>`
   }
 
-  renderArrayContent(data: Interface[], config?: RenderConfig): TemplateResult {
+  private renderArrayContent(data: Interface[], config?: RenderConfig): TemplateResult {
     if(config?.variant === 'card') { 
       return this.renderCard(data, config)
     }
