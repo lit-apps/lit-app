@@ -103,7 +103,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 					}
 				}
 				this._resolved = true;
-				(await this._confirmDialog).close()
+				(await this._confirmDialog)?.close()
 			}
 
 			const onClose = () => {
@@ -131,9 +131,8 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
             value="close">Cancel</md-outlined-button>
 					<md-filled-button
 						form="form-confirm"
-            .label=${action?.confirmDialog?.confirmLabel || 'Confirm'}
-						.disabled=${action?.confirmDialog?.confirmDisabled?.call(this, data) || !this._resolved}
-            @click=${processAction}></md-filled-button>
+            .disabled=${action?.confirmDialog?.confirmDisabled?.call(this, data) || !this._resolved}
+            @click=${processAction}>${action?.confirmDialog?.confirmLabel || 'Confirm'}</md-filled-button>
 					</div>
 				</md-dialog>
 				`
