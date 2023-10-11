@@ -65,8 +65,7 @@ export const UserItemMixin = <T extends Constructor<MdListItem>>(superClass: T) 
 				<slot name="overline" slot="overline"></slot>
 				<slot name="headline" slot="headline">${headline}</slot>
 				<slot name="supporting-text" slot="supporting-text">${supportingText}</slot>
-				<slot name="trailing-supporting-text"
-						slot="trailing-supporting-text"></slot>
+				<slot name="trailing-supporting-text" slot="trailing-supporting-text"></slot>
 			`;
 			}
 	

@@ -83,7 +83,6 @@ export class EntityAccess extends
 				} else {
 					user.roles.push(role);
 				}
-
 			})
 		})
 

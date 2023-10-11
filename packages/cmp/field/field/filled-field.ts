@@ -31,6 +31,7 @@ const styles = css`
     white-space: inherit;
   }
   
+  
   `
 
 declare global {

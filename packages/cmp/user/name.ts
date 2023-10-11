@@ -12,6 +12,6 @@ declare global {
  * An element to display user name when provided with uid
  */
 @customElement('lapp-user-name')
-export  class LappUserName extends UserName {
+export class LappUserName extends UserName {
  
 }

@@ -132,7 +132,7 @@ export abstract class EntityRenderer<T> {
 	 * @param config
 	 * @returns TemplateResult
 	 */
-	abstract renderContent(data: T, config: RenderConfig): TemplateResult
+	// abstract renderContent(data: T, config: RenderConfig): TemplateResult
 
 	/**
 	 * Render a grid of entities
@@ -180,7 +180,7 @@ export abstract class EntityRenderer<T> {
 	abstract gridDetailRenderer(item: T, model?: GridItemModel<T>, grid?: Grid): TemplateResult
 	abstract renderMetaData(_data: T, _config?: RenderConfig): TemplateResult
 	abstract renderBody(_data: T, _config?: RenderConfig): TemplateResult
-	abstract renderArrayContent(_data: T[], _config?: RenderConfig): TemplateResult
+	// abstract renderArrayContent(_data: T[], _config?: RenderConfig): TemplateResult
 	abstract renderHeader(_data: T, _config?: RenderConfig): TemplateResult
 	abstract renderFooter(_data: T, _config?: RenderConfig): TemplateResult
 
