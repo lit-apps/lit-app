@@ -279,6 +279,7 @@ export default class Entity<Interface
     const _actions = { ...actions }
     Object.setPrototypeOf(_actions, Object.fromEntries(
       Object.entries({ ...Proto.actions }).map(([key, value]) => {
+        value = {...value}
         (value as Action).entityName = Proto.entityName;
         return [key, value]
       })
