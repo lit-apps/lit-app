@@ -103,7 +103,7 @@ export abstract class EntityRenderer<T> {
 	 * @param data 
 	 * @returns 
 	 */
-	abstract renderActions(data: any, config?: RenderConfig): TemplateResult | undefined
+	abstract renderEntityActions(data: any, config?: RenderConfig): TemplateResult | undefined
 
 	/**
 		* Utility render functions for a single entity actions to render as button and trigger an Action event

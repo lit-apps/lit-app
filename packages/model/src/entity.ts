@@ -334,7 +334,7 @@ export default class Entity<Interface
   /**
    * @param element the element to render the action on
    * @param realTime when true, will dispatch update events on data-input 
-   *         this also changes the rendering of renderActions
+   *         this also changes the rendering of renderEntityActions
    * @param listenOnAction when true, will listen to action events on the element
    */
   constructor(public host: EntityElement | EntityElementList, public realTime: boolean = false, public listenOnAction: boolean = false) {
@@ -625,7 +625,7 @@ export default class Entity<Interface
    * @param data 
    * @returns 
    */
-  public renderActions(data: any, config?: RenderConfig): TemplateResult | undefined {
+  public renderEntityActions(data: any, config?: RenderConfig): TemplateResult | undefined {
     const entityAccess = config?.entityAccess || this.host.entityAccess;
     const entityStatus = config?.entityStatus || this.host.entityStatus;
 
@@ -894,7 +894,7 @@ export default class Entity<Interface
       ${data === undefined ? html`Loading...` :
         [
           this.showMetaData ? this.renderMetaData(data, config) : html``,
-          this.showActions ? this.renderActions(data, config) : html``,
+          this.showActions ? this.renderEntityActions(data, config) : html``,
           this.renderForm(data, config)
         ]
       }
