@@ -253,7 +253,7 @@ export default class Entity<Interface
     { name: 'owner', level: 1 },
     { name: 'admin', level: 2 },
     { name: 'editor', level: 3 },
-    { name: 'guest', level: 3 }]
+    { name: 'guest', level: 4 }]
   static userLoader: (search: string) => Promise<any>
 
   /**
@@ -270,16 +270,16 @@ export default class Entity<Interface
   */
   static getAccess: GetAccess
 
-  /** setActions
+  /** setPrototypeOfActions
    * Set actions, inheriting Proto.actions as prototype
    * This is useful when some actions can only be performed 
    * by a db-ref higher up in the hierarchy
    */
-  static setActions(actions: Actions, Proto: typeof EntityI) {
+  static setPrototypeOfActions(actions: Actions, Proto: typeof EntityI) {
     const _actions = { ...actions }
     Object.setPrototypeOf(_actions, Object.fromEntries(
-      Object.entries({ ...Proto.actions }).map(([key, value]) => {
-        value = {...value}
+      entries<Actions>({ ...Proto.actions }).map(([key, value]) => {
+        value = {...value};
         (value as Action).entityName = Proto.entityName;
         return [key, value]
       })
@@ -929,6 +929,7 @@ export default class Entity<Interface
 
   renderHeader(data: Interface, config: RenderConfig): TemplateResult {
     const title = this.renderTitle(data, config)
+    const icon = this.host.icon || this.icon
     return html`${choose(config.level,
       [
         [2, () => html`<h3 style="display: flex; flex-direction: row;">${title}</h3>`],
@@ -937,7 +938,7 @@ export default class Entity<Interface
       ],
       () => html`
       <h2  class="underline layout horizontal">
-        <lapp-icon .icon=${config.entityStatus.isEditing ? 'edit' : this.icon}></lapp-icon>
+        <lapp-icon .icon=${config.entityStatus.isEditing ? 'edit' : icon}></lapp-icon>
         ${title}
       </h2>`
     )}`

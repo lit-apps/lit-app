@@ -52,7 +52,7 @@ export class BaseEvent<T extends { promise?: Promise<any> }> extends CustomEvent
 export class Write extends BaseEvent<EntityWriteDetail> {
   static readonly eventName = 'entity-write';
   readonly actionName = 'write'
-  public persisted?: boolean // true when the was persisted
+  public persisted?: boolean // true when data is persisted
   constructor(
     detail: EntityWriteDetail,
     public override readonly action?: Action) {
@@ -83,7 +83,7 @@ export class Update extends BaseEvent<EntityWriteDetail> {
 export class Reset extends BaseEvent<EntityDetail> {
   static readonly eventName = 'entity-reset';
   readonly actionName = 'reset'
-  public persisted?: boolean // true when the entity was persisted
+  public persisted?: boolean // true when data is persisted
   constructor(
     detail: EntityDetail,
     public override readonly action?: Action) {
@@ -97,7 +97,7 @@ export class Reset extends BaseEvent<EntityDetail> {
 
 export class Delete extends BaseEvent<EntityWriteDetail> {
   static readonly eventName = 'entity-delete';
-  public persisted?: boolean // true when the was persisted
+  public persisted?: boolean // true when data was persisted
   readonly actionName = 'delete';
   constructor(detail: EntityWriteDetail) {
     super(Delete.eventName, {
@@ -111,6 +111,7 @@ export class Delete extends BaseEvent<EntityWriteDetail> {
 export class Restore extends BaseEvent<EntityDetail> {
   static readonly eventName = 'entity-restore';
   readonly actionName = 'restore';
+  public persisted?: boolean // true when data was persisted
   constructor(
     detail: EntityDetail,
     public override readonly action: Action) {
@@ -126,6 +127,7 @@ export class Restore extends BaseEvent<EntityDetail> {
 export class MarkDeleted extends BaseEvent<EntityWriteDetail> {
   static readonly eventName = 'entity-mark-deleted';
   readonly actionName: string = 'markDeleted';
+  public persisted?: boolean // true when the was persisted
   constructor(
     detail: EntityWriteDetail,
     public override readonly action: Action) {
@@ -138,7 +140,7 @@ export class MarkDeleted extends BaseEvent<EntityWriteDetail> {
 }
 export class Create extends BaseEvent<EntityCreateDetail> {
   static readonly eventName = 'entity-create';
-  public persisted?: boolean // true when the was persisted
+  public persisted?: boolean // true when data is persisted
   readonly actionName = 'create';
   constructor(
     detail: EntityCreateDetail,

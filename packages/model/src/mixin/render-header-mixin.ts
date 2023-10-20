@@ -6,6 +6,7 @@ import('@material/web/icon/icon.js')
 
 
 type Constructor<T = {}> = new (...args: any[]) => T;
+type AConstructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class RenderHeaderMixinInterface {
 	heading: string
 	icon: string
@@ -24,7 +25,7 @@ export declare class RenderHeaderMixinInterface {
  * level 3 a h5 secondary title, 
  * level 4 no title.
  */
-export const RenderHeaderMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const RenderHeaderMixin = <T extends Constructor<LitElement> | AConstructor<LitElement>>(superClass: T) => {
 
 	class RenderHeaderMixinClass extends superClass {
 

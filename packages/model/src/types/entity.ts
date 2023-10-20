@@ -44,6 +44,7 @@ interface EntityBase<T = any> extends LitElement {
 	icon?: string
 	heading?: string
 	appID?: string
+	renderTitle?: (data: T, config: RenderConfig) => TemplateResult
 }
 export interface DefaultI {
 

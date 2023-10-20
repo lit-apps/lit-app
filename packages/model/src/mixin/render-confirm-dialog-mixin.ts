@@ -130,8 +130,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
             form="form-confirm"
             value="close">Cancel</md-outlined-button>
 					<md-filled-button
-						form="form-confirm"
-            .disabled=${action?.confirmDialog?.confirmDisabled?.call(this, data) || !this._resolved}
+						.disabled=${action?.confirmDialog?.confirmDisabled?.call(this, data) || !this._resolved}
             @click=${processAction}>${action?.confirmDialog?.confirmLabel || 'Confirm'}</md-filled-button>
 					</div>
 				</md-dialog>
