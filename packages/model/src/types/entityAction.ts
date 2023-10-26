@@ -10,6 +10,17 @@ interface BaseActionI {
 	uid?: string
 }
 
+type DefaultAction = 'markDeleted' | 'restore'
+export interface DefaultActionI extends BaseActionI {
+	actionName: DefaultAction
+	detail: Detail
+}
+
+export function isDefaultAction(data: AllActionI): data is DefaultActionI {
+	const actionName = data.actionName
+	return actionName === 'markDeleted' || actionName === 'restore' 
+}
+
 type PrivacyAction = 'setPrivate' | 'setPublic' 
 type PrivacyDetail = Detail & {
 }
@@ -87,5 +98,5 @@ export function isInviteAction(data: AllActionI): data is InviteActionI {
 	return actionName === 'revokeInvite' || actionName === 'invite'
 }
 
-export type AllActionI = PrivateActionI | AccessActionI | NameActionI | InviteActionI | RevokeInviteActionI
+export type AllActionI = PrivateActionI | AccessActionI | NameActionI | InviteActionI | RevokeInviteActionI | DefaultActionI
 export type AllAction = AllActionI['actionName'] 

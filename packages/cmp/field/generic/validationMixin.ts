@@ -45,7 +45,6 @@ export declare class ValidationMixinInterface {
 }
 /**
  * ValidationMixin A mixin that adds validation support to a LitElement
- * For now, it only adds a `prop` property
  */
 export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T & {internals: ElementInternals}) => {
 
@@ -57,7 +56,7 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 
 		value!: string | string[] 
 		required!: boolean
-		customValidity!: string
+		// customValidity!: string
 
 		constructor(..._args: any[]) {
 			super();
@@ -82,9 +81,9 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 				const value = Array.isArray(this.value) ? this.value.join(',') : this.value;
 				this._input.value = value
 			}
-			if (props.has('customValidity')) {
-				this.setCustomValidity(this.customValidity);
-			}
+			// if (props.has('customValidity')) {
+			// 	this.setCustomValidity(this.customValidity);
+			// }
 		}
 
 		get validity() {
@@ -100,8 +99,6 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 		get validationMessage() {
 			return this._input.validationMessage;
 		}
-	
-
 			
 
 		/**
@@ -115,7 +112,7 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 		 *
 		 * @param error The error message to display.
 		 */
-		setCustomValidity(error: string) {
+		setCustomValidity(error: string = '') {
 			this._input.setCustomValidity(error);
 			this.internals?.setValidity( {customError: !!error}, error);
 		}

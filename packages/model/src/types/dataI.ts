@@ -45,7 +45,7 @@ export interface MetaData<T = Access, TS = any> {
 export interface DataI<M = MetaData, R = Ref> {
 	ref: R
 	metaData: M
-	name?: string
+	// name?: string
 }
 
 

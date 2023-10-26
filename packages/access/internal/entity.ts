@@ -43,6 +43,8 @@ const getAccess: GetAccess = {
  * An element that renders access utilities against an entity, 
  * like setOwner, addAccess, removeAccess, etc.
  * 
+ * TODO: this should be a subclass of entity-abstract-el
+ * 
  */
 
 export class EntityAccess extends

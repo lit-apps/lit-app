@@ -10,6 +10,7 @@ type BtnCfg = {
 	unelevated?: boolean
 	tonal?: boolean
 	text?: boolean // true to render a text button
+	label?: string | TemplateResult
 }
 
 export type ButtonConfig = BtnCfg | ((data: any, entityStatus?: EntityStatus) => BtnCfg)
@@ -54,7 +55,7 @@ export type Action = {
 // export type Actions = { [key: string]: Action }
 
 export type DefaultActions = 
-	'create' | 'edit' | 'write' | 'cancel' | 'delete' | 'restore' | 'open' | 'close' |
+	'create' | 'edit' | 'write' | 'cancel' | 'delete' |'markDeleted' | 'restore' | 'open' | 'close' |
   'removeAccess' | 'setAccess' | 'addAccess'
 // export type ActionRecord<K extends string, T> = { [P in K]: T; }
 export type Actions = Record<DefaultActions , Action>

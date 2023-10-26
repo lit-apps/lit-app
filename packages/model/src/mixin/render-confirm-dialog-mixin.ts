@@ -9,7 +9,7 @@ import('@material/web/button/filled-button.js')
 
 import { LitElement, PropertyValues, html } from 'lit';
 import { queryAsync, state } from 'lit/decorators.js';
-import { AppAction, Create, Delete, EntityAction, MarkDeleted } from '../events';
+import { AppAction, Create, Delete, EntityAction } from '../events';
 
 
 type Constructor<T = {}> = new (...args: any[]) => T;
@@ -31,14 +31,14 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 		data: any
 		selectedItems!: any[]
 
-		@state() private _activeEvent!: EntityAction | AppAction | Create | Delete | MarkDeleted  | undefined;
+		@state() private _activeEvent!: EntityAction | AppAction | Create | Delete   | undefined;
 		@state() private _resolved: boolean = true;
 		@queryAsync('#confirmDialog') _confirmDialog!: MdDialog;
 
 		protected override firstUpdated(_changedProperties: PropertyValues) {
 			super.firstUpdated(_changedProperties);
 
-			const setAction = async (event: Delete | MarkDeleted | Create | EntityAction | AppAction  ) => {
+			const setAction = async (event: Delete  | Create | EntityAction | AppAction  ) => {
 				// stop propagation if action is not confirmed and we have a templateDialog
 				if (event.shouldConfirm) {
 					event.stopPropagation();
@@ -51,7 +51,6 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 			this.addEventListener(AppAction.eventName, setAction);
 			this.addEventListener(Create.eventName, setAction);
 			this.addEventListener(Delete.eventName, setAction);
-			this.addEventListener(MarkDeleted.eventName, setAction);
 		}
 
 		override render() {
@@ -64,7 +63,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 			]
 		}
 
-		private _renderConfirmDialog(event: EntityAction | AppAction | Create  | Delete | MarkDeleted 
+		private _renderConfirmDialog(event: EntityAction | AppAction | Create  | Delete  
 			 | undefined) {
 			if (!event) return
 			const action = event.action

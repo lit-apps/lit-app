@@ -108,36 +108,7 @@ export class Delete extends BaseEvent<EntityWriteDetail> {
   }
 }
 
-export class Restore extends BaseEvent<EntityDetail> {
-  static readonly eventName = 'entity-restore';
-  readonly actionName = 'restore';
-  public persisted?: boolean // true when data was persisted
-  constructor(
-    detail: EntityDetail,
-    public override readonly action: Action) {
-    super(Restore.eventName, {
-      bubbles: true,
-      composed: true,
-      detail: detail
-    });
-  }
-}
-
-/** Mark deleted - as opposed to delete - will not remove object from persistence */
-export class MarkDeleted extends BaseEvent<EntityWriteDetail> {
-  static readonly eventName = 'entity-mark-deleted';
-  readonly actionName: string = 'markDeleted';
-  public persisted?: boolean // true when the was persisted
-  constructor(
-    detail: EntityWriteDetail,
-    public override readonly action: Action) {
-    super(MarkDeleted.eventName, {
-      bubbles: true,
-      composed: true,
-      detail: detail
-    });
-  }
-}
+ 
 export class Create extends BaseEvent<EntityCreateDetail> {
   static readonly eventName = 'entity-create';
   public persisted?: boolean // true when data is persisted
@@ -331,11 +302,11 @@ export class AppActionEmail extends BaseAction<ActionEmailDetail> {
 }
 
 
-type AnyEntityEvent =  Write | Update | Reset | Delete | MarkDeleted | Restore | Create | Dirty | Close | Open | Edit  
+type AnyEntityEvent =  Write | Update | Reset | Delete | Create | Dirty | Close | Open | Edit  
 type AnyAppEvent =  EntityAction | AppAction | AppActionEmail
 // type AccessEvent = AddAccess | RemoveAccess | SetAccess | AccessInvite | AccessInviteRevoke;
 export type AnyEvent =  AnyEntityEvent | AnyAppEvent 
-export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset | typeof Delete | typeof MarkDeleted | typeof Restore | typeof Create | typeof Dirty | typeof Close | typeof Open | typeof Edit | typeof EntityAction<any> | typeof AppAction | typeof AppActionEmail ; 
+export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset | typeof Delete |  typeof Create | typeof Dirty | typeof Close | typeof Open | typeof Edit | typeof EntityAction<any> | typeof AppAction | typeof AppActionEmail ; 
 // export type TypeofAnyEvent = {new(detail: any, action: Action, confirmed?: boolean, bulkAction?: boolean): AnyEntityEvent} | 
 //   {new(detail: any, action: Action, actionName: string, confirmed?: boolean, bulkAction?: boolean): AnyAppEvent} |
 //   {new(detail: EntityAccessDetail | EntityAccessInviteRevokeDetail, action: Action): AccessEvent} 
@@ -345,8 +316,8 @@ declare global {
     'entity-write': Write, // commit local changes to database
     'entity-update': Update, // commit local changes to database - realtime
     'entity-delete': Delete, // delete entity from database
-    'entity-mark-deleted': MarkDeleted, // mark entity as deleted
-    'entity-restore': Restore, // delete entity from database
+    // 'entity-mark-deleted': MarkDeleted, // mark entity as deleted
+    // 'entity-restore': Restore, // delete entity from database
     'entity-create': Create, // create new entity in database
     'entity-dirty': Dirty, // mark entity as dirty (local changes)
     'entity-edit': Edit, // mark entity as editable

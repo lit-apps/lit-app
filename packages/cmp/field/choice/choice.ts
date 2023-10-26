@@ -74,15 +74,14 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	@property({ type: Boolean }) autoValidate = false
 
 	/**
-		 * `name` name for the input element
-		 */
+	 * `name` name for the input element
+	 */
 	@property() override name!: string;
 
 	/**
 	 * The tabindex of the underlying list.
 	 */
 	@property({ type: Number }) listTabIndex = -1;
-
 	
 	/**
 	 * A filter function to filter out options

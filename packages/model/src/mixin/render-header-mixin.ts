@@ -34,11 +34,11 @@ export const RenderHeaderMixin = <T extends Constructor<LitElement> | AConstruct
 		@property({ type: Number }) level: number = 1;
 
 
-		renderTitle(_data?: DefaultI, _config?: RenderConfig): TemplateResult {
+		renderTitle(_data?: DefaultI, _config?: RenderConfig) {
 			return html`${this.heading}`
 		}
 	
-		renderHeader(data?: DefaultI, config?: RenderConfig): TemplateResult {
+		renderHeader(data?: DefaultI, config?: RenderConfig) {
 			const title = this.renderTitle(data, config)
 			return html`${choose(this.level,
 				[
