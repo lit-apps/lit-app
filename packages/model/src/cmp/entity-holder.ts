@@ -48,17 +48,17 @@ export default class EntityHolder extends abstractEntity {
 		this.addEventListener(Write.eventName, () => this.requestUpdate());
 	}
 
-	protected override renderEntity(entity: Entity) {
+	protected override renderEntity(entity: Entity, config?: RenderConfig) {
 		return html`
 			<slot name="header">
-				${this.renderHeader(entity)}
+				${this.renderHeader(entity, config)}
 			</slot>
 			<slot name="sub-header"></slot>
 			<slot name="body">
-				${this.renderBody(entity)}
+				${this.renderBody(entity, config)}
 			</slot>
 			<slot name="footer">
-				${this.renderFooter(entity)}
+				${this.renderFooter(entity, config)}
 			</slot>
 		`;
 	}

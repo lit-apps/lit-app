@@ -74,15 +74,23 @@ export type ColumnsConfig = {
 	}
 }
 
+export type GridConfig = {
+	preventDetails?: boolean // when true, will not render grid details
+}
 
-export type RenderConfig = {
-	entityAccess: EntityAccess,
-	entityStatus: EntityStatus,
+export type RenderConfigOptional = {
+	columnsConfig?: ColumnsConfig,
+	gridConfig?: GridConfig,
 	level?: number, // level to render the entity
 	variant?: 'card' | 'default'
 	options?: {
 		[key: string]: boolean
 	}
+}
+
+export type RenderConfig = RenderConfigOptional & {
+	entityAccess: EntityAccess,
+	entityStatus: EntityStatus
 }
 /**
  * Interface for render utility functions
@@ -190,6 +198,7 @@ export abstract class EntityRenderer<T> {
 // import type { PartialBy } from '../types'
 // import { entityEvent } from '../entity-holder'
 import { AllActionI } from './entityAction'
+import { type } from 'os'
 export abstract class EntityI<Interface extends DefaultI = DefaultI> extends EntityRenderer<Interface> {
 
 	static getAccess: GetAccess

@@ -8,7 +8,7 @@ import { ConsumeDataMixin } from '../mixin/context-data-mixin';
 import { ConsumeEntityMixin } from '../mixin/context-entity-mixin';
 import { ConsumeEntityStatusMixin } from '../mixin/context-entity-status-mixin';
 import { Strings } from '../types';
-import { RenderConfig } from '../types/entity';
+import { RenderConfig, RenderConfigOptional } from '../types/entity';
 
 /**
  * This event is fired to trigger the main application hoist an element
@@ -66,11 +66,14 @@ export default abstract class AbstractEntityElement extends
 	 */
 	@property({ type: Number }) level: number = 1;
 
+  @property({ attribute: false }) entityRenderOptions!: RenderConfigOptional;
+
 	get renderConfig(): RenderConfig {
 		return {
 			entityAccess: this.entityAccess,
 			entityStatus: this.entityStatus,
 			level: this.level,
+			...this.entityRenderOptions,
 		}
 	}
 
@@ -116,22 +119,22 @@ export default abstract class AbstractEntityElement extends
 
 		return [
 			super.render(),
-			this.renderEntity(this.entity)
+			this.renderEntity(this.entity, this.renderConfig)
 		]
 	}
 
 	/**
 	 * renderEntity is called when entity is ready
 	 */
-	protected abstract renderEntity(entity: Entity): TemplateResult;
+	protected abstract renderEntity(entity: Entity, config?: RenderConfig): TemplateResult;
 
-	protected renderHeader(entity: Entity) {
-		return entity.renderHeader(this.data, this.renderConfig);
+	protected renderHeader(entity: Entity, config?: RenderConfig) {
+		return entity.renderHeader(this.data, config || this.renderConfig);
 	}
-	protected renderBody(entity: Entity) {
-		return entity.renderBody(this.data, this.renderConfig);
+	protected renderBody(entity: Entity, config?: RenderConfig) {
+		return entity.renderBody(this.data, config || this.renderConfig);
 	}
-	protected renderFooter(entity: Entity) {
-		return entity.renderFooter(this.data, this.renderConfig);
+	protected renderFooter(entity: Entity, config?: RenderConfig) {
+		return entity.renderFooter(this.data, config || this.renderConfig);
 	}
 }

@@ -34,10 +34,8 @@ import {
   Edit,
   EntityAction,
   EntityCreateDetail,
-  MarkDeleted,
   Open,
   Reset,
-  Restore,
   Update,
   Write
 
@@ -126,7 +124,8 @@ const actions: Actions = {
   delete: {
     label: 'Delete',
     icon: 'delete',
-    event: MarkDeleted,
+    pushHistory: true,
+    // event: MarkDeleted,
     meta: {
       label: 'Deleted',
       index: -7
@@ -134,7 +133,7 @@ const actions: Actions = {
     confirmDialog: {
       heading: 'Confirm Delete',
       render(data: any): TemplateResult {
-        return html`<p>You are about to delete an entity. Please confirm.</p>`;
+        return html`<p>You are about to delete <strong>${data.name || 'an entity'}</strong>. Please confirm.</p>`;
       }
     },
     // handler: async function (this: HTMLElement, ref: DocumentReference, data: any, event) {
@@ -145,10 +144,26 @@ const actions: Actions = {
     // }
     // ,
   },
+  markDeleted: {
+    label: 'Delete',
+    icon: 'delete',
+    pushHistory: true,
+    meta: {
+      label: 'Deleted',
+      index: -7
+    },
+    confirmDialog: {
+      heading: 'Confirm Delete',
+      render(data: any): TemplateResult {
+        return html`<p>You are about to mark <strong>${data.name || 'an entity'}</strong> as deleted. Please confirm.</p>`;
+      }
+    },
+  },
   restore: {
     label: 'Restore',
     icon: 'restore_from_trash',
-    event: Restore,
+    // event: Restore,
+    pushHistory: true,
     meta: {
       label: 'Restored',
       index: -8
@@ -498,12 +513,10 @@ export default class Entity<Interface
         event = new action.event({ id: id, entityName: this.entityName }, action);
         break;
       case Delete:
-      case MarkDeleted:
       case Update:
-      case Restore:
       case Write:
         if (!id && import.meta.env.DEV) {
-          console.warn('id is required for Delete, MarkDeleted, Update, Restore and Write')
+          console.warn('id is required for Delete, Update, and Write')
         }
         event = new action.event({ id: id, entityName: this.entityName, data: data }, action);
         break;
@@ -709,7 +722,7 @@ export default class Entity<Interface
     const unelevated = cfg?.unelevated ?? false
     const text = cfg?.text ?? false
     const outlined = cfg?.outlined ?? !text
-
+    const label = cfg?.label ?? action.label
     return html`<lapp-button 
         class="${actionName} action"
         .icon=${action.icon || ''} 
@@ -720,7 +733,7 @@ export default class Entity<Interface
         .outlined=${outlined}
         .unelevated=${unelevated}
         >
-          ${action.label}
+          ${label}
         </lapp-button>`
   }
 
@@ -775,7 +788,7 @@ export default class Entity<Interface
    * @param data - the data for the grid
    * @param withOrganisation - true to display organisation column
    */
-  public renderGrid(data: Interface[], config?: ColumnsConfig) {
+  public renderGrid(data: Interface[], config?: RenderConfig) {
     const onSelected = async (e: CustomEvent) => {
       (this.host as EntityElementList).selectedItems = [...(e.target as Grid).selectedItems];
     }
@@ -790,7 +803,7 @@ export default class Entity<Interface
 			.itemIdPath=${'$id'}
 			.items=${data}
 			${gridRowDetailsRenderer(this.gridDetailRenderer.bind(this))}
-			@active-item-changed=${activeItemChanged}
+			@active-item-changed=${config?.gridConfig?.preventDetails ? null : activeItemChanged }
 			@selected-items-changed=${onSelected}
 			@size-changed=${onSizeChanged}>
       ${this.renderGridColumns(config)}
@@ -804,7 +817,7 @@ export default class Entity<Interface
    * @param showSelectionColumn 
    * @returns 
    */
-  renderGridColumns(_config?: ColumnsConfig) {
+  renderGridColumns(_config?: RenderConfig) {
     // console.log('renderGridColumns')
     const model = this.model;
     const colTag = literal`vaadin-grid-column`
@@ -844,7 +857,7 @@ export default class Entity<Interface
    * render a table derived from the model
    * @param data 
    */
-  public renderTable(data: any) {
+  public renderTable(data: any, _config?: RenderConfig) {
     const model = this.model;
     // get the fields to render in table
     const fields = entries<Model<DefaultI>>(model)
@@ -917,6 +930,7 @@ export default class Entity<Interface
   }
 
   renderCardItem(data: Interface, config?: RenderConfig): TemplateResult {
+   return html``
   }
 
   renderEmptyArray(_config?: RenderConfig): TemplateResult {
