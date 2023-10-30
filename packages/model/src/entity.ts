@@ -867,15 +867,19 @@ export default class Entity<Interface
 
     return html`
         <table class="entity table ${this.entityName}">
-          ${fields.map(([key, m]) => {
-            const component = (m as ModelComponent).component || 'textfield';
-            const value = get(key, data)
+          ${fields.map(([key, m]: [string, ModelComponent]) => {
+            const component = m.component || 'textfield';
+            const value = get(m.table?.path || key, data)
             let display = value
-            if (((m as ModelComponent).table?.optional === true) && (value == undefined)) {
+            
+            if ((m.table?.optional === true) && (value == undefined)) {
               return
             }
-            if (component === 'select') {
-              const item = (m as ModelComponent as ModelComponentSelect).items?.find(i => i.code === value)
+            if(m.table?.renderer) {
+              display = m.table.renderer(data)
+            }
+            else if (component === 'select') {
+              const item = (m as ModelComponentSelect).items?.find(i => i.code === value)
               display = item?.label || key
             }
             return html`<tr class="${key}"><td class="label">${m.table?.label || m.label || key}</td><td>${display}</td></tr>`

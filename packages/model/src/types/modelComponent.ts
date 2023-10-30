@@ -1,4 +1,6 @@
+import { Primitive } from 'firebase/firestore';
 import type { LitElement } from 'lit';
+import { TemplateResult } from 'lit';
 import {
 	GridColumnBodyLitRenderer,
 	GridColumnHeaderLitRenderer
@@ -11,10 +13,12 @@ type UploadComponent = 'upload'
 type BooleanComponent = 'checkbox' | 'switch'
 type SelectComponent = 'select' | 'multi-select'
 
-type TableConfig = {
+type TableConfig<T = any> = {
 	index: number
-	label?: string,
+	label?: string
+	path?: string
 	optional?: boolean
+	renderer?: (data: T) => TemplateResult
 }
 
 export type GridConfig<T = any> = {
@@ -28,14 +32,14 @@ export type GridConfig<T = any> = {
 	headerRenderer?: GridColumnHeaderLitRenderer
 	bodyRenderer?: GridColumnBodyLitRenderer<T>
 }
-interface ModelComponentBase {
+interface ModelComponentBase<T = any> {
 	label?: string
 	helper?: string
 	required?: boolean
 	icon?: string
 	class?: string
-	table?: TableConfig
-	grid?: GridConfig
+	table?: TableConfig<T>
+	grid?: GridConfig<T>
 	// set requestUpdate to true to request an update when the value changes
 	requestUpdate?: boolean
 	// do not render component when the function returns true 
@@ -53,13 +57,13 @@ export interface Lookup<T = string> {
 	class?: string
 }
 
-export interface ModelComponentSlider extends ModelComponentBase {
+export interface ModelComponentSlider<T = any> extends ModelComponentBase<T> {
 	component: SliderComponent
 	min: string
 	max: string
 	step?: string
 }
-export interface ModelComponentUpload extends ModelComponentBase {
+export interface ModelComponentUpload<T = any> extends ModelComponentBase<T> {
 	component: UploadComponent
 	multi?: boolean
 	maxFiles?: number
@@ -74,18 +78,18 @@ export interface ModelComponentUpload extends ModelComponentBase {
 
 }
 
-export interface ModelComponentSelect extends ModelComponentBase {
+export interface ModelComponentSelect<T = any> extends ModelComponentBase<T> {
 	component: SelectComponent
 	items?: { code: string, label: string }[]
 }
-export interface ModelComponentText extends ModelComponentBase {
+export interface ModelComponentText<T = any> extends ModelComponentBase<T> {
 	component?: TextComponent | DateComponent
 	placeholder?: string
 	maxLength?: number
 	minLength?: number
 	type?: 'text' | 'number' | 'email' | 'password' | 'tel' | 'url' | 'search' | 'color' | 'date' | 'datetime-local' | 'month' | 'time' | 'week'
 }
-export interface ModelComponentTextArea extends ModelComponentBase {
+export interface ModelComponentTextArea<T = any> extends ModelComponentBase<T> {
 	component: TextComponent 
 	rows?: number
 	placeholder?: string
@@ -93,18 +97,18 @@ export interface ModelComponentTextArea extends ModelComponentBase {
 	minLength?: number
 	resize?: 'vertical' | 'horizontal' | 'auto'
 }
-export interface ModelComponentBoolean extends ModelComponentBase {
+export interface ModelComponentBoolean<T = any> extends ModelComponentBase<T> {
 	component: BooleanComponent
 }
 
-export type ModelComponent =
-	ModelComponentSelect |
-	ModelComponentText |
-	ModelComponentTextArea |
-	ModelComponentBoolean |
-	ModelComponentSlider |
-	ModelComponentUpload
+export type ModelComponent<T = any> =
+	ModelComponentSelect<T> |
+	ModelComponentText<T> |
+	ModelComponentTextArea<T> |
+	ModelComponentBoolean<T> |
+	ModelComponentSlider<T> |
+ 	ModelComponentUpload<T>
 
 export type Model<T> = {
-	[key in keyof Partial<T>]: ModelComponent | Model<T[key]>
-} & { ref?: { [key: string]: ModelComponent } }
+	[key in keyof Partial<T>]: ModelComponent<T> | Model<T[key]>
+} & { ref?: { [key: string]: ModelComponent<T> } }
