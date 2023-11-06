@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { get, set } from '@preignition/preignition-util/src/deep';
 import { debounce, throttle } from '@preignition/preignition-util/src/debounce';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -11,10 +11,12 @@ import type Entity from './entity';
 import '@polymer/polymer';
 import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-box'
 import { MultiSelectComboBox } from '@vaadin/multi-select-combo-box/src/vaadin-multi-select-combo-box'
+import { nothing } from 'lit';
 
 import('@material/mwc-textfield')
 import('@material/mwc-textarea')
 import('@preignition/pwi-md/src/pwi-md-editor')
+import('@preignition/firebase-upload/image-upload')
 import('@preignition/pwi-form-upload')
 import('@preignition/pwi-input/src/pwi-input-translation')
 import('@preignition/pwi-input/src/pwi-input-translation-textarea')
@@ -123,6 +125,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       return html`
       <pwi-input-translation 
         class=${cls}
+        .name=${name}
         .readOnly=${disabled}
         .label=${label}
         .value=${origin}
@@ -137,6 +140,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       return html`
       <pwi-input-translation-textarea 
         class=${cls}
+        .name=${name}
         .readOnly=${disabled}
         .label=${label}
         .value=${origin}
@@ -150,6 +154,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       return html`
       <pwi-md-editor 
         .rows=${3}
+        .name=${name}
         .writeLabel=${label}
         .translate=${true} 
         .readOnly=${disabled}
@@ -172,6 +177,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
     return html`
     <mwc-textfield
       class=${cls}
+      .name=${name}
       type=${ifDefined(model.type) || undefined}
       .icon=${model.icon}
       .readOnly=${disabled}
@@ -191,6 +197,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
     return html`
     <mwc-textarea
       class=${cls}
+      .name=${name}
       .readOnly=${disabled}
       .placeholder=${model.placeholder}
       .label=${label}
@@ -205,9 +212,31 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
   }
 
   if (component === 'md') {
-    return html`
+    if(model.droppable) {
+      return html`<pwi-md-droppable-editor
+      class=${cls}
+      .name=${name}
+      .readOnly=${disabled}
+      .writeLabel=${label}
+      .placeholder=${model.placeholder}
+      .helper=${model.helper}
+      .required=${model.required}
+      .maxLength=${model.maxLength}
+      .minLength=${model.minLength}
+      .charCounter=${!!model.maxLength}
+      .path=${model.path}
+      useFirestore=${model.useFirestore || nothing }
+      maxFileSize=${model.maxFileSize || nothing }
+      rows=${ifDefined(model.rows) || undefined}
+      resize=${ifDefined(model.resize) || undefined}
+      .md=${value || ''}
+      @input=${onInputFact('md')}
+    ></pwi-md-droppable-editor>`
+    }
+  return html`
     <pwi-md-editor
       class=${cls}
+      .name=${name}
       .readOnly=${disabled}
       .writeLabel=${label}
       .placeholder=${model.placeholder}
@@ -228,6 +257,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
     return html`
     <pwi-form-upload
       class=${cls}
+      .name=${name}
       .readonly=${disabled}
       .writeLabel=${label}
       .helper=${model.helper}
@@ -242,11 +272,31 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
     ></pwi-form-upload>
     `;
   }
+  if (component === 'upload-image') {
+    return html`
+    <firebase-image-upload
+      class=${cls}
+      .name=${name}
+      .readonly=${disabled}
+      .writeLabel=${label}
+      .helper=${model.helper}
+      .required=${model.required}
+      .store=${model.store}
+      .path=${model.path}
+      .accept=${model.accept}
+      .maxFileSize=${model.maxFileSize}
+      .useFirestore=${model.useFirestore}
+      .fieldPath=${model.fieldPath || name}
+      .buttonText=${model.buttonText || nothing}
+    ></firebase-image-upload>
+    `;
+  }
   if (component === 'slider') {
     // For the time being, we render as number text field as slider is not working
     return html`
      <lapp-slider-field
       class=${cls}
+      .name=${name}
       .disabled=${disabled}
       .label=${label}
       .supportingText=${model.helper}
@@ -265,6 +315,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
     return html`
     <lapp-select
       class=${cls}
+      .name=${name}
       .icon=${model.icon}
       .readonly=${disabled}
       .label=${label}
@@ -283,6 +334,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
     return html`
     <vaadin-multi-select-combo-box
       class=${cls}
+      .name=${name}
       .items=${(model as ModelComponentSelect).items}
       .selectedItems=${((model as ModelComponentSelect).items || []).filter(item => (value || []).indexOf(item.code) > -1)}
       @change=${onInputFact('selectedValues')}
@@ -302,6 +354,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
     <label class=${cls}>
       <md-checkbox touch-target="wrapper" 
         aria-label=${label||''}
+        .name=${name}
         .checked=${value}
         .disabled=${disabled}
         @change=${onInputFact('checked')} 
@@ -316,6 +369,7 @@ export function renderField<Interface extends DefaultI>(this: EntityElement,
       ${label || ''}
       <md-switch 
         .selected=${value}
+        .name=${name}
         .disabled=${disabled}
         @change=${onInputFact('selected')} 
         ></md-switch>

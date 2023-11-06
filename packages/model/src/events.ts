@@ -14,9 +14,9 @@ export interface EntityDetail {
 export interface EntityWriteDetail extends EntityDetail {
   data: any,
 }
-export interface EntityCreateDetail {
+export interface EntityCreateDetail<T = any> {
   entityName: string,
-  data: any,
+  data: T,
   collection?: CollectionReference, // a ref to the collection where the entity is created
   subCollection?: string, // a string representing the subcollection path relative to this.ref
   batch?: WriteBatch,

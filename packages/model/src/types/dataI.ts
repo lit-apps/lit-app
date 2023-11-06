@@ -33,11 +33,11 @@ export type Ref = {
 	app: string,
 }
 
-export interface MetaData<T = Access, TS = any> {
-	access: T
-	timestamp: TS
+export interface MetaData<A = Access, T = string> {
+	access: A
+	timestamp: any // timestamp
 	deleted: boolean
-	type: string
+	type: T
 }
 
 

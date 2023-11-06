@@ -5,6 +5,7 @@ import { property, state } from 'lit/decorators.js';
 import Entity from '../entity';
 import { ConsumeAccessMixin } from '../mixin/context-access-mixin';
 import { ConsumeDataMixin } from '../mixin/context-data-mixin';
+import { ConsumeDocIdMixin } from '../mixin/context-doc-id-mixin';
 import { ConsumeEntityMixin } from '../mixin/context-entity-mixin';
 import { ConsumeEntityStatusMixin } from '../mixin/context-entity-status-mixin';
 import { Strings } from '../types';
@@ -37,7 +38,8 @@ export default abstract class AbstractEntityElement extends
 	ConsumeEntityMixin(
 		ConsumeAccessMixin(
 			ConsumeDataMixin(
-				ConsumeEntityStatusMixin(LitElement)))) {
+				ConsumeDocIdMixin(
+					ConsumeEntityStatusMixin(LitElement))))) {
 
 	// setLocale must be set to handle translations
 	declare setLocale: (entityName: string, locale: Strings) => void;
@@ -91,7 +93,6 @@ export default abstract class AbstractEntityElement extends
 		super.willUpdate(props);
 	}
 	protected setEntity(E: typeof Entity) {
-		// const E = Entity as unknown as typeof Entity
 		this.entity = new E(this, this.realTime, this.listenOnAction)
 
 

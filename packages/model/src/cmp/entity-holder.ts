@@ -5,13 +5,12 @@ import Entity from '../entity';
 import { RenderConfig } from '../types/entity';
 
 import { Edit, Reset, Write } from '../events';
-import abstractEntity from './abstract-entity-element';
+import AbstractEntity from './abstract-entity-element';
 
 /**
  *  Base Class holding an Entity
  */
-export default class EntityHolder extends abstractEntity {
-
+export default class EntityHolder extends AbstractEntity {
 
 	/** 
 	 * variant for rendering process 

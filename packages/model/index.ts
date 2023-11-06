@@ -20,6 +20,11 @@ export {
 	dataContext
 } from './src/mixin/context-data-mixin';
 export {
+	ConsumeDocIdMixin,
+	ProvideDocIdMixin,
+	docIdContext
+} from './src/mixin/context-doc-id-mixin';
+export {
 	ConsumeEntityMixin,
 	ProvideEntityMixin,
 } from './src/mixin/context-entity-mixin';
@@ -31,6 +36,8 @@ export {
 	mergeStatic,
 	renderConfirmDialogMixin,
 };
+export { entityCreateDialogEvent } from './src/cmp/entity-create-dialog';
+
 export * from './src/types';
 
 

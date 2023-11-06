@@ -9,7 +9,8 @@ import {
 	GetAccess,
 	ConsumeUidMixin,
 	AccessActionI,
-	entries
+	entries,
+	PartialBy
 } from '@lit-app/model';
 import { html, LitElement } from "lit";
 import { property } from 'lit/decorators.js';
@@ -25,6 +26,8 @@ import('@material/web/chips/chip-set.js')
 import('../set-role')
 import('../add-role')
 import('@lit-app/cmp/user/list')
+
+type User = PartialBy<UserItemRole, 'provider' | 'created'>;
 
 const getAccess: GetAccess = {
 	isOwner: function (this: EntityAccess, access: Access, _data: any) {
@@ -56,7 +59,7 @@ export class EntityAccess extends
 						ConsumeUidMixin(
 							LitElement))))), getAccess) {
 
-	private _users!: UserItemRole[];
+	private _users!: User[];
 
 	@property() override icon = 'manage_accounts';
 	@property() override heading = 'Members';
@@ -73,14 +76,14 @@ export class EntityAccess extends
 		// we cache users so that the grid can also cache user names
 		const prev = this._users;
 		// loop through all metaData roles and return users
-		const users: UserItemRole[] = [];
+		const users: User[] = [];
 		entries<Access['user']>(this.metaData?.access?.user || {})
 			.forEach(([role, value]) => {
 			const v = Array.isArray(value) ? value : [value];
 			v.forEach((uid: string) => {
-				const user = users.find((user: UserItemRole) => user.uid === uid);
+				const user = users.find((user) => user.uid === uid);
 				if (!user) {
-					const prevUser = prev?.find((user: UserItemRole) => user.uid === uid);
+					const prevUser = prev?.find((user) => user.uid === uid);
 					users.push({ uid, roles: [role], name: prevUser?.name });
 				} else {
 					user.roles.push(role);
@@ -182,8 +185,7 @@ export class EntityAccess extends
 			<h5 class="secondary">Member List</h5>
 			<lapp-user-list
 				.items=${this.users}
-				.canEdit=${renderConfig.entityAccess.canEdit}
-			>
+				.canEdit=${renderConfig.entityAccess.canEdit}>
 			<vaadin-grid-column flex-grow="1" 
 				.header=${'Role'}
         ${columnBodyRenderer(bodyRole)}

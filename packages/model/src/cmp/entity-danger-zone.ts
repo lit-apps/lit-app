@@ -2,6 +2,7 @@ import { html, css, LitElement } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
 import AbstractEntity from './abstract-entity-element';
 import RenderHeaderMixin from '../mixin/render-header-mixin';
+import Entity from '../entity';
 
 import('@material/web/list/list')
 import('@material/web/list/list-item')
@@ -34,7 +35,7 @@ export default class EntityDangerZone  extends RenderHeaderMixin(AbstractEntity)
 		`;
 	}
 
-	override renderBody(entity: Entity) {
+	override renderBody(_entity: Entity) {
 
 		const name = this.data?.name || 'this entity';
 

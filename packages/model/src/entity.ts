@@ -29,8 +29,6 @@ import {
   Create,
   Delete,
   Dirty,
-  // Delete,
-  // Create,
   Edit,
   EntityAction,
   EntityCreateDetail,
@@ -70,6 +68,7 @@ import entries from './typeUtils/entries';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { AccessActionI, ActionDetail, ensure, PartialBy, Role, Strings } from './types';
 import type { LappButton } from '@lit-app/cmp/button/button';
+import { nothing } from 'lit';
 
 /**
  * Actions inherited by all entities (provided they use @mergeStatic('actions'))
@@ -240,8 +239,7 @@ const actions: Actions = {
  *		`;
  * 
  */
-export default class Entity<Interface
-  extends DefaultI = DefaultI>
+export default class Entity<Interface extends DataI = DataI>
   implements EntityI<Interface>  {
 
   /**
@@ -262,7 +260,7 @@ export default class Entity<Interface
 
   static icon: string = ''
   static locale?: Strings
-  static model: Model<DefaultI>
+  static model: Model<any>
   static actions = actions
   static roles: Role[] = [
     { name: 'owner', level: 1 },
@@ -294,7 +292,7 @@ export default class Entity<Interface
     const _actions = { ...actions }
     Object.setPrototypeOf(_actions, Object.fromEntries(
       entries<Actions>({ ...Proto.actions }).map(([key, value]) => {
-        value = {...value};
+        value = { ...value };
         (value as Action).entityName = Proto.entityName;
         return [key, value]
       })
@@ -352,7 +350,7 @@ export default class Entity<Interface
    *         this also changes the rendering of renderEntityActions
    * @param listenOnAction when true, will listen to action events on the element
    */
-  constructor(public host: EntityElement | EntityElementList, public realTime: boolean = false, public listenOnAction: boolean = false) {
+  constructor(public host: EntityElement , public realTime: boolean = false, public listenOnAction: boolean = false) {
     host.addController(this);
     // we only add event listeners if the element is a dataController (e.g. skip list and grids)
     if (this.listenOnAction) {
@@ -419,9 +417,10 @@ export default class Entity<Interface
     this.host?.dispatchEvent(new ToastEvent(error.message, 'error'))
   }
 
-  public create(details: EntityCreateDetail) {
+  public create(details: PartialBy<EntityCreateDetail, 'entityName'>) {
     details.entityName = this.entityName;
-    const event = new Create(details, this.actions.create);
+    details.data = this.processCreateData(details.data);
+    const event = new Create(details as EntityCreateDetail, this.actions.create);
     return this._dispatchTriggerEvent(event);
   }
 
@@ -449,13 +448,14 @@ export default class Entity<Interface
     el.dispatchEvent(event);
     return event
   }
-  private static _dispatchTriggerEvent(event: CustomEvent, el: HTMLElement) {
+  static _dispatchTriggerEvent(event: CustomEvent, el: HTMLElement) {
     el.dispatchEvent(event);
     return event
   }
 
   private getEvent(actionName: keyof this['actions'], data: any, bulkAction: boolean = false) {
     if (actionName === 'create') {
+      console.warn('getEvent for create is deprecated!')
       return new Create({ entityName: this.entityName, data: this.getNewData() }, this.actions.create);
     }
     return this.constructor.getEvent(String(actionName), data, this.host, bulkAction)
@@ -777,9 +777,7 @@ export default class Entity<Interface
           </md-filled-icon-button>
         </pwi-tooltip>
       `
-
   }
-
 
   /**
    * grid with commitment list 
@@ -797,13 +795,22 @@ export default class Entity<Interface
       (this.host as EntityElementList).size = e.detail.value;
     }
 
+    const onDblClick = async (e: CustomEvent) => {
+      const context = (e.currentTarget as Grid).getEventContext(e);
+      // by default, open the item
+      if(context.item){
+        this.open(this.entityName, context.item.$id)
+      }
+    }
+
     return html`<vaadin-grid 
 			id="grid"
       class="flex grid entity ${this.entityName}"
 			.itemIdPath=${'$id'}
 			.items=${data}
 			${gridRowDetailsRenderer(this.gridDetailRenderer.bind(this))}
-			@active-item-changed=${config?.gridConfig?.preventDetails ? null : activeItemChanged }
+			@active-item-changed=${config?.gridConfig?.preventDetails ? null : activeItemChanged}
+      @dblclick=${config?.gridConfig?.preventDblClick ? null : onDblClick}
 			@selected-items-changed=${onSelected}
 			@size-changed=${onSizeChanged}>
       ${this.renderGridColumns(config)}
@@ -822,10 +829,9 @@ export default class Entity<Interface
     const model = this.model;
     const colTag = literal`vaadin-grid-column`
     const colSortTag = literal`vaadin-grid-sort-column`
-    // by default, get config from model - for more complex grid, override this method
-    const fields = entries<Model<DefaultI>>(model)
-      .filter(([_key, m]) => !!m.grid)
-      .sort(([_key1, m1], [_key2, m2]) => ((m1 as ModelComponent).grid?.index || 0) - ((m2 as ModelComponent).grid?.index || 0))
+
+    const fields = getFieldsFromModel(model, (model) => !!model.grid)
+      .sort((a, b) => (a[1].grid?.index || 0) - (b[1].grid?.index || 0));
 
     return html`${fields.map(([key, m]) => {
 
@@ -838,8 +844,8 @@ export default class Entity<Interface
         ?resizable=${ifDefined(grid.resizable)} 
         path=${grid.path || key}
         header=${grid.header || m.label}
-        ${grid.bodyRenderer ? columnBodyRenderer(grid.bodyRenderer) : null}  
-        ${grid.headerRenderer ? columnHeaderRenderer(grid.headerRenderer) : null}  
+        ${grid.bodyRenderer ? columnBodyRenderer(grid.bodyRenderer) : nothing}  
+        ${grid.headerRenderer ? columnHeaderRenderer(grid.headerRenderer) : nothing}  
         ></${tagName}>
       `})
       }`
@@ -860,22 +866,20 @@ export default class Entity<Interface
   public renderTable(data: any, _config?: RenderConfig) {
     const model = this.model;
     // get the fields to render in table
-    const fields = entries<Model<DefaultI>>(model)
-      // @ts-ignore
-      .filter(([_key, m]) => !!m.table)
-      .sort(([_key1, m1], [_key2, m2]) => ((m1 as ModelComponent).table?.index || 0) - ((m2 as ModelComponent).table?.index || 0))
+    const fields = getFieldsFromModel(model, (model) => !!model.table)
+      .sort((a, b) => (a[1].table?.index || 0) - (b[1].table?.index || 0));
 
     return html`
         <table class="entity table ${this.entityName}">
-          ${fields.map(([key, m]: [string, ModelComponent]) => {
+          ${fields.map(([key, m]) => {
             const component = m.component || 'textfield';
             const value = get(m.table?.path || key, data)
             let display = value
-            
+
             if ((m.table?.optional === true) && (value == undefined)) {
               return
             }
-            if(m.table?.renderer) {
+            if (m.table?.renderer) {
               display = m.table.renderer(data)
             }
             else if (component === 'select') {
@@ -884,7 +888,7 @@ export default class Entity<Interface
             }
             return html`<tr class="${key}"><td class="label">${m.table?.label || m.label || key}</td><td>${display}</td></tr>`
           })
-            }
+        }
         </table>
      `
   }
@@ -904,7 +908,7 @@ export default class Entity<Interface
   }
 
   private renderContent(data: Interface, config?: RenderConfig): TemplateResult {
-    if(config?.variant === 'card') { 
+    if (config?.variant === 'card') {
       return this.renderCardItem(data, config)
     }
     return html`<div class="layout vertical">							
@@ -919,7 +923,7 @@ export default class Entity<Interface
   }
 
   private renderArrayContent(data: Interface[], config?: RenderConfig): TemplateResult {
-    if(config?.variant === 'card') { 
+    if (config?.variant === 'card') {
       return this.renderCard(data, config)
     }
     return this.renderGrid(data, config)
@@ -934,7 +938,7 @@ export default class Entity<Interface
   }
 
   renderCardItem(data: Interface, config?: RenderConfig): TemplateResult {
-   return html``
+    return html``
   }
 
   renderEmptyArray(_config?: RenderConfig): TemplateResult {
@@ -971,6 +975,15 @@ export default class Entity<Interface
     return html`Form`
   }
 
+  renderCreateDialog(data: Interface, _config?: RenderConfig): TemplateResult {
+    return html`
+      <div class="layout vertical  wrap">
+				${this.renderFieldUpdate('name', undefined, data)}
+				${this.renderFieldUpdate('title', undefined, data)}
+			</div>
+    `
+  }
+
   /** 
    * returns data to be stored in the database when creating a new entity
    * @param userID - the user owning the entity - it can be a different user than the one logged in
@@ -984,8 +997,53 @@ export default class Entity<Interface
     return {}
   }
 
+  protected processCreateData(data: Partial<DataI> = {}) {
+    return {
+      ...data,
+      metaData: this.processCreateMetaData(data.metaData),
+      ref: this.processCreateRef(data.ref)
+    }
+  }
 
+  protected processCreateMetaData(metaData: Partial<DataI["metaData"]> = {}) {
+    return {
+      type: this.entityName,
+      deleted: false,
+      access: {
+        app: this.host.appID || null,
+        status: 'private'
+      },
+      ...metaData,
+    }
+  }
+  protected processCreateRef(ref: Partial<DataI["ref"]> = {}) {
+    return {
+      app: this.host.appID || null,
+      ...ref,
+
+    }
+  }
 
 }
 
 
+
+function getFieldsFromModel(model: Model<any>, condition: (m: ModelComponent)=> boolean): [string, ModelComponent][] {
+  function getFields(model: Model<any>, path: string = ''): [string, ModelComponent][] {
+    const fields: [string, ModelComponent][] = [];
+
+    for (const key in model) {
+      const component = model[key];
+      const p = path ? `${path}.${key}` : key
+      if (condition(component)) {
+        fields.push([p, component]);
+      }
+      else if (typeof component === 'object') {
+        fields.push(...getFields(component as Model<any>, p));
+      }
+    }
+
+    return fields;
+  }
+  return getFields(model)
+}

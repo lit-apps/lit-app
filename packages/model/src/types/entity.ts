@@ -1,6 +1,6 @@
 import type { Grid, GridItemModel } from '@vaadin/grid'
 import { CSSResult, LitElement, TemplateResult } from 'lit'
-import { Role, Strings, EntityAction, Collection, CollectionI } from '../types'
+import { Role, Strings, EntityAction, Collection, CollectionI, DataI } from '../types'
 import type { Action, ButtonConfig } from './action'
 import { EntityCreateDetail } from '../events'
 import { GetAccess } from './getAccess'
@@ -52,7 +52,7 @@ export interface DefaultI {
 
 export interface EntityElement<T = any> extends EntityBase<T> {
 	id: string // not sure this is needed
-	docId?: string // not sure this is needed
+	docId: string | undefined 
 	entityStatus: EntityStatus
 	entityAccess: EntityAccess
 }
@@ -63,7 +63,7 @@ export interface EntityElementList<T = any> extends EntityBase<T> {
 	entityAccess?: EntityAccess
 	size?: number
 	selectedItems?: T[]
-	showGridSelectColumn?: boolean
+	// showGridSelectColumn?: boolean
 }
 
 export type ColumnsConfig = {
@@ -76,6 +76,7 @@ export type ColumnsConfig = {
 
 export type GridConfig = {
 	preventDetails?: boolean // when true, will not render grid details
+	preventDblClick?: boolean // when true, will not react to dbClick
 }
 
 export type RenderConfigOptional = {
@@ -195,10 +196,8 @@ export abstract class EntityRenderer<T> {
 
 }
 
-// import type { PartialBy } from '../types'
-// import { entityEvent } from '../entity-holder'
 import { AllActionI } from './entityAction'
-export abstract class EntityI<Interface extends DefaultI = DefaultI> extends EntityRenderer<Interface> {
+export abstract class EntityI<Interface extends DataI = DataI> extends EntityRenderer<Interface> {
 
 	static getAccess: GetAccess
 	static actions: any

@@ -38,6 +38,7 @@ export {
 	Model, Lookup, GridConfig
 }
 export * from './events'
+export * from './types/resource'
 export * from './types/dataI'
 export * from './types/getAccess'
 export * from './types/entityAction'

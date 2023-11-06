@@ -1,3 +1,4 @@
+import { MdCheckbox } from '@material/web/checkbox/checkbox';
 import { Primitive } from 'firebase/firestore';
 import type { LitElement } from 'lit';
 import { TemplateResult } from 'lit';
@@ -5,11 +6,14 @@ import {
 	GridColumnBodyLitRenderer,
 	GridColumnHeaderLitRenderer
 } from 'lit-vaadin-helpers';
+import { DefaultI } from './entity';
 
-type TextComponent = 'textfield' | 'textarea' | 'md'
+type TextComponent = 'textfield' | 'textarea' 
+type MdComponent = 'md'
 type DateComponent = 'datefield'
 type SliderComponent = 'slider'
 type UploadComponent = 'upload'
+type UploadComponentImage = 'upload-image'
 type BooleanComponent = 'checkbox' | 'switch'
 type SelectComponent = 'select' | 'multi-select'
 
@@ -68,6 +72,7 @@ export interface ModelComponentUpload<T = any> extends ModelComponentBase<T> {
 	multi?: boolean
 	maxFiles?: number
 	maxFileSize?: number
+	noFileExtension?: boolean
 	accept?: string
 	path?: string
 	store?: string
@@ -75,7 +80,21 @@ export interface ModelComponentUpload<T = any> extends ModelComponentBase<T> {
 	fieldPath?: string
 	fileName?: string
 	dropText?: { one: string, many: string }
-
+	buttonText?: { one: string, many: string }
+}
+export interface ModelComponentUploadImage<T = any> extends ModelComponentBase<T> {
+	component: UploadComponentImage
+	accept?: string
+	maxFileSize?: number
+	noFileExtension?: boolean
+	path?: string
+	store?: string
+	useFirestore?: boolean
+	fieldPath?: string
+	fileName?: string
+	dropText?: { one: string, many: string }
+	buttonText?: { one: string, many: string }
+	
 }
 
 export interface ModelComponentSelect<T = any> extends ModelComponentBase<T> {
@@ -97,6 +116,21 @@ export interface ModelComponentTextArea<T = any> extends ModelComponentBase<T> {
 	minLength?: number
 	resize?: 'vertical' | 'horizontal' | 'auto'
 }
+export interface ModelComponentMd<T = any> extends ModelComponentBase<T> {
+	component: MdComponent
+	rows?: number
+	placeholder?: string
+	maxLength?: number
+	minLength?: number
+	resize?: 'vertical' | 'horizontal' | 'auto'
+}
+export interface ModelComponentMdDroppable<T = any> extends ModelComponentMd<T> {
+	droppable: boolean
+	path: string
+	maxFileSize?: number
+	accept?: string
+	useFirestore?: boolean
+}
 export interface ModelComponentBoolean<T = any> extends ModelComponentBase<T> {
 	component: BooleanComponent
 }
@@ -105,10 +139,12 @@ export type ModelComponent<T = any> =
 	ModelComponentSelect<T> |
 	ModelComponentText<T> |
 	ModelComponentTextArea<T> |
+	ModelComponentMd<T> |
 	ModelComponentBoolean<T> |
 	ModelComponentSlider<T> |
- 	ModelComponentUpload<T>
+ 	ModelComponentUpload<T> |
+ 	ModelComponentUploadImage<T> 
 
-export type Model<T> = {
-	[key in keyof Partial<T>]: ModelComponent<T> | Model<T[key]>
-} & { ref?: { [key: string]: ModelComponent<T> } }
+export type Model<T, B = T> = {
+	[key in keyof Partial<T>]: ModelComponent<B> | Model<T[key], B>
+}  
