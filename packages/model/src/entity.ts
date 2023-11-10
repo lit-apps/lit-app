@@ -261,6 +261,7 @@ export default class Entity<Interface extends DataI = DataI>
   static icon: string = ''
   static locale?: Strings
   static model: Model<any>
+  
   static actions = actions
   static roles: Role[] = [
     { name: 'owner', level: 1 },
@@ -672,7 +673,14 @@ export default class Entity<Interface extends DataI = DataI>
     for (const key in this.actions) {
       const action = this.getAction(key as keyof this['actions']);
       if (action.showEdit) {
-        edit.push(this.renderAction(key as keyof this['actions'], data))
+        // only add is showEdit is a function and evaluates to true
+        if (typeof (action.showEdit) === 'function') {
+          if (action.showEdit(data)) {
+            edit.push(this.renderAction(key as keyof this['actions'], data))
+          }
+        } else {
+          edit.push(this.renderAction(key as keyof this['actions'], data))
+        }
       }
     }
     return edit;
@@ -684,13 +692,17 @@ export default class Entity<Interface extends DataI = DataI>
     for (const key in this.actions) {
       const action = this.getAction(key as keyof this['actions']);
       if (action.showDefault) {
-        edit.push(this.renderAction(key as keyof this['actions'], data))
+        // only add is showDefault is a function and evaluates to true
+        if (typeof (action.showDefault) === 'function') {
+          if (action.showDefault(data)) {
+            edit.push(this.renderAction(key as keyof this['actions'], data))
+          }
+        } else {
+          edit.push(this.renderAction(key as keyof this['actions'], data))
+        }
       }
     }
     return edit;
-    // return entries<Actions>(this.actions)
-    //   .filter(([_key, action]) => action.showDefault)
-    //   .map(([key, _action]) => this.renderAction(key, data));
   }
 
 
@@ -930,10 +942,11 @@ export default class Entity<Interface extends DataI = DataI>
   }
 
   renderCard(data: Interface[], config?: RenderConfig): TemplateResult {
-    return html`<div class="layout horizontal large wrap">
-      ${data.map(d => html`<div class="flex">
-        ${this.renderCardItem(d, config)}
-      </div>`)}
+    const layout = config?.layout || 'horizontal'
+    const gridMap = (d: Interface) => this.renderCardItem(d, config)
+    const map =  (d: Interface) => html`<div class="flex">${gridMap(d)}</div>`
+    return html`<div class="container layout ${layout} large wrap">
+      ${layout === 'grid' ? data.map(gridMap) : data.map(map)}
     </div>`
   }
 
