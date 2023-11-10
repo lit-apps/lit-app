@@ -1,6 +1,6 @@
 import { consume, ContextProvider, createContext } from '@lit-labs/context';
 import { PropertyValues, ReactiveElement } from 'lit';
-import { state } from 'lit/decorators.js';
+import { state, property } from 'lit/decorators.js';
 
 export const dataContext = createContext('data-context');
 
@@ -9,24 +9,38 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 /**
  * ConsumeDataMixin a mixin that consumes data context
  */
-export declare class DataMixinInterface {
-	data: any;
+export declare class DataMixinInterface<D = any> {
+	data: D;
+}
+export declare class DataMixinConsumeInterface<D = any> extends DataMixinInterface<D> {
+	preventConsume: boolean;
 }
 
-export const ConsumeDataMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
+export const ConsumeDataMixin = <D, T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	class ContextConsumeDataMixinClass extends superClass {
 		@consume({ context: dataContext, subscribe: true })
 		@state() data!: any;
+
+		@property({type: Boolean, attribute: 'prevent-consume'}) preventConsume = false;
+
+		constructor(...args: any[]) {
+			super(...args);
+
+			this.addEventListener('context-request', (e) => {
+				this.preventConsume && e.context === dataContext && e.stopPropagation();
+			})
+		}
+
 	};
-	return ContextConsumeDataMixinClass as unknown as Constructor<DataMixinInterface> & T;
+	return ContextConsumeDataMixinClass as unknown as Constructor<DataMixinConsumeInterface<D>> & T;
 }
 
 /**
  * ProvideDataMixin a mixin that provides data context
  
  */
-export const ProvideDataMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
+export const ProvideDataMixin = <D, T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	class ContextProvideDataMixinClass extends superClass {
 
@@ -58,5 +72,5 @@ export const ProvideDataMixin = <T extends Constructor<ReactiveElement>>(superCl
 
 	};
 
-	return ContextProvideDataMixinClass as unknown as Constructor<DataMixinInterface> & T;
+	return ContextProvideDataMixinClass as unknown as Constructor<DataMixinInterface<D>> & T;
 }
