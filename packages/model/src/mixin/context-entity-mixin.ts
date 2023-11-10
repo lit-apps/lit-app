@@ -1,17 +1,16 @@
 import { ReactiveElement } from 'lit';
 import { state } from 'lit/decorators.js';
 import { consume, provide, createContext } from '@lit-labs/context';
-// import type {EntityI} from '../types/entity';
-import type Entity from '../entity';
+import type {EntityI} from '../types/entity';
 
 // type Actions = Record<string, Action>;
 // context for holding the entity id
-export const entityContext = createContext<typeof Entity>('entity-class-context');
+export const entityContext = createContext<typeof EntityI>('entity-class-context');
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 export declare class EntityMixinInterface {
-	Entity: typeof Entity;
+	Entity: typeof EntityI;
 }
 
 /**
@@ -22,7 +21,7 @@ export const ConsumeEntityMixin = <T extends Constructor<ReactiveElement>>(super
 
 	class ContextConsumeEntityMixinClass extends superClass {
 		@consume({ context: entityContext, subscribe: true })
-		@state() Entity!: typeof Entity;
+		@state() Entity!: typeof EntityI;
 	};
 	return ContextConsumeEntityMixinClass as unknown as Constructor<EntityMixinInterface> & T;
 }
@@ -35,7 +34,7 @@ export const ProvideEntityMixin = <T extends Constructor<ReactiveElement>>(super
 
 	class ContextProvideEntityMixinClass extends superClass {
 		@provide({ context: entityContext })
-		@state() Entity!: typeof Entity;
+		@state() Entity!: typeof EntityI;
 		
 
 	};
