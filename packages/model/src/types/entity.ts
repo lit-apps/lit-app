@@ -79,17 +79,19 @@ export type GridConfig = {
 	preventDblClick?: boolean // when true, will not react to dbClick
 }
 
-export type RenderConfigOptional = {
+export type RenderConfigOptional<T = any> = {
 	columnsConfig?: ColumnsConfig,
 	gridConfig?: GridConfig,
+	cardConfig?: {[K in keyof Partial<T> ]: T[K]}
 	level?: number, // level to render the entity
 	variant?: 'card' | 'default'
+	layout?: 'horizontal' | 'vertical' | 'grid' // set the layout for card variant
 	options?: {
 		[key: string]: boolean
 	}
 }
 
-export type RenderConfig = RenderConfigOptional & {
+export type RenderConfig<T = any> = RenderConfigOptional<T> & {
 	entityAccess: EntityAccess,
 	entityStatus: EntityStatus
 }
@@ -197,7 +199,9 @@ export abstract class EntityRenderer<T> {
 }
 
 import { AllActionI } from './entityAction'
-export abstract class EntityI<Interface extends DataI = DataI> extends EntityRenderer<Interface> {
+import { PropertyValues } from 'lit'
+import { PropertyValueMap } from 'lit'
+export abstract class EntityI<T extends Object = Object> extends EntityRenderer<T> {
 
 	static getAccess: GetAccess
 	static actions: any
@@ -222,8 +226,8 @@ export abstract class EntityI<Interface extends DataI = DataI> extends EntityRen
 	showActions!: boolean
 	entityName!: string
 	actions!: unknown
-	abstract renderField(name: string, config?: FieldConfig | FieldConfigUpload, data?: Interface): TemplateResult | undefined
-	abstract renderFieldUpdate(name: string, config?: FieldConfig | FieldConfigUpload, data?: Interface): TemplateResult | undefined
+	abstract renderField(name: string, config?: FieldConfig | FieldConfigUpload, data?: T): TemplateResult | undefined
+	abstract renderFieldUpdate(name: string, config?: FieldConfig | FieldConfigUpload, data?: T): TemplateResult | undefined
 	// onError(error: Error): void
 	abstract create(details: EntityCreateDetail): void
 	abstract open(entityName: string, id?: string): void

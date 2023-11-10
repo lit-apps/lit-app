@@ -1,6 +1,4 @@
 import { ToastEvent } from '@lit-app/event';
-
-
 import type { MdDialog } from '@material/web/dialog/dialog';
 import('@material/web/progress/linear-progress.js')
 import('@material/web/dialog/dialog.js')

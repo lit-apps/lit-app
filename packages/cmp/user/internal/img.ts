@@ -13,8 +13,8 @@ export class UserImg  extends userMixin(LitElement) {
       display: inline-flex;
       border: 3px solid white;
       border-radius: 50%;
-      --_size: var(--pwi-user-img-size, 40px); 
-      --_color: var(--pwi-user-img-color, var(--color-surface-container-high, #dadce0)); 
+      --_size: var(--lapp-user-img-size, 40px); 
+      --_color: var(--lapp-user-img-color, var(--color-surface-container-high, #dadce0)); 
     }
 
     img {

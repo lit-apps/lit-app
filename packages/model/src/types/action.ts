@@ -19,8 +19,8 @@ export type Action = {
 	label?: string
 	icon?: string
 	description?: string
-	showDefault?: boolean // whether to show as a default action (appearing when not editing)
-	showEdit?: boolean // whether to show as an edit action (appearing when  editing)
+	showDefault?: (data: any) => boolean | boolean // whether to show as a default action (appearing when not editing)
+	showEdit?: (data: any) => boolean | boolean // whether to show as an edit action (appearing when  editing)
 	// when confirmDialog is set, a confirm dialog is shown before the action is executed
 	confirmDialog?: {
 		heading?: string
@@ -50,7 +50,6 @@ export type Action = {
 	handler?: Handler
 	// the event to fire when the action is executed - the default is EntityAction
 	event?: Exclude<TypeofAnyEvent, typeof Dirty>
-	condition?: (data: any) => boolean
 }
 // export type Actions = { [key: string]: Action }
 

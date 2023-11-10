@@ -194,6 +194,7 @@ export interface ActionDetail<T = any> {
 export interface ActionI {
   actionName: string
   detail: any
+  entityName?: string // the entityName is not required for all actions
 }
 export class EntityAction<T extends ActionI = ActionI> extends BaseAction<ActionDetail<T['detail']>> {
   static readonly eventName = 'entity-action';

@@ -36,6 +36,7 @@ export type Ref = {
 export interface MetaData<A = Access, T = string> {
 	access: A
 	timestamp: any // timestamp
+	timestampPublished?: any // timestamp
 	deleted: boolean
 	type: T
 }

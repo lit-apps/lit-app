@@ -15,12 +15,14 @@ export default class EntityHolder extends AbstractEntity {
 	/** 
 	 * variant for rendering process 
 	 */
-	@property({ type: String }) variant: RenderConfig['variant'] = 'default'
+	@property() variant: RenderConfig['variant'] = 'default'
+	@property() layout: RenderConfig['layout'] = 'horizontal'
 
 	override get renderConfig(): RenderConfig {
 		return {
 			...super.renderConfig,			
-			variant: this.variant
+			variant: this.variant,
+			layout: this.layout
 		}
 	}
 

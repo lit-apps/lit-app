@@ -1,12 +1,9 @@
-import { MdCheckbox } from '@material/web/checkbox/checkbox';
-import { Primitive } from 'firebase/firestore';
 import type { LitElement } from 'lit';
-import { TemplateResult } from 'lit';
+import { TemplateResult, nothing } from 'lit';
 import {
 	GridColumnBodyLitRenderer,
 	GridColumnHeaderLitRenderer
 } from 'lit-vaadin-helpers';
-import { DefaultI } from './entity';
 
 type TextComponent = 'textfield' | 'textarea' 
 type MdComponent = 'md'
@@ -22,7 +19,7 @@ type TableConfig<T = any> = {
 	label?: string
 	path?: string
 	optional?: boolean
-	renderer?: (data: T) => TemplateResult
+	renderer?: (data: T) => TemplateResult | typeof nothing
 }
 
 export type GridConfig<T = any> = {
@@ -140,6 +137,7 @@ export type ModelComponent<T = any> =
 	ModelComponentText<T> |
 	ModelComponentTextArea<T> |
 	ModelComponentMd<T> |
+	ModelComponentMdDroppable<T> |
 	ModelComponentBoolean<T> |
 	ModelComponentSlider<T> |
  	ModelComponentUpload<T> |

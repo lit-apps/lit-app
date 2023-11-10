@@ -1,17 +1,14 @@
-import { html, nothing } from 'lit';
+import { throttle } from '@preignition/preignition-util/src/debounce';
 import { get, set } from '@preignition/preignition-util/src/deep';
-import { debounce, throttle } from '@preignition/preignition-util/src/debounce';
+import { html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { FieldConfig, FieldConfigUpload, EntityElement, DefaultI } from './types/entity';
-import { Action } from './types/action'
-import { Model, ModelComponent, ModelComponentSelect } from './types/modelComponent';
-import { Dirty, EntityWriteDetail, Write, Update } from './events';
 import type Entity from './entity';
+import { Dirty, EntityWriteDetail, Update } from './events';
+import { DefaultI, EntityElement, FieldConfig, FieldConfigUpload } from './types/entity';
+import { Model, ModelComponentSelect } from './types/modelComponent';
 // Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
 import '@polymer/polymer';
-import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-box'
-import { MultiSelectComboBox } from '@vaadin/multi-select-combo-box/src/vaadin-multi-select-combo-box'
-import { nothing } from 'lit';
+import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-box';
 
 import('@material/mwc-textfield')
 import('@material/mwc-textarea')

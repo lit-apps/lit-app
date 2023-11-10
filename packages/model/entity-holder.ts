@@ -25,6 +25,11 @@ export class LappEntityHolder extends EntityHolder {
 		:host {
 			display: contents;
 		}
+		/* this sets size an margin of variant card container */
+		.container.layout {
+			max-width: var(--container-layout-max-width, min(90vw,1500px));
+			margin: var(--container-layout-margin, 0 auto);
+		}
 		`
 	]
   
