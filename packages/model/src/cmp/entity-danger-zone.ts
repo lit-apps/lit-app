@@ -2,7 +2,7 @@ import { html, css, LitElement } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
 import AbstractEntity from './abstract-entity-element';
 import RenderHeaderMixin from '../mixin/render-header-mixin';
-import Entity from '../entity';
+import Entity from '../entityAbstract';
 
 import('@material/web/list/list')
 import('@material/web/list/list-item')

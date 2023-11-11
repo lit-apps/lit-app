@@ -1,7 +1,8 @@
 import { ReactiveElement } from 'lit';
 import { state } from 'lit/decorators.js';
 import { consume, provide, createContext } from '@lit-labs/context';
-import type {EntityI} from '../types/entity';
+// import type {EntityI} from '../types/entity';
+import type EntityI from '../entityAbstract';
 
 // type Actions = Record<string, Action>;
 // context for holding the entity id

@@ -8,7 +8,8 @@ import {
 
 import type { Access } from '../types/dataI';
 import type { GetAccess } from '../types/getAccess';
-import type {EntityI} from '../types/entity';
+// import type {EntityI} from '../types/entity';
+import type EntityI from '../entityAbstract';
 
 export const entityAccessContext = createContext<EntityAccess>('entity-access-context');
 

@@ -49,6 +49,8 @@ export interface DataI<M = MetaData, R = Ref> {
 	// name?: string
 }
 
+	
+
 
 // a type that is an array of T and has $id and $path properties
 // $id and $path property are added by Firebase controllers on collections

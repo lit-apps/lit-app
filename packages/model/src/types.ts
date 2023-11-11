@@ -4,11 +4,10 @@ import type {
 	EntityStatus,
 	EntityElement,
 	EntityElementList,
-	EntityRenderer,
 	RenderConfig,
 } from './types/entity';
 import type {
-	Action, DefaultActions, Actions
+	Action, DefaultActions, Actions, ActionType
 } from './types/action'
 import type {
 	Model,
@@ -33,8 +32,8 @@ export {
 	type EntityStatusMixinInterface 
 } from './mixin/context-entity-status-mixin';
 export {
-	RenderConfig, EntityAccess, EntityStatus, ColumnsConfig, EntityRenderer, EntityElement, EntityElementList,
-	Action, Actions, DefaultActions,
+	RenderConfig, EntityAccess, EntityStatus, ColumnsConfig, EntityElement, EntityElementList,
+	Action, Actions, DefaultActions, ActionType,
 	Model, Lookup, GridConfig
 }
 export * from './events'

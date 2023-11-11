@@ -9,6 +9,7 @@ import { Model, ModelComponentSelect } from './types/modelComponent';
 // Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
 import '@polymer/polymer';
 import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-box';
+import AbstractEntity from './entityAbstract';
 
 import('@material/mwc-textfield')
 import('@material/mwc-textarea')
@@ -41,12 +42,12 @@ const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetai
  * @param config - additional config
  * @returns 
  */
-export function renderField<Interface extends DefaultI>(this: EntityElement,
+export function renderField<D extends DefaultI>(this: EntityElement,
   name: string,
-  data: Interface = {} as Interface,
+  data: D = {} as D,
   update: boolean,
   m: Model<unknown>,
-  entity: Entity<Interface>,
+  entity: AbstractEntity,
   config?: FieldConfig | FieldConfigUpload,
   mode: 'edit' | 'translate' | 'view' = 'edit'
 ) {

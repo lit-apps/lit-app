@@ -2,7 +2,7 @@ import { camelToDash } from '@preignition/preignition-util';
 import { TemplateResult } from 'lit';
 import { html, LitElement, PropertyValues } from "lit";
 import { property, state } from 'lit/decorators.js';
-import Entity from '../entity';
+import Entity from '../entityAbstract';
 import { ConsumeAccessMixin } from '../mixin/context-access-mixin';
 import { ConsumeDataMixin } from '../mixin/context-data-mixin';
 import { ConsumeDocIdMixin } from '../mixin/context-doc-id-mixin';
@@ -23,13 +23,6 @@ export class entityEvent extends CustomEvent<Entity> {
 		});
 	}
 }
-
-declare global {
-	interface HTMLElementEventMap {
-		'Entity': entityEvent,
-	}
-}
-
 /**
  *  Abstract Class for entity holders
  */

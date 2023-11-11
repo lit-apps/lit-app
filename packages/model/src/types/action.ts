@@ -2,6 +2,7 @@ import type {  DocumentReference } from 'firebase/firestore'
 import type { AnyEvent, Dirty, TypeofAnyEvent } from '../events'
 import type { LitElement, TemplateResult } from 'lit'
 import type { EntityStatus } from './entity'
+import { deprecate } from 'util'
 
 type Handler = (this: LitElement, ref: DocumentReference, data: any, event: AnyEvent) => Promise<unknown>
 type BtnCfg = {
@@ -19,8 +20,8 @@ export type Action = {
 	label?: string
 	icon?: string
 	description?: string
-	showDefault?: (data: any) => boolean | boolean // whether to show as a default action (appearing when not editing)
-	showEdit?: (data: any) => boolean | boolean // whether to show as an edit action (appearing when  editing)
+	showDefault?: ((data: any) => boolean) | boolean // whether to show as a default action (appearing when not editing)
+	showEdit?: ((data: any) => boolean ) | boolean // whether to show as an edit action (appearing when  editing)
 	// when confirmDialog is set, a confirm dialog is shown before the action is executed
 	confirmDialog?: {
 		heading?: string
@@ -56,5 +57,24 @@ export type Action = {
 export type DefaultActions = 
 	'create' | 'edit' | 'write' | 'cancel' | 'delete' |'markDeleted' | 'restore' | 'open' | 'close' |
   'removeAccess' | 'setAccess' | 'addAccess'
-// export type ActionRecord<K extends string, T> = { [P in K]: T; }
-export type Actions = Record<DefaultActions , Action>
+
+
+export type Actions = Record<string , Action>
+// export type Actions = {[key: string]: Action} 
+
+/**
+ * type to test if a type is an action
+ * const a1 = {
+ *	a: {name: 'test', label: 'test'},
+ * 	b: {name: 'b', label: 'b'},
+ * } 
+ * const ta1:  ActionType<typeof a1> = a1  
+ * type K = keyof typeof a1 // "a" | "b"
+ **/ 
+type EvaluateAction<T> = T extends Action ? T : never;
+type EvaluateType<T> = T extends infer O ? { [K in keyof O]: EvaluateAction<O[K]> } : never;
+export type ActionType<T extends Actions> = EvaluateType<{[key in keyof T]: Action }>;
+
+// type DefaultActionsType = ActionType<typeof _defaultActions>
+// export const defaultActions: DefaultActionsType = _defaultActions 
+// export function actionType(action): ActionType<typeof action> {return action}
