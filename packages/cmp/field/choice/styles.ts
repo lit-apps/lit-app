@@ -17,6 +17,8 @@ const styles: CSSResult = css`
   line-height: unset;
   white-space-collapse: unset;
   text-wrap: unset;
+  white-space: initial;  /* this is needed for not breaking Safari */
+
 }
 
 /** dense */
