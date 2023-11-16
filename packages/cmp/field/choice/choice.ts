@@ -56,7 +56,6 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	@query('#list') override readonly input!: HTMLInputElement;
 	@query('#list') override readonly inputOrTextarea!: HTMLInputElement;
 	
-
 	/**
 	 * when true, show each option on their own line
 	 */
@@ -109,6 +108,13 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		return this.renderRoot?.querySelectorAll(selector) ?? []
 	}
 
+	/** overriding checkValidity is needed to avoid validity to be out of sync with value */
+	override checkValidity() {
+		this.inputOrTextarea.value = this.selected;
+		this.inputOrTextarea.checkValidity();
+		return super.checkValidity();
+	}
+
 	constructor() {
 		super();
 		// handle focus events
@@ -122,6 +128,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		// the status of the field
 		return html`
 		<input
+			id="input"
 			style="width: 0px; height: 0px; padding: 0px;"
 			.required=${this.required}
 			value=${String(this.selected)} 

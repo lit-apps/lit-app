@@ -1,13 +1,7 @@
 import { LitElement, PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js'
-import {  Writeable } from '../types';
+import {  Writeable } from '../../types';
 
-const validity: Writeable<Partial<ValidityState>> = {
-	customError: false,
-	badInput: false,
-	valueMissing: false,
-	valid: true,
-};
 
 type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class ValidationMixinInterface {
@@ -43,10 +37,14 @@ export declare class ValidationMixinInterface {
 	get validationMessage(): string;
 
 }
+
+function setInputValue(input: HTMLInputElement, value: string | string[]) {
+	input.value = Array.isArray(value) ? value.join(',') : value;
+}
 /**
  * ValidationMixin A mixin that adds validation support to a LitElement
  */
-export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T & {internals: ElementInternals}) => {
+export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T ) => {
 
 	abstract  class ValidationMixinClass extends superClass implements ValidationMixinInterface {
 
@@ -54,32 +52,25 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 		private _input: HTMLInputElement;
 		private internals!: ElementInternals;
 
-		value!: string | string[] 
-		required!: boolean
-		// customValidity!: string
+		@state() required!: boolean;
+		@state() value!: string | string[];
+		@state() customValidity: string = '';
 
 		constructor(..._args: any[]) {
 			super();
 
 			// we create a native input to use the native validation
 			this._input = document.createElement('input');
+			
 		}
 
-		override connectedCallback() {
-			super.connectedCallback();
-			if(!this.internals) {
-				this.internals = this.attachInternals();
-			}
-		}
-
-		override willUpdate(props: PropertyValues) {
+		override willUpdate(props: PropertyValues<this>) {
 			super.willUpdate(props);
 			if (props.has('required')) {
 				this._input.required = this.required;
 			}
 			if (props.has('value')) {
-				const value = Array.isArray(this.value) ? this.value.join(',') : this.value;
-				this._input.value = value
+				setInputValue(this._input, this.value);
 			}
 			// if (props.has('customValidity')) {
 			// 	this.setCustomValidity(this.customValidity);
@@ -87,7 +78,7 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 		}
 
 		get validity() {
-			return this._input.validity
+			return  this._input.validity
 		}
 		
 		/**
@@ -114,7 +105,6 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 		 */
 		setCustomValidity(error: string = '') {
 			this._input.setCustomValidity(error);
-			this.internals?.setValidity( {customError: !!error}, error);
 		}
 	
 	
@@ -124,30 +114,11 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 		 * https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/checkValidity
 		 */
 		checkValidity() {
+			setInputValue(this._input, this.value);
 			return this._input.checkValidity();
+			
 		}
 
-		// checkValidityAndDispatch() {
-		// 	const valid = this._input.checkValidity();
-		// 	let canceled = false;
-		// 	if (!valid) {
-		// 		canceled = !this.dispatchEvent(new Event("invalid", { cancelable: true }));
-		// 	}
-		// 	return { valid, canceled };
-		// }
-
-		syncValidity() {
-			// Sync the internal <input>'s validity and the host's ElementInternals
-			// validity. We do this to re-use native `<input>` validation messages.
-			const input = this._input
-			if (this.internals.validity.customError) {
-				input.setCustomValidity(this.internals.validationMessage);
-			} else {
-				input.setCustomValidity('');
-			}
-	
-			this.internals.setValidity(input.validity, input.validationMessage);
-		}
 	};
 
 	

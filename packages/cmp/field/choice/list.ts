@@ -18,10 +18,7 @@ import ValidationMixin from '../generic/validationMixin';
 
 @customElement('ul-choice')
 export default class ulChoice extends ValidationMixin(LitElement) {
-	
-	@state() override required!: boolean;
-	@state() value!: string | string[];
-	@state() customValidity: string = '';
+
 	
 	override createRenderRoot() {
 		return this;
