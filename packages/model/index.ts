@@ -36,7 +36,15 @@ export {
 	mergeStatic,
 	renderConfirmDialogMixin,
 };
+export  { 
+	ConsumeAppIdMixin, 
+	ProvideAppIdMixin, 
+	appIdContext,
+	type ContextAppIdMixinInterface 
+} from './src/mixin/context-app-id-mixin';
+
 export { entityCreateDialogEvent } from './src/cmp/entity-create-dialog';
+export { default as Entity, type EntityI } from './src/entityAbstract';
 
 export * from './src/types';
 
