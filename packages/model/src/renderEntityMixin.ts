@@ -206,7 +206,7 @@ export default function renderMixin<D, C extends RenderConfig = RenderConfig>(su
 			return html`<meta-data></meta-data>`
 		}
 
-		override renderBody(data: D, config?: C) {
+		renderBody(data: D, config?: C) {
 			if (Array.isArray(data)) {
 				if (data && data.length === 0) {
 					this.renderEmptyArray(config);
@@ -261,7 +261,7 @@ export default function renderMixin<D, C extends RenderConfig = RenderConfig>(su
 			return html`${this.entityName}`
 		}
 
-		override renderHeader(data: D, config?: C) {
+		renderHeader(data: D, config?: C) {
 			const title = this.renderTitle(data, config)
 			const icon = this.host.icon || this.icon
 			return html`${choose(config?.level,
@@ -279,7 +279,7 @@ export default function renderMixin<D, C extends RenderConfig = RenderConfig>(su
 
 		}
 
-		override renderFooter(_data: D, _config?: C) {
+		renderFooter(_data: D, _config?: C) {
 			return html``
 		}
 

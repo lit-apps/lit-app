@@ -5,7 +5,7 @@ import {
 import entries from './typeUtils/entries';
 
 import {
-	AnyEvent
+	AnyEvent, Create, EntityCreateDetail, Open
 } from './events';
 import {
 	 Actions
@@ -14,7 +14,7 @@ import {
 	EntityElement
 } from './types/entity';
 import { ToastEvent } from '@lit-app/event';
-import { Role, Strings } from './types';
+import { PartialBy, Role, Strings } from './types';
 import { GetAccess } from './types/getAccess';
 
 export interface StaticEntityI<D = any> {
@@ -29,12 +29,35 @@ export interface StaticEntityI<D = any> {
 	userLoader: (search: string) => Promise<any>
 }
 
+export interface PublicEntityMethods {
+	/* Some render methods are used in generic components - we declare them here */
+	/* main render method  */
+	
+	renderBody(data: any, config?: any): TemplateResult | typeof nothing
+	
+	renderHeader(data: any, config?: any): TemplateResult | typeof nothing
+	
+	renderFooter(data: any, config?: any): TemplateResult | typeof nothing
+	
+	/* dialog methods  */
+	
+	renderCreateDialog(data: any, config?: any): TemplateResult | typeof nothing
+	
+	/* main action method  */
+	renderAction(this: AbstractEntity, name: keyof typeof this['actions'], data: any, config?: any): TemplateResult | typeof nothing
+
+	/* action methods  */
+	create(details: PartialBy<EntityCreateDetail, 'entityName'>): Create
+	open(entityName: string, id?: string): Open | null
+}
+
+export interface EntityI extends AbstractEntity, PublicEntityMethods {}
 
 /**
  * Abstract class for entities
  */
 
-export default class AbstractEntity {
+export default class AbstractEntity  {
 
 	static declare entityName: string
 	static declare icon: string
@@ -171,21 +194,7 @@ export default class AbstractEntity {
 		this.host?.dispatchEvent(new ToastEvent(error.message, 'error'))
 	}
 
-	/* Some render methods are used in generic components - we declare them here */
-	/* main render method  */
-	// @ts-expect-error
-	declare renderBody(data: any, config?: any): TemplateResult | typeof nothing
-	// @ts-expect-error
-	declare renderHeader(data: any, config?: any): TemplateResult | typeof nothing
-	// @ts-expect-error
-	declare renderFooter(data: any, config?: any): TemplateResult | typeof nothing
-	
-	/* dialog methods  */
-	// @ts-expect-error
-	declare renderCreateDialog(data: any, config?: any): TemplateResult | typeof nothing
-	
-	/* main action method  */
-	// @ts-expect-error
-	declare renderAction(name: keyof typeof this['actions'], data: any, config?: any): TemplateResult | typeof nothing
+	// @-ts-expect-error
+
 
 }

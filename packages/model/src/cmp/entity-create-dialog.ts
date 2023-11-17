@@ -1,14 +1,15 @@
-import { html, LitElement } from "lit";
-import { property, state, query } from 'lit/decorators.js';
-import { ConsumeEntityMixin } from '../mixin/context-entity-mixin';
-import Entity from '../entityAbstract';
 import type { MdDialog } from '@material/web/dialog/dialog.js';
+import { html, LitElement } from "lit";
+import { query, state } from 'lit/decorators.js';
+import { EntityI } from '../entityAbstract';
+import { ConsumeAppIdMixin } from '../mixin/context-app-id-mixin';
+import { ConsumeEntityMixin } from '../mixin/context-entity-mixin';
 import { EntityAccess, EntityElement, EntityStatus } from '../types';
 import('@material/web/dialog/dialog.js');
 
 export interface entityCreateDialogDetail {
 	data: any;
-	entity: Entity;
+	entity: EntityI;
 }
 
 /**
@@ -35,11 +36,13 @@ declare global {
  *  create dialog for entity
  */
 
-export default class entityCreateDialog extends ConsumeEntityMixin(LitElement) {
+export default class entityCreateDialog extends 
+	ConsumeAppIdMixin(
+		ConsumeEntityMixin(LitElement)) {
 
 	// @property({ attribute: false }) Entity!: typeof Entity;
 	@state() data: any = {};
-	@state() entity!: Entity;
+	@state() entity!: EntityI;
 	@query('md-dialog') dialog!: MdDialog
 
 	override render() {
@@ -94,7 +97,7 @@ export default class entityCreateDialog extends ConsumeEntityMixin(LitElement) {
 		if(!this.Entity) {
 			throw 'missing Entity'
 		}
-		this.entity = new this.Entity(this as EntityElement);
+		this.entity = new this.Entity(this as EntityElement) as EntityI;
 	}
 	private onClose() {
 		if (this.dialog.returnValue === 'ok') {

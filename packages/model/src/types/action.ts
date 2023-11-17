@@ -2,7 +2,6 @@ import type {  DocumentReference } from 'firebase/firestore'
 import type { AnyEvent, Dirty, TypeofAnyEvent } from '../events'
 import type { LitElement, TemplateResult } from 'lit'
 import type { EntityStatus } from './entity'
-import { deprecate } from 'util'
 
 type Handler = (this: LitElement, ref: DocumentReference, data: any, event: AnyEvent) => Promise<unknown>
 type BtnCfg = {
@@ -52,15 +51,11 @@ export type Action = {
 	// the event to fire when the action is executed - the default is EntityAction
 	event?: Exclude<TypeofAnyEvent, typeof Dirty>
 }
-// export type Actions = { [key: string]: Action }
 
 export type DefaultActions = 
 	'create' | 'edit' | 'write' | 'cancel' | 'delete' |'markDeleted' | 'restore' | 'open' | 'close' |
   'removeAccess' | 'setAccess' | 'addAccess'
-
-
 export type Actions = Record<string , Action>
-// export type Actions = {[key: string]: Action} 
 
 /**
  * type to test if a type is an action
@@ -75,6 +70,3 @@ type EvaluateAction<T> = T extends Action ? T : never;
 type EvaluateType<T> = T extends infer O ? { [K in keyof O]: EvaluateAction<O[K]> } : never;
 export type ActionType<T extends Actions> = EvaluateType<{[key in keyof T]: Action }>;
 
-// type DefaultActionsType = ActionType<typeof _defaultActions>
-// export const defaultActions: DefaultActionsType = _defaultActions 
-// export function actionType(action): ActionType<typeof action> {return action}

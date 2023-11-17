@@ -2,7 +2,7 @@ import { camelToDash } from '@preignition/preignition-util';
 import { TemplateResult } from 'lit';
 import { html, LitElement, PropertyValues } from "lit";
 import { property, state } from 'lit/decorators.js';
-import Entity from '../entityAbstract';
+import Entity, {PublicEntityMethods} from '../entityAbstract';
 import { ConsumeAccessMixin } from '../mixin/context-access-mixin';
 import { ConsumeDataMixin } from '../mixin/context-data-mixin';
 import { ConsumeDocIdMixin } from '../mixin/context-doc-id-mixin';
@@ -123,12 +123,15 @@ export default abstract class AbstractEntityElement extends
 	protected abstract renderEntity(entity: Entity, config?: RenderConfig): TemplateResult;
 
 	protected renderHeader(entity: Entity, config?: RenderConfig) {
+		//@ts-ignore
 		return entity.renderHeader(this.data, config || this.renderConfig);
 	}
 	protected renderBody(entity: Entity, config?: RenderConfig) {
+		//@ts-ignore
 		return entity.renderBody(this.data, config || this.renderConfig);
 	}
 	protected renderFooter(entity: Entity, config?: RenderConfig) {
+		//@ts-ignore
 		return entity.renderFooter(this.data, config || this.renderConfig);
 	}
 }

@@ -298,7 +298,7 @@ export default function renderMixin<D, A extends Actions>(superclass: Constructo
 			</div>`
 		}
 
-		override renderAction(
+		renderAction(
 			actionName: keyof A,
 			data?: any,
 			config?: ButtonConfig,
@@ -553,7 +553,6 @@ export default function renderMixin<D, A extends Actions>(superclass: Constructo
 					// TODO: centralize the way we handler errors (see stripe-web-sdk for inspiration)
 					// For the time being, we just dispatch Toast Event
 					host?.dispatchEvent(new ToastEvent((error as Error).message, 'error'))
-
 				}
 			}
 		},
