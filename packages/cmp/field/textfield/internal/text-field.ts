@@ -42,7 +42,7 @@ export abstract class TextField extends T {
 	/**
 	 * The field holding label
 	 */
-	@query('.field') field!: FilledField | OutlinedField;
+	@query('.field') override field!: FilledField | OutlinedField;
 
 	
 	/**

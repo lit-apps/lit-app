@@ -73,7 +73,7 @@ import type { HTMLEvent } from '../../../../types';
     `
   }
 
-  renderSpecify(option: Option, index: number) {
+   renderSpecify(option: Option, index: number) {
     const code = option.code || index + ''
     const onInput = (e: HTMLEvent<HTMLInputElement>) => {
       if(!this.specify) {
@@ -86,7 +86,7 @@ import type { HTMLEvent } from '../../../../types';
 
     return html`
     <md-filled-text-field 
-      style="width: 180px;"
+      style="width: 240px;"
       id="specify${index}" 
       data-role="specify"
       data-variant="specify"
