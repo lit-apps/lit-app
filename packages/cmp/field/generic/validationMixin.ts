@@ -105,6 +105,7 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 		 */
 		setCustomValidity(error: string = '') {
 			this._input.setCustomValidity(error);
+			this.internals?.setValidity( {customError: !!error}, error);
 		}
 	
 	
@@ -117,6 +118,18 @@ export const ValidationMixin = <T extends Constructor<LitElement>>(superClass: T
 			setInputValue(this._input, this.value);
 			return this._input.checkValidity();
 			
+		}
+		syncValidity() {
+			// Sync the internal <input>'s validity and the host's ElementInternals
+			// validity. We do this to re-use native `<input>` validation messages.
+			const input = this._input
+			if (this.internals?.validity.customError) {
+				input.setCustomValidity(this.internals.validationMessage);
+			} else {
+				input.setCustomValidity('');
+			}
+	
+			this.internals?.setValidity(input.validity, input.validationMessage);
 		}
 
 	};
