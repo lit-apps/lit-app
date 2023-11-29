@@ -317,7 +317,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .icon=${model.icon}
       .readonly=${disabled}
       .label=${label}
-      .helper=${model.helper}
+      .supportingText=${model.helper}
       .required=${model.required}
       .value=${value || ''}
       @change=${onInputFact('value')}
