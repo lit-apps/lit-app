@@ -27,12 +27,12 @@ export const IllustrationMixin = <T extends Constructor<Choice>>(superClass: T) 
 
 
 		renderOptionIllustration(option: Option, slot: 'start' | 'end' = 'start') {
-			const { media } = option
+			const { media, alt } = option
 			return html`${choose(media?.mediaType, [
 				['image', () => {
 					const m = media as MediaImage
 					return html`
-						<img data-variant="illustration" slot="${slot}" class="image" src="${m.url}" alt=${ifDefined(m.alt)} ></img>`
+						<img data-variant="illustration" slot="${slot}" class="image" src="${m.url}" alt=${ifDefined(alt)} ></img>`
 				}],
 				['youtube', () => {
 					const m = media as MediaYoutube

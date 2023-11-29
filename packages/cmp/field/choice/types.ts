@@ -9,7 +9,6 @@ export type MediaYoutube = {
 
 export type MediaImage = {
 	mediaType: 'image'
-	alt?: string
 	url: string
 }
 
@@ -29,6 +28,7 @@ export type Option = {
 	exclusive?: boolean
 	index?: number
 	media?: Media
+	alt?: string
 }
 
 export type OptionMulti = Option & {
