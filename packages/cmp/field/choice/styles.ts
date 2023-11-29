@@ -27,6 +27,11 @@ const styles: CSSResult = css`
   flex-flow: row wrap;
   align-items: center;
 }
-
+@media (max-width: 600px) {
+  #list {
+    --md-list-item-leading-space: 0px;
+    --md-list-item-trailing-space: 0px;
+    min-width: unset;
+  }
 `
 export default styles;
