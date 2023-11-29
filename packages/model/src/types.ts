@@ -41,6 +41,7 @@ export * from './types/resource'
 export * from './types/dataI'
 export * from './types/getAccess'
 export * from './types/entityAction'
+export * from './types/mixin'
 
 import entries from './typeUtils/entries';
 import ensure from './typeUtils/ensure';

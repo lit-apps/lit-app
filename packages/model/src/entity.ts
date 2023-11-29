@@ -12,7 +12,7 @@ import { EntityI } from './types/entity';
  * 
  */
 export default class Entity<Interface = any> extends EntityAbstract
-  implements EntityI<Interface>  {
+  implements EntityI {
 
  /**
  	* inspired from https://github.com/Microsoft/TypeScript/issues/3841#issuecomment-1488919713
