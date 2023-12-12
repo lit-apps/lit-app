@@ -17,8 +17,8 @@ export class StateController<T extends State>
 		private state: T,
 		cb?: callback,
 	) {
-		this.host.addController(this);
 		this.callback = cb ? cb : () => this.host.requestUpdate()
+		this.host.addController(this);
 	}
 
 	hostConnected(): void {
