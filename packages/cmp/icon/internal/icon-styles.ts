@@ -5,10 +5,10 @@ const styles: CSSResult = css`
 	}
 
  svg {
-	height: 100%;
-	width: 100%;
-	fill: currentColor;
 	all: unset;
+	height: calc(100% - 2 * var(--_lapp-icon-margin));
+	width: calc(100% - 2 * var(--_lapp-icon-margin));
+	fill: currentColor;
 	margin: var(--_lapp-icon-margin);
  }
 
