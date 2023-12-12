@@ -24,6 +24,7 @@ const styles = css`
   
   :host([variant=a11y]) .label-wrapper {
     position: inherit;
+    pointer-events: initial; /* this is to allow tooltips */
   }
 
   :host([variant=a11y]) .label {

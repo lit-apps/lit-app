@@ -36,8 +36,9 @@ export const IllustrationMixin = <T extends Constructor<Choice>>(superClass: T) 
 				}],
 				['youtube', () => {
 					const m = media as MediaYoutube
+					const params = `controls=0&` + (m.params || '')
 					return html`
-						<lite-youtube data-variant="illustration" slot="${slot}" class="video" videoid="${m.videoId}" playlabel=${ifDefined(m.playLabel)} params=${ifDefined(m.params)}></lite-youtube>`
+						<lapp-youtube data-variant="illustration" slot="${slot}" class="video" videoid="${m.videoId}" playlabel=${ifDefined(m.playLabel)} params=${params}></lapp-youtube>`
 				}]
 			],
 				() => html``
