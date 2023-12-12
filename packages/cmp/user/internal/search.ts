@@ -1,6 +1,7 @@
 import { html, css, LitElement, PropertyValues } from "lit";
+import { when } from 'lit/directives/when.js';
 import { property, state, query } from 'lit/decorators.js';
-import {repeat} from 'lit/directives/repeat.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { HTMLEvent } from '../../types'
 import '../../field/select-input'
 import type { LappSelectInput } from '../../field/select-input';
@@ -10,6 +11,7 @@ import { Loader, UserItem } from './types';
 import slotList from '@preignition/preignition-styles/src/slot-list.js';
 import('@material/web/progress/linear-progress.js');
 import('@material/web/select/select-option.js');
+
 // used to validate emails
 const inputValidator = document.createElement('input');
 inputValidator.type = 'email';
@@ -33,7 +35,7 @@ export class UserSearch extends LitElement {
 		`];
 
 	@property() label: string = 'Search Users';
-	@property({attribute: 'supporting-text'}) supportingText!: string;
+	@property({ attribute: 'supporting-text' }) supportingText!: string;
 
 	/** a loader for searching Users */
 	@property({ attribute: false }) loader!: Loader;
@@ -53,10 +55,9 @@ export class UserSearch extends LitElement {
 
 	@state() loading = false;
 
-	/** text to user to filter the list 
-	 * TODO: MD3 - remove this and use type ahead instead
+	/** the email to use for inviting a user
 	 */
-	@state() filterText = '';
+	@state() inviteEmail = '';
 
 	@query('lapp-select-input') field!: LappSelectInput;
 
@@ -70,19 +71,9 @@ export class UserSearch extends LitElement {
 			this.loader = this.loader.bind(this);
 		}
 
-		if (prop.has('filterText')) {
-			// check if we can invite
-			const canInvite = this.canInvite;
-			inputValidator.value = this.filterText;
-			this.canInvite = inputValidator.checkValidity();
-			if (canInvite !== this.canInvite) {
-				// if (this.canInvite) {
-				// 	this.textfield.onClosed()
-				// }
-				this.dispatchEvent(new CustomEvent('canInvite-changed', { detail: { value: this.canInvite, email: this.filterText }, composed: true }));
-			}
+		if (prop.has('inviteEmail') && this.inviteEmail && inputValidator.validity.valid) {
+					this.dispatchEvent(new CustomEvent('invite-email-changed', {composed: true }));
 		}
-
 		super.willUpdate(prop);
 	}
 
@@ -90,19 +81,18 @@ export class UserSearch extends LitElement {
 
 		const onSearchInput = async (e: HTMLEvent<LappSelectInput>) => {
 
-			const token = e.target.searchValue || '';
-			console.info('pwi - onInput', token);
+			const searchValue = e.target.searchValue || '';
+			console.info('pwi - onInput', searchValue);
+			inputValidator.value = searchValue;
 			// if we have a loader, use it to load the items
 			if (this.loader) {
-				if (token.length > 3) {
+				if (searchValue.length > 3) {
 					this.loading = true
-					this.items = await this.loader.call(this, token);
+					this.items = await this.loader.call(this, searchValue);
 					this.loading = false
 				}
 				return
 			}
-			// otherwise, use is to filer the actual items
-			this.filterText = token;
 		}
 		const redispatch = (e: Event) => redispatchEvent(this, e);
 		const onChange = (e: HTMLEvent<LappSelectInput>) => {
@@ -119,27 +109,53 @@ export class UserSearch extends LitElement {
 				@change=${onChange}
 				@input=${redispatch}
 				@search-input=${onSearchInput}
-				>${
-					this.loading ? html`Loading ... <md-linear-progress style="width: 300px;" indeterminate></md-linear-progress>` :
-					!this.items ? html`<div style="padding: 10px;"><p>Find users by email or name .</p><p>Type at least 3 letters ...</p></div>` : 
-					repeat(
-						(this.items || [])
-							.filter((_item, index) => index < this.maxItems), 
-						(item) => item.uid, 
-						(item) => this.renderListItem(item))}
+				>${this.loading ? html`Loading ... <md-linear-progress style="width: 300px;" indeterminate></md-linear-progress>` :
+				!this.items ?
+					this.renderNoItems() :
+					this.renderItems(this.items)}
 			</lapp-select-input>
 		`;
+	}
+
+	renderNoItems() {
+		return html`<div style="padding: 10px;">
+			<p><strong>Find users by email or name.</strong></p>
+			<p>Type at least 3 letters or a valid email address...</p>
+		</div>`
+	}
+
+	renderZeroItems() {
+		const searchValue = this.field?.searchValue || '';
+		const isValidEmail = inputValidator.validity.valid;
+		const onInvite = () => this.inviteEmail = searchValue;
+
+		return html`<div style="padding: 10px;">
+			<p><strong>Find users by email or name.</strong></p>
+			<p>No users found. ${!isValidEmail ?  'Type a valid email address...' : ''}</p>
+			${when(isValidEmail, () => html`<md-filled-button .disabled=${searchValue === this.inviteEmail} @click=${onInvite}>Set ${searchValue} as a User to Invite</md-filled-button>` )}
+		</div>`
+	}
+	renderItems(items: UserItem[]) {
+		if (items.length === 0) {
+			return this.renderZeroItems()
+		}
+		return html`${repeat(
+			(items || []).filter((_item, index) => index < this.maxItems),
+			(item) => item.uid,
+			(item) => this.renderListItem(item))}
+		`
+
 	}
 
 	renderListItem(item: UserItem) {
 		const name = item.email?.split('@')[0]
 		const headline = item.displayName || name || 'no name';
-		
+
 		return html`<md-select-option
 			.value=${item.uid}
 			?selected=${item.uid === this.value}
-			>${item.photoURL ? 
-				html`<img slot="start" class="avatar" src=${item.photoURL} />` : 
+			>${item.photoURL ?
+				html`<img slot="start" class="avatar" src=${item.photoURL} />` :
 				html`<lapp-icon slot="start" class="avatar">person</lapp-icon>`}
 				<div slot="headline">${headline}</div>
 				<div slot="supporting-text">${item.email || ''}</div>
