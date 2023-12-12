@@ -95,7 +95,7 @@ export abstract class SelectInput extends Select {
 	}
 
 
-	/**
+/**
  * Gets the selected options from the DOM, and updates the value and display
  * text to the first selected option's value and headline respectively.
  *
