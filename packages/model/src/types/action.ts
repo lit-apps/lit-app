@@ -15,7 +15,7 @@ type BtnCfg = {
 
 export type ButtonConfig = BtnCfg | ((data: any, entityStatus?: EntityStatus) => BtnCfg)
 
-export type Action = {
+export type ActionBase = {
 	label?: string
 	icon?: string
 	description?: string
@@ -47,15 +47,31 @@ export type Action = {
 	entityName?: string // the name of the entity - this is useful for actions that need to be handled at the correct db reference
 	pushHistory?: boolean // true to push the action to the history when executed
 	onClick?: (data: any) => void // as simple handler - this will not trigger any entity Event
-	handler?: Handler
+	
 	// the event to fire when the action is executed - the default is EntityAction
 	event?: Exclude<TypeofAnyEvent, typeof Dirty>
 }
 
+export type FsmAction = ActionBase & {
+	machineID: string
+}
+export type HandlerAction = ActionBase & {
+	handler: Handler
+}
+export type Action = FsmAction | HandlerAction
+
 export type DefaultActions = 
 	'create' | 'edit' | 'write' | 'cancel' | 'delete' |'markDeleted' | 'restore' | 'open' | 'close' |
-  'removeAccess' | 'setAccess' | 'addAccess'
+  'removeAccess' | 'setAccess' | 'addAccess' | 'invite'
 export type Actions = Record<string , Action>
+
+export function isFsmAction(action: Action): action is FsmAction {
+	return 'machineID' in action
+}
+export function isHandlerAction(action: Action): action is HandlerAction {
+	return 'handler' in action
+}
+
 
 /**
  * type to test if a type is an action
