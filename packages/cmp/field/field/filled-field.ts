@@ -31,6 +31,12 @@ const styles = css`
     text-overflow: inherit;
     white-space: inherit;
   }
+  /* this is to prevent floating label to appear in front of check boxes and radio 
+     pointer-events is set back to initial to allow tooltips.
+   */
+  .label.hidden {
+    pointer-events: none;
+  }
   
   
   `
