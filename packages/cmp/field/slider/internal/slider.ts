@@ -3,12 +3,15 @@ import { property, state, query } from 'lit/decorators.js';
 import { Generic } from '../../generic/generic';
 import { html, nothing } from 'lit';
 import type { TemplateResult } from 'lit';
+import type { InputSlider } from './input-slider';
 // import '@material/web/slider/slider.js';
 import '../input-slider'
+
 import { redispatchEvent } from '@material/web/internal/controller/events';
 import { MdSlider } from '@material/web/slider/slider';
-
-
+import { createValidator } from '@material/web/labs/behaviors/constraint-validation';
+import { Validator } from '@material/web/labs/behaviors/validators/validator';
+import { SliderValidator } from './sliderValidator';
 
 /**
  *
@@ -47,15 +50,12 @@ export abstract class Slider extends Generic {
     }
 
     this._value = value;
-    if (!this.input) {
-      return;
-    }
-    if (input.range && value) {
+    if (input) {
       input.value = value
-      input.valueStart = value[0];
-      input.valueEnd = value[1];
-    } else {
-      input.value = value;
+    }
+    if (this.range && value) {
+      this.valueStart = value[0];
+      this.valueEnd = value[1];
     }
 	}
 
@@ -171,6 +171,11 @@ export abstract class Slider extends Generic {
     this.handleChange(new Event('input'))
   }
 
+  // we need to override updated in order to avoid infinite loop on value setter
+  // this is because there is a check this.value !== value which will always reschedule an update
+  protected override updated(changedProperties: PropertyValues) {
+       
+  }
 
   handleChange(e: Event) {
     const event = new CustomEvent('input', {
@@ -179,8 +184,22 @@ export abstract class Slider extends Generic {
       composed: true
     })
     redispatchEvent(this, event)
+    // if(this.range) {
+    //   this.valueEnd = this.value[1];
+    //   this.valueStart = this.value[0];
+    // }
   }
-
+	
+  [createValidator](): Validator<unknown> {
+		return new SliderValidator(() => this.inputOrTextarea as unknown as InputSlider || { 
+      required: this.required, 
+      range: this.range,
+      max: this.max || 100,
+      min: this.min || 0,
+      valueEnd: this.valueEnd,
+      valueStart: this.valueStart,  
+      value: this.value});
+	}
 
 }
 

@@ -109,11 +109,11 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	}
 
 	/** overriding checkValidity is needed to avoid validity to be out of sync with value */
-	override checkValidity() {
-		this.inputOrTextarea.value = this.selected;
-		this.inputOrTextarea.checkValidity();
-		return super.checkValidity();
-	}
+	// override checkValidity() {
+	// 	this.inputOrTextarea.value = this.selected;
+	// 	this.inputOrTextarea.checkValidity();
+	// 	return super.checkValidity();
+	// }
 
 	constructor() {
 		super();
@@ -126,16 +126,16 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		
 		// we add an input field so that SR can announce 
 		// the status of the field
+		// <input
+		// id="input"
+		// style="width: 0px; height: 0px; padding: 0px;"
+		// .required=${this.required}
+		// value=${String(this.selected)} 
+		// aria-describedby="description"
+		// aria-invalid=${(this as unknown as GenericI).hasError}
+		// aria-label=${this.ariaLabel || this.label || nothing}
+		// aria-required=${ifDefined(this.required ? 'true' : undefined)}/>
 		return html`
-		<input
-			id="input"
-			style="width: 0px; height: 0px; padding: 0px;"
-			.required=${this.required}
-			value=${String(this.selected)} 
-			aria-describedby="description"
-			aria-invalid=${(this as unknown as GenericI).hasError}
-			aria-label=${this.ariaLabel || this.label || nothing}
-			aria-required=${ifDefined(this.required ? 'true' : undefined)}/>
 		<ul-choice
 			id="list"
 			.required=${this.required}
@@ -181,23 +181,30 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		return 
 	}
 
+	// we need to override updated in order to avoid infinite loop on value setter
+  // this is because there is a check this.value !== value which will always reschedule an update
+  protected override updated(changedProperties: PropertyValues) {
+       
+  }
+
+	syncSelected(value: string[] | string) {
+		// do Nothing
+		return value
+	}
 	/**	
 	 * React to a change event coming from the list
 	 * we call this method from list item directly as
 	 * change event is not composable
 	 */
 	async onChange(e?: HTMLEvent<LitElement>) {
-		// console.info('onChange', this)
 		await this.updateComplete;
 		if (e?.target) {
 			await e.target.updateComplete;
 		}
-		const value = this.selected
+		const value =	this.syncSelected(this.selected)
 		this.dispatchEvent(new CustomEvent('selected-changed', { detail: { value: value } }));
 		this._value = value; // Note(cg): get _value from the actual selection (dom query).
 		this.requestUpdate(); 
-		await this.updateComplete;
-		this.reportValidity()
 		return
 	}
 

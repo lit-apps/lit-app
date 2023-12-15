@@ -17,8 +17,8 @@ const styles = css`
 
 	:host {
 		display: inline-flex !important; /** we add important so that all:unset does not affect this. */
+		gap: calc(2 * var(--_gap)) !important; /** we add important so that all:unset does not affect this. */
 		flex-direction: column;
-		gap: var(--_gap);
 		--md-outlined-button-icon-size: 24px;
 		--md-filled-button-icon-size: 24px;
 		--_gap: var(--record-gap, 4px);
@@ -52,6 +52,11 @@ const styles = css`
 		flex-wrap: wrap;
 		gap: var(--_gap);
 	}
+
+	.supporting-text {
+		align-self: center
+	}
+
 
 	#display {
 		flex: 1;

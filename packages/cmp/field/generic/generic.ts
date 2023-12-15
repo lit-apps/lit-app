@@ -11,6 +11,7 @@ import { html as staticHtml, StaticValue } from 'lit/static-html.js';
 import { property, query } from 'lit/decorators.js';
 import { CompatMixin } from '../compat/compat-mixin.js';
 import { Field } from '@material/web/field/internal/field';
+import { onReportValidity } from '@material/web/labs/behaviors/on-report-validity';
 
 
 // @ts-ignore
@@ -23,7 +24,8 @@ export interface GenericI extends TextField {
   input: HTMLInputElement | null | undefined
   inputOrTextarea: HTMLInputElement | null | undefined
 
-  
+  // fieldTag: StaticValue
+
   renderField(): TemplateResult
   renderPrefix(): TemplateResult
   renderSuffix(): TemplateResult
@@ -36,7 +38,7 @@ export interface GenericI extends TextField {
   getInputValue(): string
   getErrorText(): string
 
-  syncValidity(): void
+  // syncValidity(): void
   getInputOrTextarea(): HTMLInputElement | null
 
 }
@@ -112,5 +114,29 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
   protected override getInputOrTextarea() {
 		return this.input
 	}
+
+  // we override onREportValidity to prevent the default behavior
+  // focusing on the element
+  [onReportValidity](invalidEvent: Event | null) {
+    if (invalidEvent?.defaultPrevented) {
+      return;
+    }
+
+    if (invalidEvent) {
+      // Prevent default pop-up behavior. This also prevents focusing, so we
+      // manually focus.
+      invalidEvent.preventDefault();
+      // TODO: add a propety to allow user to choose to focus or not
+      // this.focus();
+    }
+
+    const prevMessage = this.getErrorText();
+    this.nativeError = !!invalidEvent;
+    this.nativeErrorText = this.validationMessage;
+
+    if (prevMessage === this.getErrorText()) {
+      this.field?.reannounceError();
+    }
+  }
 
 }

@@ -98,7 +98,7 @@ describe('order', () => {
 		button?.click()
 		await element.updateComplete;
 		// we need to wait until the end of the animation
-		await wait(300); 
+		await wait(400); 
 		item1 = element.items[0];
 		item2 = element.items[1];
 		expect(getCheckbox(item1).value).toEqual('2');

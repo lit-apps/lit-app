@@ -1,10 +1,16 @@
-import { LappCheckbox } from '../__checkbox/checkbox';
 
 import { PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { Choice } from './choice';
 import { AriaList } from './types';
 
+import {
+	createValidator
+} from '@material/web/labs/behaviors/constraint-validation.js';
+
+import { Validator } from '@material/web/labs/behaviors/validators/validator';
+import { Checkbox } from '@material/web/checkbox/internal/checkbox';
+import { SingleValidator } from './singleValidator';
 // potential counter for fields without a name
 let counter = 0;
 
@@ -44,7 +50,7 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 		@property()
 		set selected(value: string) {
 
-			[...this._queryItems(this.choiceInputSelector) as NodeListOf<LappCheckbox>]
+			[...this._queryItems(this.choiceInputSelector) as NodeListOf<Checkbox>]
 			.forEach(check => check.checked = value === check.value);
 
 			this._value = value;
@@ -55,6 +61,11 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 		get selected() {
 			const value: string = this._selectedValues[0];
 			return value || '';
+		}
+
+		syncSelected(value: string[] | string) {
+			// do Nothing
+			return value
 		}
 
 		override firstUpdated(_changedProperties: PropertyValues) {
@@ -74,6 +85,10 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 		protected override updated(_changedProperties: PropertyValues) {
 			// Keep changedProperties arg so that subclasses may call it
 
+		}
+
+		[createValidator](): Validator<unknown> {
+			return new SingleValidator(() => this);
 		}
 
 

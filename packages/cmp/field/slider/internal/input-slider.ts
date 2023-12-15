@@ -1,16 +1,13 @@
-import ValidationMixin from '../../generic/validationMixin';
 import { MdSlider }from '@material/web/slider/slider.js';
 import { property, state } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
 import { PropertyValues, html, nothing } from 'lit';
 
 /**
  * A Slider Component to be used within SliderField
  * 
- * It needs validation methods from ValidationMixin
  */
 
-export abstract class InputSlider extends ValidationMixin(MdSlider) {
+export abstract class InputSlider extends MdSlider {
 
   @property() supportingOrErrorText!: string;
 

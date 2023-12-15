@@ -34,19 +34,19 @@
         display: block;
       }
     </style>
-    <!-- <script type="module" src="/field/choice-order"></script>
-    <script type="module" src="/field/choice-star"></script>-->
+    <script type="module" src="/field/choice-order"></script> 
+    <script type="module" src="/field/choice-star"></script>
     <script type="module" src="/field/choice-checkbox"></script>
-    <!--<script type="module" src="/field/choice-radio"></script>
+    <script type="module" src="/button/button-override"></script>
+    <script type="module" src="/field/choice-radio"></script>
     <script type="module" src="/field/select"></script>
-    <script type="module" src="/field/select-input"></script> -->
-    <!-- <script type="module" src="/field/record/record"></script> -->
-    <!-- <script type="module" src="/field/record-field"></script> -->
-    <!-- <script type="module" src="/field/textfield-select"></script> -->
-    <!-- <script type="module" src="/field/checkbox-field"></script>
+    <script type="module" src="/field/select-input"></script>
+    <script type="module" src="/field/record/record"></script>
+    <script type="module" src="/field/record-field"></script>
+    <script type="module" src="/field/checkbox-field"></script>
     <script type="module" src="/field/slider-field"></script>
     <script type="module" src="/icon/icon"></script>
-    <script type="module" src="/tabs/primary-tab-closable"></script> -->
+    <script type="module" src="/tabs/primary-tab-closable"></script>
    
   </head>
 
@@ -56,6 +56,8 @@
       import '@material/web/select/select-option.js';
       import '@material/web/select/filled-select.js';
       import '@material/web/tabs/tabs.js';
+      import '@material/web/textfield/filled-text-field.js';
+      import '@material/web/button/filled-button.js';
 
       const options = [
 	      {code: '1', name:'radio', label: 'one', supportingText: 'hello'}, 
@@ -72,31 +74,19 @@
             e.target.reportValidity();
         }));  
     </script>
-    <md-list id="list" class="flex">
-      <md-list-item 
-       type="button"
-       >
-        <div slot="headline">Status 1 </div>
-        
-      </md-list-item>
-      <md-list-item 
-        type="button"
-        >
-        <div slot="overline">TITLE </div>
-        <!-- test -->
-        <md-checkbox touch-target="wrapper" 
-          data-role="checkbox"
-          slot="start"></md-checkbox>
-        <div slot="headline">Status 2 <!-- test --></div>
-        <div slot="start">Hey </div>
-        </md-list-item>
-      </md-list>
+    <md-filled-text-field 
+    _required  
+    _error-text="error text"
+    _error
+    custom-validity="custom validity" 
+    supporting-text="this is supporting text" 
+    label="custom Validity"></md-filled-text-field>
+    
   <lapp-choice-checkbox 
         required
         label="this is my choice " 
         custom-validity="custom validity"
-        error-text="error text"
-
+        
         supporting-text="this is supporting text" variant="a11y"></lapp-choice-checkbox>
       
    <lapp-select 
@@ -205,21 +195,18 @@
             </li>
           </ul>
         </fieldset-->
-    <lapp-icon>settings</lapp-icon>
     <md-icon-button toggle><lapp-icon>settings</lapp-icon><lapp-icon slot="selected">close</lapp-icon></md-icon-button>
-    <md-filled-text-field label="first text"></md-filled-text-field>
-    <md-filled-text-field required label="second text"></md-filled-text-field>
      
     <lapp-choice-radio
 
       required
       label="Radio box " 
       supporting-text="this is supporting text" variant="a11y"></lapp-choice-radio>
-    <lapp-slider-field label="test checkbox" required range supporting-text="Hey" _checked></lapp-slider-field>
-    <lapp-slider label="test checkbox" required range supporting-text="Hey" _checked></lapp-slider>
+    <lapp-slider-field label="test slider field" required range max="50" supporting-text="Hey" _checked></lapp-slider-field>
+    <lapp-slider label="test slider" required range supporting-text="Hey" _checked></lapp-slider>
     <lapp-checkbox-field label="test checkbox" required supporting-text="Hey" _checked></lapp-checkbox-field>
     <lapp-record></lapp-record>
-    <lapp-record-field label="test record"></lapp-record-field>
+    <lapp-record-field required label="test record"></lapp-record-field>
     <lapp-choice-star 
       label="star"
     ></lapp-choice-star> 

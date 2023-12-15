@@ -43,8 +43,9 @@
     "@vitest/browser": "^1.0.4",
     "@vitest/utils": "^1.0.4",
     "eslint": "^8.40.0",
+    "loupe": "^3.0.1",
     "typescript": "^5.0.4",
-    "vite": "^5.0.8",
+    "vite": "^5.0.9",
     "vitest": "^1.0.4",
     "webdriverio": "^8.10.7",
     "wireit": "latest"

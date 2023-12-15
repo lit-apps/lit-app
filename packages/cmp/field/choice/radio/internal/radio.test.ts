@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest'
 import { customElement } from 'lit/decorators.js';
-import {literal} from 'lit/static-html.js';
+import { literal } from 'lit/static-html.js';
 import { html } from 'lit';
-import fixture, {fixtureCleanup} from '@lit-app/testing/fixture';
+import fixture, { fixtureCleanup } from '@lit-app/testing/fixture';
 import { Radio } from './radio';
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -10,8 +10,8 @@ const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 @customElement('lapp-test-radio')
 class TestRadio extends Radio {
 	protected override readonly fieldTag = literal`lapp-filled-field`;
- 
- }
+
+}
 
 declare global {
 	interface HTMLElementTagNameMap {
@@ -19,10 +19,10 @@ declare global {
 	}
 }
 const options: Option[] = [
-	{code: '1', label: 'one', supportingText: 'hello'}, 
-	{code: '2', label: 'two'}, 
-	{code: '3', label: 'three'}
-] 
+	{ code: '1', label: 'one', supportingText: 'hello' },
+	{ code: '2', label: 'two' },
+	{ code: '3', label: 'three' }
+]
 
 afterEach(fixtureCleanup);
 describe('radio', () => {
@@ -36,8 +36,8 @@ describe('radio', () => {
 		}
 		const list = element.input as HTMLInputElement
 		const support = element.renderRoot.querySelector('#description') as HTMLElement
-		
-	
+
+
 		return {
 			element,
 			list,
@@ -51,13 +51,13 @@ describe('radio', () => {
 		it('initializes as an radio field', async () => {
 			const { element } = await setupTest();
 			expect(element).toBeInstanceOf(Radio);
-		
+
 		});
 
 		it('should render label and supporting text', async () => {
 			const template = html`<lapp-test-radio label="label" supporting-text="supportText"></lapp-test-radio>`;
-			const { element, list, support} = await setupTest(template);
-			
+			const { element, list, support } = await setupTest(template);
+
 			expect(element.label).toEqual('label');
 			expect(list.getAttribute('aria-label')).toEqual('label');
 			expect(list.getAttribute('aria-describedby')).toEqual('description');
@@ -101,7 +101,35 @@ describe('radio', () => {
 			await element.updateComplete;
 
 			expect(check.checked).toEqual(true);
-			
+
+		})
+		describe('validation', () => {
+
+			it('should be valid when not required', async () => {
+				const template = html`<lapp-test-radio .options=${options}></lapp-test-radio>`;
+				const { element } = await setupTest(template);
+				element.reportValidity()
+				await element.updateComplete;
+				// @ts-ignore
+				expect(element.validity.valid).toEqual(true);
+			})
+
+			it('should not be valid when required', async () => {
+				const template = html`<lapp-test-radio required .options=${options}></lapp-test-radio>`;
+				const { element } = await setupTest(template);
+				element.reportValidity()
+				await element.updateComplete;
+				// @ts-ignore
+				expect(element.validity.valid).toEqual(false);
+			})
+			it('should be valid when required and has a value', async () => {
+				const template = html`<lapp-test-radio selected="1" required .options=${options}></lapp-test-radio>`;
+				const { element } = await setupTest(template);
+				element.reportValidity()
+				await element.updateComplete;
+				// @ts-ignore
+				expect(element.validity.valid).toEqual(true);
+			})
 		})
 	})
 })

@@ -1,16 +1,13 @@
-import ValidationMixin from '../../generic/validationMixin';
-import { MdCheckbox }from '@material/web/checkbox/checkbox.js';
-import { property, state } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
-import { PropertyValues, html, nothing } from 'lit';
+import { MdCheckbox } from '@material/web/checkbox/checkbox.js';
+import { PropertyValues, html } from 'lit';
+import { property } from 'lit/decorators.js';
 
 /**
  * A Checkbox Component to be used within CheckboxField
  * 
- * It needs validation methods from ValidationMixin
  */
 
-export abstract class InputCheckbox extends ValidationMixin(MdCheckbox) {
+export abstract class InputCheckbox extends MdCheckbox {
 
   @property() supportingOrErrorText!: string;
 	@property({type: Boolean}) 
@@ -26,16 +23,6 @@ export abstract class InputCheckbox extends ValidationMixin(MdCheckbox) {
     // @ts-ignore
 		this.input.setAttribute('aria-describedby', 'description');
 	}
-	override willUpdate(props: PropertyValues) {
-		super.willUpdate(props);
-		
-		if (props.has('checked')) {
-			// @ts-ignore
-			this._input.value = this.checked;
-		}
-	
-	}
-
 	override render() {
     return html`
 			${super.render()}

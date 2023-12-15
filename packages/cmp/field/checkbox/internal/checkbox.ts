@@ -6,8 +6,6 @@ import type { TemplateResult } from 'lit';
 // import '@material/web/checkbox/checkbox.js';
 import '../input-checkbox'
 
-
-
 /**
  *
  * 

@@ -4,13 +4,13 @@ import { property, query } from 'lit/decorators.js';
 import type { FilledField } from '../../field/internal/filled-field';
 import type { OutlinedField } from '../../field/internal/outlined-field';
 import { PropertyValues } from 'lit';
-
+import NoAutoValidateMixin  from '../../mixin/noAutoValidateMixin';
 
 /**
  * PwiTextField is an override of MD3's filled-textfield for Preignition
  * that adds a couple of additional features to the component.
  * 
- * - [ ] two-way binding, via @value-changed - DEPRECATED
+ * - [x] two-way binding, via @value-changed - DEPRECATED
  * - [x] RTL support - hopefully not needed anymore with MD3 as it should be supported out of the box
  * - [x] support for displaying native validation message - provided out of the box by MD3
  * - [ ] improved support for readonly (style and behavior) 
@@ -22,7 +22,7 @@ import { PropertyValues } from 'lit';
  */ 
 
 
-export abstract class TextField extends T {
+export abstract class TextField extends NoAutoValidateMixin(T) {
 	/**
 	 * The variant to use for rendering the field
 	 */
@@ -34,11 +34,7 @@ export abstract class TextField extends T {
 	 */
 	@property({ type: Boolean }) labelAbove: boolean = false
 
-	/**
-	 * Prevent automatic check validity on blur
-	 */
-	@property({ type: Boolean }) noAutoValidate: boolean = false;
-
+	
 	/**
 	 * The field holding label
 	 */
@@ -66,28 +62,21 @@ export abstract class TextField extends T {
 	}
 
 	override willUpdate(changedProperties: PropertyValues) {
-		if(changedProperties.has('noAutoValidate')) {
-			if (!this.noAutoValidate) {
-				this.addEventListener('blur', this.reportValidity)
-			} else {
-				this.removeEventListener('blur', this.reportValidity)
-			 }
-		}
-		this.propagateToField(changedProperties);
 		super.willUpdate(changedProperties);
+		this.propagateToField(changedProperties);
 	}
 
 
 	/** overriding checkValidity to ensure errorText is displayed when we have an error */
-	override checkValidity() {
-		const valid = super.checkValidity();
-		if(this.errorText) {
-			if(valid) {
-				this.error = false;
-			} else {
-				this.error = true;
-			}
-		}
-		return valid;
-	}
+	// override checkValidity() {
+	// 	const valid = super.checkValidity();
+	// 	if(this.errorText) {
+	// 		if(valid) {
+	// 			this.error = false;
+	// 		} else {
+	// 			this.error = true;
+	// 		}
+	// 	}
+	// 	return valid;
+	// }
 }

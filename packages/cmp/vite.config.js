@@ -21,19 +21,13 @@ export default defineConfig({
       "router-slot",
       "lit",
       "api-viewer-element",
+      "loupe",  
       "@material/web",
       "@material/mwc-base",
       "@material/mwc-base/form-element.js",
-      "@material/mwc-drawer",
-      
-
-      
-
       "@material/mwc-notched-outline",
       "@material/mwc-ripple",
       "@material/mwc-ripple/ripple-directive.js",
-      
-
       "@material/mwc-snackbar",
       "@material/mwc-textarea",
       "@material/mwc-textfield",

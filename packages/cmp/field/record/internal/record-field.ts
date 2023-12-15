@@ -11,7 +11,12 @@ import '../input-record'
 // @ts-ignore
 import locale  from './record-field-locale.mjs';
 import { requestUpdateOnAriaChange } from '@material/web/internal/aria/delegate';
-
+import {
+	createValidator
+} from '@material/web/labs/behaviors/constraint-validation.js';
+import {RecordValidator} from './recordValidator';
+import { Validator } from '@material/web/labs/behaviors/validators/validator';
+import { InputRecord } from './input-record';
 
 
 
@@ -37,12 +42,17 @@ export abstract class RecordField extends Generic {
 	override renderInputOrTextarea(): TemplateResult {
 		return html`
 		<lapp-input-record 
+			@focusin=${this.handleFocusin}
+      @focusout=${this.handleFocusout}
 			aria-label=${this.ariaLabel || nothing}
+			.required=${this.required}
 			.src=${this.src}></lapp-input-record>
 		
 		`
 	}
+	[createValidator](): Validator<unknown> {
+		return new RecordValidator(() => this.inputOrTextarea as unknown as InputRecord || { required: this.required, value: this.value});
+	}
 
-	
 
 }

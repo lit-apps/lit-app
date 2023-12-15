@@ -42,13 +42,21 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
   private recorder!: MediaRecorder;
   private chunks!: Blob[];
   private timer!: number;
-  private messageTimeout!: NodeJS.Timeout;
+  private messageTimeout!: number;
+
+  /** @nocollapse */
+  static override shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
 
   /** a helper text to pass; it will be added as aria-label to main button or icon button */
-  @property({attribute: 'aria-label'}) ariaLabel = '';
+  @property({ attribute: 'aria-label' }) ariaLabel = '';
 
   /** the label for record button */
   @property() recordLabel = locale.record;
+
+  @property({ type: Boolean }) required = false;
 
   /** the label for clear button */
   @property() clearLabel = locale.clearLabel;
@@ -124,9 +132,8 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
           ${when(this.src, renderAudio, renderProgress)}
         </div>
       </div>
-      <div class="supporting-text">
-        ${this.supportingText}&nbsp;
-      </div>  
+      ${when(this.supportingText, () => html`<div class="supporting-text">${this.supportingText}</div> `)}
+       
     `;
   }
 
@@ -336,6 +343,8 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
       }, timeout);
     }
   }
+
+
 
 }
 
