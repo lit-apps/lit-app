@@ -41,7 +41,6 @@ declare global {
 describe("hook", () => {
 
 	beforeEach(async () => {
-		window.location.href = "http://localhost:3000/index?aa=5"
 		await window.happyDOM.whenAsyncComplete()
 		await new Promise(resolve => setTimeout(resolve, 0))
 	})

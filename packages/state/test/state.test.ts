@@ -2,7 +2,6 @@ import { html, css, LitElement } from "lit";
 import { customElement, state } from 'lit/decorators.js';
 import type { IWindow } from 'happy-dom'
 
-// testing with vitest - see https://vitest.dev/guide
 import { beforeEach, describe, it, vi, assert, expect } from 'vitest'
 
 import { State } from "../src/state";

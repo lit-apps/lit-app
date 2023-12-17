@@ -21,6 +21,11 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'happy-dom',
+    environmentOptions: {
+      'happyDOM': {
+        url: 'http://localhost:3000/index?aa=5',
+      },
+    },
   },
   resolve: {
     dedupe: [

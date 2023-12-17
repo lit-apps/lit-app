@@ -1,12 +1,7 @@
 declare global {
   interface Window extends IWindow { }
 }
-const url ="http://localhost:3000/index?aa=5"
-Object.defineProperty(window, 'location', {
-  value: {
-    href: url
-  }
-});
+
 
 import { html, css, LitElement } from "lit";
 import { customElement, state } from 'lit/decorators.js';
@@ -22,7 +17,6 @@ import { property } from '../src/decorators/property'
 import { query } from '../src/decorators/query'
 import { storage } from '../src/decorators/storage';
 
-expect(window.location.href).toEqual(url);  
 class MyState extends State {
   @property({type: Number}) a = 1  
   @property({value: 'bbb'}) b: string
@@ -41,7 +35,6 @@ const myState = new MyState()
 describe("decorator", () => {
 
   beforeEach(async () => {
-    // window.location.href="http://localhost:3000/index?aa=5"
     await window.happyDOM.whenAsyncComplete()
     await new Promise(resolve => setTimeout(resolve, 0))
   })
