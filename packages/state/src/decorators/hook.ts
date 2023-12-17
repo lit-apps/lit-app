@@ -1,8 +1,5 @@
 
 import {State } from '../state.js'
-import { decorateProperty } from '@lit/reactive-element/decorators/base.js';
-import { PropertySignature } from './property';
-
 
 export type HookOptions = {[key:string]: unknown}
 
@@ -20,20 +17,23 @@ export type HookOptions = {[key:string]: unknown}
  */
 export function hook(hookName: string, options?: HookOptions) {
 	
-	return decorateProperty({
-		// @ts-ignore ctor is typof State and not typeof ReactiveElement
-		finisher: (ctor: typeof State, name: strubg) => {
-			
-			const descriptor = Object.getOwnPropertyDescriptor(ctor.prototype, name);
+	return (
+    proto: State,
+    name: PropertyKey
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): PropertyDescriptor | undefined => {
+		const descriptor = Object.getOwnPropertyDescriptor(proto, name);
 			if (!descriptor) {
 				throw new Error('@hook decorator need to be called after @property')
 			}
+			const ctor = (proto).constructor as typeof State;
 			const definition = ctor.propertyMap.get(name);
 			if(definition) {
 				const hook =  {...definition.hook , ...{[hookName]: options || {}}}
 				ctor.propertyMap.set(name, {...definition, ...{hook: hook}})
 			}
-		}
-	}) as unknown as PropertySignature
+			return undefined
+	}
+
 }
 

@@ -1,7 +1,5 @@
 
 import {State } from '../state.js'
-import { decorateProperty } from '@lit/reactive-element/decorators/base.js';
-import { PropertySignature } from './property.js';
 import { parse } from './parse.js';
 import { functionValue } from '../functionValue.js';
 export type StorageOptions = {
@@ -21,7 +19,7 @@ const defaultOptions: StorageOptions = {
  * from the associated localStorage item, parse it depending on 
  * its type and make it available to the state. 
  * 
- * Anytime the state propery changes, the change is reflected 
+ * Anytime the state property changes, the change is reflected 
  * to localStorage. 
  * 
  * A default (`_ls` for `Lit State`) prefix is set 
@@ -46,40 +44,42 @@ const defaultOptions: StorageOptions = {
  */
 export function storage(options?: StorageOptions) {
 	options = { ...defaultOptions, ...options }
-	// console.info('storage options', options)
-	return decorateProperty({
-		// @ts-ignore ctor is typof State and not typeof ReactiveElement
-		finisher: (ctor: typeof State, name: string) => {
-			// console.info('storage ', name)
-			const descriptor = Object.getOwnPropertyDescriptor(ctor.prototype, name);
-			if (!descriptor) {
-				throw new Error('@local-storage decorator need to be called after @property')
-			}
-			const key: string = `${options?.prefix || ''}_${options?.key || String(name)}`;
-			const definition = ctor.propertyMap.get(name);
-			const type = definition?.type
-			if(definition) {
-				const previousValue = definition.initialValue
-				definition.initialValue = () => parse(localStorage.getItem(key), type) ?? functionValue(previousValue);
-				ctor.propertyMap.set(name, {...definition, ...options})
-			}
-			// const oldGetter = descriptor?.get;
-			const oldSetter = descriptor?.set;
-			const setter = function (this: State, value: unknown) {
-				if (value !== undefined) {
-					localStorage.setItem(key,
-						(type === Object ||
-							type === Array) ? JSON.stringify(value) : value as string);
-				}
-				if (oldSetter) {
-					oldSetter.call(this, value);
-				}
-			}
-			const newDescriptor = {
-				...descriptor,
-				set: setter
-			};
-			Object.defineProperty(ctor.prototype, name, newDescriptor);
+	
+	return (
+    proto: State,
+    name: PropertyKey
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): PropertyDescriptor | undefined => {
+		const descriptor = Object.getOwnPropertyDescriptor(proto, name);
+		if (!descriptor) {
+			throw new Error('@local-storage decorator need to be called after @property')
+		}	
+		const key: string = `${options?.prefix || ''}_${options?.key || String(name)}`;
+		const ctor = (proto).constructor as typeof State;
+		const definition = ctor.propertyMap.get(name);
+		const type = definition?.type
+		if(definition) {
+			const previousValue = definition.initialValue
+			definition.initialValue = () => parse(localStorage.getItem(key), type) ?? functionValue(previousValue);
+			ctor.propertyMap.set(name, {...definition, ...options})
 		}
-	}) as unknown as PropertySignature
+		// const oldGetter = descriptor?.get;
+		const oldSetter = descriptor?.set;
+		const setter = function (this: State, value: unknown) {
+			if (value !== undefined) {
+				localStorage.setItem(key,
+					(type === Object ||
+						type === Array) ? JSON.stringify(value) : value as string);
+			}
+			if (oldSetter) {
+				oldSetter.call(this, value);
+			}
+		}
+		const newDescriptor = {
+			...descriptor,
+			set: setter
+		};
+		Object.defineProperty(ctor.prototype, name, newDescriptor);
+		return undefined
+	}
 }

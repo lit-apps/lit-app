@@ -39,7 +39,8 @@ export type Callback = (key: string, value: any, state: State) => void
 export class State extends EventTarget {
 
   // a map holding decorators definition.
-  static propertyMap: Map<string, PropertyMapOptions>
+  // it set in the @property decorator
+  static propertyMap: Map<PropertyKey, PropertyMapOptions>
 
   static properties: PropertyOptions;
   static finalized: boolean = false;
@@ -89,20 +90,20 @@ export class State extends EventTarget {
   }
 
   static createProperty(
-    name: string,
+    name: PropertyKey,
     options?: PropertyOptions
   ) {
     // Note, since this can be called by the `@property` decorator which
     // is called before `finalize`, we ensure finalization has been kicked off.
     this.finalize();
     const key = typeof name === 'symbol' ? Symbol() : `__${name}`;
-    const descriptor = this.getPropertyDescriptor(name, key, options);
+    const descriptor = this.getPropertyDescriptor(String(name), key, options);
     Object.defineProperty(this.prototype, name, descriptor);
   }
 
   protected static getPropertyDescriptor(
     name: string,
-    key: string | symbol,
+    key: PropertyKey,
     options?: PropertyOptions
   ): PropertyDescriptor {
     const hasChanged = options?.hasChanged || notEqual

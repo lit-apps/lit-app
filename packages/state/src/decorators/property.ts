@@ -1,12 +1,11 @@
 
-import { State, PropertyMapOptions} from '../state.js'
-import { decorateProperty } from '@lit/reactive-element/decorators/base.js';
+import { State, PropertyMapOptions } from '../state.js'
 
 export type PropertyTypes = Array<unknown> | Boolean | Object | String | Number
 /**
  * Defines options for a property.
  */
-export type PropertyOptions =  {
+export type PropertyOptions = {
 
   /**
    * The value to initiate the state with
@@ -39,23 +38,37 @@ export type PropertyOptions =  {
 
 export type PropertySignature = (protoOrDescriptor: State, name?: string | undefined) => any
 
-export function property(options?: PropertyOptions) {
-	// console.info('property options',options)
-  return decorateProperty({
-		// @ts-ignore ctor is typof State and not typeof ReactiveElement
-    finisher: (ctor: typeof State, name: string) => {
-			// console.info('property ', name)
+export function property(
+  options?: PropertyOptions,
+) {
+  return (
+    proto: State,
+    name: PropertyKey
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): PropertyDescriptor | undefined => {
 
-      if(Object.getOwnPropertyDescriptor(ctor.prototype, name)) {
-				throw new Error('@property must be called before all state decorators')
-			};
-
-			if(!ctor.propertyMap) {
-				ctor.propertyMap = new Map<string, PropertyMapOptions>()
-			}
-			ctor.propertyMap.set(name, {...options, ...{initialValue: options?.value, resetValue: options?.value}}) 
-			return ctor.createProperty(name, options )
+    if (Object.getOwnPropertyDescriptor(proto, name)) {
+      throw new Error('@property must be called before all state decorators')
+    };
+    const ctor = (proto).constructor as typeof State;
+    if (!ctor.propertyMap) {
+      ctor.propertyMap = new Map<string, PropertyMapOptions>()
     }
-	}) as unknown as PropertySignature
-    
+    const hasOwnProperty = proto.hasOwnProperty(name);
+    ctor.propertyMap.set(name, {
+      ...options,
+      ...{ initialValue: options?.value, resetValue: options?.value }
+    })
+    ctor.createProperty(name, options);
+
+    // For accessors (which have a descriptor on the prototype) we need to
+    // return a descriptor, otherwise TypeScript overwrites the descriptor we
+    // define in createProperty() with the original descriptor. We don't do this
+    // for fields, which don't have a descriptor, because this could overwrite
+    // descriptor defined by other decorators.
+    return hasOwnProperty
+      ? Object.getOwnPropertyDescriptor(proto, name)
+      : undefined;
+  }
+
 }

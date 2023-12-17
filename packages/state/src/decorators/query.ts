@@ -1,7 +1,5 @@
 
-import {State } from '../state.js'
-import { decorateProperty } from '@lit/reactive-element/decorators/base.js';
-import { PropertySignature } from './property.js';
+import { State } from '../state.js'
 import { functionValue } from '../functionValue.js';
 import { parse } from './parse.js';
 
@@ -36,29 +34,41 @@ const url = new URL(window.location.href)
  */
 export function query(options?: QueryOptions) {
 
-	return decorateProperty({
-		// @ts-ignore ctor is typof State and not typeof ReactiveElement
-		finisher: (ctor: typeof State, name: string) => {
-		
-			const descriptor = Object.getOwnPropertyDescriptor(ctor.prototype, name);
-			if (!descriptor) {
-				throw new Error('@local-storage decorator need to be called after @property')
-			}
-			const parameter: string = `${options?.parameter || String(name)}`;
-			const definition = ctor.propertyMap.get(name);
-			const type = definition?.type
-			if(definition) {
-				const previousValue = definition.initialValue
-				const parameterValue = url.searchParams.get(parameter)
-
-				// register the fact that this property is set by a query parameter
-				if(parameterValue !== null) {
-					definition.skipAsync = true
-				}
-				definition.initialValue = () => parse(parameterValue, type) ?? functionValue(previousValue);
-				ctor.propertyMap.set(name, {...definition, ...options})
-			}
+	return (
+		proto: State,
+		name: PropertyKey
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	): PropertyDescriptor | undefined => {
+		const descriptor = Object.getOwnPropertyDescriptor(proto, name);
+		if (!descriptor) {
+			throw new Error('@local-storage decorator need to be called after @property')
 		}
-	}) as unknown as PropertySignature
+		const ctor = (proto).constructor as typeof State;
+		const parameter: string = `${options?.parameter || String(name)}`;
+		const definition = ctor.propertyMap.get(name);
+		const type = definition?.type
+		if (definition) {
+			const previousValue = definition.initialValue
+			const parameterValue = url.searchParams.get(parameter)
+
+			// register the fact that this property is set by a query parameter
+			if (parameterValue !== null) {
+				definition.skipAsync = true
+			}
+			definition.initialValue = () => parse(parameterValue, type) ?? functionValue(previousValue);
+			ctor.propertyMap.set(name, { ...definition, ...options })
+			
+			return undefined
+			// For accessors (which have a descriptor on the prototype) we need to
+			// return a descriptor, otherwise TypeScript overwrites the descriptor we
+			// define in createProperty() with the original descriptor. We don't do this
+			// for fields, which don't have a descriptor, because this could overwrite
+			// descriptor defined by other decorators.
+			// return hasOwnProperty
+			// 	? Object.getOwnPropertyDescriptor(proto, name)
+			// 	: undefined;
+		}
+	}
+
 }
 

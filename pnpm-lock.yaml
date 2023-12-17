@@ -279,8 +279,8 @@ importers:
   packages/state:
     dependencies:
       '@lit/reactive-element':
-        specifier: ^1.6.3
-        version: 1.6.3
+        specifier: ^2.0.2
+        version: 2.0.2
     devDependencies:
       '@custom-elements-manifest/analyzer':
         specifier: ^0.9.0
@@ -2431,7 +2431,6 @@ packages:
     resolution: {integrity: sha512-SVOwLAWUQg3Ji1egtOt1UiFe4zdDpnWHyc5qctSceJ5XIu0Uc76YmGpIjZgx9YJ0XtdW0Jm507sDvjOu+HnB8w==}
     dependencies:
       '@lit-labs/ssr-dom-shim': 1.1.2
-    dev: true
 
   /@manypkg/find-root@1.1.0:
     resolution: {integrity: sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==}
