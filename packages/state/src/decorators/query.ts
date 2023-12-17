@@ -37,8 +37,7 @@ export function query(options?: QueryOptions) {
 	return (
 		proto: State,
 		name: PropertyKey
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	): PropertyDescriptor | undefined => {
+	) => {
 		const descriptor = Object.getOwnPropertyDescriptor(proto, name);
 		if (!descriptor) {
 			throw new Error('@local-storage decorator need to be called after @property')
@@ -57,17 +56,11 @@ export function query(options?: QueryOptions) {
 			}
 			definition.initialValue = () => parse(parameterValue, type) ?? functionValue(previousValue);
 			ctor.propertyMap.set(name, { ...definition, ...options })
-			
+
 			return undefined
-			// For accessors (which have a descriptor on the prototype) we need to
-			// return a descriptor, otherwise TypeScript overwrites the descriptor we
-			// define in createProperty() with the original descriptor. We don't do this
-			// for fields, which don't have a descriptor, because this could overwrite
-			// descriptor defined by other decorators.
-			// return hasOwnProperty
-			// 	? Object.getOwnPropertyDescriptor(proto, name)
-			// 	: undefined;
+
 		}
+		return undefined
 	}
 
 }

@@ -1,5 +1,5 @@
 
-import { State, PropertyMapOptions } from '../state.js'
+import { State } from '../state.js'
 
 export type PropertyTypes = Array<unknown> | Boolean | Object | String | Number
 /**
@@ -40,20 +40,18 @@ export type PropertySignature = (protoOrDescriptor: State, name?: string | undef
 
 export function property(
   options?: PropertyOptions,
+
 ) {
   return (
     proto: State,
     name: PropertyKey
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): PropertyDescriptor | undefined => {
+  ): void => {
 
     if (Object.getOwnPropertyDescriptor(proto, name)) {
       throw new Error('@property must be called before all state decorators')
     };
     const ctor = (proto).constructor as typeof State;
-    if (!ctor.propertyMap) {
-      ctor.propertyMap = new Map<string, PropertyMapOptions>()
-    }
+    ctor.initPropertyMap()
     const hasOwnProperty = proto.hasOwnProperty(name);
     ctor.propertyMap.set(name, {
       ...options,
@@ -66,6 +64,7 @@ export function property(
     // define in createProperty() with the original descriptor. We don't do this
     // for fields, which don't have a descriptor, because this could overwrite
     // descriptor defined by other decorators.
+    // @ts-ignore
     return hasOwnProperty
       ? Object.getOwnPropertyDescriptor(proto, name)
       : undefined;

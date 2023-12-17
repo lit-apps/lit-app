@@ -24,7 +24,9 @@ export class Hook {
 	}
 
 	get hookedProps() {
-		return [...this.state.propertyMap].filter(([, definition]) => definition?.hook 
+		const stateProto = Object.getPrototypeOf(this.state)
+		if(!stateProto.propertyMap) {stateProto.initPropertyMap()}
+		return [...stateProto.propertyMap].filter(([, definition]) => definition?.hook 
 			&& definition?.hook[(this.constructor as typeof Hook).hookName])
 	}
 

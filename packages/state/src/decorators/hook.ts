@@ -20,8 +20,8 @@ export function hook(hookName: string, options?: HookOptions) {
 	return (
     proto: State,
     name: PropertyKey
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): PropertyDescriptor | undefined => {
+   
+  ) => {
 		const descriptor = Object.getOwnPropertyDescriptor(proto, name);
 			if (!descriptor) {
 				throw new Error('@hook decorator need to be called after @property')

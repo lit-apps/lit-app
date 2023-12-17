@@ -45,6 +45,12 @@ export class State extends EventTarget {
   static properties: PropertyOptions;
   static finalized: boolean = false;
 
+  static initPropertyMap() {
+    if (!this.propertyMap) {
+      this.propertyMap = new Map<string, PropertyMapOptions>()
+    }
+  }
+  
   get propertyMap() {
     return (this.constructor as typeof State).propertyMap
   }
