@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-  },
-  "extends": "../../tsconfig.json",
-  "include": ["internal/**/*.ts", "*.ts"],
-  "exclude": []
-}
