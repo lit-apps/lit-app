@@ -8,7 +8,7 @@ export type QueryOptions = {
 	skipAsync?: boolean
 }
 
-const url = new URL(window.location.href)
+const url = new URL(location.href)
 
 /**
  * A decorator for setting state values from url parameters
