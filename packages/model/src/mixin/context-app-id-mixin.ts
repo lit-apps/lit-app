@@ -1,6 +1,6 @@
 import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js'
-import { consume, provide, createContext } from '@lit-labs/context';
+import { consume, provide, createContext } from '@lit/context';
 // context for holding the entity id
 export const appIdContext = createContext<string>('app-id-context');
 

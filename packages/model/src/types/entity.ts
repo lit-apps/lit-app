@@ -1,7 +1,7 @@
 import { LitElement, TemplateResult } from 'lit'
 import AbstractEntity from '../entityAbstract'
 
-export interface EntityI extends AbstractEntity {}
+export interface EntityI extends AbstractEntity { }
 
 // storing the state of an entity
 export type EntityStatus = {
@@ -49,7 +49,7 @@ export interface DefaultI {
 
 export interface EntityElement<T = any> extends EntityBase<T> {
 	id: string // not sure this is needed
-	docId: string | undefined 
+	docId: string | undefined
 	entityStatus: EntityStatus
 	entityAccess: EntityAccess
 }
@@ -79,7 +79,7 @@ export type GridConfig = {
 export type RenderConfigOptional<T = any> = {
 	columnsConfig?: ColumnsConfig,
 	gridConfig?: GridConfig,
-	cardConfig?: {[K in keyof Partial<T> ]: T[K]}
+	cardConfig?: { [K in keyof Partial<T>]: T[K] }
 	level?: number, // level to render the entity
 	variant?: 'card' | 'default'
 	layout?: 'horizontal' | 'vertical' | 'grid' // set the layout for card variant

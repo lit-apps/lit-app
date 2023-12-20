@@ -1,6 +1,6 @@
 import { ReactiveElement } from 'lit';
 import { state } from 'lit/decorators.js';
-import { consume, provide, createContext } from '@lit-labs/context';
+import { consume, provide, createContext } from '@lit/context';
 // import type {EntityI} from '../types/entity';
 import type EntityI from '../entityAbstract';
 

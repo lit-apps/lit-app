@@ -1,4 +1,4 @@
-import { consume, ContextProvider, createContext } from '@lit-labs/context';
+import { consume, ContextProvider, createContext } from '@lit/context';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { state, property } from 'lit/decorators.js';
 

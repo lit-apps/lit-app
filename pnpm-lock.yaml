@@ -196,9 +196,9 @@ importers:
       '@lit-app/state':
         specifier: workspace:^
         version: link:../state
-      '@lit-labs/context':
-        specifier: ^0.5.1
-        version: 0.5.1
+      '@lit/context':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@material/mwc-textarea':
         specifier: 0.25.3
         version: 0.25.3
@@ -1798,12 +1798,6 @@ packages:
   /@jridgewell/sourcemap-codec@1.4.15:
     resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
     dev: true
-
-  /@lit-labs/context@0.5.1:
-    resolution: {integrity: sha512-ELR50iyIFb0mOTkzR7bSUamipLY8QzbiXzTElJr+fInBhUpUbe4bx7Z2ekPO+WbunQRB2Bc3z/V7lIPTN+tbVQ==}
-    dependencies:
-      '@lit/context': 1.1.0
-    dev: false
 
   /@lit-labs/motion@1.0.6:
     resolution: {integrity: sha512-7d4d89CjdEMsU7lNG0gFMZOUowq00CgcJL1ifab0IVFc/fTCcfZyQuRb5vAhetkwPQFmiyP54tvHQ9GuHsLtuQ==}
