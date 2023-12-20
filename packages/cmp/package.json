@@ -23,8 +23,8 @@
     "@lit-app/event": "link:../event",
     "@lit-app/md-parser": "link:../../../packages/md-parser",
     "@lit-app/testing": "link:../testing",
-    "@lit-labs/motion": "^1.0.4",
-    "@lit-labs/observers": "^2.0.0",
+    "@lit-labs/motion": "^1.0.6",
+    "@lit-labs/observers": "^2.0.2",
     "@material/web": "1.1.1",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
@@ -32,7 +32,7 @@
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
     "@vaadin/a11y-base": "24.1.0",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
-    "lit": "^2.8.0",
+    "lit": "^3.1.0",
     "lit-vaadin-helpers": "^0.3.1",
     "lite-youtube-embed": "^0.3.0"
   },
@@ -45,9 +45,9 @@
     "eslint": "^8.40.0",
     "loupe": "^3.0.1",
     "typescript": "^5.0.4",
-    "vite": "^5.0.9",
+    "vite": "^5.0.10",
     "vitest": "^1.0.4",
     "webdriverio": "^8.10.7",
-    "wireit": "latest"
+    "wireit": "^0.14.1"
   }
 }
