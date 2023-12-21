@@ -49,7 +49,7 @@ export const ProvideDataMixin = <D, T extends Constructor<ReactiveElement>>(supe
 
 		@state() data!: any;
 
-		provider = new ContextProvider(this, dataContext, this.data);
+		provider = new ContextProvider(this, {context: dataContext, initialValue: this.data});
 
 		override willUpdate(prop: PropertyValues) {
 

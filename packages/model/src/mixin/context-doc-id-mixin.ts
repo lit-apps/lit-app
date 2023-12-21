@@ -25,16 +25,13 @@ export const ConsumeDocIdMixin = <T extends Constructor<ReactiveElement>>(superC
 
 /**
  * ProvideDocIdMixin a mixin that provides docID context
- 
  */
 export const ProvideDocIdMixin = <T extends Constructor<ReactiveElement >>(superClass: T) => {
 
 	class ContextProvideDocIdMixinClass extends superClass {
 
 		docId: DocId;
-		docIdProvider = new ContextProvider(this, docIdContext, this.docId);
-
-
+		docIdProvider = new ContextProvider(this, {context: docIdContext, initialValue: this.docId});
 
 	};
 
