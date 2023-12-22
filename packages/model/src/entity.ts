@@ -1,8 +1,7 @@
 
-
+console.warn('Entity is deprecated. Use EntityAbstract and entityFact instead.')
 
 import EntityAbstract from './entityAbstract';
-import { EntityI } from './types/entity';
 
 /**
  * Base class for entity. 
@@ -11,8 +10,7 @@ import { EntityI } from './types/entity';
  * and actions, defining the operations that can be performed on the data.
  * 
  */
-export default class Entity<Interface = any> extends EntityAbstract
-  implements EntityI {
+export default class Entity extends EntityAbstract { 
 
  /**
  	* inspired from https://github.com/Microsoft/TypeScript/issues/3841#issuecomment-1488919713
