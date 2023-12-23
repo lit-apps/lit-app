@@ -1,10 +1,14 @@
-import { EntityI } from '@lit-app/model/src/types/entity';
+import { EntityI } from '@lit-app/model/src/types';
 import { html, css, LitElement } from "lit";
 import { when } from 'lit/directives/when.js';
-import { AccessActionI,  Role } from '@lit-app/model';
+import { AccessActionI, Role } from '@lit-app/model';
 import { property, state } from 'lit/decorators.js';
-import {icon} from '@preignition/preignition-styles';
+import { icon } from '@preignition/preignition-styles';
 import { LappUserSearch } from '@lit-app/cmp/user/search';
+import '@lit-app/cmp/user/search';
+import '@lit-app/cmp/user/select-item';
+import '@lit-app/cmp/user/name';
+import { HTMLEvent } from '@lit-app/cmp/types';
 import('@lit-app/cmp/user/card')
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')
@@ -13,16 +17,16 @@ import('@material/web/button/filled-button')
 import('@material/web/button/filled-tonal-button')
 import('@material/web/icon/icon')
 import('@material/web/progress/circular-progress')
-
+import { ConsumeUserAccessMixin } from './context-user-access-mixin';
 
 /**
  *  Set the role of an entity
  */
 
-export class SetRole  extends LitElement {
+export class SetRole extends ConsumeUserAccessMixin(LitElement) {
 
 	static override styles = [
-		icon, 
+		icon,
 		css`
 			:host {
 				display: flex;
@@ -49,16 +53,16 @@ export class SetRole  extends LitElement {
 
 			}
 		`];
-	
+
 	/** uid of current user */
-	@property() uid!: string;	
+	@property() uid!: string;
 	@property() label: string = 'Set Ownership'
-	@property({type: Boolean}) canEdit = false;
-	@property() accessRole: Role['name']  = 'owner'; 
-	@property({attribute: false}) Entity!: typeof EntityI;
-	
-	@state() isEditing = false;			
-	@state() isLoading = false;			
+	@property({ type: Boolean }) canEdit = false;
+	@property() accessRole: Role['name'] = 'owner';
+	@property({ attribute: false }) Entity!: EntityI;
+
+	@state() isEditing = false;
+	@state() isLoading = false;
 	@state() newUid!: string;
 	@state() newName!: string;
 
@@ -80,37 +84,51 @@ export class SetRole  extends LitElement {
 			const event = this.Entity.getEntityAction<AccessActionI>({
 				uid: this.newUid,
 				role: this.accessRole as Role['name']
-				
+
 			}, 'setAccess')
-			
+
 			this.dispatchEvent(event);
 			await event.detail.promise;
 			this.isLoading = false;
-		}	
+		}
 
 		const onUserChanged = (e: HTMLEvent<LappUserSearch>) => {
 			this.newUid = e.target.value;
-			this.newName = e.target.selectedOptions[0]?.headline || '';
+			this.newName = e.target.selectedOptions[0]?.displayText || '';
 		}
 
 		return html`
 		<div class="layout">
-			${this.isEditing ? 
+			${this.isEditing ?
 				html`
 					<md-outlined-button @click=${cancel}>
 						Cancel
 						<lapp-icon slot="icon">cancel</lapp-icon>
 					</md-outlined-button>
-					<lapp-user-search
-						.loader=${this.Entity?.userLoader}
-						@change=${onUserChanged}
-					></lapp-user-search>
+					${this.Entity?.userLoader ?
+						html`<lapp-user-search
+							.loader=${this.Entity?.userLoader}
+							@change=${onUserChanged}
+						></lapp-user-search>` :
+						html`<md-filled-select
+							.label=${'select user'}
+							.value=${this.newUid}
+							@change=${onUserChanged}
+							quick
+							>
+							${this.accessUsers?.map(user => html`
+								<lapp-user-select-item .value=${user.uid} .selected=${this.newUid === user.uid} .uid=${user.uid}>
+									<lapp-user-name slot="headline" .uid=${user.uid}></lapp-user-name>  
+							</lapp-user-select-item>
+							`)}
+						</md-filled-select>`}
+				
 					<md-filled-button @click=${setAccess} .disabled=${!this.newUid}>
 						set ${this.newName || ''} as ${this.accessRole}</lapp-user-name>
-						${this.isLoading ? 
-							html`<md-circular-progress></md-circular-progress>` :
-							html`<lapp-icon slot="icon">person</lapp-icon>`
-							}
+						${this.isLoading ?
+						html`<md-circular-progress></md-circular-progress>` :
+						html`<lapp-icon slot="icon">person</lapp-icon>`
+					}
 					</md-filled-button>
 					` :
 				html`
@@ -119,7 +137,7 @@ export class SetRole  extends LitElement {
 						<lapp-icon slot="icon">person</lapp-icon>
 					</md-outlined-button>
 					
-					` 
+					`
 			}
 		</div>
 		`

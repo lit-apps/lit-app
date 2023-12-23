@@ -19,7 +19,9 @@ inputValidator.required = true;
 
 
 /**
- *  An element to select users from a list of users.
+ * An element to select users from a list of users.
+ * 
+ * A `loader` is to be provided to load the users.
  */
 export class UserSearch extends LitElement {
 
@@ -104,7 +106,7 @@ export class UserSearch extends LitElement {
 		return html`
 			<lapp-select-input 
 				.label=${this.label}
-				.helper=${this.supportingText}
+				.supportingText=${this.supportingText}
 				.value=${this.value}
 				@change=${onChange}
 				@input=${redispatch}
@@ -135,6 +137,7 @@ export class UserSearch extends LitElement {
 			${when(isValidEmail, () => html`<md-filled-button .disabled=${searchValue === this.inviteEmail} @click=${onInvite}>Set ${searchValue} as a User to Invite</md-filled-button>` )}
 		</div>`
 	}
+
 	renderItems(items: UserItem[]) {
 		if (items.length === 0) {
 			return this.renderZeroItems()

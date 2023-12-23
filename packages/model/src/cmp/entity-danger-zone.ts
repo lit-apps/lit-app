@@ -2,7 +2,7 @@ import { html, css, LitElement } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
 import AbstractEntity from './abstract-entity-element';
 import RenderHeaderMixin from '../mixin/render-header-mixin';
-import Entity from '../entityAbstract';
+import {entityI} from '../types';
 
 import('@material/web/list/list')
 import('@material/web/list/list-item')
@@ -22,7 +22,7 @@ export default class EntityDangerZone  extends RenderHeaderMixin(AbstractEntity)
 		return this.data?.metaData?.deleted;
 	}
 
-	protected override renderEntity(entity: Entity) {
+	protected override renderEntity(entity: entityI) {
 		return html`
 			<slot name="header">
 				${this.renderHeader(this.data, this.renderConfig)}
@@ -35,7 +35,7 @@ export default class EntityDangerZone  extends RenderHeaderMixin(AbstractEntity)
 		`;
 	}
 
-	override renderBody(_entity: Entity) {
+	override renderBody(_entity: entityI) {
 
 		const name = this.data?.name || 'this entity';
 

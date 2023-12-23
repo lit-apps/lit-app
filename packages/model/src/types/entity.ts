@@ -1,7 +1,5 @@
 import { LitElement, TemplateResult } from 'lit'
-import AbstractEntity from '../entityAbstract'
-
-export interface EntityI extends AbstractEntity { }
+import { entityI} from '../types'
 
 // storing the state of an entity
 export type EntityStatus = {
@@ -35,19 +33,19 @@ export interface FieldConfigUpload extends FieldConfig {
 	maxFileSize?: number
 }
 
-interface EntityBase<T = any> extends LitElement {
-	entity: EntityI
+interface EntityBase<T extends DefaultI = DefaultI> extends LitElement {
+	entity: entityI<T>
 	data?: T
 	icon?: string
 	heading?: string
 	appID?: string
-	renderTitle?: (data: T, config: RenderConfig) => TemplateResult
+	// renderTitle?: (data: T, config: RenderConfig) => TemplateResult
 }
 export interface DefaultI {
 
 }
 
-export interface EntityElement<T = any> extends EntityBase<T> {
+export interface EntityElement<T extends DefaultI = DefaultI> extends EntityBase<T> {
 	id: string // not sure this is needed
 	docId: string | undefined
 	entityStatus: EntityStatus
@@ -55,7 +53,7 @@ export interface EntityElement<T = any> extends EntityBase<T> {
 }
 
 // interface for list
-export interface EntityElementList<T = any> extends EntityBase<T> {
+export interface EntityElementList<T extends DefaultI = DefaultI> extends EntityBase<T> {
 	entityStatus?: EntityStatus
 	entityAccess?: EntityAccess
 	size?: number

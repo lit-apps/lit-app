@@ -1,6 +1,6 @@
 import { adoptStyles, html, PropertyValues } from "lit";
 import { property } from 'lit/decorators.js';
-import Entity from '../entityAbstract';
+import {entityI, EntityI} from '../types';
 
 import { RenderConfig } from '../types/entity';
 
@@ -26,8 +26,7 @@ export default class EntityHolder extends AbstractEntity {
 		}
 	}
 
-
-	protected override setEntity(E: typeof Entity) {
+	protected override setEntity(E: EntityI) {
 		// const E = Entity as unknown as typeof Entity
 		super.setEntity(E)
 		/** Handle Styles */
@@ -49,7 +48,7 @@ export default class EntityHolder extends AbstractEntity {
 		this.addEventListener(Write.eventName, () => this.requestUpdate());
 	}
 
-	protected override renderEntity(entity: Entity, config?: RenderConfig) {
+	protected override renderEntity(entity: entityI, config?: RenderConfig) {
 		return html`
 			<slot name="header">
 				${this.renderHeader(entity, config)}

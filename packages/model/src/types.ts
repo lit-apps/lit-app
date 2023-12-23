@@ -1,20 +1,25 @@
+import { CSSResult } from 'lit';
+import type AbstractEntity from './abstractEntity';
+import type {
+	Action,
+	Actions, ActionType,
+	DefaultActions
+} from './types/action';
 import type {
 	ColumnsConfig,
+	DefaultI,
 	EntityAccess,
-	EntityStatus,
 	EntityElement,
 	EntityElementList,
-	RenderConfig,
+	EntityStatus,
+	RenderConfig
 } from './types/entity';
+import { GetAccess } from './types/getAccess';
 import type {
-	Action, DefaultActions, Actions, ActionType
-} from './types/action'
-import type {
-	Model,
+	GridConfig,
 	Lookup,
-	GridConfig
-} from './types/modelComponent'
-
+	Model
+} from './types/modelComponent';
 
 export {
 	type AccessMixinInterface,
@@ -28,30 +33,28 @@ export {
 	type EntityMixinInterface
 } from './mixin/context-entity-mixin';
 
-export { 
-	type EntityStatusMixinInterface 
-} from './mixin/context-entity-status-mixin';
+export * from './events';
 export {
-	RenderConfig, EntityAccess, EntityStatus, ColumnsConfig, EntityElement, EntityElementList,
-	Action, Actions, DefaultActions, ActionType,
-	Model, Lookup, GridConfig
-}
-export * from './events'
-export * from './types/resource'
-export * from './types/dataI'
-export * from './types/getAccess'
-export * from './types/entityAction'
-export * from './types/mixin'
+	type EntityStatusMixinInterface
+} from './mixin/context-entity-status-mixin';
+export * from './types/dataI';
+export * from './types/getAccess';
+export * from './types/resource';
+export {
+	Action, Actions, ActionType, ColumnsConfig, DefaultActions, EntityAccess, EntityElement, EntityElementList, EntityStatus, GridConfig, Lookup, Model, RenderConfig
+};
+export * from './types/entityAction';
+export * from './types/mixin';
 
-import entries from './typeUtils/entries';
 import ensure from './typeUtils/ensure';
-import type  {PartialBy}  from './typeUtils/partialBy';
+import entries from './typeUtils/entries';
+import type { PartialBy } from './typeUtils/partialBy';
 
 export type Strings = {
 	[key: string]: string | Strings;
 };
 
-import {Access} from './types/dataI'
+import { Access } from './types/dataI';
 export type Role = {
 	name: keyof Access['user'] // | 'superAdmin' 
 	level: number // 1: owner, 2: admin, 3: editor, 3: viewer - role level; only higher level can edit lower level can assign lower level	
@@ -59,7 +62,44 @@ export type Role = {
 }
 
 export {
-	entries,
-	ensure, 
-	PartialBy
+	ensure, entries, PartialBy
+};
+
+import { RenderInterface as FieldI, StaticEntityField } from './types/renderEntityFieldI';
+import { RenderInterface as RenderI } from './types/renderEntityI';
+import { RenderInterface as RenderA, StaticEntityActionI } from './types/renderEntityActionI';
+
+
+export interface StaticEntityI<D = any, A extends Actions = Actions> {
+	// entityName: string
+	// model: Model<D>
+	icon: string
+	actions: A
+	styles: CSSResult | CSSResult[];
+	getAccess: GetAccess
+	locale?: Strings
+	roles: Role[]
+	userLoader?: (search: string) => Promise<any>
+	['constructor']: typeof AbstractEntity;
 }
+export interface EntityI<
+	D extends DefaultI = DefaultI, 
+	A extends Actions = Actions,
+	C extends RenderConfig = RenderConfig 
+> extends 
+	StaticEntityActionI<D, A>,
+	StaticEntityField<D>,
+	StaticEntityI<D, A>
+	{
+		new(cmp: EntityElement, realtime?: boolean, listenOnAction?: boolean ): entityI<D, A, C>;
+	}
+
+export interface entityI<
+	D extends DefaultI = DefaultI, 
+	A extends Actions = Actions, 
+	C extends RenderConfig = RenderConfig> extends 
+		Omit<AbstractEntity<D, A>,'actions' | 'renderContent'>,  
+		RenderI<D, A, C>,
+		FieldI<D, C>,
+		RenderA<D, A>  { }
+

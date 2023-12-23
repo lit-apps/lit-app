@@ -4,60 +4,25 @@ import {
 } from './types/modelComponent';
 import entries from './typeUtils/entries';
 
+import { ToastEvent } from '@lit-app/event';
 import {
-	AnyEvent, Create, EntityCreateDetail, Open
+	AnyEvent
 } from './events';
+import { Role, Strings } from './types';
 import {
-	 Actions
+	Actions
 } from './types/action';
 import {
+	DefaultI,
 	EntityElement
 } from './types/entity';
-import { ToastEvent } from '@lit-app/event';
-import { PartialBy, Role, Strings } from './types';
 import { GetAccess } from './types/getAccess';
-
-export interface StaticEntityI<D = any> {
-	entityName: string
-	icon: string
-	model: Model<D>
-	actions: Actions
-	styles: CSSResult | CSSResult[];
-	getAccess: GetAccess
-	locale?: Strings
-	roles: Role[]
-	userLoader: (search: string) => Promise<any>
-}
-
-export interface PublicEntityMethods {
-	/* Some render methods are used in generic components - we declare them here */
-	/* main render method  */
-	
-	renderBody(data: any, config?: any): TemplateResult | typeof nothing
-	
-	renderHeader(data: any, config?: any): TemplateResult | typeof nothing
-	
-	renderFooter(data: any, config?: any): TemplateResult | typeof nothing
-	
-	/* dialog methods  */
-	
-	renderCreateDialog(data: any, config?: any): TemplateResult | typeof nothing
-	
-	/* main action method  */
-	renderAction(this: AbstractEntity, name: keyof typeof this['actions'], data: any, config?: any): TemplateResult | typeof nothing
-
-	/* action methods  */
-	create(details: PartialBy<EntityCreateDetail, 'entityName'>): Create
-	open(entityName: string, id?: string): Open | null
-}
-
-export interface EntityI extends AbstractEntity, PublicEntityMethods {}
 
 /**
  * Abstract class for entities
  */
 
-export default class AbstractEntity  {
+export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Actions = Actions> {
 
 	static declare entityName: string
 	static declare icon: string
@@ -93,7 +58,6 @@ export default class AbstractEntity  {
 	 * the type of actions is properly inferred. 
 	 */
 	declare ['constructor']: typeof AbstractEntity;
-
 	// define a private _icon property to be used by the icon getter
 	_icon!: string
 	get icon(): string {
@@ -117,12 +81,11 @@ export default class AbstractEntity  {
 		return (this.constructor).entityName
 
 	}
-	get model() {
-		return (this.constructor).model
+	get model(): Model<D> {
+		return (this.constructor).model;
 	}
-
-	get actions() {
-		return (this.constructor).actions;
+	get actions(): A {
+		return (this.constructor).actions as A;
 	}
 
 	/**
@@ -184,7 +147,7 @@ export default class AbstractEntity  {
 	}
 
 	/* renderContent is required by the controller interface because it participate to subclass instantiation */
-	renderContent(_data: any, _config?: any): TemplateResult | typeof nothing {
+	renderContent(_data: D, _config?: any): TemplateResult | typeof nothing {
 		return nothing
 	}
 	onError(error: Error) {
@@ -193,8 +156,5 @@ export default class AbstractEntity  {
 		// For the time being, we just dispatch Toast Event
 		this.host?.dispatchEvent(new ToastEvent(error.message, 'error'))
 	}
-
-	// @-ts-expect-error
-
 
 }

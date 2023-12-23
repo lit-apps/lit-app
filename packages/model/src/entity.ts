@@ -1,7 +1,7 @@
 
 console.warn('Entity is deprecated. Use EntityAbstract and entityFact instead.')
 
-import EntityAbstract from './entityAbstract';
+import AbstractEntity from './abstractEntity';
 
 /**
  * Base class for entity. 
@@ -10,14 +10,14 @@ import EntityAbstract from './entityAbstract';
  * and actions, defining the operations that can be performed on the data.
  * 
  */
-export default class Entity extends EntityAbstract { 
+export default class Entity extends AbstractEntity { 
 
  /**
  	* inspired from https://github.com/Microsoft/TypeScript/issues/3841#issuecomment-1488919713
  	* We will need to set the type of constructor on all subclasses so that
  	* the type of actions is properly inferred. 
  	*/
-	declare ['constructor']: typeof Entity;
+	// declare ['constructor']: typeof Entity;
   static override icon: string = ''
 
   

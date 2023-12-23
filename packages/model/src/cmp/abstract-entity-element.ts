@@ -2,7 +2,7 @@ import { camelToDash } from '@preignition/preignition-util';
 import { TemplateResult } from 'lit';
 import { html, LitElement, PropertyValues } from "lit";
 import { property, state } from 'lit/decorators.js';
-import Entity, {PublicEntityMethods} from '../entityAbstract';
+import {entityI, EntityI} from '../types';
 import { ConsumeAccessMixin } from '../mixin/context-access-mixin';
 import { ConsumeDataMixin } from '../mixin/context-data-mixin';
 import { ConsumeDocIdMixin } from '../mixin/context-doc-id-mixin';
@@ -14,9 +14,9 @@ import { RenderConfig, RenderConfigOptional } from '../types/entity';
 /**
  * This event is fired to trigger the main application hoist an element
  */
-export class entityEvent extends CustomEvent<Entity> {
+export class entityEvent extends CustomEvent<entityI> {
 	static readonly eventName = 'entity-ready';
-	constructor(entity: Entity) {
+	constructor(entity: entityI) {
 		super(entityEvent.eventName, {
 			composed: true,
 			detail: entity
@@ -26,7 +26,6 @@ export class entityEvent extends CustomEvent<Entity> {
 /**
  *  Abstract Class for entity holders
  */
-
 export default abstract class AbstractEntityElement extends
 	ConsumeEntityMixin(
 		ConsumeAccessMixin(
@@ -37,13 +36,13 @@ export default abstract class AbstractEntityElement extends
 	// setLocale must be set to handle translations
 	declare setLocale: (entityName: string, locale: Strings) => void;
 
-	@state() entity!: Entity;
+	@state() entity!: entityI;
 
 	/**
 	 * The entity class to override the default entity (inherited from context)
 	 * this is useful when we do not want to consume the entity from context
 	 */
-	@property({ attribute: false }) useEntity!: typeof Entity;
+	@property({ attribute: false }) useEntity!: EntityI;
 
 	@property() heading!: string;
 
@@ -74,7 +73,7 @@ export default abstract class AbstractEntityElement extends
 
 	protected override willUpdate(props: PropertyValues<this>) {
 		if (props.has('Entity') || props.has('useEntity')) {
-			this.setEntity(this.useEntity || this.Entity as unknown as typeof Entity)
+			this.setEntity(this.useEntity || this.Entity )
 		}
 		if (props.has('realTime') && this.entity) {
 			this.entity.realTime = this.realTime
@@ -85,7 +84,7 @@ export default abstract class AbstractEntityElement extends
 		}
 		super.willUpdate(props);
 	}
-	protected setEntity(E: typeof Entity) {
+	protected setEntity(E: EntityI) {
 		this.entity = new E(this, this.realTime, this.listenOnAction)
 
 
@@ -120,17 +119,17 @@ export default abstract class AbstractEntityElement extends
 	/**
 	 * renderEntity is called when entity is ready
 	 */
-	protected abstract renderEntity(entity: Entity, config?: RenderConfig): TemplateResult;
+	protected abstract renderEntity(entity: entityI, config?: RenderConfig): TemplateResult;
 
-	protected renderHeader(entity: Entity, config?: RenderConfig) {
+	protected renderHeader(entity: entityI, config?: RenderConfig) {
 		//@ts-ignore
 		return entity.renderHeader(this.data, config || this.renderConfig);
 	}
-	protected renderBody(entity: Entity, config?: RenderConfig) {
+	protected renderBody(entity: entityI, config?: RenderConfig) {
 		//@ts-ignore
 		return entity.renderBody(this.data, config || this.renderConfig);
 	}
-	protected renderFooter(entity: Entity, config?: RenderConfig) {
+	protected renderFooter(entity: entityI, config?: RenderConfig) {
 		//@ts-ignore
 		return entity.renderFooter(this.data, config || this.renderConfig);
 	}

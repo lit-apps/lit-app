@@ -1,14 +1,18 @@
-import { EntityI } from '@lit-app/model/src/types/entity';
-import { html, css, LitElement } from "lit";
-import { when } from 'lit/directives/when.js';
-import { property, state } from 'lit/decorators.js';
+// import { EntityI } from '@lit-app/model/src/types/entity';
 import { HTMLEvent } from '@lit-app/cmp/types';
-import { AccessActionI, InviteActionI, Role } from '@lit-app/model';
-import { icon } from '@preignition/preignition-styles';
-import { LappUserSearch } from '@lit-app/cmp/user/search';
 import { UserSearch } from '@lit-app/cmp/user/internal/search';
+import '@lit-app/cmp/user/name';
+import '@lit-app/cmp/user/search';
+import '@lit-app/cmp/user/select-item';
+import { AccessActionI, Role } from '@lit-app/model';
+import { EntityI } from '@lit-app/model/src/types';
+import { icon } from '@preignition/preignition-styles';
+import { LitElement, css, html } from "lit";
+import { property, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 // import { invite, machineStateServer } from 'firebase-fsm'
 import { ToastEvent } from '../../event';
+import { ConsumeUserAccessMixin } from './context-user-access-mixin';
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')
 import('@material/web/button/outlined-button')
@@ -18,12 +22,11 @@ import('@material/web/icon/icon')
 import('@material/web/select/filled-select')
 import('@material/web/select/select-option')
 import('@material/web/progress/circular-progress')
-
 /**
  *  Add user role for an entity
  */
 
-export class AddRole extends LitElement {
+export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 
 	static override styles = [
 		icon,
@@ -54,8 +57,9 @@ export class AddRole extends LitElement {
 	/** uid of current user */
 	@property() label: string = 'Add Members'
 	@property({ type: Boolean }) canEdit = false;
-	@property({ attribute: false }) Entity!: typeof EntityI;
+	@property({ attribute: false }) Entity!: EntityI;
 	@property({ attribute: false }) languages: string[] = []; // for roles supporting languages (e.g. translator)
+	@property()
 
 	@state() accessRole: Role['name'] | '' = '';
 	@state() languageRole: string = '';
@@ -105,10 +109,10 @@ export class AddRole extends LitElement {
 			}
 		}
 
-		const onUserChanged = (e: HTMLEvent<LappUserSearch>) => {
+		const onUserChanged = (e: HTMLEvent<UserSearch>) => {
 			this.newUid = e.target.value;
 			this.isInviting = false;
-			this.newName = e.target.selectedOptions[0]?.headline || '';
+			this.newName = e.target.selectedOptions[0]?.textContent || '';
 		}
 		const onRoleSelected = (e: HTMLEvent<HTMLInputElement>) => {
 			this.accessRole = e.target.value as Role['name'];
@@ -129,15 +133,29 @@ export class AddRole extends LitElement {
 						Cancel
 						<lapp-icon slot="icon">cancel</lapp-icon>
 					</md-outlined-button>
-					<lapp-user-search
-						.loader=${this.Entity?.userLoader}
-						@change=${onUserChanged}
-						@invite-email-changed=${onInviteEmailChanged}
-					></lapp-user-search>
+					${this.Entity?.userLoader ? 
+						html`<lapp-user-search
+							.loader=${this.Entity?.userLoader}
+							@change=${onUserChanged}
+							@invite-email-changed=${onInviteEmailChanged}
+						></lapp-user-search>` : 
+						html`<md-filled-select
+							.label=${'select user'}
+							.value=${this.newUid}
+							@change=${onUserChanged}
+							quick
+							>
+							${this.accessUsers?.map(user => html`
+								<lapp-user-select-item .value=${user.uid} .selected=${this.newUid === user.uid } .uid=${user.uid}>
+									<lapp-user-name slot="headline" .uid=${user.uid}></lapp-user-name>  
+							</lapp-user-select-item>
+							`)}
+						</md-filled-select>`}
 					<md-filled-select
 						.label=${'Select Role'} 
 						.value=${this.accessRole}
-						@change=${onRoleSelected}>
+						@change=${onRoleSelected}
+						quick>
 						${this.Entity?.roles.filter(role => role.level > 1).map(role => html`
 							<md-select-option .value=${role.name} ?selected=${role.name === this.accessRole}>
 								<div slot="headline">${role.name}</div>
@@ -146,9 +164,10 @@ export class AddRole extends LitElement {
 					</md-filled-select>
 					${when(this.isLocaleRole, () => html`
 					<md-filled-select
-						.label=${'Select Langauge'} 
+						.label=${'Select Language'} 
 						.value=${this.languageRole}
-						@change=${onLanguageRoleSelected}>
+						@change=${onLanguageRoleSelected}
+						quick>
 						${this.languages.map(lan => html`<md-select-option .value=${lan} ?selected=${lan === this.languageRole}>
 							<div slot="headline">${lan}</div>
 						</md-select-option>`)}
@@ -163,7 +182,7 @@ export class AddRole extends LitElement {
 								`Invite ${this.newName || ''} as ${this.accessRole || ''} ${this.isLocaleRole ? `(${this.languageRole})` : ''}`
 							}</lapp-user-name>
 						${this.isLoading ?
-								html`<md-circular-progress></md-circular-progress>` :
+								html`<md-circular-progress slot="icon"></md-circular-progress>` :
 								html`<lapp-icon slot="icon">contact_mail</lapp-icon>`
 							}
 					</md-filled-button>` :
@@ -175,7 +194,7 @@ export class AddRole extends LitElement {
 								`Add ${this.newName || ''} as ${this.accessRole || ''} ${this.isLocaleRole ? `(${this.languageRole})` : ''}`
 							}</lapp-user-name>
 						${this.isLoading ?
-								html`<md-circular-progress></md-circular-progress>` :
+								html`<md-circular-progress slot="icon"></md-circular-progress>` :
 								html`<lapp-icon slot="icon">person</lapp-icon>`
 							}
 					</md-filled-button>`}

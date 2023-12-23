@@ -7,7 +7,6 @@ import '../img.js';
 import '@preignition/lit-firebase/span';
 import type {LifSpan} from '@preignition/lit-firebase/span';
 import { HTMLEvent } from '../../types.js';
-import { classMap } from 'lit/directives/class-map.js';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 export declare class UserMixinInterface {
@@ -83,7 +82,7 @@ export const UserItemMixin = <T extends Constructor<MdListItem>>(superClass: T) 
 
   };
   // Cast return type to your mixin's interface intersected with the superClass type
-  return UserItemMixinClass as unknown as Constructor<UserItemMixinInterface> & T;
+  return UserItemMixinClass as unknown as Constructor<UserMixinInterface> & T;
 }
 
 export default UserItemMixin;

@@ -1,7 +1,7 @@
 import type { MdDialog } from '@material/web/dialog/dialog.js';
 import { html, LitElement } from "lit";
 import { query, state } from 'lit/decorators.js';
-import { EntityI } from '../entityAbstract';
+import { EntityI } from '../abstractEntity';
 import { ConsumeAppIdMixin } from '../mixin/context-app-id-mixin';
 import { ConsumeEntityMixin } from '../mixin/context-entity-mixin';
 import { EntityAccess, EntityElement, EntityStatus } from '../types';

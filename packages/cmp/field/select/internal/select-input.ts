@@ -2,16 +2,12 @@ import('@material/web/textfield/filled-text-field.js')
 import('@material/web/menu/menu.js')
 import('@material/web/chips/input-chip.js')
 // import  {Select} from '@material/web/select/internal/select.js';
-import { Select } from './select.js'
+import { Select } from './select.js';
 
-import { LitElement, html, nothing } from 'lit';
-import { html as staticHtml, StaticValue } from 'lit/static-html.js';
+import { html, nothing } from 'lit';
 
-import { customElement, property, query, state } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { MdMenu } from '@material/web/menu/menu.js';
 import { SelectOption } from '@material/web/select/internal/shared.js';
+import { property, query, state } from 'lit/decorators.js';
 
 // @ts-ignore
 export abstract class SelectInput extends Select {

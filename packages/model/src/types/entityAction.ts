@@ -49,7 +49,7 @@ export function isNameAction(data: AllActionI): data is NameActionI {
 	return actionName === 'setName'
 }
 
-type AccessAction = 'setAccess' | 'addAccess' | 'removeAccess'  
+type AccessAction = 'setAccess' | 'addAccess' | 'removeAccess' 
 type Role = keyof Access['user'] 
 type AccessDetail = Detail & {
 	uid: string

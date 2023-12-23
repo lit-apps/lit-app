@@ -13,8 +13,8 @@ import {
 import { choose } from 'lit/directives/choose.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { html as htmlStatic, literal } from 'lit/static-html.js';
-import AbstractEntity from './entityAbstract';
-import { Collection, CollectionI, ensure, RenderConfig } from './types';
+import AbstractEntity from './abstractEntity';
+import { Actions, Collection, CollectionI, ensure, EntityElementList, RenderConfig } from './types';
 import {
 	GridConfig,
 	Model,
@@ -22,7 +22,11 @@ import {
 	ModelComponentSelect
 } from './types/modelComponent';
 
-import {RenderInterface as RenderActionInterface } from './renderEntityActionMixin';
+
+import {RenderInterface} from './types/renderEntityI';
+export type { RenderInterface } from './types/renderEntityI';
+
+import { DefaultI } from './types/entity';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
@@ -71,34 +75,13 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 
 
 
-export declare class RenderInterface<D, C extends RenderConfig = RenderConfig> extends RenderActionInterface<D, any> {
-	showMetaData: boolean
-	
-	public renderFooter(_data: D, _config?: C): TemplateResult
-	public renderBody(data: D, config?: C): TemplateResult
-	public renderHeader(data: D, config?: C): TemplateResult
-	
-	private renderArrayContent(data: Collection<D>, config?: C): TemplateResult
-	private renderGrid(data: Collection<D>, config?: C): TemplateResult
-	/* renderContent should be private, but we use it in renderEntityActionMixin */
-	protected renderContent(data: D, config?: C): TemplateResult
 
-	protected renderTitle(data: D, config?: C): TemplateResult
-	protected renderGridColumns(config?: C): TemplateResult
-	protected gridDetailRenderer(data: CollectionI<D>, _model?: any, _grid?: any): TemplateResult
-	protected renderTable(data: CollectionI<D>, config?: C): TemplateResult
-	protected renderMetaData(_data: D, _config?: C): TemplateResult
-	protected renderCard(data: Collection<D>, config?: C): TemplateResult
-	protected renderCardItem(data: D, config?: C): TemplateResult
-	protected renderEmptyArray(_config?: C): TemplateResult
-	protected renderForm(_data: D, _config?: C): TemplateResult
-}
 
 type Open = (entityName: string, id: string) => void
 /**
  * RenderMixin 
  */
-export default function renderMixin<D, C extends RenderConfig = RenderConfig>(superclass: Constructor<AbstractEntity & {open: Open}> ) {
+export default function renderMixin<D extends DefaultI, A extends Actions = Actions, C extends RenderConfig = RenderConfig>(superclass: Constructor<AbstractEntity & {open: Open}> ) {
 	class R extends superclass {
 	// class R extends RenderActionMixin(superclass) {
 
@@ -216,7 +199,7 @@ export default function renderMixin<D, C extends RenderConfig = RenderConfig>(su
 			return this.renderContent(data, config)
 		}
 
-		override renderContent(data: D, config?: C) {
+		renderContent(data: D, config?: C) {
 			if (config?.variant === 'card') {
 				return this.renderCardItem(data, config)
 			}
@@ -288,7 +271,7 @@ export default function renderMixin<D, C extends RenderConfig = RenderConfig>(su
 		}
 
 	};
-	return R as unknown as Constructor<RenderInterface<D, C>> & typeof superclass;
+	return R as unknown as Constructor<RenderInterface<D, A, C>> & typeof superclass;
 }
 
 function getFieldsFromModel(model: Model<any>, condition: (m: ModelComponent) => boolean): [string, ModelComponent][] {

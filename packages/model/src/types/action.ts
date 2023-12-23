@@ -58,7 +58,7 @@ export type FsmAction = ActionBase & {
 export type HandlerAction = ActionBase & {
 	handler: Handler
 }
-export type Action = FsmAction | HandlerAction
+export type Action = FsmAction | HandlerAction | ActionBase
 
 export type DefaultActions = 
 	'create' | 'edit' | 'write' | 'cancel' | 'delete' |'markDeleted' | 'restore' | 'open' | 'close' |

@@ -5,7 +5,7 @@ import '@vaadin/grid/theme/material/vaadin-grid-tree-column.js';
 import '@vaadin/grid/theme/material/vaadin-grid.js';
 import { css, html, LitElement } from "lit";
 import { property } from 'lit/decorators.js';
-import { UserItem, UserItemRole } from './types';
+import { UserItem, UserItemRole, UserUidRoleT } from './types';
 
 import { redispatchEvent } from '@material/web/internal/controller/events.js';
 import {
@@ -43,8 +43,6 @@ export class UserList extends LitElement {
 
 	/** the  items to display on the list */		
 	@property({attribute: false}) items!: UserItemRole[];
-
-	// @property({type: Boolean}) canEdit = false;
 
 	/** a renderer for row details */
 	@property({attribute: false}) rowDetailsRenderer!: GridRowDetailsRenderer<UserItem>;

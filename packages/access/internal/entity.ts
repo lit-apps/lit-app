@@ -1,31 +1,39 @@
+import type { UserItemRole } from '@lit-app/cmp/user/internal/types';
 import {
-	ProvideAccessMixin,
+	Access,
+	AccessActionI,
 	ConsumeDataMixin,
 	ConsumeEntityMixin,
 	ConsumeEntityStatusMixin,
-	RenderHeaderMixin,
-	Access,
-	RenderConfig,
-	GetAccess,
 	ConsumeUidMixin,
-	AccessActionI,
-	entries,
-	PartialBy
+	GetAccess,
+	PartialBy,
+	ProvideAccessMixin,
+	RenderConfig,
+	RenderHeaderMixin,
+	entries
 } from '@lit-app/model';
-import { html, LitElement } from "lit";
-import { property } from 'lit/decorators.js';
-import { when } from 'lit/directives/when.js';
-import hasUserRole from './hasUserRole';
-import type { UserItem, UserItemRole } from '@lit-app/cmp/user/internal/types';
+import { Where } from '@preignition/lit-firebase/src/types';
+import '@preignition/lit-firebase/store';
+import { LitElement, html } from "lit";
 import {
 	columnBodyRenderer,
 } from 'lit-vaadin-helpers';
+import { property, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
+import { ProvideUserAccessMixin } from './context-user-access-mixin';
+import hasUserRole from './hasUserRole';
+import { choose } from 'lit/directives/choose.js';
+import { HTMLEvent } from '@lit-app/cmp/types';
+import type { MdTabs } from '@material/web/tabs/tabs';
+import('@material/web/chips/filter-chip.js')
+// import('@material/web/chips/input-chip.js')
 // import('@material/web/chips/filter-chip.js')
-import('@material/web/chips/input-chip.js')
 import('@material/web/chips/chip-set.js')
 import('../set-role')
 import('../add-role')
 import('@lit-app/cmp/user/list')
+import('@lit-app/cmp/user/invite-list')
 
 type User = PartialBy<UserItemRole, 'provider' | 'created'>;
 
@@ -54,15 +62,30 @@ export class EntityAccess extends
 	ProvideAccessMixin(
 		ConsumeEntityMixin(
 			RenderHeaderMixin(
-				ConsumeDataMixin(
-					ConsumeEntityStatusMixin(
-						ConsumeUidMixin(
-							LitElement))))), getAccess) {
+				ProvideUserAccessMixin(
+					ConsumeDataMixin(
+						ConsumeEntityStatusMixin(
+							ConsumeUidMixin(
+								LitElement)))))), getAccess) {
 
 	private _users!: User[];
 
 	@property() override icon = 'manage_accounts';
 	@property() override heading = 'Members';
+	@state() invite: any[] = [];
+	@state() selected = 0
+
+	get path() {
+		// this is a temp hak to fetch the closest 'db-ref-entity' path
+		// once stabilized, we would use @lit/context - but is needs to be in a @lit-app package (and not as firebase persistence)
+		const ref = this.closest('db-ref-entity, db-ref');
+		// @ts-ignore
+		return ref?.path;
+	}
+
+	get hasInvite() {
+		return this.invite?.length > 0;
+	}
 
 	get metaData() {
 		return this.data?.metaData;
@@ -79,23 +102,22 @@ export class EntityAccess extends
 		const users: User[] = [];
 		entries<Access['user']>(this.metaData?.access?.user || {})
 			.forEach(([role, value]) => {
-			const v = Array.isArray(value) ? value : [value];
-			v.forEach((uid: string) => {
-				const user = users.find((user) => user.uid === uid);
-				if (!user) {
-					const prevUser = prev?.find((user) => user.uid === uid);
-					users.push({ uid, roles: [role], name: prevUser?.name });
-				} else {
-					user.roles.push(role);
-				}
+				const v = Array.isArray(value) ? value : [value];
+				v.forEach((uid: string) => {
+					const user = users.find((user) => user.uid === uid);
+					if (!user) {
+						const prevUser = prev?.find((user) => user.uid === uid);
+						users.push({ uid, roles: [role], name: prevUser?.name });
+					} else {
+						user.roles.push(role);
+					}
+				})
 			})
-		})
 
 		this._users = users;
 
 		return users
 	}
-
 
 	get renderConfig(): RenderConfig {
 		return {
@@ -121,7 +143,24 @@ export class EntityAccess extends
 	}
 
 	protected renderEntityAccess() {
+		const where: Where[] = [{
+			field: 'ref.machineID',
+			op: '==',
+			value: 'invite'
+		}, {
+			field: 'snapshot.context.targetPath',
+			op: '==',
+			value: this.path
+		}, {
+			field: 'snapshot.status',
+			op: '==',
+			value: 'active'
+		}]
 		return html`
+		<lif-store
+			.path=${'app/fsm/actor'}
+			.where=${where}
+			@data-changed=${(e: CustomEvent) => this.invite = e.detail.value}></lif-store>
 			<slot name="header">
 				${this.renderHeader(this.data, this.renderConfig)}
 			</slot>
@@ -136,8 +175,9 @@ export class EntityAccess extends
 	}
 
 	protected renderBody(_data: any, renderConfig: RenderConfig) {
-		const currentOwner = this.metaData?.access?.user?.owner;
-		console.log('currentOwner', currentOwner);
+		const currentOwner = this.metaData?.access?.user?.owner
+		const hasOwner = Array.isArray(currentOwner) ? currentOwner.length > 0 : !!currentOwner;
+		const hasOneOwner = Array.isArray(currentOwner) ? currentOwner.length === 1 : !!currentOwner;
 		const bodyRole = (item: UserItemRole) => html`
 		<md-chip-set>
 			${item.roles.map(it => {
@@ -145,21 +185,39 @@ export class EntityAccess extends
 				// console.log('onActionRevoke', e);
 				e.preventDefault();
 				const event = this.Entity.getEntityAction<AccessActionI>({
-						uid: item.uid,
-						role: it
+					uid: item.uid,
+					role: it
 				}, 'removeAccess')
 				this.dispatchEvent(event);
+			}
+			const onClick = (e: CustomEvent) => {
+				e.preventDefault();
 
 			}
-			return html`<md-input-chip 
+			const canEdit = it === 'owner' ? this.canEdit && !hasOneOwner : this.canEdit;
+			return html`<md-filter-chip 
 				@remove=${onActionRevoke}
-				.disabled=${!this.canEdit} 
-				.removable=${this.canEdit} 
-				.label=${it}></md-input-chip>`
-			})}
+				@click=${onClick}
+				.removable=${canEdit}
+
+				.label=${it}></md-filter-chip>`
+		})}
 		</md-chip-set>`;
 
-		const canSetOwnership = renderConfig.entityAccess.isOwner || !currentOwner || this.superAdmin ;
+		const userListTpl = html`<lapp-user-list
+				.items=${this.users}>
+				<vaadin-grid-column flex-grow="1" 
+					.header=${'Role'}
+					${columnBodyRenderer(bodyRole)}></vaadin-grid-column>
+			</lapp-user-list>`
+
+		const inviteListTpl = html`<lapp-invite-list
+			.items=${this.invite}
+			></lapp-invite-list>`
+		const canSetOwnership = renderConfig.entityAccess.isOwner || !hasOwner || this.superAdmin;
+		const onChange = (e: HTMLEvent<MdTabs>) => {
+			this.selected = e.target.activeTabIndex
+		}
 		return html`
 		<section class="content">
 			<h5 class="secondary">Ownership</h5>
@@ -170,7 +228,6 @@ export class EntityAccess extends
 				.canEdit=${canSetOwnership}
 				.Entity=${this.Entity}
 			></lapp-access-set-role>
-			
 		</section>
 		${when(renderConfig.entityAccess.canEdit, () => html`
 		<section class="content">
@@ -180,22 +237,33 @@ export class EntityAccess extends
 				.canEdit=${renderConfig.entityAccess.canEdit}
 				.Entity=${this.Entity}
 			></lapp-access-add-role>
-			</section>`)}
+		</section>`)}
 		<section class="flex content layout vertical no-gap">
-			<h5 class="secondary">Member List</h5>
-			<lapp-user-list
-				.items=${this.users}
-				.canEdit=${renderConfig.entityAccess.canEdit}>
-			<vaadin-grid-column flex-grow="1" 
-				.header=${'Role'}
-        ${columnBodyRenderer(bodyRole)}
-        ></vaadin-grid-column>
-		</lapp-user-list>
-			
+				${this.hasInvite ?
+				html`<md-tabs 
+						style="max-width: 400px;"
+						.activeTabIndex=${this.selected} 
+						@change=${onChange}>
+					<md-secondary-tab>
+						<lapp-icon slot="icon">groups</lapp-icon>
+						Member List
+					</md-secondary-tab>
+					<md-secondary-tab>
+						<lapp-icon slot="icon">send</lapp-icon>
+						Pending Invite
+					</md-secondary-tab>
+				</md-tabs>
+				${choose(this.selected, [
+					[1, () => inviteListTpl]
+				],
+					() => userListTpl
+				)}` :
+				html`<h5 class="secondary">Member List</h5>${userListTpl}`}
+				
 		</section>
 		`
-
 	}
+
 	protected renderFooter() {
 		return html``
 	}

@@ -8,8 +8,7 @@ import {
 
 import type { Access } from '../types/dataI';
 import type { GetAccess } from '../types/getAccess';
-// import type {EntityI} from '../types/entity';
-import type EntityI from '../entityAbstract';
+import type {EntityI} from '../types';
 
 export const entityAccessContext = createContext<EntityAccess>('entity-access-context');
 
@@ -75,7 +74,7 @@ const getAccessDefault: GetAccess = {
  * A mixin to be applied to entities at root level. It set entityAccess for the entity: 
  * Entity Access stores access information about the entity, like `isOwner`, `canEdit`, `canView`, `canDelete`
  */
-export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: typeof EntityI, data: any}> >(superClass: T, getAccessFn?: GetAccess) => {
+export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: EntityI, data: any}> >(superClass: T, getAccessFn?: GetAccess) => {
 
 	class ProvideAccessMixinClass extends ApplyGetterMixin(superClass) {
 
@@ -114,7 +113,7 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 				}
 				return;
 			}
-			const getAccess = getAccessFn || this.Entity.getAccess || (this.entity?.constructor as typeof EntityI)?.getAccess || getAccessDefault;
+			const getAccess = getAccessFn || this.Entity.getAccess || (this.entity?.constructor)?.getAccess || getAccessDefault;
 			this.entityAccess = {
 				isOwner: typeof getAccess.isOwner === 'function' ? getAccess.isOwner.call(this, accessData, data) : getAccess.isOwner,
 				canEdit: typeof getAccess.canEdit === 'function' ? getAccess.canEdit.call(this, accessData, data) : getAccess.canEdit,

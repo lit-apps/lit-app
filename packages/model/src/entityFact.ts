@@ -1,8 +1,8 @@
-import EntityAbstract, {StaticEntityI} from './entityAbstract';
+import AbstractEntity from './abstractEntity';
 import fieldMixin, {RenderInterface as FieldI, StaticEntityField} from './renderEntityFieldMixin';
-import entityMixin, {RenderInterface as renderI} from './renderEntityMixin';
+import entityMixin, {RenderInterface as RenderI} from './renderEntityMixin';
 import actionMixin, {RenderInterface as ActionI, StaticEntityActionI, defaultActions} from './renderEntityActionMixin';
-import { Actions,  RenderConfig } from './types';
+import { Actions,  RenderConfig, StaticEntityI} from './types';
 import { DefaultI } from './types/entity';
 import { Model} from './types/modelComponent';
 
@@ -23,11 +23,11 @@ export default function abstractEntityFact<
 		}
 	class R extends 
 		fieldMixin<D, C>(
-			entityMixin<D, C>(
-				actionMixin<D, typeof action>(EntityAbstract, action)), model) { }
+			entityMixin<D, A, C>(
+				actionMixin<D, typeof action>(AbstractEntity, action)), model) { }
 	
-	return R as unknown as Constructor<EntityAbstract> & 
-		Constructor<renderI<D, C>> &
+	return R as unknown as Constructor<AbstractEntity> & 
+		Constructor<RenderI<D, typeof action, C>> &
 		Constructor<FieldI<D, C>> &
 		Constructor<ActionI<D, typeof action>> &
 		StaticEntityActionI<D, typeof action> & 

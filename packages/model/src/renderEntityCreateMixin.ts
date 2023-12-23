@@ -1,9 +1,10 @@
 import '@vaadin/grid/theme/material/vaadin-grid-column.js';
 import '@vaadin/grid/theme/material/vaadin-grid-sort-column.js';
 import '@vaadin/grid/theme/material/vaadin-grid.js';
-import AbstractEntity from './entityAbstract';
-
+import AbstractEntity from './abstractEntity';
+import { RenderEntityCreateInterface } from './types/renderEntityCreateI';
 import { DataI } from './types/dataI';
+import { Actions } from './types';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
@@ -15,16 +16,11 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 
 
 
-export declare class RenderEntityCreateInterface<D extends DataI> {
-	getNewData(...args: any[]): Partial<D>
-	protected processCreateData(data: Partial<D>): Partial<D>
-	protected processCreateMetaData(metaData: Partial<D["metaData"]>): Partial<D["metaData"]>
-	protected processCreateRef(ref: Partial<D["ref"]>): Partial<D["ref"]>
-}
+
 /**
  * RenderMixin 
  */
-export default function renderMixin<D extends DataI>(superclass: Constructor<AbstractEntity>) {
+export default function renderMixin<D extends DataI, A extends Actions>(superclass: Constructor<AbstractEntity<D,A>>) {
 	class R extends superclass {
 
 		/** 

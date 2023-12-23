@@ -2,14 +2,13 @@ import { throttle } from '@preignition/preignition-util/src/debounce';
 import { get, set } from '@preignition/preignition-util/src/deep';
 import { html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import type Entity from './entity';
 import { Dirty, EntityWriteDetail, Update } from './events';
 import { DefaultI, EntityElement, FieldConfig, FieldConfigUpload } from './types/entity';
 import { Model, ModelComponentSelect } from './types/modelComponent';
 // Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
 import '@polymer/polymer';
 import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-box';
-import AbstractEntity from './entityAbstract';
+import AbstractEntity from './abstractEntity';
 
 import('@material/mwc-textfield')
 import('@material/mwc-textarea')
