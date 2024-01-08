@@ -19,7 +19,7 @@ export type ResourceMetaData<A = ResourceAccess, T = string> = MetaData<A, T> & 
 export interface ResourceUI {
 	name: string // internal name
 	language: string
-	slug?: string // slug from title
+	// slug?: string // slug from title
 	title?: string // external name
 	shortDesc?: string
 }

@@ -25,7 +25,7 @@
     "@lit-app/testing": "link:../testing",
     "@lit-labs/motion": "^1.0.6",
     "@lit-labs/observers": "^2.0.2",
-    "@material/web": "1.1.1",
+    "@material/web": "1.1.2-nightly.ad52075.0",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-styles": "link:../../../packages/preignition-styles",

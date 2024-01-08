@@ -7,7 +7,7 @@ import { css, html, LitElement } from "lit";
 import { property } from 'lit/decorators.js';
 import { UserItem, UserItemRole, UserUidRoleT } from './types';
 
-import { redispatchEvent } from '@material/web/internal/controller/events.js';
+import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';
 import {
 	headerFilterText
 } from '@preignition/preignition-util/src/directiveRenderer';

@@ -5,7 +5,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { HTMLEvent } from '../../types'
 import '../../field/select-input'
 import type { LappSelectInput } from '../../field/select-input';
-import { redispatchEvent } from '@material/web/internal/controller/events.js';
+import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';
 // import '../card'
 import { Loader, UserItem } from './types';
 import slotList from '@preignition/preignition-styles/src/slot-list.js';

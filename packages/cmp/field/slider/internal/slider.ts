@@ -7,7 +7,7 @@ import type { InputSlider } from './input-slider';
 // import '@material/web/slider/slider.js';
 import '../input-slider'
 
-import { redispatchEvent } from '@material/web/internal/controller/events';
+import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';
 import { MdSlider } from '@material/web/slider/slider';
 import { createValidator } from '@material/web/labs/behaviors/constraint-validation';
 import { Validator } from '@material/web/labs/behaviors/validators/validator';

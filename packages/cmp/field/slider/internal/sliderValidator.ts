@@ -23,7 +23,7 @@ export class SliderValidator extends Validator<SliderState> {
   private sliderControl?: HTMLInputElement;
 
   protected override computeValidity(state: SliderState) {
-    console.info('computeValiditySlider', state)
+    // console.info('computeValiditySlider', state)
     if (!this.sliderControl) {
       // Lazily create the platform select
       this.sliderControl = document.createElement('input');
