@@ -1,7 +1,6 @@
 import 'lite-youtube-embed';
 
-import { html, css, LitElement } from "lit";
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 
 // get class from 'lite-youtube' customElements
 const LiteYoutubeClass = customElements.get('lite-youtube');
