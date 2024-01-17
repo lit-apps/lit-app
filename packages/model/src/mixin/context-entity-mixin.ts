@@ -1,4 +1,4 @@
-import { ReactiveElement } from 'lit';
+import { PropertyValues, ReactiveElement } from 'lit';
 import { state } from 'lit/decorators.js';
 import { consume, provide, createContext } from '@lit/context';
 // import type {EntityI} from '../types/entity';
@@ -37,6 +37,15 @@ export const ProvideEntityMixin = <T extends Constructor<ReactiveElement>>(super
 		@provide({ context: entityContext })
 		@state() Entity!: EntityI;
 		
+		override willUpdate(props: PropertyValues<this>) {
+			// we set the data-entity attribute to the entity name
+			// so that we can query the dom for this entity - this is used 
+			// by EntityResourceCreateMixin for example
+			if (props.has('Entity')) {
+				this.setAttribute('data-entity', this.Entity.entityName)
+			}
+			super.willUpdate(props);
+		}
 
 	};
 

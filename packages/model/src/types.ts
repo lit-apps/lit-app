@@ -40,6 +40,7 @@ export {
 export * from './types/dataI';
 export * from './types/getAccess';
 export * from './types/resource';
+export * from './types/entityResource';
 export {
 	Action, Actions, ActionType, ColumnsConfig, DefaultActions, EntityAccess, EntityElement, EntityElementList, EntityStatus, GridConfig, Lookup, Model, RenderConfig
 };

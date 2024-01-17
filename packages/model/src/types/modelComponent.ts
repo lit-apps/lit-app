@@ -12,6 +12,8 @@ type SliderComponent = 'slider'
 type UploadComponent = 'upload'
 type UploadComponentImage = 'upload-image'
 type BooleanComponent = 'checkbox' | 'switch'
+type CheckboxGroupComponent = 'checkbox-group'
+type RadioGroupComponent = 'radio-group'
 type SelectComponent = 'select' | 'multi-select'
 
 type TableConfig<T = any> = {
@@ -37,6 +39,7 @@ interface ModelComponentBase<T = any> {
 	label?: string
 	helper?: string
 	required?: boolean
+	disabled?: boolean
 	icon?: string
 	class?: string
 	table?: TableConfig<T>
@@ -96,7 +99,15 @@ export interface ModelComponentUploadImage<T = any> extends ModelComponentBase<T
 
 export interface ModelComponentSelect<T = any> extends ModelComponentBase<T> {
 	component: SelectComponent
-	items?: { code: string, label: string }[]
+	items?: Lookup[]
+}
+export interface ModelComponentCheckboxGroup<T = any> extends ModelComponentBase<T> {
+	component: CheckboxGroupComponent
+	items?: Lookup[]
+}
+export interface ModelComponentRadioGroup<T = any> extends ModelComponentBase<T> {
+	component: RadioGroupComponent
+	items?: Lookup[]
 }
 export interface ModelComponentText<T = any> extends ModelComponentBase<T> {
 	component?: TextComponent | DateComponent
@@ -134,6 +145,8 @@ export interface ModelComponentBoolean<T = any> extends ModelComponentBase<T> {
 
 export type ModelComponent<T = any> =
 	ModelComponentSelect<T> |
+	ModelComponentRadioGroup<T> |
+	ModelComponentCheckboxGroup<T> |
 	ModelComponentText<T> |
 	ModelComponentTextArea<T> |
 	ModelComponentMd<T> |
@@ -143,6 +156,49 @@ export type ModelComponent<T = any> =
  	ModelComponentUpload<T> |
  	ModelComponentUploadImage<T> 
 
+export type FieldConfig<T = any> = Omit<ModelComponent<T>, 'component' | 'table' | 'grid'>
+
 export type Model<T, B = T> = {
 	[key in keyof Partial<T>]: ModelComponent<B> | Model<T[key], B>
 }  
+
+export function isComponentSelect<T = any>(model: ModelComponent<T>): model is ModelComponentSelect<T> {
+	return model.component === 'select' ;
+}
+// TODO: remove this once we get rid of vaadin-multi-select-combo-box
+export function isComponentMultiSelect<T = any>(model: ModelComponent<T>): model is ModelComponentSelect<T> {
+	return  model.component === 'multi-select';
+}
+export function isComponentRadioGroup<T = any>(model: ModelComponent<T>): model is ModelComponentRadioGroup<T> {
+	return model.component === 'radio-group';
+}
+export function isComponentCheckboxGroup<T = any>(model: ModelComponent<T>): model is ModelComponentCheckboxGroup<T> {
+	return model.component === 'checkbox-group';
+}
+export function isComponentText<T = any>(model: ModelComponent<T>): model is ModelComponentText<T> {
+	return model.component === 'textfield' || model.component === 'datefield';
+}
+export function isComponentTextArea<T = any>(model: ModelComponent<T>): model is ModelComponentTextArea<T> {
+	return model.component === 'textarea';
+}
+export function isComponentMd<T = any>(model: ModelComponent<T>): model is ModelComponentMd<T> {
+	return model.component === 'md';
+}
+export function isComponentMdDroppable<T = any>(model: ModelComponent<T>): model is ModelComponentMdDroppable<T> {
+	return model.component === 'md' && (model as ModelComponentMdDroppable).droppable !== undefined;
+}
+export function isComponentCheckbox<T = any>(model: ModelComponent<T>): model is ModelComponentBoolean<T> {
+	return model.component === 'checkbox' ;
+}
+export function isComponentSwitch<T = any>(model: ModelComponent<T>): model is ModelComponentBoolean<T> {
+	return  model.component === 'switch';
+}
+export function isComponentSlider<T = any>(model: ModelComponent<T>): model is ModelComponentSlider<T> {
+	return model.component === 'slider';
+}
+export function isComponentUpload<T = any>(model: ModelComponent<T>): model is ModelComponentUpload<T> {
+	return model.component === 'upload';
+}
+export function isComponentUploadImage<T = any>(model: ModelComponent<T>): model is ModelComponentUploadImage<T> {
+	return model.component === 'upload-image';
+}

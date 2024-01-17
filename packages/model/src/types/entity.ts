@@ -19,20 +19,6 @@ export type EntityAccess = {
 	// isSuper: boolean // true for super Admin 
 }
 
-export interface FieldConfig {
-	disabled?: boolean
-	label?: string
-	class?: string
-}
-
-export interface FieldConfigUpload extends FieldConfig {
-	store?: string
-	path?: string
-	maxFiles?: number
-	accept?: string
-	maxFileSize?: number
-}
-
 interface EntityBase<T extends DefaultI = DefaultI> extends LitElement {
 	entity: entityI<T>
 	data?: T

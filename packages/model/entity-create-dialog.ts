@@ -1,11 +1,11 @@
 import { form, label, page } from '@preignition/preignition-styles';
 import { customElement } from 'lit/decorators.js';
-
+import { css } from 'lit';
 import CreateDialog from './src/cmp/entity-create-dialog';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lapp-entity-create-dialog': LappCreateDialog;
+    'lapp-entity-create-dialog': LappEntityCreateDialog;
   }
 }
 
@@ -18,7 +18,17 @@ export class LappEntityCreateDialog extends CreateDialog {
 	static override styles = [
 		...page,
 		form, 
-		label
+		label, 
+		css`
+			:host {
+				/* 
+				 * TODO: remove when we stop using MD2 app layout 
+				 * For the time being, necessary to make sure the dialog is 
+				 * on top of the app layout
+				 */
+				z-index: var(--z-index-modal, 700)
+			}
+		`
 	]
   
 }

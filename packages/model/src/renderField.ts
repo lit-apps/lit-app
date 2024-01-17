@@ -3,12 +3,29 @@ import { get, set } from '@preignition/preignition-util/src/deep';
 import { html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Dirty, EntityWriteDetail, Update } from './events';
-import { DefaultI, EntityElement, FieldConfig, FieldConfigUpload } from './types/entity';
-import { Model, ModelComponentSelect } from './types/modelComponent';
+import { DefaultI, EntityElement}  from './types/entity';
+import type { Model, ModelComponent, FieldConfig } from './types/modelComponent';
 // Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
 import '@polymer/polymer';
 import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-box';
 import AbstractEntity from './abstractEntity';
+
+import {
+  isComponentSelect,
+  isComponentMultiSelect,
+  isComponentRadioGroup,
+  isComponentCheckboxGroup,
+  isComponentText,
+  isComponentTextArea,
+  isComponentMd,
+  isComponentMdDroppable,
+  isComponentCheckbox,
+  isComponentSwitch,
+  isComponentSlider,
+  isComponentUpload,
+  isComponentUploadImage,
+
+} from './types/modelComponent';
 
 import('@material/mwc-textfield')
 import('@material/mwc-textarea')
@@ -20,6 +37,8 @@ import('@preignition/pwi-input/src/pwi-input-translation-textarea')
 import('@material/web/checkbox/checkbox.js')
 import('@material/web/switch/switch.js')
 import('@material/web/select/select-option.js')
+import('@lit-app/cmp/field/choice-checkbox')
+import('@lit-app/cmp/field/choice-radio')
 import('../../cmp/field/slider-field.js')
 import('../../cmp/field/select.js')
 
@@ -45,12 +64,12 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   name: string,
   data: D = {} as D,
   update: boolean,
-  m: Model<unknown>,
+  m: Model<D>,
   entity: AbstractEntity,
-  config?: FieldConfig | FieldConfigUpload,
+  config?: FieldConfig<D>,
   mode: 'edit' | 'translate' | 'view' = 'edit'
 ) {
-  let model = get(name, m);
+  let model: ModelComponent<any> = get(name, m);
   if (!model && import.meta.env.DEV) {
     console.warn(`No model found for ${name}`);
     return html`<i class="field" style="color:var(--color-warning);">Missing model for "${name}" in "${entity.entityName}"</i>`
@@ -62,7 +81,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
 
   let { component } = model;
   if (!component) {
-    component = 'textfield';
+    model.component = 'textfield';
   }
   const cls = `${model.class || ''} ${key} ${component} field`;
 
@@ -86,7 +105,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   const canEdit = (this.entityStatus?.isEditing || (entity.realTime && this.entityAccess.canEdit)) && !(config?.disabled === true);
   const disabled = !canEdit;
 
-  const label = model.label ?? key;
+  const label = model.label ?? (key || '');
 
   if (!model) {
     throw new Error(`No model found for ${name}`);
@@ -118,7 +137,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
 
   if (mode === 'translate') {
     const origin = get(name, Object.getPrototypeOf(data));
-    if (component === 'textfield') {
+    if (isComponentText(model)) {
       return html`
       <pwi-input-translation 
         class=${cls}
@@ -133,7 +152,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         @translated-changed=${onInputFact('translated')} 
       ></pwi-input-translation>`
     }
-    if (component === 'textarea') {
+    if (isComponentTextArea(model)) {
       return html`
       <pwi-input-translation-textarea 
         class=${cls}
@@ -147,7 +166,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         @translated-changed=${onInputFact('translated')} 
       ></pwi-input-translation-textarea>`
     }
-    if (component === 'md') {
+    if (isComponentMd(model) || isComponentMdDroppable(model)) {
       return html`
       <pwi-md-editor 
         .rows=${3}
@@ -160,17 +179,12 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         @mdtranslate-changed=${onInputFact('mdtranslated')} 
         .maxLength=${model.maxLength}
         .charCounter=${!!model.maxLength}></pwi-md-editor>
-      
       `
     }
     throw new Error(`Translation not allowed for ${name}`);
-
   }
 
-
-  if (component === 'textfield') {
-    // console.log('renderField', name, value)
-
+  if (isComponentText(model)) {
     return html`
     <mwc-textfield
       class=${cls}
@@ -190,7 +204,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     ></mwc-textfield>
     `
   }
-  if (component === 'textarea') {
+  if (isComponentTextArea(model)) {
     return html`
     <mwc-textarea
       class=${cls}
@@ -208,8 +222,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     ></mwc-textarea >`;
   }
 
-  if (component === 'md') {
-    if(model.droppable) {
+  if (isComponentMdDroppable(model)) {
       return html`<pwi-md-droppable-editor
       class=${cls}
       .name=${name}
@@ -224,12 +237,13 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .path=${model.path}
       useFirestore=${model.useFirestore || nothing }
       maxFileSize=${model.maxFileSize || nothing }
-      rows=${ifDefined(model.rows) || undefined}
-      resize=${ifDefined(model.resize) || undefined}
+      rows=${model.rows || nothing}
+      resize=${model.resize || nothing}
       .md=${value || ''}
       @input=${onInputFact('md')}
     ></pwi-md-droppable-editor>`
     }
+  if (isComponentMd(model)) {
   return html`
     <pwi-md-editor
       class=${cls}
@@ -250,7 +264,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     `;
   }
 
-  if (component === 'upload') {
+  if (isComponentUpload(model)) {
     return html`
     <pwi-form-upload
       class=${cls}
@@ -269,7 +283,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     ></pwi-form-upload>
     `;
   }
-  if (component === 'upload-image') {
+  if (isComponentUploadImage(model)) {
     return html`
     <firebase-image-upload
       class=${cls}
@@ -288,7 +302,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     ></firebase-image-upload>
     `;
   }
-  if (component === 'slider') {
+  if (isComponentSlider(model)) {
     // For the time being, we render as number text field as slider is not working
     return html`
      <lapp-slider-field
@@ -308,7 +322,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     `;
 
   }
-  if (component === 'select') {
+  if (isComponentSelect(model)) {
     return html`
     <lapp-select
       class=${cls}
@@ -320,20 +334,20 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .required=${model.required}
       .value=${value || ''}
       @change=${onInputFact('value')}
-      >${((model as ModelComponentSelect).items || []).map(item => html`
+      >${(model.items || []).map(item => html`
         <md-select-option .value=${item.code} ?selected=${item.code === value}>
           <div slot="headline">${item.label}</div>
         </md-select-option>`)}
     </lapp-select >
   `;
   }
-  if (component === 'multi-select') {
+  if (isComponentMultiSelect(model)) {
     return html`
     <vaadin-multi-select-combo-box
       class=${cls}
       .name=${name}
-      .items=${(model as ModelComponentSelect).items}
-      .selectedItems=${((model as ModelComponentSelect).items || []).filter(item => (value || []).indexOf(item.code) > -1)}
+      .items=${model.items}
+      .selectedItems=${(model.items || []).filter(item => (value || []).indexOf(item.code) > -1)}
       @change=${onInputFact('selectedValues')}
       .itemLabelPath=${'label'}
       .itemValuePath=${'code'}
@@ -346,21 +360,21 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     </vaadin-multi-select-combo-box>
   `;
   }
-  if (component === 'checkbox') {
+  if (isComponentCheckbox(model)) {
     return html`
     <label class=${cls}>
       <md-checkbox touch-target="wrapper" 
-        aria-label=${label||''}
-        .name=${name}
-        .checked=${value}
-        .disabled=${disabled}
-        @change=${onInputFact('checked')} 
-        ></md-checkbox>
+      aria-label=${label||''}
+      .name=${name}
+      .checked=${value}
+      .disabled=${disabled}
+      @change=${onInputFact('checked')} 
+      ></md-checkbox>
         ${label || ''}
       </label>
     `;
   }
-  if (component === 'switch') {
+  if (isComponentSwitch(model)) {
     return html`
     <label class=${cls}>
       ${label || ''}
@@ -371,6 +385,38 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         @change=${onInputFact('selected')} 
         ></md-switch>
       </label>
+    `;
+  }
+  if (isComponentCheckboxGroup(model)) {
+    return html`
+   <lapp-choice-checkbox
+      class=${cls}
+      .name=${name}
+      .icon=${model.icon}
+      .readonly=${disabled}
+      .label=${label}
+      .supportingText=${model.helper}
+      .required=${model.required}
+      .value=${value || ''}
+      .options=${model.items}
+      @selected=${onInputFact('selected')}
+    ></lapp-choice-checkbox>
+    `;
+  }
+  if (isComponentRadioGroup(model)) {
+    return html`
+   <lapp-choice-radio
+      class=${cls}
+      .name=${name}
+      .icon=${model.icon}
+      .readonly=${disabled}
+      .label=${label}
+      .supportingText=${model.helper}
+      .required=${model.required}
+      .value=${value || ''}
+      .options=${model.items}
+      @selected=${onInputFact('selected')}
+    ></lapp-choice-radio>
     `;
   }
   throw new Error(`No component found for ${name}`);

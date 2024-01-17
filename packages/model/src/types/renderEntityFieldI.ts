@@ -1,17 +1,15 @@
 import { TemplateResult } from 'lit';
 import {
 	DefaultI,
-  FieldConfig,
-  FieldConfigUpload,RenderConfig
+  RenderConfig
 } from './entity';
+import { FieldConfig } from './modelComponent';
 import AbstractEntity from '../abstractEntity';
 
-
-type FConfig = FieldConfig | FieldConfigUpload
 export declare class RenderInterface<D, C extends RenderConfig = RenderConfig> {
-	renderField(name: string, config?: FConfig, data?: D): TemplateResult 
-	renderFieldUpdate(name: string, config?: FConfig, data?: D): TemplateResult
-	renderFieldTranslate(name: string, config?: FConfig, data?: D): TemplateResult
+	renderField(name: string, config?: FieldConfig, data?: D): TemplateResult 
+	renderFieldUpdate(name: string, config?: FieldConfig, data?: D): TemplateResult
+	renderFieldTranslate(name: string, config?: FieldConfig, data?: D): TemplateResult
 	renderCreateDialog(data: D, config?: C): TemplateResult
 
 }

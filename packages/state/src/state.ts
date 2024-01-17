@@ -46,6 +46,7 @@ export class State extends EventTarget {
   static finalized: boolean = false;
 
   static initPropertyMap() {
+
     if (!this.propertyMap) {
       this.propertyMap = new Map<string, PropertyMapOptions>()
     }

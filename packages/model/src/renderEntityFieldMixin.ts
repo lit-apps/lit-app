@@ -5,16 +5,14 @@ import { EntityElement, RenderConfig } from './types';
 import { renderField } from './renderField';
 import {
 	DefaultI,
-  FieldConfig,
-  FieldConfigUpload
+  
 } from './types/entity';
 import {
-	Model
+	Model,
+	FieldConfig
 } from './types/modelComponent';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
-
-type FConfig = FieldConfig | FieldConfigUpload
 
 
 import { RenderInterface, StaticEntityField } from './types/renderEntityFieldI';
@@ -26,13 +24,13 @@ export default function renderMixin<D extends DefaultI = DefaultI, C extends Ren
 	* renders a data-entry field, depending on the model definition
 	*/
 		// declare ['constructor']: typeof R & typeof AbstractEntity;
-		 renderField(name: string, config?: FConfig, data?: D) {
+		 renderField(name: string, config?: FieldConfig, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
 			return (renderField<D>).call(this.host as EntityElement<D>, name, (data ?? this.host.data ?? {}) as D, false, this.model, this, config);
 		}
-		 renderFieldTranslate(name: string, config?: FConfig, data?: D) {
+		 renderFieldTranslate(name: string, config?: FieldConfig, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
@@ -42,7 +40,7 @@ export default function renderMixin<D extends DefaultI = DefaultI, C extends Ren
 		 * renders a data-entry field, depending on the model definition
 		 * and updates the data object on input
 		 */
-		 renderFieldUpdate(name: string, config?: FConfig, data?: D) {
+		 renderFieldUpdate(name: string, config?: FieldConfig, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}

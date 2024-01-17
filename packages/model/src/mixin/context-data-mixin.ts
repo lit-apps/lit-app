@@ -63,7 +63,8 @@ export const ProvideDataMixin = <D, T extends Constructor<ReactiveElement>>(supe
 						Object.setPrototypeOf(this.data, this.parentData);
 					}
 				}
-				this.provider.setValue(this.data);
+				const force = Array.isArray(this.data) ? true : false;
+				this.provider.setValue(this.data, force);
 				
 			}
 			super.willUpdate(prop);
