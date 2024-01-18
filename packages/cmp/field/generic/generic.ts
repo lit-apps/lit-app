@@ -12,6 +12,7 @@ import { property, query } from 'lit/decorators.js';
 import { CompatMixin } from '../compat/compat-mixin.js';
 import { Field } from '@material/web/field/internal/field';
 import { onReportValidity } from '@material/web/labs/behaviors/on-report-validity';
+import { A11yFieldMixinInterface } from '../field/internal/a11y-field-mixin';
 
 
 // @ts-ignore
@@ -19,7 +20,7 @@ export interface GenericI extends TextField {
   hasError: boolean
   focused: boolean
   fieldName: string
-  field: Field
+  field: Field & A11yFieldMixinInterface
 
   input: HTMLInputElement | null | undefined
   inputOrTextarea: HTMLInputElement | null | undefined
@@ -78,6 +79,10 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
       ${t.renderTrailingIcon()}
       <div id="description" slot="aria-describedby"></div>
     </${this.fieldTag}>`;
+  }
+
+  getTextLabel() {
+    return this.field?.getTextLabel?.() || this.label
   }
 
   get supportingOrErrorText() {

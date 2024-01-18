@@ -1,5 +1,5 @@
 import { nothing, LitElement, PropertyValueMap, PropertyValues, TemplateResult, css, html } from 'lit';
-import { property } from 'lit/decorators.js'
+import { property, query } from 'lit/decorators.js'
 import {classMap} from 'lit/directives/class-map.js';
 
 import { Field } from '@material/web/field/internal/field';
@@ -14,6 +14,7 @@ export declare class A11yFieldMixinInterface {
 	variant: Variant | undefined;
 	labelAbove: boolean | undefined;
 	renderLabel: RenderLabel;
+	getTextLabel(): string;
 
 }
 /**
@@ -38,6 +39,15 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 		 * whether to alway show the label above the field and disable animation
 		 */
 		@property({ type: Boolean, reflect: true }) labelAbove = false;
+
+		@query('.label[aria-hidden="false"]') labelEl!: HTMLElement;
+
+		/**
+		 * get the label as text - and parsed when it is markdown
+		 */
+		getTextLabel() {
+			return this.labelEl?.innerText || '';
+		}
 
 		/** we store markdown template for label */
 		private _md: TemplateResult | typeof nothing = nothing;

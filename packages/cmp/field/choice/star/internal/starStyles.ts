@@ -70,6 +70,6 @@ input[id="star0"]:checked + label {
 export default [
 	genericStyles,
 	choiceStyles,
-	...accessibility,
+	accessibility,
 	styles
 ]

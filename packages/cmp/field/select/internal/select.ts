@@ -52,11 +52,21 @@ export abstract class Select extends translate(S, locale, 'readaloud') {
     this.propagateToField(changedProperties);
     super.firstUpdated(changedProperties);
   }
+  
+  getTextLabel() {
+    return this.field?.getTextLabel?.() || this.label
+  }
+
 
   getReadAloud(readHelper) {
+    let label = this.getTextLabel();
+		if (label.endsWith('*')) {
+			label = label.slice(0, -1);
+			label += this.getTranslate('required');
+		}
     return this.value ?
-      `${this.displayText} ${this.getTranslate('isTheAnswerTo')} ${getInnerText(this.label)}` :
-      (getInnerText(this.label) + (readHelper && this.supportingText ? ('. ' + this.getTranslate('hint') + ': ' + this.supportingText) + '.' : '') + this.getReadAloudOptions(readHelper));
+      `${this.displayText} ${this.getTranslate('isTheAnswerTo')} ${label}` :
+      (label + (readHelper && this.supportingText ? ('. ' + this.getTranslate('hint') + ': ' + this.supportingText) + '.' : '') + this.getReadAloudOptions(readHelper));
   }
 
   getReadAloudOptions(readHelper) {

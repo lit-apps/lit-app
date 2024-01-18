@@ -11,6 +11,7 @@ export default {
   countOptions: 'There are {{ count }} options to read. Click "read aloud" again to read them all.',
   chooseOption: 'Choose your answers from the following options',
   chooseOptions: 'Choose one answer from the following options',
+  required: 'An answer to this question is required.',
   givenRate: 'You have given a rate of {{ count }} out of {{ max }} stars to ',
   giveRate: 'Give a rate between {{ min }} and {{ max }} stars',
   pleaseSpecify: 'please specify',

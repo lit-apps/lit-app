@@ -10,7 +10,6 @@ import NoAutoValidateMixin  from '../../mixin/noAutoValidateMixin';
  * PwiTextField is an override of MD3's filled-textfield for Preignition
  * that adds a couple of additional features to the component.
  * 
- * - [x] two-way binding, via @value-changed - DEPRECATED
  * - [x] RTL support - hopefully not needed anymore with MD3 as it should be supported out of the box
  * - [x] support for displaying native validation message - provided out of the box by MD3
  * - [ ] improved support for readonly (style and behavior) 

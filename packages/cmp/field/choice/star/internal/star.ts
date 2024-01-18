@@ -147,10 +147,14 @@ export abstract class Star extends
   override getReadAloud(readHelper: boolean) {
     const min = this.allowNoStar ? 0 : 1;
     const max = this.starNumber;
-
+    let label = this.getTextLabel();
+		if (label.endsWith('*')) {
+			label = label.slice(0, -1);
+			label += this.getTranslate('required');
+		}
     return this._value === undefined ?
-      (getInnerText(this.label) + (readHelper && this.supportingText ? ('. ' + this.getTranslate('hint') + ': ' + this.supportingText) + '. ' : '') + this.getTranslate('giveRate', { min: min, max: max })) :
-      (this.getTranslate('givenRate', { count: this._value, max: max }) + getInnerText(this.label));
+      (label + (readHelper && this.supportingText ? ('. ' + this.getTranslate('hint') + ': ' + this.supportingText) + '. ' : '') + this.getTranslate('giveRate', { min: min, max: max })) :
+      (this.getTranslate('givenRate', { count: this._value, max: max }) + label);
   }
 
 }

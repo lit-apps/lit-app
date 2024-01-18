@@ -219,10 +219,14 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
     const getOptionText = (item: HTMLElement) => {
 			return item.ariaLabel || ''
     };
-
+		let label = this.getTextLabel();
+		if (label.endsWith('*')) {
+			label = label.slice(0, -1);
+			label += this.getTranslate('required');
+		}
 		return this._selectedItems.length ?
-      `${[...this._selectedItems].map(getOptionText)} ${this.getTranslate('isTheAnswerTo')} ${getInnerText(this.label)} ` :
-      (getInnerText(this.label) + ' ' + (readHelper && this.supportingText ? ('. ' + this.getTranslate('hint') + ': ' + this.supportingText) + '.' : '') + this.getReadAloudOptions());
+      `${[...this._selectedItems].map(getOptionText)} ${this.getTranslate('isTheAnswerTo')} ${label} ` :
+      (label + ' ' + (readHelper && this.supportingText ? ('. ' + this.getTranslate('hint') + ': ' + this.supportingText) + '.' : '') + this.getReadAloudOptions());
   }
 
   private getReadAloudOptions() {
@@ -232,8 +236,8 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
     // }
     const options = [...items].map((item, index) => `${this.getTranslate('option')} ${index + 1}: ${item.ariaLabel}.`);
     return this.isMulti ?
-      (`${this.getTranslate('chooseOptions')}: ${options}`) :
-      (`${this.getTranslate('chooseOption')}: ${options}`);
+      (`${this.getTranslate('chooseOption')}: ${options}`) :
+      (`${this.getTranslate('chooseOptions')}: ${options}`);
   }
 
 
