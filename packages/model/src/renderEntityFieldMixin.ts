@@ -46,14 +46,7 @@ export default function renderMixin<D extends DefaultI = DefaultI, C extends Ren
 			}
 			return (renderField<D>).call(this.host as EntityElement<D>, name, data ?? this.host.data as D, true, this.model, this, config);
 		}
-		renderCreateDialog(data: D, _config?: C) {
-			return html`
-      <div class="layout vertical  wrap">
-				${this.renderFieldUpdate('name', undefined, data)}
-				${this.renderFieldUpdate('title', undefined, data)}
-			</div>
-    `
-		}
+
 	}
 	const staticApply: StaticEntityField<D> = {
 		model: model

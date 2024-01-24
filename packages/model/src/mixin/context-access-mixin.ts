@@ -54,11 +54,11 @@ export declare class ProvideAccessMixinInterface extends AccessMixinInterface {
 }
 
 const defaultAccessFalse = (_access: Access, _data: any) => {
-	process.env.DEV && console.warn('No access function provided for entity');
+	console.warn('No access function provided for entity');
 	return false
 }
 const defaultAccessTrue = (_access: Access, _data: any) => {
-	process.env.DEV && console.warn('No access function provided for entity');
+	console.warn('No access function provided for entity');
 	return true
 }
 const getAccessDefault: GetAccess = {

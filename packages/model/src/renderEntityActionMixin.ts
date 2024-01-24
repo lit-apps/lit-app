@@ -144,8 +144,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 					class="${actionName} action"
 					.icon=${action.icon || ''} 
 					
-					@click=${(this.constructor as unknown as StaticEntityActionI<D, A>)
-					.onActionClick(actionName, this.host, data, beforeDispatch, onResolved, () => this.getEvent(actionName, data))}
+					@click=${this.onActionClick(actionName, data, beforeDispatch, onResolved, () => this.getEvent(actionName, data))}
 					.disabled=${disabled}
 					.outlined=${outlined}
 					.unelevated=${unelevated}
@@ -154,6 +153,17 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 					</lapp-button>`
 		}
 
+		onActionClick(
+			actionName: keyof A,
+			data?: any,
+			beforeDispatch?: () => boolean | string | void,
+			onResolved?: (promise: any) => void,
+			eventGetter?: () => CustomEvent,
+		) {
+			return (this.constructor as unknown as StaticEntityActionI<D, A>)
+				.onActionClick(actionName, this.host, data, beforeDispatch, onResolved, eventGetter)
+
+		}
 		renderEditActions(data: D) {
 			const edit = []
 			// we loop with key in as we want to include prototype properties

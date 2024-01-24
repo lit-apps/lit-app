@@ -156,7 +156,7 @@ export type ModelComponent<T = any> =
  	ModelComponentUpload<T> |
  	ModelComponentUploadImage<T> 
 
-export type FieldConfig<T = any> = Omit<ModelComponent<T>, 'component' | 'table' | 'grid'>
+export type FieldConfig<T = any> = Partial<ModelComponent<T>>
 
 export type Model<T, B = T> = {
 	[key in keyof Partial<T>]: ModelComponent<B> | Model<T[key], B>

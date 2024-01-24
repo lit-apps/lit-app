@@ -53,7 +53,7 @@ export default class entityCreateDialog extends
 				<slot slot="headline" name="headline"></slot>
         <form id="entity-create" method="dialog" slot="content">
 					<slot slot="content" name="content"></slot>
-      		${this.entity?.renderCreateDialog(this.data)}
+      		${this.entity?.renderFormNew(this.data)}
 				</form>
 				<div slot="actions"> 
 					<md-outlined-button 
@@ -73,7 +73,8 @@ export default class entityCreateDialog extends
 			isEditing: true, // always editing
 			isSaving: false,
 			isLoading: false,
-			isDeleting: false
+			isDeleting: false,
+			isNew: true,
 		}
 	}
 	get entityAccess(): EntityAccess {

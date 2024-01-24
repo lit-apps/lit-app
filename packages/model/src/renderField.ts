@@ -1,6 +1,6 @@
 import { throttle } from '@preignition/preignition-util/src/debounce';
 import { get, set } from '@preignition/preignition-util/src/deep';
-import { html, nothing } from 'lit';
+import { TemplateResult, html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Dirty, EntityWriteDetail, Update } from './events';
 import { DefaultI, EntityElement}  from './types/entity';
@@ -68,7 +68,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   entity: AbstractEntity,
   config?: FieldConfig<D>,
   mode: 'edit' | 'translate' | 'view' = 'edit'
-) {
+): TemplateResult {
   let model: ModelComponent<any> = get(name, m);
   if (!model && import.meta.env.DEV) {
     console.warn(`No model found for ${name}`);
@@ -92,17 +92,17 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       return html`<div class="${cls}"></div>`;
     }
     if (hide === true) {
-      return;
+      return nothing;
     }
   }
   if (model.show && !model.show(data)) {
-    return;
+    return nothing;
   }
 
   const id = this.docId ? this.docId : this.id;
   const dirtyEvent = new Dirty({ entityName: entity.entityName, dirty: true });
 
-  const canEdit = (this.entityStatus?.isEditing || (entity.realTime && this.entityAccess.canEdit)) && !(config?.disabled === true);
+  const canEdit = (this.entityStatus?.isEditing || this.entityStatus?.isNew || (entity.realTime && this.entityAccess.canEdit)) && !(config?.disabled === true);
   const disabled = !canEdit;
 
   const label = model.label ?? (key || '');

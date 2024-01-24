@@ -8,6 +8,7 @@ export type EntityStatus = {
 	isSaving: boolean
 	isLoading: boolean // true when the entity is loading data
 	isDeleting: boolean
+	isNew: boolean // true when the entity is new
 }
 
 // storing the access information for an entity
@@ -65,7 +66,9 @@ export type RenderConfigOptional<T = any> = {
 	gridConfig?: GridConfig,
 	cardConfig?: { [K in keyof Partial<T>]: T[K] }
 	level?: number, // level to render the entity
-	variant?: 'card' | 'default'
+	variant?: 'card' | 'list' | 'default' 
+	baseURL?: string // base url for the entity
+	//isNew?: boolean // true when the entity is new
 	layout?: 'horizontal' | 'vertical' | 'grid' // set the layout for card variant
 	options?: {
 		[key: string]: boolean

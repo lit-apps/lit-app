@@ -44,7 +44,9 @@ type Constructor<T = {}> = new (...args: any[]) => T;
  *             this.renderTitle
  *         }}
  *			</slot>
- *			<slot name="sub-header"></slot>
+ *     <slot name="sub-header">
+ *				${this.renderSubHeader()}
+ *			</slot>
  *			<slot name="body">
  *				${this.renderBody() {
  *          array ? 
@@ -53,6 +55,10 @@ type Constructor<T = {}> = new (...args: any[]) => T;
  *                   this.renderCard() {
  *                     this.renderCardItem() {}
  *                   } :     
+ * 								 variant === 'list' ?
+ *                   this.renderList() {
+ *                     this.renderListItem() {}
+ *                   } :  
  *                   this.renderGrid() {
  *                      this.gridDetailRenderer() {
  *                        this.renderTable() {}
@@ -64,7 +70,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
  *            this.renderContent() {
  *                showMetaData ? this.renderMetaData() : ''
  *                showAction ? this.renderAction() : ''
- *                this.renderForm)}
+ * 								config.entityStatus.isNew ? this.renderFormNew() : this.renderForm() 
  *           }}
  *			</slot>
  *			<slot name="footer">
@@ -86,7 +92,6 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 	// class R extends RenderActionMixin(superclass) {
 
 		showMetaData: boolean = false
-		// open!: (entityName: string, id: string) => void
 
 		renderGrid(data: Collection<D>, config?: C) {
 			const onSelected = async (e: CustomEvent) => {
@@ -191,18 +196,19 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 
 		renderBody(data: D, config?: C) {
 			if (Array.isArray(data)) {
-				if (data && data.length === 0) {
-					this.renderEmptyArray(config);
+				if (data && data.length === 0 && (config?.variant !== 'list')) {
+					return this.renderEmptyArray(config);
 				}
 				return this.renderArrayContent(data, config)
 			}
 			return this.renderContent(data, config)
 		}
 
-		renderContent(data: D, config?: C) {
+		override renderContent(data: D, config?: C) {
 			if (config?.variant === 'card') {
 				return this.renderCardItem(data, config)
 			}
+			
 			return html`
 			<div class="layout vertical">							
 				${data === undefined ? html`Loading...` :
@@ -210,7 +216,9 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 						this.showMetaData ? this.renderMetaData(data, config) : html``,
 						// this should be renderEntityActions from renderEntityActionMixin
 						super.renderContent(data, config), 
-						this.renderForm(data, config)
+						config?.entityStatus.isNew ? 
+							this.renderFormNew(data, config) : 
+							this.renderForm(data, config)
 					]
 				}
 			</div>`
@@ -219,6 +227,9 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 		private renderArrayContent(data: Collection<D>, config?: C) {
 			if (config?.variant === 'card') {
 				return this.renderCard(data, config)
+			}
+			if (config?.variant === 'list') {
+				return this.renderList(data, config)
 			}
 			return this.renderGrid(data, config)
 		}
@@ -236,8 +247,22 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 			return html``
 		}
 
+		renderList(data: Collection<D>, config?: C) {
+			if(data.length === 0) {
+				return this.renderEmptyArray(config)
+			}
+			const layout = config?.layout || 'horizontal'
+			const map = (d: D) =>  this.renderListItem(d, config)
+			return html`<md-list>${data.map(map)}</md-list>`
+						
+		}
+		
+		renderListItem(_data: D, _config?: C) {
+			return html`<md-list-item></md-list-item>`
+		}
+
 		renderEmptyArray(_config?: C) {
-			return html`<p><lapp-icon class="secondary">info</lapp-icon></md-info>No ${this.entityName} found</p>`
+			return nothing
 		}
 
 		renderTitle(_data: D, _config?: C) {
@@ -259,17 +284,29 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
         ${title}
       </h2>`
 			)}`
-
+		}
+		renderSubHeader(_data: D, _config?: C) {
+			return nothing
 		}
 
+
 		renderFooter(_data: D, _config?: C) {
-			return html``
+			return nothing
 		}
 
 		renderForm(_data: D, _config?: C) {
 			return html`Form`
 		}
-
+		renderFormNew(data: D, _config?: C) {
+			return html`
+      <div class="layout vertical  wrap">
+				${this.renderFieldUpdate('name', undefined, data)}
+				${this.renderFieldUpdate('title', undefined, data)}
+			</div>`
+		}
+		renderFieldUpdate(_name : string, _config?: any, _data?: D): TemplateResult {
+			return html``
+		}
 	};
 	return R as unknown as Constructor<RenderInterface<D, A, C>> & typeof superclass;
 }

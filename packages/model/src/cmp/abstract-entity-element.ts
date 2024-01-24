@@ -122,15 +122,15 @@ export default abstract class AbstractEntityElement extends
 	protected abstract renderEntity(entity: entityI, config?: RenderConfig): TemplateResult;
 
 	protected renderHeader(entity: entityI, config?: RenderConfig) {
-		//@ts-ignore
 		return entity.renderHeader(this.data, config || this.renderConfig);
 	}
+	protected renderSubHeader(entity: entityI, config?: RenderConfig) {
+		return entity.renderSubHeader(this.data, config || this.renderConfig);
+	}
 	protected renderBody(entity: entityI, config?: RenderConfig) {
-		//@ts-ignore
 		return entity.renderBody(this.data, config || this.renderConfig);
 	}
 	protected renderFooter(entity: entityI, config?: RenderConfig) {
-		//@ts-ignore
 		return entity.renderFooter(this.data, config || this.renderConfig);
 	}
 }

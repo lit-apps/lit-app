@@ -38,7 +38,7 @@ export class BaseEvent<T extends { promise?: Promise<any> }> extends CustomEvent
   public processed?: boolean // true when the action was already processed
   public onActionProcessed?: boolean // true when an `onAction` function was already executed
   pushPromise(promise: Promise<any>) {
-    this.detail.promise = Promise.all([this.detail.promise, promise]);
+    this.detail.promise = Promise.all([this.detail.promise, promise])
   }
   get canProcess() {
     return !this.shouldConfirm && !this.processed;
@@ -191,9 +191,9 @@ export interface ActionDetail<T = any> {
   promise?: Promise<any>
 }
 
-export interface ActionI {
+export interface ActionI<T= any> {
   actionName: string
-  detail: any
+  detail: T
   entityName?: string // the entityName is not required for all actions
 }
 export class EntityAction<T extends ActionI = ActionI> extends BaseAction<ActionDetail<T['detail']>> {

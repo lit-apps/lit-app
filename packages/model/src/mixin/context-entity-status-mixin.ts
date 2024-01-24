@@ -11,7 +11,8 @@ import {
 	Reset,
 	// Delete,
 	// Create,
-	Write
+	Write, 
+	BaseEvent
 } from '../events';
 
 
@@ -33,8 +34,11 @@ const statusInit: EntityStatus = {
 	isSaving:  false,
 	isLoading: false,
 	isDeleting: false,
+	isNew: false,
 };
 
+const statusProcessedSymbol = Symbol('statusProcessed');
+type S<T> = T & { [statusProcessedSymbol]?: boolean };
 /**
  * ProvideEntityStatusMixin 
  * A mixin to be applied to entities at root level. It set context providers for the entity status

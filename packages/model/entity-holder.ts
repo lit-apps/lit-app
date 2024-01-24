@@ -1,6 +1,6 @@
 import { css } from 'lit';
 import {customElement} from 'lit/decorators.js';
-import { form, label,styleTypography, accessibility, icon, alignMwc, page } from '@preignition/preignition-styles';
+import { form, label, alignMwc, page } from '@preignition/preignition-styles';
 
 import EntityHolder from './src/cmp/entity-holder';
 
@@ -11,8 +11,12 @@ declare global {
 }
 
 /**
- * @final
- * @suppress {visibility}
+ * Component holding an entity
+ * 
+ * @slot header - slot to display header
+ * @slot subheader - slot to display under header
+ * @slot body - slot to display as main body
+ * @slot footer - slot to display as footer
  */
 @customElement('lapp-entity-holder')
 export class LappEntityHolder extends EntityHolder {
@@ -24,11 +28,6 @@ export class LappEntityHolder extends EntityHolder {
 		css`
 		:host {
 			display: contents;
-		}
-		/* this sets size an margin of variant card container */
-		.container.layout {
-			max-width: var(--container-layout-max-width, min(90vw,1500px));
-			margin: var(--container-layout-margin, 0 auto);
 		}
 		`
 	]

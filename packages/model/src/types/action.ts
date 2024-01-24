@@ -46,6 +46,7 @@ export type ActionBase = {
 	},
 	entityName?: string // the name of the entity - this is useful for actions that need to be handled at the correct db reference
 	pushHistory?: boolean // true to push the action to the history when executed
+	handleOnServer?: boolean // true to handle the action on the server (via userAction trigger)
 	onClick?: (data: any) => void // as simple handler - this will not trigger any entity Event
 	
 	// the event to fire when the action is executed - the default is EntityAction

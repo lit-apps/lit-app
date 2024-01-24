@@ -14,6 +14,7 @@ export declare class RenderInterface<
 	public renderFooter(_data: D, _config?: C): TemplateResult
 	public renderBody(data: D, config?: C): TemplateResult
 	public renderHeader(data: D, config?: C): TemplateResult
+	public renderSubHeader(data: D, config?: C): TemplateResult
 	
 	private renderArrayContent(data: Collection<D>, config?: C): TemplateResult
 	private renderGrid(data: Collection<D>, config?: C): TemplateResult
@@ -28,5 +29,8 @@ export declare class RenderInterface<
 	protected renderCard(data: Collection<D>, config?: C): TemplateResult
 	protected renderCardItem(data: D, config?: C): TemplateResult
 	protected renderEmptyArray(_config?: C): TemplateResult
-	protected renderForm(_data: D, _config?: C): TemplateResult
+	protected renderList(_data: Collection<D>, _config?: C): TemplateResult
+	protected renderListItem(_data: D, _config?: C): TemplateResult
+	public renderFormNew(data: D, config?: C): TemplateResult
+	public renderForm(data: D, config?: C): TemplateResult
 }

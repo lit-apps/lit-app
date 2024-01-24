@@ -17,12 +17,15 @@ export default class EntityHolder extends AbstractEntity {
 	 */
 	@property() variant: RenderConfig['variant'] = 'default'
 	@property() layout: RenderConfig['layout'] = 'horizontal'
+	@property() isNew: boolean = false
+	@property({attribute: 'base-url'}) baseURL: string = ''
 
 	override get renderConfig(): RenderConfig {
 		return {
 			...super.renderConfig,			
 			variant: this.variant,
-			layout: this.layout
+			layout: this.layout,
+			baseURL: this.baseURL, 
 		}
 	}
 
@@ -53,7 +56,9 @@ export default class EntityHolder extends AbstractEntity {
 			<slot name="header">
 				${this.renderHeader(entity, config)}
 			</slot>
-			<slot name="sub-header"></slot>
+			<slot name="sub-header">
+				${this.renderSubHeader(entity, config)}
+			</slot>
 			<slot name="body">
 				${this.renderBody(entity, config)}
 			</slot>

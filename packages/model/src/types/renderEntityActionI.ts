@@ -182,6 +182,20 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 		onResolved?: (promise: any) => void): TemplateResult
 
 	/**
+	 * 
+	 * @param actionName the name of the action to render
+	 * @param data current data
+	 * @param beforeDispatch a function called before the action is dispatched - dispatch will not happen if this function returns false
+	 * @param onResolved  a function called when the action event.detail.promise is resolved
+	 * @param eventGetter 
+	 */
+	onActionClick(
+		actionName: keyof A, 
+		data?: any, 
+		beforeDispatch?: () => boolean | string | void, 
+		onResolved?: (promise: any) => void, 
+		eventGetter?: () => CustomEvent): (e: Event & { target: LappButton }) => Promise<void>		
+	/**
  * Utility render functions for a group of entity actions to render as buttons icons
  * @param entityAccess 
  * @param entityStatus 
