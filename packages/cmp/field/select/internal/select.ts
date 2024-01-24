@@ -33,6 +33,9 @@ export abstract class Select extends translate(S, locale, 'readaloud') {
    */
   @property({type: Boolean, reflect: true}) readOnly = false;
 
+  // make sure menu is always quick - see https://github.com/material-components/material-web/issues/5227
+  @property({type: Boolean}) override quick = true
+
   /**
    * propagate variant and labelAbove to field as they are not part of the template
    * @param changedProperties 
@@ -47,6 +50,7 @@ export abstract class Select extends translate(S, locale, 'readaloud') {
       }
     }
   }
+
 
   override async firstUpdated(changedProperties: PropertyValues<this>) {
     this.propagateToField(changedProperties);

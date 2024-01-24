@@ -325,6 +325,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   if (isComponentSelect(model)) {
     return html`
     <lapp-select
+      quick
       class=${cls}
       .name=${name}
       .icon=${model.icon}
