@@ -48,46 +48,75 @@ export const ProvideEntityStatusMixin = <T extends Constructor<ReactiveElement>>
 
 	class ProvideEntityStatusMixinClass extends superClass {
 		
+		entityName: string | undefined;
+		Entity: any;
+		
 		/** context storing document status*/
 		@provide({ context: entityStatusContext })
 		@property() entityStatus: EntityStatus = {...statusInit};
-
 	
+		// TODO: pass isNew to entityStatus 
+		@property() isNew: boolean = false;
+
+		override willUpdate(props: PropertyValues<this>) {
+			super.willUpdate(props);
+			if (props.has('isNew')) {
+				this.entityStatus = { ...this.entityStatus, isNew: this.isNew };
+			}
+		}
+
 		protected override firstUpdated(props: PropertyValues) {
+			// only process event that have not been processed by this mixin and that are the same entity
+			
+			const canHandle = (event: BaseEvent<any> & { [statusProcessedSymbol]?: boolean }) => {
+				if (event[statusProcessedSymbol] || !event.canProcess) return false;
+				// TODO: event might need confirmation - this is not taken into account yet
+				const entityName = this.entityName || this.Entity?.entityName;
+				return entityName && entityName === event.detail.entityName;
+			};
 			super.firstUpdated(props);
-			this.addEventListener(Dirty.eventName, (e: Dirty) => {
+			this.addEventListener(Dirty.eventName, (e: S<Dirty>) => {
+				if(!canHandle(e)) return;
 				if(this.entityStatus.isDirty !== e.detail.dirty) {
 					this.entityStatus.isDirty = e.detail.dirty;
 					this.entityStatus = { ...this.entityStatus }
 				};
+				e[statusProcessedSymbol] = true
 			});
-			this.addEventListener(Edit.eventName, () => {
+			this.addEventListener(Edit.eventName, (e: S<Edit>) => {
+				if(!canHandle(e)) return;
 				if(this.entityStatus.isDirty !== true) {
 					this.entityStatus.isEditing = true;
 					this.entityStatus = { ...this.entityStatus };
 				}
+				e[statusProcessedSymbol] = true
 			});
-			this.addEventListener(Write.eventName, async (e) => {
+			this.addEventListener(Write.eventName, async (e: S<Write>) => {
+				if(!canHandle(e)) return;
 					this.entityStatus.isSaving = true;
 					this.entityStatus = { ...this.entityStatus };
+					e[statusProcessedSymbol] = true
 					await e.detail.promise;
 					this.entityStatus = {...statusInit}
 			});
-			this.addEventListener(Reset.eventName, async (e) => {
+			this.addEventListener(Reset.eventName, async (e: S<Reset>) => {
+				if(!canHandle(e)) return;
+				e[statusProcessedSymbol] = true
 				await e.detail.promise;
-				this.entityStatus = {...statusInit}
+				this.entityStatus = {...statusInit, isNew: this.isNew}
 				
 			});
 		}
 
 		protected updateStatus(data: any) {
-			const { isDirty, isEditing, isSaving, isLoading, isDeleting } = data;
+			const { isDirty, isEditing, isSaving, isLoading, isDeleting, isNew } = data;
 			this.entityStatus = {
 				isDirty: isDirty ?? false,
 				isEditing: isEditing ?? false,
 				isSaving: isSaving ?? false,
 				isLoading: isLoading ?? false,
 				isDeleting: isDeleting ?? false,
+				isNew: isNew ?? false,
 			}
 		}
 
