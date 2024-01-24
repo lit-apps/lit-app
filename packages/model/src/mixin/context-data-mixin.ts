@@ -1,4 +1,4 @@
-import { consume, ContextProvider, createContext } from '@lit/context';
+import { consume, ContextConsumer, ContextProvider, createContext } from '@lit/context';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { state, property } from 'lit/decorators.js';
 
@@ -19,18 +19,34 @@ export declare class DataMixinConsumeInterface<D = any> extends DataMixinInterfa
 export const ConsumeDataMixin = <D, T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	class ContextConsumeDataMixinClass extends superClass {
-		@consume({ context: dataContext, subscribe: true })
-		@state() data!: any;
 
+		@state() data!: any;
 		@property({type: Boolean, attribute: 'prevent-consume'}) preventConsume = false;
 
-		constructor(...args: any[]) {
-			super(...args);
+		private cachedData!: any; 
+		consumer = new ContextConsumer(this, {
+			context: dataContext,
+			subscribe: true,
+			callback: (value: any) => {
+				if(this.preventConsume) {
+					this.cachedData = value;
+					// this.requestUpdate();
+				} else {
+					this.data = value;
+				}
+			}
+		});
 
-			this.addEventListener('context-request', (e) => {
-				this.preventConsume && e.context === dataContext && e.stopPropagation();
-			})
+		override willUpdate(prop: PropertyValues) {
+			if (prop.has('preventConsume')) {
+				const old = prop.get('preventConsume');
+				if(old === false && this.preventConsume === true && this.cachedData) {
+					this.data = this.cachedData;
+				}
+			}
+			super.willUpdate(prop);
 		}
+		
 
 	};
 	return ContextConsumeDataMixinClass as unknown as Constructor<DataMixinConsumeInterface<D>> & T;
