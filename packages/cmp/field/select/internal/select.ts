@@ -1,10 +1,11 @@
 import { Select as S } from '@material/web/select/internal/select';
 import { Variant } from '../../field/internal/a11y-field-mixin';
-import { property, query } from 'lit/decorators.js';
+import { property} from 'lit/decorators.js';
 import { PropertyValues } from 'lit';
-import { getInnerText } from '@preignition/preignition-util';
+import { html } from 'lit';
 import locale  from '../../choice/readaloud-locale.mjs';
 import translate  from '@preignition/preignition-util/translate-mixin.js';
+// import NoAutoValidateMixin from '../../mixin/noAutoValidateMixin.js';
 
 
 /**
@@ -34,7 +35,7 @@ export abstract class Select extends translate(S, locale, 'readaloud') {
   @property({type: Boolean, reflect: true}) readOnly = false;
 
   // make sure menu is always quick - see https://github.com/material-components/material-web/issues/5227
-  @property({type: Boolean}) override quick = true
+  // @property({type: Boolean}) override quick = true
 
   /**
    * propagate variant and labelAbove to field as they are not part of the template
@@ -50,7 +51,6 @@ export abstract class Select extends translate(S, locale, 'readaloud') {
       }
     }
   }
-
 
   override async firstUpdated(changedProperties: PropertyValues<this>) {
     this.propagateToField(changedProperties);
@@ -92,4 +92,17 @@ export abstract class Select extends translate(S, locale, 'readaloud') {
     return super.handleClick();
   }
 
+  // we override renderMenuContent to make sure we update value when slot change
+  // this is necessary for async items to work
+  private override renderMenuContent() {
+		const onSlotChange = (e: Event) => {
+      if(this.value !== this.lastUserSetValue) {
+        setTimeout(() => {
+          this.value = this.lastUserSetValue;
+          this.updateValueAndDisplayText()  
+        ,100})
+      }
+		}
+    return html`<slot @slotchange=${onSlotChange}></slot>`;
+  }
 }

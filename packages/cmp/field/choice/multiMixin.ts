@@ -48,7 +48,7 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 		protected override readonly isMulti = true;
 		protected override readonly choiceInputSelector = '[data-role=checkbox]';
 		protected override readonly listRole = 'listbox';
-		protected override _value!: string[];
+		declare protected  _value: string[];
 
 		protected static isCodeSelected = (value: string[] | undefined, code: string) => {
 			return value && value.indexOf(code + '') > -1;
@@ -112,6 +112,7 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 					this.exclusiveIsSelected = false;
 				}
 			}
+			this._value = value;
 			return value
 		}
 		/**

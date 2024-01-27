@@ -60,7 +60,6 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
   
   protected override renderField() {
     const t = this as unknown as GenericI
-
     return staticHtml`<${this.fieldTag}
       class="field"
       ?disabled=${this.disabled}
@@ -121,27 +120,27 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
 	}
 
   // we override onREportValidity to prevent the default behavior
-  // focusing on the element
-  [onReportValidity](invalidEvent: Event | null) {
-    if (invalidEvent?.defaultPrevented) {
-      return;
-    }
+  // // focusing on the element
+  // [onReportValidity](invalidEvent: Event | null) {
+  //   if (invalidEvent?.defaultPrevented) {
+  //     return;
+  //   }
 
-    if (invalidEvent) {
-      // Prevent default pop-up behavior. This also prevents focusing, so we
-      // manually focus.
-      invalidEvent.preventDefault();
-      // TODO: add a propety to allow user to choose to focus or not
-      // this.focus();
-    }
+  //   if (invalidEvent) {
+  //     // Prevent default pop-up behavior. This also prevents focusing, so we
+  //     // manually focus.
+  //     invalidEvent.preventDefault();
+  //     // TODO: add a propety to allow user to choose to focus or not
+  //     // this.focus();
+  //   }
 
-    const prevMessage = this.getErrorText();
-    this.nativeError = !!invalidEvent;
-    this.nativeErrorText = this.validationMessage;
+  //   const prevMessage = this.getErrorText();
+  //   this.nativeError = !!invalidEvent;
+  //   this.nativeErrorText = this.validationMessage;
 
-    if (prevMessage === this.getErrorText()) {
-      this.field?.reannounceError();
-    }
-  }
+  //   if (prevMessage === this.getErrorText()) {
+  //     this.field?.reannounceError();
+  //   }
+  // }
 
 }

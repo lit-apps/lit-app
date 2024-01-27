@@ -77,7 +77,7 @@ export default class lappChoiceListItem extends LappListItem {
 		checkbox.dispatchEvent(new Event('change', { bubbles: true }))
 	}
 
-	  /**
+	/**
    * Renders the root list item.
 	 * We need an additional type to make the list item interactive but not focusable
    *

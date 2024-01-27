@@ -157,7 +157,7 @@ describe('checkbox', () => {
 			const { element } = await setupTest(template);
 			let readaloud 
 			readaloud = element.getReadAloud();
-			expect(readaloud).toEqual('test Choose one answer from the following options: option 1: one.,option 2: two.,option 3: three.');
+			expect(readaloud).toEqual('test Choose your answers from the following options: option 1: one.,option 2: two.,option 3: three.');
 			element.selected = ['1'];
 			await element.updateComplete;
 			readaloud = element.getReadAloud();

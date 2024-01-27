@@ -11,8 +11,12 @@ export type MediaImage = {
 	mediaType: 'image'
 	url: string
 }
+export type MediaIcon = {
+	mediaType: 'icon'
+	icon: string
+}
 
-export type Media = MediaImage | MediaYoutube
+export type Media = MediaImage | MediaYoutube | MediaIcon
 
 export type Option = {
 	code: string

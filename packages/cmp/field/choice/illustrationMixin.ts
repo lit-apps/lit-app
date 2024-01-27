@@ -1,4 +1,4 @@
-import { LitElement, PropertyValues, TemplateResult, html } from 'lit';
+import { LitElement, PropertyValues, TemplateResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js'
 import { choose } from 'lit/directives/choose.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -39,9 +39,13 @@ export const IllustrationMixin = <T extends Constructor<Choice>>(superClass: T) 
 					const params = `controls=0&` + (m.params || '')
 					return html`
 						<lapp-youtube data-variant="illustration" slot="${slot}" class="video" videoid="${m.videoId}" playlabel=${ifDefined(m.playLabel)} params=${params}></lapp-youtube>`
+				}],
+				['icon', () => {
+					const icon = media.icon ||''
+					return html`<lapp-icon slot="${slot}" icon="${icon}"></lapp-icon>`
 				}]
 			],
-				() => html``
+				() => nothing
 			)}`
 
 		}
