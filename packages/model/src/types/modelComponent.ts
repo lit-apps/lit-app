@@ -1,3 +1,4 @@
+import { Media } from '@lit-app/cmp/field/choice/types';
 import type { LitElement } from 'lit';
 import { TemplateResult, nothing } from 'lit';
 import {
@@ -58,7 +59,9 @@ export interface Lookup<T = string> {
 	code: T
 	key?: string
 	index?: number
+	supportingText?: string
 	class?: string
+	media?: Media
 }
 
 export interface ModelComponentSlider<T = any> extends ModelComponentBase<T> {

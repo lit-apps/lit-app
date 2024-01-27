@@ -11,6 +11,7 @@ import {
 	gridRowDetailsRenderer
 } from 'lit-vaadin-helpers';
 import { choose } from 'lit/directives/choose.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { html as htmlStatic, literal } from 'lit/static-html.js';
 import AbstractEntity from './abstractEntity';
@@ -251,13 +252,14 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 			if(data.length === 0) {
 				return this.renderEmptyArray(config)
 			}
-			const layout = config?.layout || 'horizontal'
-			const map = (d: D) =>  this.renderListItem(d, config)
-			return html`<md-list>${data.map(map)}</md-list>`
+			return html`<md-list>
+				${repeat(data, (d: CollectionI<D>) => d.$id, (d: CollectionI<D>, index: number) => this.renderListItem(d, config, index))}
+			</md-list>`
+			
 						
 		}
 		
-		renderListItem(_data: D, _config?: C) {
+		renderListItem(_data: D, _config?: C, _index: number) {
 			return html`<md-list-item></md-list-item>`
 		}
 

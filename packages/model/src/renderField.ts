@@ -329,7 +329,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       class=${cls}
       .name=${name}
       .icon=${model.icon}
-      .readonly=${disabled}
+      .readOnly=${disabled}
       .label=${label}
       .supportingText=${model.helper}
       .required=${model.required}
@@ -394,11 +394,11 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       class=${cls}
       .name=${name}
       .icon=${model.icon}
-      .readonly=${disabled}
+      .readOnly=${disabled}
       .label=${label}
       .supportingText=${model.helper}
       .required=${model.required}
-      .value=${value || ''}
+      .selected=${value || ''}
       .options=${model.items}
       @selected=${onInputFact('selected')}
     ></lapp-choice-checkbox>
@@ -410,11 +410,11 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       class=${cls}
       .name=${name}
       .icon=${model.icon}
-      .readonly=${disabled}
+      .readOnly=${disabled}
       .label=${label}
       .supportingText=${model.helper}
       .required=${model.required}
-      .value=${value || ''}
+      .selected=${value || ''}
       .options=${model.items}
       @selected=${onInputFact('selected')}
     ></lapp-choice-radio>

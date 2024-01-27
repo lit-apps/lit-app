@@ -118,8 +118,8 @@ importers:
         specifier: ^2.0.2
         version: 2.0.2
       '@material/web':
-        specifier: 1.1.2-nightly.ad52075.0
-        version: 1.1.2-nightly.ad52075.0
+        specifier: 1.2.1-nightly.84536d7.0
+        version: 1.2.1-nightly.84536d7.0
       '@preignition/lit-firebase':
         specifier: link:../../../packages/lit-firebase
         version: link:../../../packages/lit-firebase
@@ -2111,8 +2111,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@material/web@1.1.2-nightly.ad52075.0:
-    resolution: {integrity: sha512-JGYz2GufD/WCnmAqwYOW4Z1G8PCNA36C41YA9kkbrC/o3RKrUfJUNC7jOzGjFWtfmhezgK75qrheRYa+vth6wA==}
+  /@material/web@1.2.1-nightly.84536d7.0:
+    resolution: {integrity: sha512-ryuL7uKMkDrGUMl6ZAkhpmdhDN35VA5Qcva5huA9WKUXJt7BkDgmRuDAjWTm+oHSdSiphLuaW7o9M/d3gL+jXQ==}
     dependencies:
       lit: 3.1.0
       tslib: 2.6.2

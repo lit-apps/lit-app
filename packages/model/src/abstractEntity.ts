@@ -77,18 +77,6 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 		this.host.requestUpdate()
 	}
 
-	/**
-	 * whether the data is new or not
-	 */
-	// _isNew: boolean = false
-	// get isNew(): boolean {
-	// 	return this._isNew
-	// }
-	// set isNew(isNew: boolean) {
-	// 	this._isNew = isNew
-	// 	this.host.requestUpdate()
-	// }
-
 	get entityName() {
 		return (this.constructor).entityName
 

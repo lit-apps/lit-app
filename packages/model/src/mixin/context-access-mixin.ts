@@ -47,10 +47,9 @@ export const ApplyGetterMixin = <T extends Constructor<ReactiveElement >>(superC
 	return ApplyGetterMixinClass as unknown as Constructor<AccessMixinInterface> & T;
 }
 
-
-
 export declare class ProvideAccessMixinInterface extends AccessMixinInterface {
-	static getAccess: GetAccess;
+	getAccessData: (data: any) => Access;
+	updateAccess: (data: any) => void;
 }
 
 const defaultAccessFalse = (_access: Access, _data: any) => {
@@ -68,7 +67,6 @@ const getAccessDefault: GetAccess = {
 	canView: defaultAccessTrue,
 };
 
-
 /**
  * ProvideAccessMixin 
  * A mixin to be applied to entities at root level. It set entityAccess for the entity: 
@@ -78,14 +76,9 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 
 	class ProvideAccessMixinClass extends ApplyGetterMixin(superClass) {
 
-		/** entity used to evaluate access */
-		entity!: EntityI;
-
 		/** context storing document access  */
 		@provide({ context: entityAccessContext })
 		@property() override entityAccess!: EntityAccess;
-
-		// @property() data!: any;
 
 		override willUpdate(changedProperties: PropertyValues<this>) {
 			super.willUpdate(changedProperties);
@@ -94,7 +87,7 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 			}
 		}
 
-		protected _getAccessData(data: any): Access {
+		getAccessData(data: any): Access {
 			return data?.metaData?.access;
 		}
 
@@ -102,8 +95,8 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 		 * @param data entity data - to be evaluated for access
 		 * @returns void
 		 */
-		protected updateAccess(data: any) {
-			const accessData = this._getAccessData(data);
+		updateAccess(data: any) {
+			const accessData =  this.getAccessData(data);
 			if (!accessData) {
 				this.entityAccess = {
 					isOwner: false,
@@ -113,7 +106,7 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 				}
 				return;
 			}
-			const getAccess = getAccessFn || this.Entity.getAccess || (this.entity?.constructor)?.getAccess || getAccessDefault;
+			const getAccess = getAccessFn || this.Entity.getAccess || getAccessDefault;
 			this.entityAccess = {
 				isOwner: typeof getAccess.isOwner === 'function' ? getAccess.isOwner.call(this, accessData, data) : getAccess.isOwner,
 				canEdit: typeof getAccess.canEdit === 'function' ? getAccess.canEdit.call(this, accessData, data) : getAccess.canEdit,
@@ -127,7 +120,6 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 	return ProvideAccessMixinClass as unknown as Constructor<ProvideAccessMixinInterface> & T;
 }
 
-
 /**
  * ConsumeAccessMixin consumes entityAccessContext for an entity.
  * Entity Access stores access information about the entity, like `isOwner`, `canEdit`, `canView`, `canDelete`
@@ -139,8 +131,6 @@ export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(super
 		/** context storing document access  */
 		@consume({ context: entityAccessContext, subscribe: true })
 		@property() override entityAccess!: EntityAccess;
-
-
 
 	};
 	return ContextConsumeAccessMixinClass as unknown as Constructor<AccessMixinInterface> & T;

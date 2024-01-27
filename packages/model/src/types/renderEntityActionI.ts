@@ -176,7 +176,7 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 	 */
 	renderAction(
 		actionName: keyof A,
-		data?: D | CollectionI<D>,
+		data?: D | CollectionI<D>, // for serverActions this is the data to send to the server ! we should be able to type more strictly
 		config?: ButtonConfig,
 		beforeDispatch?: () => boolean | string | void,
 		onResolved?: (promise: any) => void): TemplateResult
@@ -191,7 +191,7 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 	 */
 	onActionClick(
 		actionName: keyof A, 
-		data?: any, 
+		data?: any, // for serverActions this is the data to send to the server ! we should be able to type more strictly
 		beforeDispatch?: () => boolean | string | void, 
 		onResolved?: (promise: any) => void, 
 		eventGetter?: () => CustomEvent): (e: Event & { target: LappButton }) => Promise<void>		
@@ -204,7 +204,7 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
  */
 	renderBulkActions(selectedItems: Collection<D>, data: Collection<D>, entityAccess?: EntityAccess, entityStatus?: EntityStatus): TemplateResult
 
-	renderEditActions(data: D): TemplateResult
+	renderEditActions(data: D, config?: RenderConfig): TemplateResult
 	renderDefaultActions(data: D): TemplateResult
 	renderBulkActions(selectedItems: Collection<D>, data: Collection<D>, entityAccess?: EntityAccess, entityStatus?: EntityStatus): TemplateResult
 	renderBulkAction(selectedItems: Collection<D>, data: Collection<D>, action: Action, actionName: keyof A): TemplateResult
