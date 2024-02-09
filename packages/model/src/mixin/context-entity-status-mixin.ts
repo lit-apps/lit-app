@@ -9,7 +9,9 @@ import {
 	Dirty,
 	Edit,
 	Reset,
-	// Delete,
+	Delete,
+	// MarkDeleted,
+	EntityAction,
 	// Create,
 	Write, 
 	BaseEvent
@@ -55,7 +57,6 @@ export const ProvideEntityStatusMixin = <T extends Constructor<ReactiveElement>>
 		@provide({ context: entityStatusContext })
 		@property() entityStatus: EntityStatus = {...statusInit};
 	
-		// TODO: pass isNew to entityStatus 
 		@property() isNew: boolean = false;
 
 		override willUpdate(props: PropertyValues<this>) {
@@ -77,25 +78,25 @@ export const ProvideEntityStatusMixin = <T extends Constructor<ReactiveElement>>
 			super.firstUpdated(props);
 			this.addEventListener(Dirty.eventName, (e: S<Dirty>) => {
 				if(!canHandle(e)) return;
+				e[statusProcessedSymbol] = true
 				if(this.entityStatus.isDirty !== e.detail.dirty) {
 					this.entityStatus.isDirty = e.detail.dirty;
 					this.entityStatus = { ...this.entityStatus }
 				};
-				e[statusProcessedSymbol] = true
 			});
 			this.addEventListener(Edit.eventName, (e: S<Edit>) => {
 				if(!canHandle(e)) return;
+				e[statusProcessedSymbol] = true
 				if(this.entityStatus.isDirty !== true) {
 					this.entityStatus.isEditing = true;
 					this.entityStatus = { ...this.entityStatus };
 				}
-				e[statusProcessedSymbol] = true
 			});
 			this.addEventListener(Write.eventName, async (e: S<Write>) => {
 				if(!canHandle(e)) return;
+					e[statusProcessedSymbol] = true
 					this.entityStatus.isSaving = true;
 					this.entityStatus = { ...this.entityStatus };
-					e[statusProcessedSymbol] = true
 					await e.detail.promise;
 					this.entityStatus = {...statusInit}
 			});
@@ -106,6 +107,25 @@ export const ProvideEntityStatusMixin = <T extends Constructor<ReactiveElement>>
 				this.entityStatus = {...statusInit, isNew: this.isNew}
 				
 			});
+			this.addEventListener(Delete.eventName, async (e: S<Delete>) => {
+				console.info('delete-action', e)
+				if(!canHandle(e)) return;
+				markDeleting(e)
+				
+			});
+			this.addEventListener(EntityAction.eventName, async (e: S<EntityAction>) => {
+				console.info('entity-action', e)
+				if(!canHandle(e)) return;
+				if(e.actionName === 'markDeleted') {
+					markDeleting(e)
+				}
+			});
+			const markDeleting = async (e:S<Delete> | S<EntityAction>) => {
+				e[statusProcessedSymbol] = true
+				this.entityStatus.isDeleting = true;
+				this.entityStatus = { ...this.entityStatus };
+				await e.detail.promise;
+			}
 		}
 
 		protected updateStatus(data: any) {

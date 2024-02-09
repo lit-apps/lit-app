@@ -108,7 +108,19 @@ export class Delete extends BaseEvent<EntityWriteDetail> {
   }
 }
 
- 
+// export class MarkDeleted extends BaseEvent<EntityWriteDetail> {
+//   static readonly eventName = 'entity-mark-deleted';
+//   public persisted?: boolean // true when data was persisted
+//   readonly actionName = 'markDeleted';
+//   constructor(detail: EntityWriteDetail,
+//     public override readonly action?: Action) {
+//     super(MarkDeleted.eventName, {
+//       bubbles: true,
+//       composed: true,
+//       detail: detail
+//     });
+//   }
+// } 
 export class Create extends BaseEvent<EntityCreateDetail> {
   static readonly eventName = 'entity-create';
   public persisted?: boolean // true when data is persisted
@@ -303,11 +315,11 @@ export class AppActionEmail extends BaseAction<ActionEmailDetail> {
 }
 
 
-type AnyEntityEvent =  Write | Update | Reset | Delete | Create | Dirty | Close | Open | Edit  
+type AnyEntityEvent =  Write | Update | Reset | Delete  | Create | Dirty | Close | Open | Edit  
 type AnyAppEvent =  EntityAction | AppAction | AppActionEmail
 // type AccessEvent = AddAccess | RemoveAccess | SetAccess | AccessInvite | AccessInviteRevoke;
 export type AnyEvent =  AnyEntityEvent | AnyAppEvent 
-export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset | typeof Delete |  typeof Create | typeof Dirty | typeof Close | typeof Open | typeof Edit | typeof EntityAction<any> | typeof AppAction | typeof AppActionEmail ; 
+export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset | typeof Delete  |  typeof Create | typeof Dirty | typeof Close | typeof Open | typeof Edit | typeof EntityAction<any> | typeof AppAction | typeof AppActionEmail ; 
 // export type TypeofAnyEvent = {new(detail: any, action: Action, confirmed?: boolean, bulkAction?: boolean): AnyEntityEvent} | 
 //   {new(detail: any, action: Action, actionName: string, confirmed?: boolean, bulkAction?: boolean): AnyAppEvent} |
 //   {new(detail: EntityAccessDetail | EntityAccessInviteRevokeDetail, action: Action): AccessEvent} 

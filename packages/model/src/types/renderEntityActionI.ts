@@ -3,8 +3,10 @@ import { TemplateResult, html } from 'lit';
 import AbstractEntity from '../abstractEntity';
 import {
 	ActionI,
+	AnyEvent,
 	Close,
 	Create,
+	Delete,
 	Dirty,
 	Edit,
 	EntityAction,
@@ -14,7 +16,7 @@ import {
 	Write
 } from '../events';
 import type { PartialBy } from '../typeUtils/partialBy';
-import { Action, ActionType, Actions, ButtonConfig } from './action';
+import { Action, ActionType, Actions, ButtonConfig, OnResolvedT } from './action';
 import { Collection, CollectionI, DataI } from './dataI';
 import { DefaultI, EntityAccess, EntityStatus, RenderConfig } from './entity';
 import { AccessActionI } from './entityAction';
@@ -69,11 +71,13 @@ const _defaultActions = {
 		event: Close,
 
 	},
+	// delete is deprecated  use markDeleted instead
+	// delete truly deletes the entity, while markDeleted sets the deleted flag
 	delete: {
 		label: 'Delete',
 		icon: 'delete',
 		pushHistory: true,
-		// event: MarkDeleted,
+		event: Delete,
 		meta: {
 			label: 'Deleted',
 			index: -7
@@ -81,16 +85,9 @@ const _defaultActions = {
 		confirmDialog: {
 			heading: 'Confirm Delete',
 			render(data: any): TemplateResult {
-				return html`<p>You are about to delete <strong>${data.name || 'an entity'}</strong>. Please confirm.</p>`;
+				return html`<p>You are about to delete <strong>${data.name || data.title || 'an entity'}</strong>. Please confirm.</p>`;
 			}
 		},
-		// handler: async function (this: HTMLElement, ref: DocumentReference, data: any, event) {
-		//   // update the reporting state for the organisation
-		//   console.log('MarkDeleted', ref, data, event)
-		//   event.detail.promise = updateDoc(ref, { 'metaData.deleted': true })
-
-		// }
-		// ,
 	},
 	markDeleted: {
 		label: 'Delete',
@@ -103,7 +100,7 @@ const _defaultActions = {
 		confirmDialog: {
 			heading: 'Confirm Delete',
 			render(data: any): TemplateResult {
-				return html`<p>You are about to mark <strong>${data.name || 'an entity'}</strong> as deleted. Please confirm.</p>`;
+				return html`<p>You are about to mark <strong>${data.name || data.title || 'an entity'}</strong> as deleted. Please confirm.</p>`;
 			}
 		},
 	},
@@ -179,7 +176,7 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 		data?: D | CollectionI<D>, // for serverActions this is the data to send to the server ! we should be able to type more strictly
 		config?: ButtonConfig,
 		beforeDispatch?: () => boolean | string | void,
-		onResolved?: (promise: any) => void): TemplateResult
+		onResolved?: OnResolvedT): TemplateResult
 
 	/**
 	 * 
@@ -193,7 +190,7 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 		actionName: keyof A, 
 		data?: any, // for serverActions this is the data to send to the server ! we should be able to type more strictly
 		beforeDispatch?: () => boolean | string | void, 
-		onResolved?: (promise: any) => void, 
+		onResolved?: OnResolvedT, 
 		eventGetter?: () => CustomEvent): (e: Event & { target: LappButton }) => Promise<void>		
 	/**
  * Utility render functions for a group of entity actions to render as buttons icons
@@ -213,9 +210,9 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 export interface StaticEntityActionI<D extends DefaultI, A extends Actions > extends AbstractEntity<D> {
 	actions: A 
 	_dispatchTriggerEvent(event: CustomEvent, el: HTMLElement): CustomEvent
-	getEvent(actionName: keyof A, data: D, el?: HTMLElement, bulkAction?: boolean): CustomEvent
+	getEvent(actionName: keyof A, data: D, el?: HTMLElement, bulkAction?: boolean): AnyEvent
 	renderAction(actionName: keyof A, element: HTMLElement, data: any, config?: ButtonConfig, beforeDispatch?: () => boolean | string | void, onResolved?: (promise: any) => void): TemplateResult
-	onActionClick(actionName: keyof A, host: HTMLElement, data?: any, beforeDispatch?: () => boolean | string | void, onResolved?: (promise: any) => void, eventGetter?: () => CustomEvent): (e: Event & { target: LappButton }) => Promise<void>
+	onActionClick(actionName: keyof A, host: HTMLElement, data?: any, beforeDispatch?: () => boolean | string | void, onResolved?: OnResolvedT, eventGetter?: () => CustomEvent): (e: Event & { target: LappButton }) => Promise<void>
 	getAction(key: keyof A): Action
 	getEntityAction<T extends ActionI = ActionI>(detail: T['detail'], actionName: T['actionName'], confirmed?: boolean, bulkAction?: boolean): EntityAction<T>
 	setPrototypeOfActions(actions: DefaultActionsType , Proto: AbstractEntity): void

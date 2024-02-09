@@ -3,6 +3,7 @@ import type { AnyEvent, Dirty, TypeofAnyEvent } from '../events'
 import type { LitElement, TemplateResult } from 'lit'
 import type { EntityStatus } from './entity'
 
+export type OnResolvedT = (resolved: any, host: HTMLElement, event: AnyEvent) => void
 type Handler = (this: LitElement, ref: DocumentReference, data: any, event: AnyEvent) => Promise<unknown>
 type BtnCfg = {
 	disabled?: boolean
@@ -28,9 +29,6 @@ export type ActionBase = {
 		confirmDisabled?: (data: any) => boolean // whether to disabled the confirm button
 		render: (data: any) => TemplateResult
 	}
-	// allow to add listener while action runs. This is used for instance to alter data on write
-	// and set `reviewStatus` to `edited`
-	onAction?: (event: AnyEvent) => void
 	// dynamically config the button
 	config?: ButtonConfig
 	// meta is used to know if we need to display the action in the metadata section
@@ -48,6 +46,10 @@ export type ActionBase = {
 	pushHistory?: boolean // true to push the action to the history when executed
 	handleOnServer?: boolean // true to handle the action on the server (via userAction trigger)
 	onClick?: (data: any) => void // as simple handler - this will not trigger any entity Event
+	// allow to add listener while action runs. This is used for instance to alter data on write
+	// and set `reviewStatus` to `edited`
+	onAction?: (event: AnyEvent) => void
+	onResolved?: OnResolvedT // called when the action is resolved
 	
 	// the event to fire when the action is executed - the default is EntityAction
 	event?: Exclude<TypeofAnyEvent, typeof Dirty>

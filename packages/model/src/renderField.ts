@@ -400,7 +400,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .required=${model.required}
       .selected=${value || ''}
       .options=${model.items}
-      @selected=${onInputFact('selected')}
+      @selected-changed=${onInputFact('selected')}
     ></lapp-choice-checkbox>
     `;
   }
@@ -416,7 +416,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .required=${model.required}
       .selected=${value || ''}
       .options=${model.items}
-      @selected=${onInputFact('selected')}
+      @selected-changed=${onInputFact('selected')}
     ></lapp-choice-radio>
     `;
   }

@@ -1,5 +1,5 @@
 import { consume, createContext, provide } from '@lit/context';
-import { ReactiveElement, PropertyValues } from 'lit';
+import { ReactiveElement, PropertyValues, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import {
 	EntityAccess
@@ -9,13 +9,14 @@ import {
 import type { Access } from '../types/dataI';
 import type { GetAccess } from '../types/getAccess';
 import type {EntityI} from '../types';
+import { EntityMixinInterface } from './context-entity-mixin';
 
 export const entityAccessContext = createContext<EntityAccess>('entity-access-context');
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 export declare class AccessMixinInterface {
 	entityAccess: EntityAccess; // context storing document access rules
-	data: any; // entity data - to be evaluated for access
+	// data: any; // entity data - to be evaluated for access
 	get isOwner(): boolean;
 	get canEdit(): boolean;
 	get canView(): boolean;
@@ -52,27 +53,34 @@ export declare class ProvideAccessMixinInterface extends AccessMixinInterface {
 	updateAccess: (data: any) => void;
 }
 
-const defaultAccessFalse = (_access: Access, _data: any) => {
-	console.warn('No access function provided for entity');
-	return false
-}
-const defaultAccessTrue = (_access: Access, _data: any) => {
-	console.warn('No access function provided for entity');
-	return true
-}
-const getAccessDefault: GetAccess = {
-	isOwner: defaultAccessFalse,
-	canDelete: defaultAccessFalse,
-	canEdit: defaultAccessFalse,
-	canView: defaultAccessTrue,
-};
+// const defaultAccessFalse = (_access: Access, _data: any) => {
+// 	console.warn('No access function provided for entity');
+// 	return false
+// }
+// const defaultAccessTrue = (_access: Access, _data: any) => {
+// 	return true
+// }
+function getAccessDefault(
+	this: EntityMixinInterface, 
+	_access: Access, 
+	_data: any): EntityAccess {
+	console.warn(`No access function provided for ${this.Entity.entityName}`);
+	return {
+		isOwner: false,
+		canEdit: false,
+		canView: true,
+		canDelete: false,
+	}
+}  ;
 
 /**
  * ProvideAccessMixin 
  * A mixin to be applied to entities at root level. It set entityAccess for the entity: 
  * Entity Access stores access information about the entity, like `isOwner`, `canEdit`, `canView`, `canDelete`
+ * 
+ * if getAccessFn is not provided, it uses Entity.getAccess or getAccessDefault
  */
-export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Entity: EntityI, data: any}> >(superClass: T, getAccessFn?: GetAccess) => {
+export const ProvideAccessMixin = <A extends EntityAccess = EntityAccess>(getAccessFn?: GetAccess) => <T extends Constructor<ReactiveElement & {Entity?: EntityI, data: any}> >(superClass: T) => {
 
 	class ProvideAccessMixinClass extends ApplyGetterMixin(superClass) {
 
@@ -106,14 +114,8 @@ export const ProvideAccessMixin = <T extends Constructor<ReactiveElement & {Enti
 				}
 				return;
 			}
-			const getAccess = getAccessFn || this.Entity.getAccess || getAccessDefault;
-			this.entityAccess = {
-				isOwner: typeof getAccess.isOwner === 'function' ? getAccess.isOwner.call(this, accessData, data) : getAccess.isOwner,
-				canEdit: typeof getAccess.canEdit === 'function' ? getAccess.canEdit.call(this, accessData, data) : getAccess.canEdit,
-				canView: typeof getAccess.canView === 'function' ? getAccess.canView.call(this, accessData, data) : getAccess.canView,
-				canDelete: typeof getAccess.canDelete === 'function' ? getAccess.canDelete.call(this, accessData, data) : getAccess.canDelete
-			}
-
+			const getAccess = getAccessFn || this.Entity?.getAccess || getAccessDefault;
+			this.entityAccess = getAccess.call(this as EntityMixinInterface, accessData, data);
 		}
 	};
 	// Cast return type to your mixin's interface intersected with the superClass type

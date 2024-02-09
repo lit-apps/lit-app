@@ -27,7 +27,7 @@ export declare class RenderInterface<
 	protected renderTable(data: CollectionI<D>, config?: C): TemplateResult
 	protected renderMetaData(_data: D, _config?: C): TemplateResult
 	protected renderCard(data: Collection<D>, config?: C): TemplateResult
-	protected renderCardItem(data: D, config?: C): TemplateResult
+	protected renderCardItem(data: D, config?: C, index?: number): TemplateResult
 	protected renderEmptyArray(_config?: C): TemplateResult
 	protected renderList(_data: Collection<D>, _config?: C): TemplateResult
 	protected renderListItem(_data: D, _config?: C): TemplateResult

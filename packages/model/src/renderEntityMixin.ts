@@ -113,7 +113,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 
 			return html`<vaadin-grid 
 			id="grid"
-      class="flex grid entity ${this.entityName}"
+      class="flex entity grid ${this.entityName}"
 			.itemIdPath=${'$id'}
 			.items=${data}
 			${gridRowDetailsRenderer(this.gridDetailRenderer.bind(this))}
@@ -237,14 +237,15 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 
 		renderCard(data: Collection<D>, config?: C) {
 			const layout = config?.layout || 'horizontal'
-			const gridMap = (d: D) => this.renderCardItem(d, config)
-			const map = (d: D) => html`<div class="flex">${gridMap(d)}</div>`
-			return html`<div class="container layout ${layout} large wrap">
-      ${layout === 'grid' ? data.map(gridMap) : data.map(map)}
+			const gridMap = (d: D, index: number) => this.renderCardItem(d, config, index)
+			const map = (d: D, index: number) => html`<div class="flex">${gridMap(d, index)}</div>`
+			return html`<div class="entity card layout ${layout} ${this.entityName} wrap">
+			${repeat(data, (d: CollectionI<D>) => d.$id, layout.indexOf('grid') > -1  ? gridMap : map)}
+      
     </div>`
 		}
 
-		renderCardItem(_data: D, _config?: C) {
+		renderCardItem(_data: D, _config?: C, _index?: number ) {
 			return html``
 		}
 
@@ -252,14 +253,14 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 			if(data.length === 0) {
 				return this.renderEmptyArray(config)
 			}
-			return html`<md-list>
+			return html`<md-list class="entity list ${this.entityName}">
 				${repeat(data, (d: CollectionI<D>) => d.$id, (d: CollectionI<D>, index: number) => this.renderListItem(d, config, index))}
 			</md-list>`
 			
 						
 		}
 		
-		renderListItem(_data: D, _config?: C, _index: number) {
+		renderListItem(_data: D, _config?: C, _index?: number) {
 			return html`<md-list-item></md-list-item>`
 		}
 

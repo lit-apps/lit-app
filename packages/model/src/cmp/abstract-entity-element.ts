@@ -29,7 +29,7 @@ export class entityEvent extends CustomEvent<entityI> {
 export default abstract class AbstractEntityElement extends
 	ConsumeEntityMixin(
 		ConsumeAccessMixin(
-			ConsumeDataMixin(
+			ConsumeDataMixin()(
 				ConsumeDocIdMixin(
 					ConsumeEntityStatusMixin(LitElement))))) {
 

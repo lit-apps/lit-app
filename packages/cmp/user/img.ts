@@ -4,7 +4,7 @@ import { UserImg } from './internal/img.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lapp-user-name': LappUserImg;
+    'lapp-user-img': LappUserImg;
   }
 }
 

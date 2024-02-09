@@ -36,7 +36,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 		protected override firstUpdated(_changedProperties: PropertyValues) {
 			super.firstUpdated(_changedProperties);
 
-			const setAction = async (event: Delete  | Create | EntityAction | AppAction  ) => {
+			const setAction = async (event: Delete | Create | EntityAction | AppAction  ) => {
 				// stop propagation if action is not confirmed and we have a templateDialog
 				if (event.shouldConfirm) {
 					event.stopPropagation();
@@ -94,7 +94,12 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 					newEvent.confirmed = true;
 					try {
 						this.dispatchEvent(newEvent)
-						await newEvent.detail.promise;
+						const promise = await newEvent.detail.promise;
+						// call action.onResolved if it exists. We need to do it here as 
+						// onActionClick will not be called again. 
+						if (action?.onResolved) {
+							action?.onResolved(promise, this, newEvent)
+						} 
 					} catch (e) {
 						dispatchError(e as Error)
 					}

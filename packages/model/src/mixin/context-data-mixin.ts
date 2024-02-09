@@ -16,11 +16,11 @@ export declare class DataMixinConsumeInterface<D = any> extends DataMixinInterfa
 	preventConsume: boolean;
 }
 
-export const ConsumeDataMixin = <D, T extends Constructor<ReactiveElement>>(superClass: T) => {
+export const ConsumeDataMixin = <D = any>() => <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	class ContextConsumeDataMixinClass extends superClass {
 
-		@state() data!: any;
+		@state() data!: D;
 		@property({type: Boolean, attribute: 'prevent-consume'}) preventConsume = false;
 
 		private cachedData!: any; 
@@ -56,14 +56,14 @@ export const ConsumeDataMixin = <D, T extends Constructor<ReactiveElement>>(supe
  * ProvideDataMixin a mixin that provides data context
  
  */
-export const ProvideDataMixin = <D, T extends Constructor<ReactiveElement>>(superClass: T) => {
+export const ProvideDataMixin = <D = any>() => < T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	class ContextProvideDataMixinClass extends superClass {
 
 		@consume({ context: dataContext, subscribe: true })
 		@state() parentData!: any;
 
-		@state() data!: any;
+		@state() data!: D;
 
 		provider = new ContextProvider(this, {context: dataContext, initialValue: this.data});
 
@@ -72,7 +72,7 @@ export const ProvideDataMixin = <D, T extends Constructor<ReactiveElement>>(supe
 			// we set parentData as prototype of data if data and parentData are set
 			if (prop.has('parentData') || prop.has('data')) {
 				if(this.data === null && this.parentData) {
-					this.data = {}
+					this.data = {} as D
 				}
 				if(this.data) {
 					if(Object.getPrototypeOf(this.data) === Object.prototype && this.parentData) {

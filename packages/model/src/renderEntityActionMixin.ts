@@ -19,11 +19,12 @@ import {
 	Write
 } from './events';
 import RenderEntityCreateMixin from './renderEntityCreateMixin';
-import { ActionDetail, Collection, EntityAccess, EntityElement, EntityStatus, PartialBy, RenderConfig } from './types';
+import { ActionDetail, AnyEvent, Collection, EntityAccess, EntityElement, EntityStatus, PartialBy, RenderConfig } from './types';
 import {
 	Action,
 	Actions,
-	ButtonConfig
+	ButtonConfig,
+	OnResolvedT
 } from './types/action';
 import { DefaultI } from './types/entity';
 import entries from './typeUtils/entries';
@@ -125,7 +126,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			data?: any,
 			config?: ButtonConfig,
 			beforeDispatch?: () => boolean | string | void,
-			onResolved?: (promise: any) => void) {
+			onResolved?: OnResolvedT) {
 			// @ts-ignore
 			const action = (this.actions)[actionName];
 			if (!action) {
@@ -157,7 +158,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			actionName: keyof A,
 			data?: any,
 			beforeDispatch?: () => boolean | string | void,
-			onResolved?: (promise: any) => void,
+			onResolved?:  OnResolvedT,
 			eventGetter?: () => CustomEvent,
 		) {
 			return (this.constructor as unknown as StaticEntityActionI<D, A>)
@@ -307,7 +308,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			return event
 
 		},
-
+		// static methods
 		renderAction(
 			this: StaticEntityActionI<D, A>,
 			actionName: keyof A,
@@ -315,7 +316,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			data: any = {},
 			config?: ButtonConfig & { bulkAction?: boolean },
 			beforeDispatch?: () => boolean | string | void,
-			onResolved?: (promise: any) => void): TemplateResult {
+			onResolved?: OnResolvedT): TemplateResult {
 			const action = this.getAction(actionName);
 			if (!action) {
 				console.error(`entity ${this.entityName} has no action found for ${String(actionName)}`);
@@ -343,19 +344,21 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 
 		},
 
+		// static methods
 		onActionClick(
 			this: StaticEntityActionI<D, A>,
 			actionName: keyof A,
 			host: HTMLElement,
 			data?: any,
 			beforeDispatch?: () => boolean | string | void,
-			onResolved?: (promise: any) => void,
-			eventGetter?: () => CustomEvent,
+			onResolved?: OnResolvedT,
+			eventGetter?: () => AnyEvent,
 		) {
 			const action = this.getAction(actionName);
 			if (!action) {
 				console.error(`Entity ${this.entityName} has no action found for ${String(actionName)}`);
 			}
+			onResolved = onResolved || action.onResolved;
 			return async (e: Event & { target: LappButton }) => {
 				if (beforeDispatch?.() === false) {
 					console.log('beforeDispatch returned false')
@@ -372,10 +375,11 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 						return
 					}
 					const event = eventGetter ? eventGetter() : this.getEvent(actionName, data, host);
-					this._dispatchTriggerEvent(event, host);
+					// we need to dispatch the event from the same target as the original event
+					this._dispatchTriggerEvent(event, e.target || host);
 					const promise = await event.detail.promise
 					if (onResolved) {
-						onResolved(promise);
+						onResolved(promise, host, event);
 					}
 					button.loading = false
 
