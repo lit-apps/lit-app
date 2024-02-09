@@ -37,18 +37,17 @@ import('@lit-app/cmp/user/invite-list')
 
 type User = PartialBy<UserItemRole, 'provider' | 'created'>;
 
-const getAccess: GetAccess = {
-	isOwner: function (this: EntityAccess, access: Access, _data: any) {
-		return hasUserRole('owner', access, this.uid)
-	},
-	canEdit: function (this: EntityAccess, access: Access, _data: any) {
-		return hasUserRole('owner', access, this.uid) ||
+const getAccess: GetAccess = function (this: EntityAccess, access: Access, _data: any) {
+	return {
+		isOwner: hasUserRole('owner', access, this.uid),
+		canEdit: hasUserRole('owner', access, this.uid) ||
 			hasUserRole('admin', access, this.uid) ||
-			import.meta.env.DEV;
-	},
-	canDelete: false,
-	canView: true,
-};
+			import.meta.env.DEV,
+		canDelete: false,
+		canView: true,
+	}
+}
+	
 
 /**
  * An element that renders access utilities against an entity, 
@@ -59,14 +58,14 @@ const getAccess: GetAccess = {
  */
 
 export class EntityAccess extends
-	ProvideAccessMixin(
+	ProvideAccessMixin(getAccess)(
 		ConsumeEntityMixin(
 			RenderHeaderMixin(
 				ProvideUserAccessMixin(
-					ConsumeDataMixin(
+					ConsumeDataMixin()(
 						ConsumeEntityStatusMixin(
 							ConsumeUidMixin(
-								LitElement)))))), getAccess) {
+								LitElement))))))) {
 
 	private _users!: User[];
 
