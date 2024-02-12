@@ -2,7 +2,7 @@
  * Base types for resource
  */
 import type { DocumentReference } from 'firebase/firestore';
-import type { Access, DataI, UserAccess } from './dataI';
+import type { DataI, UserAccess } from './dataI';
 import type { ResourceUI, ResourceMetaData } from './resource';
 export type EntityResourceRef =  {
 	customer: string

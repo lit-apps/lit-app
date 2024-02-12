@@ -1,5 +1,5 @@
 import { consume, createContext, provide } from '@lit/context';
-import { ReactiveElement, PropertyValues, LitElement } from 'lit';
+import { ReactiveElement, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import {
 	EntityAccess

@@ -1,6 +1,6 @@
 import { consume, ContextProvider, createContext } from '@lit/context';
-import { PropertyValues, ReactiveElement } from 'lit';
-import { state, property } from 'lit/decorators.js';
+import { ReactiveElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
 export const docIdContext = createContext<DocId>('doc-id-context');
 
@@ -31,7 +31,7 @@ export const ProvideDocIdMixin = <T extends Constructor<ReactiveElement >>(super
 	class ContextProvideDocIdMixinClass extends superClass {
 
 		docId: DocId;
-		docIdProvider = new ContextProvider(this, {context: docIdContext, initialValue: this.docId});
+		docIdProvider = new ContextProvider(this, {context: docIdContext});
 
 	};
 
