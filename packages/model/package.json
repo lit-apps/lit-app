@@ -61,7 +61,7 @@
     "@preignition/pwi-md": "link:../../../packages/pwi-md",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/multi-select-combo-box": "link:../../../app-dependencies/web-components/packages/multi-select-combo-box",
-    "lit": "^3.1.0",
+    "lit": "^3.1.2",
     "lit-vaadin-helpers": "^0.3.1"
   }
 }

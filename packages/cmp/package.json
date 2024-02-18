@@ -32,7 +32,7 @@
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
     "@vaadin/a11y-base": "24.1.0",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
-    "lit": "^3.1.0",
+    "lit": "^3.1.2",
     "lit-vaadin-helpers": "^0.3.1",
     "lite-youtube-embed": "^0.3.0"
   },
