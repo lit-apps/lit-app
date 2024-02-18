@@ -61,7 +61,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
  *                     this.renderListItem() {}
  *                   } :  
  *                   this.renderGrid() {
- *                      this.gridDetailRenderer() {
+ *                      this.renderGridDetail() {
  *                        this.renderTable() {}
  *                      }
  *                      this.renderGridColumn() {}         
@@ -93,6 +93,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 	// class R extends RenderActionMixin(superclass) {
 
 		showMetaData: boolean = false
+		itemIdPath: string = '$id' // collectionGroup will need to use $path
 
 		renderGrid(data: Collection<D>, config?: C) {
 			const onSelected = async (e: CustomEvent) => {
@@ -114,9 +115,9 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 			return html`<vaadin-grid 
 			id="grid"
       class="flex entity grid ${this.entityName}"
-			.itemIdPath=${'$id'}
+			.itemIdPath=${this.itemIdPath}
 			.items=${data}
-			${gridRowDetailsRenderer(this.gridDetailRenderer.bind(this))}
+			${gridRowDetailsRenderer(this.renderGridDetail.bind(this))}
 			@active-item-changed=${config?.gridConfig?.preventDetails ? null : activeItemChanged}
       @dblclick=${config?.gridConfig?.preventDblClick ? null : onDblClick}
 			@selected-items-changed=${onSelected}
@@ -153,7 +154,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 				}`
 		}
 
-		gridDetailRenderer(data: CollectionI<D>, _model?: any, _grid?: any) {
+		renderGridDetail(data: CollectionI<D>, _model?: any, _grid?: any) {
 			return html`
 			<div class="layout vertical">
 				${this.renderTable(data)}

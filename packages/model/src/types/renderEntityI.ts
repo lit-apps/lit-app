@@ -10,6 +10,7 @@ export declare class RenderInterface<
 	C extends RenderConfig = RenderConfig
 > extends RenderActionInterface<D, A> {
 	showMetaData: boolean
+	itemIdPath: string
 	
 	public renderFooter(_data: D, _config?: C): TemplateResult
 	public renderBody(data: D, config?: C): TemplateResult
@@ -23,7 +24,7 @@ export declare class RenderInterface<
 
 	protected renderTitle(data: D, config?: C): TemplateResult
 	protected renderGridColumns(config?: C): TemplateResult
-	protected gridDetailRenderer(data: CollectionI<D>, _model?: any, _grid?: any): TemplateResult
+	protected renderGridDetail(data: CollectionI<D>, _model?: any, _grid?: any): TemplateResult
 	protected renderTable(data: CollectionI<D>, config?: C): TemplateResult
 	protected renderMetaData(_data: D, _config?: C): TemplateResult
 	protected renderCard(data: Collection<D>, config?: C): TemplateResult

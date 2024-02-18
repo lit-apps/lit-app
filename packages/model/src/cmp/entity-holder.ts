@@ -1,4 +1,4 @@
-import { adoptStyles, html, PropertyValues } from "lit";
+import { adoptStyles, html, nothing, PropertyValues } from "lit";
 import { property } from 'lit/decorators.js';
 import {entityI, EntityI} from '../types';
 
@@ -52,6 +52,7 @@ export default class EntityHolder extends AbstractEntity {
 	}
 
 	protected override renderEntity(entity: entityI, config?: RenderConfig) {
+		const isEmptyArray = Array.isArray(this.data) && this.data.length === 0
 		return html`
 			<slot name="header">
 				${this.renderHeader(entity, config)}
@@ -65,6 +66,7 @@ export default class EntityHolder extends AbstractEntity {
 			<slot name="footer">
 				${this.renderFooter(entity, config)}
 			</slot>
+			<slot name="footer-${isEmptyArray ? 'no-data': 'data'}"></slot>
 		`;
 	}
 

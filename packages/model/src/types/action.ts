@@ -44,6 +44,7 @@ export type ActionBase = {
 	},
 	entityName?: string // the name of the entity - this is useful for actions that need to be handled at the correct db reference
 	pushHistory?: boolean // true to push the action to the history when executed
+	preventWriteEvent?: boolean // true to prevent the event to be written on /internals/event
 	handleOnServer?: boolean // true to handle the action on the server (via userAction trigger)
 	onClick?: (data: any) => void // as simple handler - this will not trigger any entity Event
 	// allow to add listener while action runs. This is used for instance to alter data on write
@@ -68,9 +69,20 @@ export type DefaultActions =
   'removeAccess' | 'setAccess' | 'addAccess' | 'invite'
 export type Actions = Record<string , Action>
 
+/**
+ * Returns true if `action` contain a machineID
+ * @param action Action
+ * @returns Boolean
+ */
 export function isFsmAction(action: Action): action is FsmAction {
 	return 'machineID' in action
 }
+
+/**
+ * Returns true if `action` contains a handler
+ * @param action Action
+ * @returns Boolean
+ */
 export function isHandlerAction(action: Action): action is HandlerAction {
 	return 'handler' in action
 }

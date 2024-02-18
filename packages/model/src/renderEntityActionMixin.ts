@@ -90,7 +90,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 		private getEvent(actionName: keyof A, data: any, bulkAction: boolean = false) {
 			if (actionName === 'create') {
 				console.warn('getEvent for create is deprecated!')
-				return new Create({ entityName: this.entityName, data: this.getNewData() }, this.actions.create);
+				return new Create({ entityName: this.entityName, data: this.processCreateData(data) }, this.actions.create);
 			}
 			return (this.constructor as unknown as StaticEntityActionI<D, A>).getEvent(actionName, data, this.host, bulkAction)
 		}

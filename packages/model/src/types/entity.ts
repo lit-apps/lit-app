@@ -17,7 +17,6 @@ export type EntityAccess = {
 	canEdit: boolean
 	canView: boolean
 	canDelete: boolean
-	// isSuper: boolean // true for super Admin 
 }
 
 interface EntityBase<T extends DefaultI = DefaultI> extends LitElement {

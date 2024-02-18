@@ -26,10 +26,11 @@ export default function renderMixin<D extends DataI, A extends Actions>(supercla
 		 * @param appOwnerID - the group owning the entity (e.g. gds)
 		 */
 		// TODO : this should be a static method		
-		getNewData(..._args: any[]): Partial<D> {
-			// @ts-ignore
-			return {}
-		}
+		// getNewData(..._args: any[]): Partial<D> {
+		// 	// @ts-ignore
+		// 	console.warn('getNewData is deprecated', this.entityName)
+		// 	return {}
+		// }
 
 		processCreateData(data: Partial<D> = {}) {
 			return {

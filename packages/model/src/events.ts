@@ -197,7 +197,7 @@ class BaseAction<T> extends BaseEvent<T & { promise?: Promise<any> }> {
 
 export interface ActionDetail<T = any> {
   entityName: string,
-  id?: string,
+  id?: string, // id is set when action is performed on a collection ref, for one specific eneti 
   data?: T,
   selectedItems?: any[],
   promise?: Promise<any>
@@ -224,8 +224,14 @@ export class EntityAction<T extends ActionI = ActionI> extends BaseAction<Action
     });
   }
 }
-
-
+/**
+ * Add an id to the action detail - this is useful when action is performed on a collection ref
+ * @param  {EntityAction} action
+ * @param  {string} id
+ */
+export function setEntityActionId (action: EntityAction, id: string) {
+  action.detail.id = id
+}
 
 export class AppAction extends BaseAction<ActionDetail> {
   static readonly eventName = 'app-action';
