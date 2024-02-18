@@ -20,6 +20,7 @@ export class UserImg  extends userMixin(LitElement) {
     img {
       height: var(--_size);
       width: var(--_size);
+      min-width: var(--_size);
       display: inline-block;
       background-color: var(--_color);
       border-radius: 50%;
