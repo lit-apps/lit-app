@@ -5,6 +5,7 @@ import type { FilledField } from '../../field/internal/filled-field';
 import type { OutlinedField } from '../../field/internal/outlined-field';
 import { PropertyValues } from 'lit';
 import NoAutoValidateMixin  from '../../mixin/noAutoValidateMixin';
+import { html as staticHtml } from 'lit/static-html.js';
 
 /**
  * PwiTextField is an override of MD3's filled-textfield for Preignition
@@ -38,6 +39,33 @@ export abstract class TextField extends NoAutoValidateMixin(T) {
 	 * The field holding label
 	 */
 	@query('.field') override field!: FilledField | OutlinedField;
+
+	/**
+	 * Override renderField so that we can have htmlResult label and supportingText
+	 */
+	private override renderField() {
+    return staticHtml`<${this.fieldTag}
+      class="field"
+      count=${this.value.length}
+      ?disabled=${this.disabled}
+      ?error=${this.hasError}
+      .errorText=${this.getErrorText()}
+      ?focused=${this.focused}
+      ?has-end=${this.hasTrailingIcon}
+      ?has-start=${this.hasLeadingIcon}
+      .label=${this.label}
+      max=${this.maxLength}
+      ?populated=${!!this.value}
+      ?required=${this.required}
+      ?resizable=${this.type === 'textarea'}
+      .supportingText=${this.supportingText}
+    >
+      ${this.renderLeadingIcon()}
+      ${this.renderInputOrTextarea()}
+      ${this.renderTrailingIcon()}
+      <div id="description" slot="aria-describedby"></div>
+    </${this.fieldTag}>`;
+  }
 
 	
 	/**
