@@ -29,7 +29,6 @@ import {
 
 import('@material/mwc-textfield')
 import('@material/mwc-textarea')
-import('@preignition/pwi-md/src/pwi-md-editor')
 import('@preignition/firebase-upload/image-upload')
 import('@preignition/pwi-form-upload')
 import('@preignition/pwi-input/src/pwi-input-translation')
@@ -39,6 +38,8 @@ import('@material/web/switch/switch.js')
 import('@material/web/select/select-option.js')
 import('@lit-app/cmp/field/choice-checkbox')
 import('@lit-app/cmp/field/choice-radio')
+import('../../cmp/field/md-editor')
+import('../../cmp/field/md-droppable-editor')
 import('../../cmp/field/slider-field.js')
 import('../../cmp/field/select.js')
 
@@ -168,7 +169,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     }
     if (isComponentMd(model) || isComponentMdDroppable(model)) {
       return html`
-      <pwi-md-editor 
+      <lapp-md-editor 
         .rows=${3}
         .name=${name}
         .writeLabel=${label}
@@ -178,7 +179,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         .mdtranslate=${origin} 
         @mdtranslate-changed=${onInputFact('mdtranslated')} 
         .maxLength=${model.maxLength}
-        .charCounter=${!!model.maxLength}></pwi-md-editor>
+        .charCounter=${!!model.maxLength}></lapp-md-editor>
       `
     }
     throw new Error(`Translation not allowed for ${name}`);
@@ -223,7 +224,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   }
 
   if (isComponentMdDroppable(model)) {
-      return html`<pwi-md-droppable-editor
+      return html`<lapp-md-droppable-editor
       class=${cls}
       .name=${name}
       .readOnly=${disabled}
@@ -241,11 +242,11 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       resize=${model.resize || nothing}
       .md=${value || ''}
       @input=${onInputFact('md')}
-    ></pwi-md-droppable-editor>`
+    ></lapp-md-droppable-editor>`
     }
   if (isComponentMd(model)) {
   return html`
-    <pwi-md-editor
+    <lapp-md-editor
       class=${cls}
       .name=${name}
       .readOnly=${disabled}
@@ -260,7 +261,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       resize=${ifDefined(model.resize) || undefined}
       .md=${value || ''}
       @input=${onInputFact('md')}
-    ></pwi-md-editor>
+    ></lapp-md-editor>
     `;
   }
 
