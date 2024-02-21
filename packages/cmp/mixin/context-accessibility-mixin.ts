@@ -1,28 +1,19 @@
 import { LitElement, adoptStyles } from 'lit';
 import { property } from 'lit/decorators.js'
-import { consume, provide, createContext } from '@lit/context';
+import { consume, provide, createContext, ContextProvider } from '@lit/context';
 import { showWhenAccessibility } from '@preignition/preignition-styles';
+import { State, StateController } from '../../state/src';
+import { AccessibilityStateI } from '../../state/src/types';
 
-type Accessibility = {
-	signlanguage: boolean,
-	voice: boolean,
-	readaloud: boolean,
-	readaloudConfig: {
-		rate: number
-	},
-	easyread: boolean,
-	easyreadEmulate: boolean,
-	accessibleDevice: boolean
-}
 
-export const accessibilityContext = createContext<Accessibility>('accessibility-context');
+export const accessibilityContext = createContext<AccessibilityStateI>('accessibility-context');
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 /**
  * ConsumeAccessibilityMixin a mixin that consumes accessibility context:
  */
 export declare class ContextAccessibilityMixinInterface {
-	accessibility: Accessibility;
+	accessibility: AccessibilityStateI;
 	get accessibilityClasses(): {
 		issignlanguage: boolean;
 		isreadaloud: boolean;
@@ -33,9 +24,9 @@ export declare class ContextAccessibilityMixinInterface {
 export const ConsumeAccessibilityMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
 	class ContextConsumeAccessibilityMixinClass extends superClass {
-		
-		@consume({ context: accessibilityContext })
-		@property() accessibility!: Accessibility;
+
+		@consume({ context: accessibilityContext, subscribe: true })
+		@property({ attribute: false }) accessibility!: AccessibilityStateI;
 
 		// we add showWhenAccessibility styles to the renderRoot
 		protected override createRenderRoot() {
@@ -61,13 +52,19 @@ export const ConsumeAccessibilityMixin = <T extends Constructor<LitElement>>(sup
 }
 
 /**
- * ProvideAccessibilityMixin a mixin that consumes accessibility context:
+ * ProvideAccessibilityMixin a mixin that provides accessibility context:
+ * Any time accessibility state is updated, it will update the context and notify consumers
+ * 
+ * We are gradually switching to use context approach in order to better adapt to DOM native API, and are not 
+ * sure about how state will work when we distribute part of the app as web components.
  */
-export const ProvideAccessibilityMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const ProvideAccessibilityMixin = (state: AccessibilityStateI) => <T extends Constructor<LitElement>>(superClass: T) => {
 
 	class ContextProvideAccessibilityMixinClass extends superClass {
-		@provide({ context: accessibilityContext })
-		@property() accessibility!: Accessibility;
+		// this controller pass updated state value to consumers
+		_accessibilityProvider = new ContextProvider(this, { context: accessibilityContext, initialValue: state });
+		// this controller notify _accessibilityProvider about accessibility state changes
+		_accessibilityStateController = new StateController(this, state, () => this._accessibilityProvider.setValue(state, true));
 	};
 
 	return ContextProvideAccessibilityMixinClass as unknown as Constructor<ContextAccessibilityMixinInterface> & T;
