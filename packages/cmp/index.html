@@ -34,7 +34,7 @@
         display: block;
       }
     </style>
-    <script type="module" src="/field/choice-order"></script> 
+    <!-- <script type="module" src="/field/choice-order"></script> 
     <script type="module" src="/field/choice-star"></script>
     <script type="module" src="/field/choice-checkbox"></script>
     <script type="module" src="/button/button-override"></script>
@@ -44,7 +44,9 @@
     <script type="module" src="/field/record/record"></script>
     <script type="module" src="/field/record-field"></script>
     <script type="module" src="/field/checkbox-field"></script>
-    <script type="module" src="/field/slider-field"></script>
+    <script type="module" src="/field/slider-field"></script> -->
+    <script type="module" src="/field/md-editor"></script>
+    <script type="module" src="/field/md-droppable-editor"></script>
     <script type="module" src="/icon/icon"></script>
     <script type="module" src="/tabs/primary-tab-closable"></script>
    
@@ -52,12 +54,13 @@
 
   <body>
     <script type="module">
+     
 
-      import '@material/web/select/select-option.js';
-      import '@material/web/select/filled-select.js';
-      import '@material/web/tabs/tabs.js';
-      import '@material/web/textfield/filled-text-field.js';
-      import '@material/web/button/filled-button.js';
+      // import '@material/web/select/select-option.js';
+      // import '@material/web/select/filled-select.js';
+      // import '@material/web/tabs/tabs.js';
+      // import '@material/web/textfield/filled-text-field.js';
+      // import '@material/web/button/filled-button.js';
 
       const options = [
 	      {code: '1', name:'radio', label: 'one', supportingText: 'hello'}, 
@@ -74,6 +77,8 @@
             e.target.reportValidity();
         }));  
     </script>
+    <lapp-md-editor></lapp-md-editor>
+    <lapp-md-droppable-editor></lapp-md-droppable-editor>
     <md-filled-text-field 
     _required  
     _error-text="error text"

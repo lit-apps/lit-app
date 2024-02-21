@@ -37,6 +37,12 @@ const styles = css`
   .label.hidden {
     pointer-events: none;
   }
+
+  /* Allow to have flexed supporting-text e.g. for md-editor*/
+  .supporting-text > span:first-child {
+    display: flex;
+    flex:1;
+  }
   
   
   `
