@@ -5,8 +5,10 @@ import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ConsumeAccessibilityMixin } from '../../mixin/context-accessibility-mixin';
 import { md } from '@preignition/preignition-styles';
+import githubMd from '@preignition/preignition-styles/src/github-md-css'
+import githubHighlight from '@preignition/preignition-styles/src/github-highlight-css'
+
 import { parse } from '@lit-app/md-parser';
-import { ResizeController } from '@lit-labs/observers/resize-controller.js'
 import { MdFilledTextField } from '@material/web/textfield/filled-text-field';
 import('@material/web/tabs/tabs.js');
 import('@material/web/tabs/secondary-tab.js');
@@ -23,7 +25,10 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 		delegatesFocus: true,
 	};
 
-	static override styles = [md,
+	static override styles = [
+		githubMd,
+		...md,
+		githubHighlight,
 		css`
 			:host {
 				display: inline-flex;
@@ -84,6 +89,10 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	@property() helperTranslate = 'Write your translation here';
 	@property() placeholder = '';
 
+	/**
+	 * flavour of markdown to use for rendering
+	 */
+	@property() flavour!: 'github' | undefined;
 	@property({ type: Number }) cols = 3;
 	@property({ type: Number }) rows = 3;
 	@property({ type: Boolean }) required!: boolean;
@@ -98,17 +107,17 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	@query('md-tabs') _tabs!: HTMLElement;
 
 	override render() {
-		const onChange = (e) => {
-			this._selected = e.target.activeTabIndex
+		const onChange = (e: CustomEvent) => {
+			this._selected = e.target?.activeTabIndex
 		}
 
 		const translateTabs = html`
 			<md-secondary-tab ><lapp-icon slot="icon" .icon=${this.translateIcon}></lapp-icon>${this.translateLabel}</md-secondary-tab>
 			<md-secondary-tab>${this.translatePreviewLabel}</md-secondary-tab>
 		`
-		
 		const editor = this.renderEditor()
-		const viewer = html`<div id="markdown" class="markdown ${classMap(this.accessibilityClasses)}">${parse(this._selected === 1 ? this.md : this.mdtranslate)}</div>`
+		const classes = {	...this.accessibilityClasses, 'markdown-body': this.flavour === 'github' };
+		const viewer = html`<div id="markdown" class="markdown ${classMap(classes)}">${parse(this._selected === 1 ? this.md : this.mdtranslate)}</div>`
 
 		// Note: we use cache to keep the heigh of the textarea when switching between tabs
 		return html`
@@ -145,7 +154,6 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 			.minLength=${this.minLength}
 			.supportingText=${this.renderSupportingText()}
 			@input=${this.onValueChanged}
-			@resize=${this.onResize}
 			>
 		</lapp-text-field>`;
 	}
@@ -166,11 +174,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 		this._tabs.focus();
 	}
 
-	private onResize(e) {
-		console.info('resize', e.target.rows)
-		this.rows = e.target.rows;
-	}
-	onValueChanged(e) {
+	onValueChanged(e: CustomEvent) {
 		const value = e.target.value;
 		if (this._selected === 0) {
 			this.md = value;

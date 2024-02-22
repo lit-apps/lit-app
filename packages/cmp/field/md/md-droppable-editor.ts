@@ -119,7 +119,7 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 		`
 	}
 	protected override renderSupportingAction() {
-		const onclickUpload = (e) => {
+		const onclickUpload = (e: CustomEvent) => {
 			this.upload?._onAddFilesClick(e);
 		}
 		return html`&nbsp; | &nbsp;&nbsp; 
@@ -133,7 +133,7 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 
 	}
 
-	update(props: PropertyValues) {
+	override update(props: PropertyValues) {
 		if (props.has('_uploadStatus')) {
 			this.processStatus();
 		}
@@ -164,7 +164,7 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 	}
 
 	// Note(cg): handle pasting image data 
-	onPaste(e) {
+	onPaste(e: ClipboardEvent) {
 		// We need to check if event.clipboardData is supported (Chrome & IE)
 		if (e.clipboardData && e.clipboardData.items) {
 			// Get the items from the clipboard
@@ -181,34 +181,35 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 			}
 		}
 	}
-	_isOnTextarea(e) {
+	_isOnTextarea(e: CustomEvent) {
 		return e.composedPath()[0].localName === 'textarea';
 	}
 
-	canDrag(e) {
+	canDrag(e: CustomEvent) {
 		return this._isOnTextarea(e);
 	}
 
-	canDrop(e) {
+	canDrop(e: CustomEvent) {
 		return this._isOnTextarea(e);
 	}
 
 	uploadingStarted() {
 		this.insertAtCaret(`\n${imageLoading}`);
-		this.md = this._input.value;
+		this.md = this._input.inputOrTextarea?.value 
 	}
 
-	formatURL(url) {
+	formatURL(url: string) {
 		return url;
 	}
 
-	uploadingFinished(status) {
+	async uploadingFinished(status: UploadStatusT) {
 		this.md = this.md.replace(imageLoading, `![${status.file.name.split('.')[0]}](${this.formatURL(status.file.url)})`);
+		await this.updateComplete;
 		const inputEvent = new Event('input', { bubbles: true, composed: true });
 		this._input.dispatchEvent(inputEvent);
 	}
 
-	onUploadError(e) {
+	onUploadError(e: CustomEvent) {
 		this.loading = false;
 		this._uploadStatus = {
 			status: 'error',
@@ -216,7 +217,7 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 			error: e.detail.file.error
 		};
 	}
-	onUploadSuccess(e) {
+	onUploadSuccess(e: CustomEvent) {
 		this.loading = false;
 		this._uploadStatus = {
 			status: 'success',
@@ -224,7 +225,7 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 		};
 	}
 
-	onUploadFinished(e) {
+	onUploadFinished(e: CustomEvent) {
 		this.loading = false;
 		this._uploadStatus = {
 			status: 'finish',
@@ -232,7 +233,7 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 		};
 	}
 
-	onUploadProgress(e) {
+	onUploadProgress(e: CustomEvent) {
 		this.loading = true;
 		this._uploadStatus = {
 			status: 'progress',
@@ -240,7 +241,7 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 		};
 	}
 
-	onUploadStart(e) {
+	onUploadStart(e: CustomEvent) {
 		this.loading = true;
 		this._uploadStatus = {
 			status: 'start',
@@ -248,7 +249,7 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 		};
 	}
 
-	onFileReject(e) {
+	onFileReject(e: CustomEvent) {
 		this.loading = false;
 		this._uploadStatus = {
 			status: 'error',
