@@ -227,6 +227,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       return html`<lapp-md-droppable-editor
       class=${cls}
       .name=${name}
+      .flavour=${model.flavour}
       .readOnly=${disabled}
       .writeLabel=${label}
       .placeholder=${model.placeholder}
@@ -249,6 +250,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     <lapp-md-editor
       class=${cls}
       .name=${name}
+      .flavour=${model.flavour}
       .readOnly=${disabled}
       .writeLabel=${label}
       .placeholder=${model.placeholder}

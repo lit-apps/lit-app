@@ -129,6 +129,7 @@ export interface ModelComponentTextArea<T = any> extends ModelComponentBase<T> {
 }
 export interface ModelComponentMd<T = any> extends ModelComponentBase<T> {
 	component: MdComponent
+	flavour?: 'github' // flavour of the markdown editor
 	rows?: number
 	placeholder?: string
 	maxLength?: number
