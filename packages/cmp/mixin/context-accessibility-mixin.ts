@@ -31,7 +31,7 @@ export const ConsumeAccessibilityMixin = <T extends Constructor<LitElement>>(sup
 		// we add showWhenAccessibility styles to the renderRoot
 		protected override createRenderRoot() {
 			const root = super.createRenderRoot() as ShadowRoot;
-			adoptStyles(root, [...root.adoptedStyleSheets, showWhenAccessibility]);
+			adoptStyles(root, [...(root.adoptedStyleSheets || []), showWhenAccessibility]);
 			return root;
 		}
 
