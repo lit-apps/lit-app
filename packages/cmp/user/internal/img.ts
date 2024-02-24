@@ -1,10 +1,13 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { when } from 'lit/directives/when.js';
 import userMixin from './user-mixin';
 import '@preignition/lit-firebase/document';
 /**
  * Displays an image for a user
+ * 
+ * We can either set a photoURL or uid: 
+ * - photoURL will use the url as a source for the image
+ * - uid will lookup user account photo
  */
 export class UserImg  extends userMixin(LitElement) {
 
@@ -48,9 +51,11 @@ export class UserImg  extends userMixin(LitElement) {
 
   override render() {
     return html `
-      <lif-document @data-changed=${this.setPhotoURL} .path=${this.photoPath}></lif-document>
-      <lif-document @data-changed=${(e: CustomEvent) => this.displayName = e.detail.value} .path=${this.namePath}></lif-document>
-      ${when(this.photoURL, () => html`<div part="photo"><img src="${this.photoURL}" loading="lazy" alt="${this.displayName}"></div>`)}
+      ${this.uid ? html`
+        <lif-document @data-changed=${this.setPhotoURL} .path=${this.photoPath}></lif-document>
+        <lif-document @data-changed=${(e: CustomEvent) => this.displayName = e.detail.value} .path=${this.namePath}></lif-document>
+      ` : nothing}
+      ${this.photoURL ? html`<div part="photo"><img src="${this.photoURL}" loading="lazy" alt="${this.displayName}"></div>` : nothing}
     `;
   }
 
