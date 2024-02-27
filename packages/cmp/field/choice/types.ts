@@ -18,10 +18,8 @@ export type MediaIcon = {
 
 export type Media = MediaImage | MediaYoutube | MediaIcon
 
-export type Option = {
+type OptionBase = {
 	code: string
-	label: string
-	md?: TemplateResult // label rendered as markdown
 	name?: string
 	category?: string
 	description?: string // internal use only
@@ -34,6 +32,13 @@ export type Option = {
 	media?: Media
 	alt?: string
 }
+type OptionLabel = OptionBase &  {
+	label: string
+}
+type OptionMd = OptionBase &  {
+	md: string
+}
+export type Option = OptionLabel | OptionMd
 
 export type OptionMulti = Option & {
 	exclusive?: boolean 
