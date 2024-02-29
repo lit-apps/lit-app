@@ -10,7 +10,7 @@ import { icon } from '@preignition/preignition-styles';
 import { LitElement, css, html } from "lit";
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
-// import { invite, machineStateServer } from 'firebase-fsm'
+// import { invite, machineStateServer } from '@lit-app/firebase-fsm'
 import { ToastEvent } from '../../event';
 import { ConsumeUserAccessMixin } from './context-user-access-mixin';
 import('@lit-app/cmp/user/search')

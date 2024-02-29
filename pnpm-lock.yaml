@@ -105,9 +105,15 @@ importers:
       '@lit-app/event':
         specifier: link:../event
         version: link:../event
+      '@lit-app/firebase-fsm':
+        specifier: link:../../../app/firebase-fsm
+        version: link:../../../app/firebase-fsm
       '@lit-app/md-parser':
         specifier: link:../../../packages/md-parser
         version: link:../../../packages/md-parser
+      '@lit-app/state':
+        specifier: link:../state
+        version: link:../state
       '@lit-app/testing':
         specifier: link:../testing
         version: link:../testing
@@ -144,6 +150,9 @@ importers:
       '@vaadin/grid':
         specifier: link:../../../app-dependencies/web-components/packages/grid
         version: link:../../../app-dependencies/web-components/packages/grid
+      effect:
+        specifier: ^2.4.0
+        version: 2.4.0
       lit:
         specifier: ^3.1.2
         version: 3.1.2
@@ -153,6 +162,9 @@ importers:
       lite-youtube-embed:
         specifier: ^0.3.0
         version: 0.3.0
+      xstate:
+        specifier: ^5.8.2
+        version: 5.8.2
     devDependencies:
       '@custom-elements-manifest/analyzer':
         specifier: ^0.8.2
@@ -3497,6 +3509,10 @@ packages:
       '@types/which': 2.0.2
       which: 2.0.2
     dev: true
+
+  /effect@2.4.0:
+    resolution: {integrity: sha512-HAtFVAbAGYDzfGbrSrX1gzMzXym15zk1+ps72X8W1wdZY0vxq+u23w8u9DhAZjiJPHT4W9ZYL7QWQqpP4t+dSg==}
+    dev: false
 
   /emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -7540,6 +7556,10 @@ packages:
       utf-8-validate:
         optional: true
     dev: true
+
+  /xstate@5.8.2:
+    resolution: {integrity: sha512-uNCEpI0+h1Dwy8yLjBCFj8b94LxWSp+xlyrmS5+X5KQ2WnKlQfILImoDOEOK4bUOnt5xhjWAtW9sGecoWn/uew==}
+    dev: false
 
   /y18n@4.0.3:
     resolution: {integrity: sha512-JKhqTOwSrqNA1NY5lSztJ1GrBiUodLMmIZuLiDaMRJ+itFd+ABVE8XBjOvIWL+rSqNDC74LCSFmlb/U4UZ4hJQ==}

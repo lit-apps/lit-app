@@ -21,7 +21,9 @@
   "license": "ISC",
   "dependencies": {
     "@lit-app/event": "link:../event",
+    "@lit-app/firebase-fsm": "link:../../../app/firebase-fsm",
     "@lit-app/md-parser": "link:../../../packages/md-parser",
+    "@lit-app/state": "link:../state",
     "@lit-app/testing": "link:../testing",
     "@lit-labs/motion": "^1.0.6",
     "@lit-labs/observers": "^2.0.2",
@@ -34,9 +36,11 @@
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
     "@vaadin/a11y-base": "24.1.0",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
+    "effect": "^2.4.0",
     "lit": "^3.1.2",
     "lit-vaadin-helpers": "^0.3.1",
-    "lite-youtube-embed": "^0.3.0"
+    "lite-youtube-embed": "^0.3.0",
+    "xstate": "^5.8.2"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.8.2",
