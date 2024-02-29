@@ -14,11 +14,15 @@ export class StateController<T extends State>
 
 	constructor(
 		protected host: ReactiveControllerHost,
-		private state: T,
+		public state: T,
 		cb?: callback,
 	) {
 		this.callback = cb ? cb : () => this.host.requestUpdate()
 		this.host.addController(this);
+	}
+
+	dispose() {
+		this.state.removeEventListener(StateEvent.eventName, this.callback);
 	}
 
 	hostConnected(): void {
@@ -27,6 +31,6 @@ export class StateController<T extends State>
 
 	}
 	hostDisconnected(): void {
-		this.state.removeEventListener(StateEvent.eventName, this.callback);
+		this.dispose()
 	}
 }
