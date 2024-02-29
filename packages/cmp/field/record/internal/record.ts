@@ -51,7 +51,7 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
   };
 
   /** a helper text to pass; it will be added as aria-label to main button or icon button */
-  @property({ attribute: 'aria-label' }) ariaLabel = '';
+  @property({ attribute: 'aria-label' }) override ariaLabel = '';
 
   /** the label for record button */
   @property() recordLabel = locale.record;

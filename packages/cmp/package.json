@@ -23,6 +23,7 @@
     "@lit-app/event": "link:../event",
     "@lit-app/firebase-fsm": "link:../../../app/firebase-fsm",
     "@lit-app/md-parser": "link:../../../packages/md-parser",
+    "@lit-app/shared": "link:../shared",
     "@lit-app/state": "link:../state",
     "@lit-app/testing": "link:../testing",
     "@lit-labs/motion": "^1.0.6",

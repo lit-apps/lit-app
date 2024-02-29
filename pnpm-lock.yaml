@@ -111,6 +111,9 @@ importers:
       '@lit-app/md-parser':
         specifier: link:../../../packages/md-parser
         version: link:../../../packages/md-parser
+      '@lit-app/shared':
+        specifier: link:../shared
+        version: link:../shared
       '@lit-app/state':
         specifier: link:../state
         version: link:../state
@@ -293,6 +296,43 @@ importers:
       typescript:
         specifier: ^5.0.2
         version: 5.0.2
+      vite:
+        specifier: ^5.0.10
+        version: 5.0.10
+      vitest:
+        specifier: ^1.0.4
+        version: 1.0.4(happy-dom@8.9.0)
+
+  packages/shared:
+    dependencies:
+      lit:
+        specifier: ^3.1.2
+        version: 3.1.2
+      lit-vaadin-helpers:
+        specifier: ^0.3.1
+        version: 0.3.1
+    devDependencies:
+      '@custom-elements-manifest/analyzer':
+        specifier: ^0.5.7
+        version: 0.5.7
+      '@custom-elements-manifest/to-markdown':
+        specifier: ^0.1.0
+        version: 0.1.0
+      '@preignition/preignition-demo':
+        specifier: ^0.5.0
+        version: 0.5.0
+      chai-a11y-axe:
+        specifier: ^1.4.0
+        version: 1.4.0
+      eslint:
+        specifier: ^8.14.0
+        version: 8.40.0
+      happy-dom:
+        specifier: ^8.9.0
+        version: 8.9.0
+      typescript:
+        specifier: ^5.0.2
+        version: 5.0.4
       vite:
         specifier: ^5.0.10
         version: 5.0.10
@@ -2655,23 +2695,17 @@ packages:
     resolution: {integrity: sha512-vRq+GniJAYSBmTRnhCYPAPq6THYqovJ/gzGThWbgEZUQaBccndGTi1hdiUP15HzEco0I6t4RCtXyX0rsSmwgPw==}
     dev: false
 
-  /acorn-jsx@5.3.2(acorn@8.10.0):
+  /acorn-jsx@5.3.2(acorn@8.11.2):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
-      acorn: 8.10.0
+      acorn: 8.11.2
     dev: true
 
   /acorn-walk@8.3.1:
     resolution: {integrity: sha512-TgUZgYvqZprrl7YldZNoa9OciCAyZR+Ejm9eXzKCmjsF5IKp/wgQ7Z/ZpjpGTIUPwrHQIcYeI8qDh4PsEwxMbw==}
     engines: {node: '>=0.4.0'}
-    dev: true
-
-  /acorn@8.10.0:
-    resolution: {integrity: sha512-F0SAmZ8iUtS//m8DmCTA0jlh6TDKkHQyK6xc6V4KDTyZKA9dnvX9/3sRTVQrWm79glUAZbnmmNcdYwUIHWVybw==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
     dev: true
 
   /acorn@8.11.2:
@@ -3801,8 +3835,8 @@ packages:
     resolution: {integrity: sha512-7OASN1Wma5fum5SrNhFMAMJxOUAbhyfQ8dQ//PJaJbNw0URTPWqIghHWt1MmAANKhHZIYOHruW4Kw4ruUWOdGw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
-      acorn: 8.10.0
-      acorn-jsx: 5.3.2(acorn@8.10.0)
+      acorn: 8.11.2
+      acorn-jsx: 5.3.2(acorn@8.11.2)
       eslint-visitor-keys: 3.4.1
     dev: true
 
@@ -4248,7 +4282,7 @@ packages:
       array-union: 2.1.0
       dir-glob: 3.0.1
       fast-glob: 3.3.2
-      ignore: 5.2.4
+      ignore: 5.3.0
       merge2: 1.4.1
       slash: 3.0.0
     dev: true
@@ -5312,11 +5346,11 @@ packages:
       micromark-util-chunked: 1.0.0
       micromark-util-classify-character: 1.1.0
       micromark-util-html-tag-name: 1.2.0
-      micromark-util-normalize-identifier: 1.0.0
+      micromark-util-normalize-identifier: 1.1.0
       micromark-util-resolve-all: 1.0.0
       micromark-util-subtokenize: 1.0.2
-      micromark-util-symbol: 1.0.1
-      micromark-util-types: 1.0.2
+      micromark-util-symbol: 1.1.0
+      micromark-util-types: 1.1.0
       uvu: 0.5.6
     dev: true
 
@@ -5411,7 +5445,7 @@ packages:
     resolution: {integrity: sha512-qUmqs4kj9a5yBnk3JMLyjtWYN6Mzfcx8uJfi5XAveBniDevmZasdGBba5b4QsvRcAkmvGo5ACmSUmyGiKTLZew==}
     dependencies:
       micromark-util-character: 1.1.0
-      micromark-util-types: 1.0.2
+      micromark-util-types: 1.1.0
     dev: true
 
   /micromark-factory-space@1.1.0:
@@ -5442,8 +5476,8 @@ packages:
   /micromark-util-character@1.1.0:
     resolution: {integrity: sha512-agJ5B3unGNJ9rJvADMJ5ZiYjBRyDpzKAOk01Kpi1TKhlT1APx3XZk6eN7RtSz1erbWHC2L8T3xLZ81wdtGRZzg==}
     dependencies:
-      micromark-util-symbol: 1.0.1
-      micromark-util-types: 1.0.2
+      micromark-util-symbol: 1.1.0
+      micromark-util-types: 1.1.0
     dev: true
 
   /micromark-util-character@1.2.0:
@@ -5456,7 +5490,7 @@ packages:
   /micromark-util-chunked@1.0.0:
     resolution: {integrity: sha512-5e8xTis5tEZKgesfbQMKRCyzvffRRUX+lK/y+DvsMFdabAicPkkZV6gO+FEWi9RfuKKoxxPwNL+dFF0SMImc1g==}
     dependencies:
-      micromark-util-symbol: 1.0.1
+      micromark-util-symbol: 1.1.0
     dev: true
 
   /micromark-util-chunked@1.1.0:
@@ -5477,7 +5511,7 @@ packages:
     resolution: {integrity: sha512-J8H058vFBdo/6+AsjHp2NF7AJ02SZtWaVUjsayNFeAiydTxUwViQPxN0Hf8dp4FmCQi0UUFovFsEyRSUmFH3MA==}
     dependencies:
       micromark-util-chunked: 1.0.0
-      micromark-util-types: 1.0.2
+      micromark-util-types: 1.1.0
     dev: true
 
   /micromark-util-combine-extensions@1.1.0:
@@ -5544,7 +5578,7 @@ packages:
   /micromark-util-resolve-all@1.0.0:
     resolution: {integrity: sha512-CB/AGk98u50k42kvgaMM94wzBqozSzDDaonKU7P7jwQIuH2RU0TeBqGYJz2WY1UdihhjweivStrJ2JdkdEmcfw==}
     dependencies:
-      micromark-util-types: 1.0.2
+      micromark-util-types: 1.1.0
     dev: true
 
   /micromark-util-resolve-all@1.1.0:
@@ -5558,7 +5592,7 @@ packages:
     dependencies:
       micromark-util-character: 1.1.0
       micromark-util-encode: 1.0.1
-      micromark-util-symbol: 1.0.1
+      micromark-util-symbol: 1.1.0
     dev: true
 
   /micromark-util-sanitize-uri@1.2.0:
@@ -5573,8 +5607,8 @@ packages:
     resolution: {integrity: sha512-d90uqCnXp/cy4G881Ub4psE57Sf8YD0pim9QdjCRNjfas2M1u6Lbt+XZK9gnHL2XFhnozZiEdCa9CNfXSfQ6xA==}
     dependencies:
       micromark-util-chunked: 1.0.0
-      micromark-util-symbol: 1.0.1
-      micromark-util-types: 1.0.2
+      micromark-util-symbol: 1.1.0
+      micromark-util-types: 1.1.0
       uvu: 0.5.6
     dev: true
 
@@ -5811,7 +5845,7 @@ packages:
     dependencies:
       hosted-git-info: 4.1.0
       is-core-module: 2.12.0
-      semver: 7.5.3
+      semver: 7.5.4
       validate-npm-package-license: 3.0.4
     dev: true
 
@@ -6500,14 +6534,6 @@ packages:
   /semver@5.7.1:
     resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
     hasBin: true
-    dev: true
-
-  /semver@7.5.3:
-    resolution: {integrity: sha512-QBlUtyVk/5EeHbi7X0fw6liDZc7BBmEaSYn01fMU1OUYbf6GPsbTtd8WmnqbI20SeycoHSeiybkE/q1Q+qlThQ==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dependencies:
-      lru-cache: 6.0.0
     dev: true
 
   /semver@7.5.4:

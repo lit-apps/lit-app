@@ -1,4 +1,3 @@
-import { TemplateResult } from 'lit'
 
 export type MediaYoutube = {
 	mediaType: 'youtube'

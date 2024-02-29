@@ -1,0 +1,49 @@
+{
+  "name": "@lit-app/shared",
+  "description": "A series of util mixins for lit-app ",
+  "repository": "https://github.com/lit-apps/lit-app/tree/main/packages/shared",
+  "homepage": "https://github.com/lit-apps/lit-app/tree/main/packages/shared",
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "authors": [
+    "christophe.geiser <christophe@preignition.org>"
+  ],
+  "keywords": [
+    "lit",
+    "vitejs",
+    "web-components"
+  ],
+  "license": "MIT",
+  "main": "index",
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "tsc",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build",
+    "test": "vitest",
+    "lint": "eslint 'src/**/*.js'",
+    "format": "prettier \"src/**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.5.7",
+    "@custom-elements-manifest/to-markdown": "^0.1.0",
+    "@preignition/preignition-demo": "^0.5.0",
+    "chai-a11y-axe": "^1.4.0",
+    "eslint": "^8.14.0",
+    "happy-dom": "^8.9.0",
+    "typescript": "^5.0.2",
+    "vite": "^5.0.10",
+    "vitest": "^1.0.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "lit": "^3.1.2",
+    "lit-vaadin-helpers": "^0.3.1"
+  }
+}
