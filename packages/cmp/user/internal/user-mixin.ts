@@ -13,6 +13,7 @@ export declare class UserMixinInterface {
 }
 /**
  * UserMixin 
+ * TODO: this should be using firestore and not rt db!
  */
 export const UserMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
