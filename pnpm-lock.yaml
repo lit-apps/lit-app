@@ -32,6 +32,9 @@ importers:
       '@lit-app/cmp':
         specifier: link:../cmp
         version: link:../cmp
+      '@lit-app/event':
+        specifier: link:../event
+        version: link:../event
       '@lit-app/model':
         specifier: link:../model
         version: link:../model
