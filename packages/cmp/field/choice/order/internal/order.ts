@@ -43,14 +43,14 @@ export abstract class Order extends
       Checkbox)) {
 
   protected override fieldName = 'order';
-  
+
   @state() animating: boolean = false;
   private movingIndex: number = -1;
   private targetIndex: number = -1;
   private movingElHeight: number = 0;
   private movingDistance: number = 0;
-  private isSelecting!: boolean ;
-  private animationEndCallback: (() => void)[] = [];      
+  private isSelecting!: boolean;
+  private animationEndCallback: (() => void)[] = [];
   private resetAnimation() {
     this.movingIndex = -1
     this.targetIndex = -1
@@ -84,10 +84,13 @@ export abstract class Order extends
     this.isSelecting = isSelecting
     if (targetIndex === index) {
       this.resetAnimation()
-      return super.onChange(e)
+      return await super.onChange(e)
+
     }
-    this.moveOption(index, targetIndex, option as Option)
-    
+    await this.moveOption(index, targetIndex, option as Option)
+    return super.onChange(e)
+
+
   }
 
   private async moveOption(index: number, targetIndex: number, option: Option) {
@@ -100,13 +103,15 @@ export abstract class Order extends
     this.movingDistance = targetEl.offsetTop - currentEl.offsetTop
     await this.updateComplete
     this.animating = true
-    setTimeout(() => {
-      this.getOptionEl(this.items[targetIndex])?.focus()
-    }, 250)
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        resolve(this.getOptionEl(this.items[targetIndex])?.focus())
+      }, 250)
+    })
   }
 
-  protected override renderChoiceOptions(options: Option[] = [] ) {
-    if(options.length === 0) {
+  protected override renderChoiceOptions(options: Option[] = []) {
+      if(options.length === 0) {
       return this.renderEmptyOption()
     }
     // sort options so that selected options are at the top
@@ -126,17 +131,17 @@ export abstract class Order extends
       (option, index) => {
         const checked = Order.isCodeSelected(this._value, option.code)
         let marginTop: number;
-        
-        if(this.isSelecting)  {
+
+        if (this.isSelecting) {
           marginTop = (this.animating && index === this.movingIndex) ?
-          (this.movingDistance - this.movingElHeight) : (this.animating && index  === (this.movingIndex + 1)) ?
-            - (this.movingDistance) : (this.animating && index === this.targetIndex) ?
-            this.movingElHeight : 0
+            (this.movingDistance - this.movingElHeight) : (this.animating && index === (this.movingIndex + 1)) ?
+              - (this.movingDistance) : (this.animating && index === this.targetIndex) ?
+                this.movingElHeight : 0
         } else {
           marginTop = (this.animating && index === this.movingIndex) ?
-          (this.movingDistance ) : (this.animating && index  === (this.movingIndex + 1)) ?
-            - (this.movingDistance + this.movingElHeight) : this.animating && index === (this.targetIndex + 1) ?
-            this.movingElHeight : 0
+            (this.movingDistance) : (this.animating && index === (this.movingIndex + 1)) ?
+              - (this.movingDistance + this.movingElHeight) : this.animating && index === (this.targetIndex + 1) ?
+                this.movingElHeight : 0
         }
 
         // console.log('marginTop', this.animating, index, marginTop, this.movingDistance)
@@ -146,16 +151,16 @@ export abstract class Order extends
            .isMulti=${true}
            .selector=${this.choiceInputSelector}
             ${animate({
-                keyframeOptions: {
-                  duration: this.animating ? 200 : 0,
-                  easing: 'ease-in-out',
-                },
-                onComplete: () => {
-                  this.onAnimationComplete()
-                  this._value = this.selected
-                  // this.requestUpdate()
-                }
-              })}
+          keyframeOptions: {
+            duration: this.animating ? 200 : 0,
+            easing: 'ease-in-out',
+          },
+          onComplete: () => {
+            this.onAnimationComplete()
+            this._value = this.selected
+            // this.requestUpdate()
+          }
+        })}
             style="margin-top: ${marginTop}px; display: block;"
             data-variant="horizontal"
             .listItemRole=${'option'}
@@ -172,40 +177,40 @@ export abstract class Order extends
       })}
   `
   }
-  
+
   protected renderUpDown(checked: boolean, index: number, option: Option) {
     if (!checked) return html``
-    const onClick =(targetIndex: number) => (e: Event) => {
+    const onClick = (targetIndex: number) => (e: Event) => {
       e.stopPropagation()
       this.isSelecting = targetIndex < index
-      this.animationEndCallback.push(async  () => {
-          // swap values of _value between index and targetIndex
-          console.log('swap', index, targetIndex)
-          await this.updateComplete
-          this._value = Order.swap(this._value, index, targetIndex)
-          this.requestUpdate()
+      this.animationEndCallback.push(async () => {
+        // swap values of _value between index and targetIndex
+        console.log('swap', index, targetIndex)
+        await this.updateComplete
+        this._value = Order.swap(this._value, index, targetIndex)
+        this.requestUpdate()
       })
-      this.moveOption(index,targetIndex, this.options![index])
+      this.moveOption(index, targetIndex, this.options![index])
     }
     const up = () => html`
      <md-outlined-icon-button 
       slot="end" 
-      aria-label=${this.tr('order.moveUp', {label: option.label})}
+      aria-label=${this.tr('order.moveUp', { label: option.label })}
       class="swap up" 
-      @click=${onClick(index -1)} >
+      @click=${onClick(index - 1)} >
       <lapp-icon>arrow_upward</lapp-icon></md-outlined-icon-button>
     `
     const down = () => html`
     <md-outlined-icon-button 
      slot="end" 
-     aria-label=${this.tr('order.moveDown', {label: option.label})}
+     aria-label=${this.tr('order.moveDown', { label: option.label })}
      class="swap down" 
      @click=${onClick(index + 1)} >
      <lapp-icon>arrow_downward</lapp-icon></md-outlined-icon-button>
    `
     return html`
       ${when(index > 0, up)}
-      ${when(index < this._value.length -1 , down)}
+      ${when(index < this._value.length - 1, down)}
     `
   }
   protected renderPriority(checked: boolean, index: number) {
