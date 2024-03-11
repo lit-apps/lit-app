@@ -18,7 +18,7 @@ export abstract class Select extends translate(S, locale, 'readaloud') {
   /**
    * The variant to use for rendering the field
    */
-  @property() variant!: Variant
+  @property({reflect: true}) variant!: Variant
 
   /**
    * Whether the label should be displayed above the field
@@ -43,19 +43,29 @@ export abstract class Select extends translate(S, locale, 'readaloud') {
    */
   private propagateToField(changedProperties: PropertyValues) {
     if (this.field) {
+      if (changedProperties.has('labelAbove')) {
+        // temp fix for setting label above.
+        if (this.labelAbove ) {
+          this.variant = this.variant || 'a11y';
+        }
+        this.field.labelAbove = this.labelAbove;
+      }
+
       if (changedProperties.has('variant')) {
         this.field.variant = this.variant;
-      }
-      if (changedProperties.has('labelAbove')) {
-        this.field.labelAbove = this.labelAbove;
       }
     }
   }
 
-  override async firstUpdated(changedProperties: PropertyValues<this>) {
+  override firstUpdated(changedProperties: PropertyValues<this>) {
     this.propagateToField(changedProperties);
     super.firstUpdated(changedProperties);
   }
+
+  override willUpdate(changedProperties: PropertyValues<this>) {
+		super.willUpdate(changedProperties);
+		this.propagateToField(changedProperties);
+	}
   
   getTextLabel() {
     return this.field?.getTextLabel?.() || this.label
