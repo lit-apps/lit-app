@@ -64,7 +64,7 @@ function getAccessDefault(
 	this: EntityMixinInterface, 
 	_access: Access, 
 	_data: any): EntityAccess {
-	console.warn(`No access function provided for ${this.Entity.entityName}`);
+	console.warn(`No access function provided for ${this.Entity?.entityName || 'No Entity' }`);
 	return {
 		isOwner: false,
 		canEdit: false,

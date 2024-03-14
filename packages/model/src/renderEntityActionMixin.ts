@@ -24,6 +24,7 @@ import {
 	Action,
 	Actions,
 	ButtonConfig,
+	isOnClickAction,
 	OnResolvedT
 } from './types/action';
 import { DefaultI } from './types/entity';
@@ -89,7 +90,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 
 		private getEvent(actionName: keyof A, data: any, bulkAction: boolean = false) {
 			if (actionName === 'create') {
-				console.warn('getEvent for create is deprecated!')
+				console.warn('getEvent for create is deprecated! User `entity.create` instead.')
 				return new Create({ entityName: this.entityName, data: this.processCreateData(data) }, this.actions.create);
 			}
 			return (this.constructor as unknown as StaticEntityActionI<D, A>).getEvent(actionName, data, this.host, bulkAction)
@@ -369,7 +370,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 				// TODO: use icon slot for the button
 				try {
 					// we can pass a simple handler function to the action
-					if (action.onClick) {
+					if (isOnClickAction(action)) {
 						await action.onClick.call(host, data)
 						button.loading = false
 						return

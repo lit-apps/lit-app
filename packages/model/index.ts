@@ -5,7 +5,10 @@ import renderConfirmDialogMixin from './src/mixin/render-confirm-dialog-mixin';
 export {
 	RenderHeaderMixin,
 } from './src/mixin/render-header-mixin';
-
+export {
+  ReactiveListMixin,
+  type  ReactiveListMixinInterface
+} from './src/mixin/reactive-list-mixin';
 export {
 	ConsumeUidMixin,
 	ProvideUidMixin,

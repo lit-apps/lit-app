@@ -46,9 +46,9 @@ export type ActionBase = {
 	pushHistory?: boolean // true to push the action to the history when executed
 	preventWriteEvent?: boolean // true to prevent the event to be written on /internals/event
 	handleOnServer?: boolean // true to handle the action on the server (via userAction trigger)
-	onClick?: (data: any) => void // as simple handler - this will not trigger any entity Event
 	// allow to add listener while action runs. This is used for instance to alter data on write
 	// and set `reviewStatus` to `edited`
+  // @deprecated as it is too confusing and difficult to use
 	onAction?: (event: AnyEvent) => void
 	onResolved?: OnResolvedT // called when the action is resolved
 	
@@ -56,13 +56,25 @@ export type ActionBase = {
 	event?: Exclude<TypeofAnyEvent, typeof Dirty>
 }
 
+export type DefaultAction = ActionBase & {
+}
+
 export type FsmAction = ActionBase & {
 	machineID: string
 }
+
+export type OnClickAction = Omit<ActionBase, 'onResolved' > & {
+  onClick: (this: HTMLElement, data: any) => void | Promise<void> // as simple handler - this will not trigger any entity Event
+}
+
+/**
+ * Under actions are actions that just sends an event. 
+ * The handler is called within-entity-action-handler-mixing. 
+ */
 export type HandlerAction = ActionBase & {
 	handler: Handler
 }
-export type Action = FsmAction | HandlerAction | ActionBase
+export type Action = FsmAction | HandlerAction | OnClickAction | DefaultAction
 
 export type DefaultActions = 
 	'create' | 'edit' | 'write' | 'cancel' | 'delete' |'markDeleted' | 'restore' | 'open' | 'close' |
@@ -87,6 +99,14 @@ export function isHandlerAction(action: Action): action is HandlerAction {
 	return 'handler' in action
 }
 
+/**
+ * Returns true if `action` contains an onClick
+ * @param action Action
+ * @returns Boolean
+ */
+export function isOnClickAction(action: Action): action is OnClickAction {
+  return 'onClick' in action
+}
 
 /**
  * type to test if a type is an action

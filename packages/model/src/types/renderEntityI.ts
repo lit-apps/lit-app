@@ -23,6 +23,7 @@ export declare class RenderInterface<
 	// protected renderContent(data: D, config?: C): TemplateResult
 
 	protected renderTitle(data: D, config?: C): TemplateResult
+	protected renderArrayTitle(data: Collection<D>, config?: C): TemplateResult
 	protected renderGridColumns(config?: C): TemplateResult
 	protected renderGridDetail(data: CollectionI<D>, _model?: any, _grid?: any): TemplateResult
 	protected renderTable(data: CollectionI<D>, config?: C): TemplateResult

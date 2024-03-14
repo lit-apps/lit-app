@@ -267,7 +267,7 @@ export type Template = {
   description: string,
   data: {
     subject: string
-    body: string
+    text: string
     hasCallToAction?: boolean
     callToAction?: string
   }
