@@ -3,6 +3,12 @@ logs
 *.log
 npm-debug.log*
 pnpm-debug.log*
+firebase-debug.log*
+firebase-debug.*.log*
+
+
+# Firebase cache
+.firebase/
 
 .wireit
 node_modules

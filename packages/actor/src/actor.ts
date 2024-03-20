@@ -3,9 +3,8 @@
  */
 
 import { State, property } from '@lit-app/state';
-import type { Actor as XstateActor, Snapshot, AnyActorRef, ActorOptions, AnyActorLogic, EventFromLogic, EventObject, MachineContext, MachineSnapshot, StateMachine, StateValue, AnyStateMachine } from 'xstate';
+import type { Actor as XstateActor, Snapshot, AnyActorRef, ActorOptions, EventFromLogic, EventObject, MachineContext, MachineSnapshot, StateMachine, StateValue, AnyStateMachine } from 'xstate';
 import { createActor } from 'xstate';
-import type { ActorUI } from './model/Actor';
 
 /**
  * Remove undefined values from snapshot
@@ -32,6 +31,7 @@ const persistedSnapshotLogic = (actorLogic: any) => {
 	return actorLogic
 }
 
+export type HostT = 'client' | 'server'
 type ActorIdT = string | undefined
 /**
  * Actor State - a state holding an xstate actor
@@ -75,7 +75,7 @@ export default class Actor<
 > extends State {
 
 	declare ['constructor']: typeof Actor<{}>;
-	static hostType: ActorUI['host'] = 'client'
+	static hostType: HostT = 'client'
 
 	/**
 	 * Actor snapshot - requestUpdate is called whenever snapshot is updated
