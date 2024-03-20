@@ -180,7 +180,7 @@ export default class Actor<
 
 	subscribeActor(actor: XstateActor<AnyStateMachine>) {
 		actor.subscribe((snapshot) => {
-			console.log('actor subscription snapshot', snapshot.value, snapshot)
+			// console.log('actor subscription snapshot', snapshot.value, snapshot)
 			this.snapshot = snapshot;
 
 		});
