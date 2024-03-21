@@ -4,6 +4,7 @@
   "type": "module",
   "description": "lit controller for binding an xstate actor",
   "main": "src/actor.js",
+  "types": "src/actor.ts",
   "scripts": {
     "start": "vite", 
     "test": "vitest"
