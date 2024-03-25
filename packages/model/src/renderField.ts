@@ -313,6 +313,8 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .name=${name}
       .disabled=${disabled}
       .label=${label}
+      .ticks=${model.ticks}
+      .labeled=${model.labeled}
       .supportingText=${model.helper}
       .required=${model.required}
       .value=${value || ''}

@@ -69,6 +69,8 @@ export interface ModelComponentSlider<T = any> extends ModelComponentBase<T> {
 	min: string
 	max: string
 	step?: string
+	ticks?: boolean
+	labeled?: boolean
 }
 export interface ModelComponentUpload<T = any> extends ModelComponentBase<T> {
 	component: UploadComponent
