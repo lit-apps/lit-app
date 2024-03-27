@@ -178,7 +178,7 @@ export default class Actor<
     this.subscribeActor(actor);
   }
 
-  subscribeActor(actor: XstateActor<AnyStateMachine>) {
+  protected subscribeActor(actor: XstateActor<AnyStateMachine>) {
     actor.subscribe((snapshot) => {
       // console.log('actor subscription snapshot', snapshot.value, snapshot)
       this.snapshot = snapshot;
