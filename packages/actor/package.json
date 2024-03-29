@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "description": "lit controller for binding an xstate actor",
-  "main": "src/actor.js",
-  "types": "src/actor.ts",
+  "main": "actor.js",
+  "types": "actor.ts",
   "scripts": {
     "start": "vite", 
     "test": "vitest"

@@ -3,11 +3,14 @@
  */
 
 import { State, property } from '@lit-app/state';
+import Registry from "./registry";
 import type { Actor as XstateActor, Snapshot, AnyActorRef, ActorOptions, EventFromLogic, EventObject, MachineContext, MachineSnapshot, StateMachine, StateValue, AnyStateMachine } from 'xstate';
 import { createActor } from 'xstate';
 
 /**
  * Remove undefined values from snapshot
+ * 
+ * @deprecated - not to be used as it removes all refs from invoked ans spanwed actors
  */
 function getPersistedSnapshot<TContext extends MachineContext,
   TEvent extends EventObject,
@@ -27,22 +30,22 @@ function getPersistedSnapshot<TContext extends MachineContext,
 }
 
 const persistedSnapshotLogic = (actorLogic: any) => {
-  actorLogic.getPersistedSnapshot = getPersistedSnapshot
+  // actorLogic.getPersistedSnapshot = getPersistedSnapshot
   return actorLogic
 }
 
 export type HostT = 'client' | 'server'
-type ActorIdT = string | undefined
+type ActorIdT = string | undefined | null
 /**
  * Actor State - a state holding an xstate actor
  * We use extend State to be able to use state reactive controllers
  * and simplify the reuse of the same actor across different components
  * 
  * An actor state is in one of the following type:
- * - client only [clientOnly]: the actor is only created at client level and is not persisted in the db. it has no actorID.
- * - client and server [client]: the actor is created and persist at server level (it has an actorID). 
+ * - client only [clientOnly]: the actor is only created at client level and is not persisted in the db. it has no actorId.
+ * - client and server [client]: the actor is created and persist at server level (it has an actorId). 
  *   Actions and event handling are executed on the client. State change are persisted in the db (from client to server)
- * - server only[server]: the actor is created at server level. It has an actorID.
+ * - server only[server]: the actor is created at server level. It has an actorId.
  *   Actions and event handling are executed on the server via cloud functions. State change are received via firestoreController
  * 
  * Base class only supports `clientOnly` types. 
@@ -57,7 +60,7 @@ type ActorIdT = string | undefined
  * 		const send = () => actor.send({ type: 'NewPatientEvent', name: 'John', condition: 'healthy' })
  * 		return html`
  * 			<div>
- * 				<div>machineID: ${actor.machineID}</div>
+ * 				<div>machineId: ${actor.machineId}</div>
  * 				<div>status: ${actor.status}</div>
  * 				<div>value: ${JSON.stringify(actor.value)}</div>
  * 			</div>
@@ -76,6 +79,7 @@ export default class Actor<
 
   declare ['constructor']: typeof Actor<{}>;
   static hostType: HostT = 'client'
+ 
 
   /**
    * Actor snapshot - requestUpdate is called whenever snapshot is updated
@@ -138,7 +142,7 @@ export default class Actor<
    * Gets the ID of the machine associated with this actor state.
    * @returns The ID of the machine.
    */
-  get machineID() {
+  get machineId() {
     return this.machine.id;
   }
   /**
@@ -153,23 +157,27 @@ export default class Actor<
    * If not null, we set a reactive controller linking to the actor in the db
    * If undefined, we do nothing => the actor only exists at client level
   */
-  private _actorID!: ActorIdT
-  get actorID() {
-    return this._actorID;
+  private _actorId!: ActorIdT
+  get actorId() {
+    return this._actorId;
   }
-  set actorID(actorID) {
-    this._actorID = actorID;
-    this.setupActorID(actorID);
+  set actorId(actorId) {
+    this._actorId = actorId;
+    this.setupActorID(actorId);
+    if(actorId) {
+      Registry.register(this)
+    }
 
   }
   /**
    * setup remote actor if need be - this need to be overridden in the child class
    * this is we would add a controller listening to the actor change in the db
    */
-  protected async setupActorID(_actorID: ActorIdT) {
+  protected async setupActorID(_actorId: ActorIdT) {
   }
 
   private _actor!: XstateActor<AnyStateMachine>;
+
   get actor() {
     return this._actor;
   }
@@ -184,6 +192,9 @@ export default class Actor<
       this.snapshot = snapshot;
 
     });
+    if(this.beforeStart) {
+      this.beforeStart(actor)
+    }
     actor.start()
   }
   protected setupActor() {
@@ -192,12 +203,14 @@ export default class Actor<
   }
 
   constructor(
-    public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any>,
+    public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any> & {stateActor?: Actor<TContext, TEvent>},
     protected options: ActorOptions<any> = {},
-    actorID?: ActorIdT) {
+    actorId: ActorIdT, 
+    protected beforeStart?: (actor: XstateActor<AnyStateMachine>) => void){
     super();
-    this.actorID = actorID
+    this.actorId = actorId
     this.setupActor();
+    machine.stateActor = this;
   }
 
   send(event: TEvent, _clientLevel = false) {
