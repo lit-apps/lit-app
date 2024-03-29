@@ -53,16 +53,16 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
   /** a helper text to pass; it will be added as aria-label to main button or icon button */
   @property({ attribute: 'aria-label' }) override ariaLabel = '';
 
-  /** the label for record button */
-  @property() recordLabel = locale.record;
+  /** the label for record button  - if not set, will take default locale (`Record`) */
+  @property() recordLabel!: string // = locale.record;
 
   @property({ type: Boolean }) required = false;
 
-  /** the label for clear button */
-  @property() clearLabel = locale.clearLabel;
+  /** the label for clear button - if not set, will take default locale (`Clear Recording`)  */
+  @property() clearLabel!: string // = locale.clearLabel;
 
-  /** the label for clear button */
-  @property() playLabel = locale.playLabel;
+  /** the label for clear button - if not set, will take default locale (`Listen`)  */
+  @property() playLabel!: string // = locale.playLabel;
 
   /** max duration of recording (in seconds) */
   @property({ type: Number }) maxDuration = 180;
@@ -142,7 +142,8 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
     const onStop = () => {
       this.recorder.stop()
     }
-    const recordLabel = `${this.recordLabel} ${this.ariaLabel}`
+    const rl = this.recordLabel ?? this.getTranslate('record');
+    const recordLabel = `${rl} ${this.ariaLabel}`
     const renderNarrow = () => html`
      <md-filled-icon-button .selected=${this.recording} aria-label=${recordLabel} @click=${this.onRec}>
         <lapp-icon>mic</lapp-icon>
@@ -160,7 +161,7 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
      <md-filled-button  
         aria-label=${recordLabel}
         @click=${this.onRec}
-        >${this.recordLabel}${this.recording ?
+        >${rl}${this.recording ?
         html`<lapp-icon slot="icon" class="animate" .icon=${this.recorder?.state === 'paused' ? 'pause' : 'play_circle'}></lapp-icon>` :
         html`<lapp-icon slot="icon">mic</lapp-icon>`
       }</md-filled-button>
@@ -175,7 +176,8 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
 
   renderListenControls() {
 
-    const playLabel = `${this.playLabel} ${this.ariaLabel}`
+    const pl = this.playLabel ?? this.getTranslate('playLabel');
+    const playLabel = `${pl} ${this.ariaLabel}`
     const onPlay = () => {
       this.audioEl.paused ? this.audioEl.play() : this.audioEl.pause();
       this.requestUpdate();
@@ -189,7 +191,7 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
 
     const renderClearButton = () => html`
       <md-text-button @click=${onClear}
-        >${this.clearLabel}<lapp-icon slot="icon">delete</lapp-icon></md-text-button>
+        >${this.clearLabel ?? this.tr('clearLabel')}<lapp-icon slot="icon">delete</lapp-icon></md-text-button>
     `
 
     const renderConfirm = () => html`
@@ -210,7 +212,7 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
     const renderWide = () => html`
         <md-filled-button  
             aria-label=${playLabel}
-            @click=${onPlay}>${this.playLabel}${this.audioEl?.paused ?
+            @click=${onPlay}>${pl}${this.audioEl?.paused ?
         html`<lapp-icon slot="icon" class="animate">play_circle</lapp-icon>` :
         html`<lapp-icon slot="icon">pause</lapp-icon>`
       }</md-filled-button>
