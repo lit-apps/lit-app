@@ -60,10 +60,11 @@ export type DefaultAction = ActionBase & {
 }
 
 export type FsmAction = ActionBase & {
-	machineID: string
+	machineId: string
 }
 
-export type OnClickAction = Omit<ActionBase, 'onResolved' > & {
+// export type OnClickAction = Omit<ActionBase, 'onResolved' > & {
+export type OnClickAction = ActionBase & {
   onClick: (this: HTMLElement, data: any) => void | Promise<void> // as simple handler - this will not trigger any entity Event
 }
 
@@ -82,12 +83,12 @@ export type DefaultActions =
 export type Actions = Record<string , Action>
 
 /**
- * Returns true if `action` contain a machineID
+ * Returns true if `action` contain a machineId
  * @param action Action
  * @returns Boolean
  */
 export function isFsmAction(action: Action): action is FsmAction {
-	return 'machineID' in action
+	return 'machineId' in action
 }
 
 /**
