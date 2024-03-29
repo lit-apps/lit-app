@@ -143,7 +143,7 @@ export class EntityAccess extends
 
 	protected renderEntityAccess() {
 		const where: Where[] = [{
-			field: 'ref.machineID',
+			field: 'ref.machineId',
 			op: '==',
 			value: 'invite'
 		}, {

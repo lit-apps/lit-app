@@ -130,7 +130,7 @@ const _defaultActions = {
 	},
 	invite: {
 		label: 'Invite',
-		machineID: 'invite',
+		machineId: 'invite',
 	},
 	removeAccess: {
 		label: 'Revoke Access',
