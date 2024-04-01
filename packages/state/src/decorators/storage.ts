@@ -4,7 +4,7 @@ import { parse } from './parse.js';
 import { functionValue } from '../functionValue.js';
 export type StorageOptions = {
 	key?: string,
-	prefix?: string
+	prefix?: string | null,
 }
 
 const defaultOptions: StorageOptions = {
