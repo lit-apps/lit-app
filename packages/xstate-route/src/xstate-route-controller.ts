@@ -10,7 +10,7 @@ class RouteStateController implements ReactiveController {
   private _previousMatch: IRouteMatch | undefined | null;
   constructor(
     protected host: ReactiveControllerHost,
-    protected actorState: Actor<AnyStateMachine>,
+    protected actor: Actor<AnyStateMachine>,
     protected routerSlot: RouterSlot
   ) {
     host.addController(this);
@@ -43,7 +43,7 @@ class RouteStateController implements ReactiveController {
         try {
           // temporarily set the next state so that we know what to navigate to
           this._nextState = xstate;
-          const sn = this.actorState.getSnapshot();
+          const sn = this.actor.getSnapshot();
           const can = sn.matches(xstate) || sn.can({ type: `xstate.route.${xstate}` });
           console.groupEnd();
           if (can) {
@@ -74,15 +74,15 @@ class RouteStateController implements ReactiveController {
       this._preventHistoryChange = true;
       if (this._nextState) {
         // only send the next state if the actor is not already in that state
-        if (!this.actorState.getSnapshot().matches(this._nextState)) {
-          this.actorState.send({ type: `xstate.route.${this._nextState}` });
+        if (!this.actor.getSnapshot().matches(this._nextState)) {
+          this.actor.send({ type: `xstate.route.${this._nextState}` });
         }
         this._nextState = '';
       }
       if (match?.params) {
         for (const key in match.params) {
           const value = match.params[key];
-          this.actorState.send({ type: `context.${key}`, params: { [key]: value } })
+          this.actor.send({ type: `context.${key}`, params: { [key]: value } })
         }
       }
       this._preventHistoryChange = false;
@@ -110,7 +110,7 @@ class RouteStateController implements ReactiveController {
       }
     }
     // subscribe to the actor state - set the route when route config is set
-    const subscription = this.actorState.subscribe(snap => {
+    const subscription = this.actor.subscribe(snap => {
       if (this._preventHistoryChange) {
         return
       }
@@ -124,9 +124,9 @@ class RouteStateController implements ReactiveController {
     // in case of late binding: state
 
     // if actor state is active, it takes precedence over the route
-    if (this.actorState.getSnapshot().status === 'active') {
+    if (this.actor.getSnapshot().status === 'active') {
       // get the route from the actor state
-      routeToPath(this.actorState.getSnapshot());
+      routeToPath(this.actor.getSnapshot());
     } else {
 
       // we still need to sync the state with the current route
@@ -134,7 +134,7 @@ class RouteStateController implements ReactiveController {
       const xstate = match?.route.data?.xstate;
       if (xstate) {
         this._preventHistoryChange = true;
-        this.actorState.send({ type: `xstate.route.${xstate}` });
+        this.actor.send({ type: `xstate.route.${xstate}` });
         this._preventHistoryChange = false;
       }
 
