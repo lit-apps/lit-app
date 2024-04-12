@@ -2,16 +2,32 @@ import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { RouterSlot, GLOBAL_ROUTER_EVENTS_TARGET, WillChangeStateEvent, matchRoutes, constructAbsolutePath, ChangeStateEvent, IRoute, IRouteMatch } from 'router-slot';
 import type { AnyStateMachine, Actor, MachineSnapshot, StateNode, AnyMachineSnapshot } from 'xstate';
 
+/**
+ * RouteStateController is a reactive controller that manages the state of a route in an XState-based application.
+ * It listens for route changes and updates the corresponding XState actor state accordingly.
+ * 
+ * TODO: unsubscribe from events when the actor reaches a final state
+ */
 class RouteStateController implements ReactiveController {
   private unsubscribe!: (() => void) | undefined;
   private _preventHistoryChange: boolean = false;
   private _preventSetState: boolean = false;
   private _nextState: string = '';
   private _previousMatch: IRouteMatch | undefined | null;
+
+  /**
+   * Constructs a new XStateRouteController.
+   * 
+   * @param host - The ReactiveControllerHost instance.
+   * @param actor - The Actor instance representing the state machine.
+   * @param routerSlot - The RouterSlot instance for managing navigation.
+   * @param allowNavigationWhenFinal - Optional. Specifies whether navigation is allowed when the state machine is in a final state. Defaults to true.
+   */
   constructor(
     protected host: ReactiveControllerHost,
     protected actor: Actor<AnyStateMachine>,
-    protected routerSlot: RouterSlot
+    protected routerSlot: RouterSlot,
+    protected allowNavigationWhenFinal: boolean = true
   ) {
     host.addController(this);
   }
@@ -41,9 +57,14 @@ class RouteStateController implements ReactiveController {
       const xstate = match?.route.data?.xstate;
       if (xstate) {
         try {
+          const sn = this.actor.getSnapshot();
+          // allow navigation when the actor is in a final state
+          if (sn.status !== 'active' && !this.allowNavigationWhenFinal) {
+            this._nextState = '';
+            return false
+          }
           // temporarily set the next state so that we know what to navigate to
           this._nextState = xstate;
-          const sn = this.actor.getSnapshot();
           const can = sn.matches(xstate) || sn.can({ type: `xstate.route.${xstate}` });
           console.groupEnd();
           if (can) {
@@ -61,6 +82,7 @@ class RouteStateController implements ReactiveController {
       console.groupEnd();
       return true
     }
+
     GLOBAL_ROUTER_EVENTS_TARGET.addEventListener('willchangestate', confirmNavigation);
 
     // when the route changes, try to sync existing context ids to the actor state
