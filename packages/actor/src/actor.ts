@@ -4,13 +4,19 @@
 
 import { State, property } from '@lit-app/state';
 import Registry from "./registry";
-import type { Actor as XstateActor, Snapshot, AnyActorRef, ActorOptions, EventFromLogic, EventObject, MachineContext, MachineSnapshot, StateMachine, StateValue, AnyStateMachine } from 'xstate';
+import type {
+  Actor as XstateActor,
+  Snapshot, AnyActorRef, ActorOptions, EventFromLogic, EventObject,
+  MachineContext, MachineSnapshot, StateMachine, StateValue, AnyStateMachine
+} from 'xstate';
 import { createActor } from 'xstate';
+import { EmittedFrom } from 'xstate';
 
 /**
  * Remove undefined values from snapshot
  * 
- * @deprecated - not to be used as it removes all refs from invoked ans spanwed actors
+ * @deprecated - not to be used as it removes all 
+ * refs from invoked ans spawned actors
  */
 function getPersistedSnapshot<TContext extends MachineContext,
   TEvent extends EventObject,
@@ -79,7 +85,7 @@ export default class Actor<
 
   declare ['constructor']: typeof Actor<{}>;
   static hostType: HostT = 'client'
- 
+
 
   /**
    * Actor snapshot - requestUpdate is called whenever snapshot is updated
@@ -164,7 +170,8 @@ export default class Actor<
   set actorId(actorId) {
     this._actorId = actorId;
     this.setupActorID(actorId);
-    if(actorId) {
+    if (actorId) {
+      // TODO: find a way to automatically unregister actors from registry
       Registry.register(this)
     }
 
@@ -192,7 +199,7 @@ export default class Actor<
       this.snapshot = snapshot;
 
     });
-    if(this.beforeStart) {
+    if (this.beforeStart) {
       this.beforeStart(actor)
     }
     actor.start()
@@ -203,10 +210,10 @@ export default class Actor<
   }
 
   constructor(
-    public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any> & {stateActor?: Actor<TContext, TEvent>},
+    public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any> & { stateActor?: Actor<TContext, TEvent> },
     protected options: ActorOptions<any> = {},
-    actorId: ActorIdT, 
-    protected beforeStart?: (actor: XstateActor<AnyStateMachine>) => void){
+    actorId: ActorIdT,
+    protected beforeStart?: (actor: XstateActor<AnyStateMachine>) => void) {
     super();
     this.actorId = actorId
     this.setupActor();
@@ -221,8 +228,17 @@ export default class Actor<
     return this.actor.start();
   }
   stop() {
+    if (this.actorId) {
+      // unregister 
+      Registry.unregister(this)
+    }
     return this.actor.stop();
   }
+
+  on<TType extends EmittedFrom<this['machine']>['type']>(type: TType, handler: (emitted: any) => void) {
+    return this.actor.on<TType>(type, handler);
+  }
+
   /**
    * Whether the current state value is a subset of the given parent state value.
    * @param  {StateValue} testValue
