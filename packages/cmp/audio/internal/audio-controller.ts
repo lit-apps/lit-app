@@ -21,7 +21,7 @@ export function cancelAudio() {
 }
 export class AudioController implements ReactiveController, PlayerI  {
   audio!: HTMLAudioElement | null;
-	private _src: string;
+	private _src!: string;
 
 	get speaking() {
 		const sp = ((this.audio?.currentTime || 0) > 0) && !this.audio?.paused && !this.audio?.ended;

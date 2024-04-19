@@ -26,7 +26,7 @@ export default class lappMd extends ConsumeAccessibilityMixin(LitElement) {
 	 */
 	@property({ attribute: false }) mdConfig!: MdConfigT;
 
-	render() {
+	override render() {
 		// we make md field tabbable if we detect accessible device
 		const tabindex = this.accessibility?.accessibleDevice ? 0 : nothing;
 		return html`<div tabindex="${tabindex}" class="markdown ${classMap(this.accessibilityClasses)}">${parse(this.md, this.mdConfig)}</div>`;
@@ -39,7 +39,7 @@ export default class lappMd extends ConsumeAccessibilityMixin(LitElement) {
 
 	// Note(cg): we want to render value in light dom so that
 	// textContent work on parent elements.
-	createRenderRoot() {
+	override createRenderRoot() {
 		return this;
 	}
 }

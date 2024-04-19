@@ -4,7 +4,6 @@ import { StateEvent } from './state-event.js'
 /**
  * A reactive-controller holding a state
  */
-
 type callback = () => void | EventListener | Promise<void>
 
 export class StateController<T extends State>
