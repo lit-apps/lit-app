@@ -36,12 +36,18 @@ class RouteStateController implements ReactiveController {
 
     // confirmNavigation will cancel the navigation if the machine cannot enter the state. 
     const confirmNavigation = (e: WillChangeStateEvent) => {
+
+      // if (this._preventSetState || !this.routerSlot.isConnected) {
       if (this._preventSetState) {
         return true
+      }
+      if (!this.routerSlot.isConnected) {
+        return false
       }
       console.group('Route Controller - ConfirmNavigation')
 
       const match = getMatchedRoute(this.routerSlot, e.detail.url!);
+      
       console.log('match:', e.detail.url, match);
       // return early if the match is the same as the previous match to avoid unnecessary state changes
       if (!match || (match?.route &&
@@ -112,21 +118,27 @@ class RouteStateController implements ReactiveController {
     }
     this.routerSlot.addEventListener('changestate', changeState);
 
-    const routeToPath = (snap: AnyMachineSnapshot) => {
+    const actorToURL = (snap: AnyMachineSnapshot) => {
       const routeConfig = snap._nodes.find((node: StateNode) => node.config?.route !== undefined)?.config?.route;
       if (routeConfig) {
         // find the route in the routerSlot build the path and navigate to it
         const route = this.routerSlot.routes
           .find(r => r.data?.xstate && snap.matches(r.data?.xstate))
         if (route) {
-          console.log('routeToPath, route:', route)
+          console.log('actorToURL, route:', route)
           const path = constructAbsolutePath(this.routerSlot, route.path.replace(/:(\w+)/g, (match, paramName) => {
             const contextValue = snap.context[paramName];
             return contextValue !== undefined ? String(contextValue) : match;
           }));
           this._preventSetState = true;
-          console.log('routeToPath, path:', path)
-          window.history.pushState({}, '', path);
+          console.log('actorToURL, path:', path)
+          if (window.location.pathname !== path) {
+            // we need to wait for the next frame to make sure URL has had time to update
+            // otherwise matchRoutes will not work correctly
+            requestAnimationFrame(() => {
+              window.history.pushState({}, '', path);
+            });
+          }
           this._preventSetState = false;
         }
       }
@@ -138,17 +150,19 @@ class RouteStateController implements ReactiveController {
       }
       console.group('Route Controller - subscribe')
       // get routeConfig from _node
-      routeToPath(snap);
+      actorToURL(snap);
       console.groupEnd();
     })
 
-    // TODO: decide whether  the route or the state should be the source of truth
-    // in case of late binding: state
-
     // if actor state is active, it takes precedence over the route
-    if (this.actor.getSnapshot().status === 'active') {
+    // unless the current state is marked with meta.ignoreOnSubscribe = true
+    // this is the case for exceptions, where we want the machine to possibly start again
+    // on browser refresh
+    const snap = this.actor.getSnapshot();
+    const routeConfig = snap._nodes.find((node: StateNode) => node.config?.route !== undefined)?.config?.route;
+    if (snap.status === 'active' && !routeConfig?.meta?.ignoreOnSubscribe) {
       // get the route from the actor state
-      routeToPath(this.actor.getSnapshot());
+      actorToURL(snap);
     } else {
 
       // we still need to sync the state with the current route
@@ -159,12 +173,12 @@ class RouteStateController implements ReactiveController {
         this.actor.send({ type: `xstate.route.${xstate}` });
         this._preventHistoryChange = false;
       }
+    }
 
-      return () => {
-        subscription.unsubscribe()
-        this.routerSlot?.removeEventListener('changestate', changeState);
-        GLOBAL_ROUTER_EVENTS_TARGET.removeEventListener('willchangestate', confirmNavigation);
-      }
+    return () => {
+      subscription.unsubscribe()
+      this.routerSlot?.removeEventListener('changestate', changeState);
+      GLOBAL_ROUTER_EVENTS_TARGET.removeEventListener('willchangestate', confirmNavigation);
     }
   }
 
