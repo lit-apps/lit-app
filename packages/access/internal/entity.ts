@@ -157,7 +157,7 @@ export class EntityAccess extends
 		}]
 		return html`
 		<lif-store
-			.path=${'app/fsm/actor'}
+			.path=${'actor'}
 			.where=${where}
 			@data-changed=${(e: CustomEvent) => this.invite = e.detail.value}></lif-store>
 			<slot name="header">
