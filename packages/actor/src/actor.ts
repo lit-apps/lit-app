@@ -86,6 +86,15 @@ export default class Actor<
   declare ['constructor']: typeof Actor<{}>;
   static hostType: HostT = 'client'
 
+  constructor(
+    public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any>,
+    protected options: ActorOptions<any> = {},
+    actorId: ActorIdT,
+    protected beforeStart?: (actor: XstateActor<AnyStateMachine>) => void) {
+    super();
+    this.actorId = actorId
+    this.setupActor();
+  }
 
   /**
    * Actor snapshot - requestUpdate is called whenever snapshot is updated
@@ -207,17 +216,6 @@ export default class Actor<
   protected setupActor() {
     // create actor if remote is not involved
     this.actor = createActor(persistedSnapshotLogic(this.machine), this.options);
-  }
-
-  constructor(
-    public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any> & { stateActor?: Actor<TContext, TEvent> },
-    protected options: ActorOptions<any> = {},
-    actorId: ActorIdT,
-    protected beforeStart?: (actor: XstateActor<AnyStateMachine>) => void) {
-    super();
-    this.actorId = actorId
-    this.setupActor();
-    machine.stateActor = this;
   }
 
   send(event: TEvent, _clientLevel = false) {
