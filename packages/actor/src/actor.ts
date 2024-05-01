@@ -5,12 +5,14 @@
 import { State, property } from '@lit-app/state';
 import Registry from "./registry";
 import type {
-  Actor as XstateActor,
   Snapshot, AnyActorRef, ActorOptions, EventFromLogic, EventObject,
   MachineContext, MachineSnapshot, StateMachine, StateValue, AnyStateMachine
 } from 'xstate';
-import { createActor } from 'xstate';
-import { EmittedFrom } from 'xstate';
+import {
+  createActor,
+  EmittedFrom,
+  Actor as XstateActor
+} from 'xstate';
 
 /**
  * Remove undefined values from snapshot
@@ -192,7 +194,7 @@ export default class Actor<
   protected async setupActorID(_actorId: ActorIdT) {
   }
 
-  private _actor!: XstateActor<AnyStateMachine>;
+  private _actor!: XstateActor<StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any>>;
 
   get actor() {
     return this._actor;
@@ -202,7 +204,7 @@ export default class Actor<
     this.subscribeActor(actor);
   }
 
-  protected subscribeActor(actor: XstateActor<AnyStateMachine>) {
+  protected subscribeActor(actor: XstateActor<StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any>>) {
     actor.subscribe((snapshot) => {
       // console.log('actor subscription snapshot', snapshot.value, snapshot)
       this.snapshot = snapshot;
@@ -214,6 +216,14 @@ export default class Actor<
     actor.start()
   }
   protected setupActor() {
+
+    // if machine is already an actor, we use it
+    if (this.machine instanceof XstateActor) {
+      this.actor = this.machine
+      this.snapshot = this.actor.getSnapshot();
+      return
+    }
+
     // create actor if remote is not involved
     this.actor = createActor(persistedSnapshotLogic(this.machine), this.options);
   }
