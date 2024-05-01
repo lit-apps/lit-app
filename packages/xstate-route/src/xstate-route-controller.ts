@@ -1,6 +1,25 @@
-import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { RouterSlot, GLOBAL_ROUTER_EVENTS_TARGET, WillChangeStateEvent, matchRoutes, constructAbsolutePath, ChangeStateEvent, IRoute, IRouteMatch } from 'router-slot';
-import type { AnyStateMachine, Actor, MachineSnapshot, StateNode, AnyMachineSnapshot } from 'xstate';
+import {
+  ReactiveController,
+  ReactiveControllerHost
+} from 'lit';
+import {
+  RouterSlot,
+  GLOBAL_ROUTER_EVENTS_TARGET,
+  WillChangeStateEvent,
+  matchRoutes,
+  constructAbsolutePath,
+  ChangeStateEvent,
+  IRouteMatch
+} from 'router-slot';
+import type {
+  AnyStateMachine,
+  Actor,
+  StateNode,
+  AnyMachineSnapshot
+} from 'xstate';
+
+import type { XstateDataT } from './types';
+export { XstateDataT };
 
 /**
  * RouteStateController is a reactive controller that manages the state of a route in an XState-based application.
@@ -41,13 +60,13 @@ class RouteStateController implements ReactiveController {
       if (this._preventSetState) {
         return true
       }
-      if (!this.routerSlot.isConnected) {
+      if (!this.routerSlot?.isConnected) {
         return false
       }
       console.group('Route Controller - ConfirmNavigation')
 
       const match = getMatchedRoute(this.routerSlot, e.detail.url!);
-      
+
       console.log('match:', e.detail.url, match);
       // return early if the match is the same as the previous match to avoid unnecessary state changes
       if (!match || (match?.route &&
