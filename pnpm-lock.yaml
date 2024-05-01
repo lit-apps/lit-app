@@ -463,6 +463,73 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4(happy-dom@12.10.3)
 
+  packages/stepper:
+    dependencies:
+      '@lit-app/xstate-route':
+        specifier: link:../xstate-route
+        version: link:../xstate-route
+      '@lit/context':
+        specifier: ^1.1.0
+        version: 1.1.0
+      router-slot:
+        specifier: link:../../../app-dependencies/router-slot
+        version: link:../../../app-dependencies/router-slot
+      xstate:
+        specifier: link:../../../app-dependencies/xstate/packages/core
+        version: link:../../../app-dependencies/xstate/packages/core
+    devDependencies:
+      '@custom-elements-manifest/analyzer':
+        specifier: ^0.9.0
+        version: 0.9.0
+      '@custom-elements-manifest/to-markdown':
+        specifier: ^0.1.0
+        version: 0.1.0
+      '@lit-app/actor':
+        specifier: link:../actor
+        version: link:../actor
+      '@lit-app/state':
+        specifier: link:../state
+        version: link:../state
+      '@lit-app/testing':
+        specifier: link:../testing
+        version: link:../testing
+      '@preignition/preignition-demo':
+        specifier: ^0.5.0
+        version: 0.5.0
+      '@vitest/browser':
+        specifier: ^1.4.0
+        version: 1.4.0(vitest@1.4.0)
+      '@vitest/utils':
+        specifier: ^1.4.0
+        version: 1.4.0
+      eslint:
+        specifier: ^8.40.0
+        version: 8.40.0
+      lit:
+        specifier: ^3.1.2
+        version: 3.1.2
+      loupe:
+        specifier: ^3.1.0
+        version: 3.1.0
+      providers:
+        specifier: link:@vitest/browser/providers
+        version: link:@vitest/browser/providers
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.5
+      typescript:
+        specifier: ^5.4.2
+        version: 5.4.2
+      vite:
+        specifier: ^5.2.0
+        version: 5.2.2
+      vitest:
+        specifier: ^1.4.0
+        version: 1.4.0(@vitest/browser@1.4.0)
+      weightless:
+        specifier: ^0.0.37
+        version: 0.0.37
+
   packages/testing:
     dependencies:
       lit:

@@ -3,14 +3,10 @@ import { property } from "lit/decorators.js";
 
 export class Fab extends WebFab {
 
-  /**
-   * if true take primary color as background color - as per filled-button
-   */
-  @property({ type: Boolean}) filled = false;
+  @property({ type: Boolean, reflect: true }) fab = true;
 
   protected override getRenderClasses() {
     const isExtended = !!this.label;
-    // const isFilled = !!this.filled;
     // this allows large to be used with extended
     return {
       ...super.getRenderClasses(),
@@ -18,7 +14,6 @@ export class Fab extends WebFab {
       'small': this.size === 'small' && !isExtended,
       'large': this.size === 'large',
       'extended': isExtended,
-      // 'filled': isFilled,
     };
   }
 }
