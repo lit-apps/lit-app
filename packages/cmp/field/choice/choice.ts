@@ -1,7 +1,7 @@
 import { property, state, query, queryAssignedElements } from 'lit/decorators.js';
 import { Generic } from '../generic/generic';
 import { html, LitElement, nothing } from 'lit';
-import type { TemplateResult } from 'lit';
+import type { PropertyValues, TemplateResult } from 'lit';
 import { AriaList, Option } from './types';
 import { HTMLEvent } from '../../types';
 import { GenericI } from '../generic/generic'
@@ -169,7 +169,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 			</md-list-item>`
 	}
 
-	protected handleKeydown(event: KeyboardEvent) {
+	protected handleKeydown(_event: KeyboardEvent) {
 
 		// do nothing by default
 		// console.info('handleKeydown', event.key)
@@ -183,7 +183,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 
 	// we need to override updated in order to avoid infinite loop on value setter
   // this is because there is a check this.value !== value which will always reschedule an update
-  protected override updated(changedProperties: PropertyValues) {
+  protected override updated(_changedProperties: PropertyValues) {
        
   }
 
@@ -197,6 +197,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	 * change event is not composable
 	 */
 	async onChange(e?: HTMLEvent<LitElement>) {
+		if(this.readOnly) {return}
 		await this.updateComplete;
 		if (e?.target) {
 			await e.target.updateComplete;

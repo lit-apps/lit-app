@@ -25,6 +25,7 @@ export interface GenericI extends TextField {
   input: HTMLInputElement | null | undefined
   inputOrTextarea: HTMLInputElement | null | undefined
 
+  readOnly: boolean
   // fieldTag: StaticValue
 
   renderField(): TemplateResult
@@ -62,7 +63,7 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
     const t = this as unknown as GenericI
     return staticHtml`<${this.fieldTag}
       class="field"
-      ?disabled=${this.disabled}
+      ?disabled=${t.disabled}
       ?error=${t.hasError}
       ?focused=${t.focused}
       ?hasEnd=${this.hasTrailingIcon}

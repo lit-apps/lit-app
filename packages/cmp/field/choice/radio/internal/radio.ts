@@ -61,7 +61,7 @@ export abstract class Radio extends
       .name=${name}
       .ariaLabel=${option.label}
       aria-description=${option.supportingText || nothing}
-      .disabled=${this.disabled || !!option.disabled}
+      .disabled=${this.readOnly || this.disabled || !!option.disabled}
       .readOnly=${this.readOnly}
       .ariaControls=${option.specify ? `specify${index}` : undefined}
       .value=${option.code}
