@@ -47,7 +47,7 @@ function fetchSvgImage(name: string, noFill: boolean, fetchOptions: RequestInit)
  */
 export class Icon extends I {
 
-	static getURL(name: string, noFill: boolean) {
+	static getURL(name: string, noFill: boolean = false) {
 		return `https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/${name}/${noFill ? 'default' : 'fill1'}/${this.opticalSize}px.svg`
 	}
 
