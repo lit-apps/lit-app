@@ -1,5 +1,5 @@
 import { Icon as I } from '@material/web/icon/internal/icon';
-import { html, css } from 'lit';
+import { html } from 'lit';
 import { query, property } from 'lit/decorators.js';
 import type { PropertyValues } from 'lit';
 type OpticalSize = 20 | 24 | 40 | 48;

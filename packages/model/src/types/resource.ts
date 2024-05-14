@@ -12,7 +12,7 @@ export interface ResourceAccess extends Access {
 	team: string
 }
 
-export type ResourceMetaData<A = ResourceAccess, T = string> = MetaData<A, T> & {
+export interface ResourceMetaData<A = ResourceAccess, T = string> extends MetaData<A, T>  {
 	access: A
 }
 

@@ -2,7 +2,7 @@ import { consume, ContextConsumer, ContextProvider, createContext } from '@lit/c
 import { PropertyValues, ReactiveElement } from 'lit';
 import { state, property } from 'lit/decorators.js';
 
-export const dataContext = createContext('data-context');
+export const dataContext = createContext<any>('data-context');
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
