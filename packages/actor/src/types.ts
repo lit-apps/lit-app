@@ -33,3 +33,5 @@ export type MachineParams<A extends Record<string, Record<string, any>>> =
         : { readonly type: Type; readonly params: A[Type] }
       : never
     : never;
+
+export type ActorIdT = string | undefined | null

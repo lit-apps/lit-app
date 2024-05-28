@@ -31,7 +31,8 @@ function getPersistedSnapshot<TContext extends MachineContext,
     TChildren,
     TStateValue,
     TTag,
-    TOutput
+    TOutput, 
+    any
   >
   ): Snapshot<unknown> {
   return JSON.parse(JSON.stringify(snapshot))
@@ -42,8 +43,8 @@ const persistedSnapshotLogic = (actorLogic: any) => {
   return actorLogic
 }
 
+import type { ActorIdT } from './types';
 export type HostT = 'client' | 'server'
-type ActorIdT = string | undefined | null
 /**
  * Actor State - a state holding an xstate actor
  * We use extend State to be able to use state reactive controllers
@@ -78,7 +79,10 @@ type ActorIdT = string | undefined | null
  * }
  * ```
  * 
- * @param actor - the xstate actor
+ * @param machine - The state machine associated with the actor.
+ * @param options - The options for the actor.
+ * @param actorId - The ID of the actor.
+ * @param rootPath - The root path of the actor in the db - for subclasses.
  * 
  */
 export default class Actor<
@@ -92,7 +96,7 @@ export default class Actor<
     public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any>,
     protected options: ActorOptions<any> = {},
     actorId: ActorIdT,
-    protected beforeStart?: (actor: XstateActor<AnyStateMachine>) => void) {
+    protected rootPath: string ='actor') {
     super();
     this.actorId = actorId
     this.setupActor();
@@ -101,7 +105,7 @@ export default class Actor<
   /**
    * Actor snapshot - requestUpdate is called whenever snapshot is updated
   */
-  @property({ type: Object }) snapshot!: MachineSnapshot<TContext, TEvent, any, any, any, any>
+  @property({ type: Object }) snapshot!: MachineSnapshot<TContext, TEvent, any, any, any, any, any>
 
   /**
    * Gets the type of the host for the actor state.
@@ -178,7 +182,7 @@ export default class Actor<
   get actorId() {
     return this._actorId;
   }
-  set actorId(actorId) {
+  set actorId(actorId: ActorIdT) {
     this._actorId = actorId;
     this.setupActorID(actorId);
     if (actorId) {
@@ -210,9 +214,6 @@ export default class Actor<
       this.snapshot = snapshot;
 
     });
-    if (this.beforeStart) {
-      this.beforeStart(actor)
-    }
     actor.start()
   }
   protected setupActor() {
