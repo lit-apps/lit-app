@@ -1,6 +1,9 @@
 import { css } from 'lit';
 import {customElement} from 'lit/decorators.js';
 import { form, label, alignMwc, page } from '@preignition/preignition-styles';
+import padding from '@preignition/preignition-styles/padding';
+import margin from '@preignition/preignition-styles/margin';
+import gap from '@preignition/preignition-styles/gap';
 
 import EntityHolder from './src/cmp/entity-holder';
 
@@ -25,6 +28,9 @@ export class LappEntityHolder extends EntityHolder {
 		...page,
 		alignMwc,
 		form, 
+		padding,
+		margin,
+		gap,
 		label,
 		css`
 		:host {
