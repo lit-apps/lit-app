@@ -1,5 +1,8 @@
 
 interface AppConfirmLanguageDetail {
+  /**
+   * force the language widget to show
+   */
   force?: boolean;
 }
 
