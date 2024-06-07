@@ -117,6 +117,10 @@ export interface ModelComponentRadioGroup<T = any> extends ModelComponentBase<T>
 export interface ModelComponentText<T = any> extends ModelComponentBase<T> {
 	component?: TextComponent | DateComponent
 	placeholder?: string
+	/**
+	 * The key to local storage for local persistence
+	 */
+	storageKey?: string
 	maxLength?: number
 	minLength?: number
 	type?: 'text' | 'number' | 'email' | 'password' | 'tel' | 'url' | 'search' | 'color' | 'date' | 'datetime-local' | 'month' | 'time' | 'week'
@@ -125,15 +129,26 @@ export interface ModelComponentTextArea<T = any> extends ModelComponentBase<T> {
 	component: TextComponent 
 	rows?: number
 	placeholder?: string
+	/**
+	 * The key to local storage for local persistence
+	 */
+	storageKey?: string
 	maxLength?: number
 	minLength?: number
 	resize?: 'vertical' | 'horizontal' | 'auto'
 }
 export interface ModelComponentMd<T = any> extends ModelComponentBase<T> {
 	component: MdComponent
-	flavour?: 'github' // flavour of the markdown editor
+	/**
+	 * flavour of the markdown editor
+	 */
+	flavour?: 'github' 
 	rows?: number
 	placeholder?: string
+	/**
+	 * The key to local storage for local persistence
+	 */
+	storageKey?: string
 	maxLength?: number
 	minLength?: number
 	resize?: 'vertical' | 'horizontal' | 'auto'

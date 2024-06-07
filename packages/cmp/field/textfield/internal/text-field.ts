@@ -4,25 +4,35 @@ import { property, query } from 'lit/decorators.js';
 import type { FilledField } from '../../field/internal/filled-field';
 import type { OutlinedField } from '../../field/internal/outlined-field';
 import { PropertyValues } from 'lit';
-import NoAutoValidateMixin  from '../../mixin/noAutoValidateMixin';
-import { html as staticHtml } from 'lit/static-html.js';
+import NoAutoValidateMixin from '../../mixin/noAutoValidateMixin';
+import LocalStoragePersist from '../../../mixin/local-storage-persist-mixin.js';
 
-/**
+import { StaticValue, html as staticHtml } from 'lit/static-html.js';
+
+class RealClass extends T {
+	protected readonly fieldTag!: StaticValue;
+	// declare readonly field: FilledField | OutlinedField
+}
+/**	
  * PwiTextField is an override of MD3's filled-textfield for Preignition
  * that adds a couple of additional features to the component.
  * 
  * - [x] RTL support - hopefully not needed anymore with MD3 as it should be supported out of the box
  * - [x] support for displaying native validation message - provided out of the box by MD3
  * - [ ] improved support for readonly (style and behavior) 
+ * - [x] support for local storage persistence 
  * - [x] check validity on blur
  * - [ ] only show supportText on focus
  * - [ ] prevent setting value when value is undefined ?
  * - [ ] possibility to listen when field icon is clicked - see https://github.com/material-components/material-components-web-components/issues/2447
  * - [ ] improved support for some aria attributes: aria-errormessage, aria-invalid role and aria-live
- */ 
+ */
 
-
-export abstract class TextField extends NoAutoValidateMixin(T) {
+// @ts-ignore - TS complains about renderField and field being private in Base class
+export abstract class TextField extends
+NoAutoValidateMixin(
+	LocalStoragePersist(
+			RealClass)) {
 	/**
 	 * The variant to use for rendering the field
 	 */
@@ -34,7 +44,7 @@ export abstract class TextField extends NoAutoValidateMixin(T) {
 	 */
 	@property({ type: Boolean }) labelAbove: boolean = false
 
-	
+
 	/**
 	 * The field holding label
 	 */
@@ -44,7 +54,7 @@ export abstract class TextField extends NoAutoValidateMixin(T) {
 	 * Override renderField so that we can have htmlResult label and supportingText
 	 */
 	private override renderField() {
-    return staticHtml`<${this.fieldTag}
+		return staticHtml`<${this.fieldTag}
       class="field"
       count=${this.value.length}
       ?disabled=${this.disabled}
@@ -65,15 +75,15 @@ export abstract class TextField extends NoAutoValidateMixin(T) {
       ${this.renderTrailingIcon()}
       <div id="description" slot="aria-describedby"></div>
     </${this.fieldTag}>`;
-  }
+	}
 
-	
+
 	/**
 	 * propagate variant and labelAbove to field as they are not part of the template
 	 * @param changedProperties 
 	 */
 	private propagateToField(changedProperties: PropertyValues) {
-		if(this.field) {
+		if (this.field) {
 			if (changedProperties.has('variant')) {
 				this.field.variant = this.variant;
 			}
@@ -82,7 +92,7 @@ export abstract class TextField extends NoAutoValidateMixin(T) {
 			}
 		}
 	}
-	
+
 	override firstUpdated(changedProperties: PropertyValues) {
 		this.propagateToField(changedProperties);
 		super.firstUpdated(changedProperties);

@@ -90,6 +90,14 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	@property() placeholder = '';
 
 	/**
+  * The key to use to store the value in local storage
+  * 
+  * When this value is set, the value of the field will be saved to local storage when it changes 
+  * and restored from local storage when the component is created.
+  */
+	@property() storageKey!: string
+
+	/**
 	 * flavour of markdown to use for rendering
 	 */
 	@property() flavour!: 'github' | undefined;
@@ -116,7 +124,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 			<md-secondary-tab>${this.translatePreviewLabel}</md-secondary-tab>
 		`
 		const editor = this.renderEditor()
-		const classes = {	...this.accessibilityClasses, 'markdown-body': this.flavour === 'github' };
+		const classes = { ...this.accessibilityClasses, 'markdown-body': this.flavour === 'github' };
 		const viewer = html`<div id="markdown" class="markdown ${classMap(classes)}">${parse(this._selected === 1 ? this.md : this.mdtranslate)}</div>`
 
 		// Note: we use cache to keep the heigh of the textarea when switching between tabs
@@ -145,7 +153,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 			?required=${this.required}
 			?disabled=${this.disabled}
 			?readonly=${readonly}
-		
+		  .storageKey=${this.storageKey}
 			.value=${value || ''} 
 			.cols=${this.cols}
 			.rows=${this.rows}

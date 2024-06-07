@@ -5,7 +5,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 type AConstructor<T = {}> = abstract new (...args: any[]) => T;
 type F = {
 	reportValidity: () => void
-	field: any
+	// field: any
 }
 export declare class NoAutoValidateMixinInterface {
 	/**
@@ -21,6 +21,7 @@ export const NoAutoValidateMixin = <T extends Constructor<LitElement & F>>(super
 
 	class NoAutoValidateMixinClass extends superClass {
 
+		
 		/**
 		 * Prevent automatic check validity on blur
 		 */
