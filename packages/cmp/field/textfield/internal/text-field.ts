@@ -55,7 +55,7 @@ NoAutoValidateMixin(
 	 */
 	private override renderField() {
 		return staticHtml`<${this.fieldTag}
-      class="field"
+      class="field textfield"
       count=${this.value.length}
       ?disabled=${this.disabled}
       ?error=${this.hasError}

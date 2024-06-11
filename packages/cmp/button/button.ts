@@ -85,6 +85,7 @@ export class LappButton extends LitElement {
 
   /**
    * True to render a filled-button
+   * TODO: this should be `filled`
    */
   @property({type: Boolean}) unelevated!: boolean;
 
