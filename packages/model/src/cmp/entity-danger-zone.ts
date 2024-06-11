@@ -2,18 +2,20 @@ import { html, css, LitElement } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
 import AbstractEntity from './abstract-entity-element';
 import RenderHeaderMixin from '../mixin/render-header-mixin';
-import {entityI} from '../types';
+import {Strings, entityI} from '../types';
 
 import('@material/web/list/list')
 import('@material/web/list/list-item')
 
-
+// @ts-expect-error - missing abstract method
+class RealEntity extends AbstractEntity {
+}
 
 /**
  *  
  */
 
-export default class EntityDangerZone  extends RenderHeaderMixin(AbstractEntity) {
+export default class EntityDangerZone  extends RenderHeaderMixin(RealEntity) {
 
 	override icon: string = 'dangerous';
 	override heading: string = 'Danger Zone';
