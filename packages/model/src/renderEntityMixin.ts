@@ -218,9 +218,12 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
             this.showMetaData ? this.renderMetaData(data, config) : html``,
             // this should be renderEntityActions from renderEntityActionMixin
             super.renderContent(data, config),
-            config?.entityStatus.isNew ?
+            html`<form id="entityForm">
+              ${config?.entityStatus.isNew ?
               this.renderFormNew(data, config) :
-              this.renderForm(data, config)
+              this.renderForm(data, config)}
+            </form>`
+            
           ]
         }
 			</div>`
