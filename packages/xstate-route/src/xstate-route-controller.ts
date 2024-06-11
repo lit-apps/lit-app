@@ -9,7 +9,8 @@ import {
   matchRoutes,
   constructAbsolutePath,
   ChangeStateEvent,
-  IRouteMatch
+  IRouteMatch,
+  IRouterSlot
 } from 'router-slot';
 import type {
   AnyStateMachine,
@@ -45,7 +46,7 @@ class RouteStateController implements ReactiveController {
   constructor(
     protected host: ReactiveControllerHost,
     protected actor: Actor<AnyStateMachine>,
-    protected routerSlot: RouterSlot,
+    protected routerSlot: IRouterSlot,
     protected allowNavigationWhenFinal: boolean = true
   ) {
     host.addController(this);
@@ -78,7 +79,7 @@ class RouteStateController implements ReactiveController {
         console.groupEnd();
         return true
       }
-      this._previousMatch = match;
+      
       const xstate = match?.route.data?.xstate;
       if (xstate) {
         try {
@@ -93,6 +94,7 @@ class RouteStateController implements ReactiveController {
           const can = sn.matches(xstate) || sn.can({ type: `xstate.route.${xstate}` });
           console.groupEnd();
           if (can) {
+            this._previousMatch = match;
             return true
           }
           e.preventDefault()
@@ -104,6 +106,7 @@ class RouteStateController implements ReactiveController {
           return
         }
       }
+      this._previousMatch = match;
       console.groupEnd();
       return true
     }
@@ -151,7 +154,7 @@ class RouteStateController implements ReactiveController {
           }));
           this._preventSetState = true;
           console.log('actorToURL, path:', path)
-          if (window.location.pathname !== path) {
+          if (window.location.pathname !== path || this.routerSlot.match === null) {
             // we need to wait for the next frame to make sure URL has had time to update
             // otherwise matchRoutes will not work correctly
             requestAnimationFrame(() => {
@@ -178,7 +181,7 @@ class RouteStateController implements ReactiveController {
     // this is the case for exceptions, where we want the machine to possibly start again
     // on browser refresh
     const snap = this.actor.getSnapshot();
-    const routeConfig = snap._nodes.find((node: StateNode) => node.config?.route !== undefined)?.config?.route;
+    const routeConfig = snap._nodes?.find((node: StateNode) => node.config?.route !== undefined)?.config?.route;
     if (snap.status === 'active' && !routeConfig?.meta?.ignoreOnSubscribe) {
       // get the route from the actor state
       actorToURL(snap);
@@ -210,7 +213,7 @@ class RouteStateController implements ReactiveController {
 }
 
 
-function getMatchedRoute(routerSlot: RouterSlot, url?: string) {
+function getMatchedRoute(routerSlot: IRouterSlot, url?: string) {
   const parentPath = constructAbsolutePath(routerSlot);
   url ??= window.location.pathname;
   // get path fragments already consumed by parents
