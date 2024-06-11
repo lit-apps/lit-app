@@ -27,8 +27,9 @@ import {
 
 } from './types/modelComponent';
 
-import('@material/mwc-textfield')
+// import('@material/mwc-textfield')
 import('@material/mwc-textarea')
+// import('@material/web/textfield/filled-text-field.js')
 import('@preignition/firebase-upload/image-upload')
 import('@preignition/pwi-form-upload')
 import('@preignition/pwi-input/src/pwi-input-translation')
@@ -38,6 +39,7 @@ import('@material/web/switch/switch.js')
 import('@material/web/select/select-option.js')
 import('@lit-app/cmp/field/choice-checkbox')
 import('@lit-app/cmp/field/choice-radio')
+import('../../cmp/field/text-field')
 import('../../cmp/field/md-editor')
 import('../../cmp/field/md-droppable-editor')
 import('../../cmp/field/slider-field.js')
@@ -187,7 +189,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
 
   if (isComponentText(model)) {
     return html`
-    <mwc-textfield
+    <lapp-filled-text-field
       class=${cls}
       .name=${name}
       type=${ifDefined(model.type) || undefined}
@@ -195,14 +197,14 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .readOnly=${disabled}
       .placeholder=${model.placeholder}
       .label=${label}
-      .helper=${model.helper}
+      .supportingText=${model.helper}
       .required=${model.required}
       .maxLength=${model.maxLength}
       .minLength=${model.minLength}
       .charCounter=${!!model.maxLength}
       .value=${value || ''}
       @input=${onInputFact('value')}
-    ></mwc-textfield>
+    ></lapp-filled-text-field>
     `
   }
   if (isComponentTextArea(model)) {
