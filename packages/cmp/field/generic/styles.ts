@@ -4,18 +4,9 @@ const styles: CSSResult = css`
 :host > div {
 	display: inline-flex;
 	flex: 1;
-}
-:host {
-	/* TODO MD3: remove this when migrating to MD3 */
-  /* default field container color */
-  --md-filled-field-container-color: var(--mdc-text-field-fill-color, whitesmoke);
+	align-items: flex-start; 
 }
 
-/* allow focus ring to display */
-[data-role][slot], 
-md-outlined-icon-button[slot] {
-	overflow: visible;
-}
 
 `
 export default styles;

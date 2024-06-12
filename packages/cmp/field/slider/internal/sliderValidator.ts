@@ -6,12 +6,12 @@ import { Validator } from '@material/web/labs/behaviors/validators/validator.js'
  */
 export interface SliderState {
   readonly range: boolean;
-  readonly value: number;
-  readonly valueStart: number;
-  readonly valueEnd: number;
-  readonly min: number;
-  readonly max: number;
-  readonly required: boolean;
+  readonly value?: number | undefined;
+  readonly valueStart?: number | undefined;
+  readonly valueEnd?: number | undefined;
+  readonly min: number | undefined;
+  readonly max: number | undefined;
+  readonly required: boolean ;
 
 }
 
@@ -38,20 +38,20 @@ export class SliderValidator extends Validator<SliderState> {
       if (!(state.valueEnd + '')) {
         customError = 'End value is required';
       }
-      if (state.valueStart * 1 > state.valueEnd * 1) {
+      if (state.valueStart! * 1 > state.valueEnd! * 1) {
         customError = 'Start value must be less than end value';
       }
-      if (state.valueStart * 1 < state.min * 1) {
+      if (state.valueStart! * 1 < state.min! * 1) {
         customError = 'Start value must be greater than min value';
       }
-      if (state.valueEnd * 1 > state.max * 1) {
+      if (state.valueEnd! * 1 > state.max! * 1) {
         customError = 'End value must be less than max value';
       }
     } else {
-      if (state.value * 1 < state.min * 1) {
+      if (state.value! * 1 < state.min! * 1) {
         customError = 'Value must be greater than min value';
       }
-      if (state.value * 1 > state.max * 1) {
+      if (state.value! * 1 > state.max! * 1) {
         customError = 'Value must be less than max value';
       }
     }

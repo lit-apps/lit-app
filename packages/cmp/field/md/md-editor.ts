@@ -167,7 +167,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	}
 	protected renderSupportingText() {
 		return html`
-		<div style="display:flex; flex: 1; align-items: center;">${this._selected === 2 ? this.helperTranslate : this.helper} <span style="flex:1;"></span><span><a rel="noopener" href="https://en.wikipedia.org/wiki/Markdown" target="_blank">Markdown</a> is supported. </span>${this.renderSupportingAction()}</div>
+		<div style="gap: 4px; display:flex; flex: 1; align-items: center;">${this._selected === 2 ? this.helperTranslate : this.helper} <span style="flex:1;"></span><span><a rel="noopener" href="https://en.wikipedia.org/wiki/Markdown" target="_blank">Markdown</a> is supported. </span>${this.renderSupportingAction()}</div>
 		`
 	}
 	protected renderSupportingAction() {

@@ -65,7 +65,7 @@ export abstract class TextField extends
 		const t = this as unknown as GenericI
 		return staticHtml`<${this.fieldTag}
       class="field textfield"
-      count=${this.value.length}
+      count=${this.value?.length}
       ?disabled=${this.disabled}
       ?error=${t.hasError}
 			.persistSupportingText=${this.persistSupportingText}

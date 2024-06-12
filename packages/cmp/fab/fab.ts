@@ -1,7 +1,7 @@
-import {customElement} from 'lit/decorators.js';
-import {MdFab} from '@material/web/fab/fab.js';
+import { customElement } from 'lit/decorators.js';
+import { MdFab } from '@material/web/fab/fab.js';
 import { Fab } from './internal/fab';
-import  styles  from './internal/styles';
+import styles from './internal/styles';
 
 declare global {
   interface HTMLElementTagNameMap {

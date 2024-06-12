@@ -26,7 +26,7 @@ export abstract class Checkbox extends Generic {
   /**
    * Whether or not the checkbox is disabled.
    */
-  @property({ type: Boolean }) disabled = false;
+  @property({ type: Boolean }) override disabled = false;
 
   /**
    * Whether or not the checkbox is indeterminate.

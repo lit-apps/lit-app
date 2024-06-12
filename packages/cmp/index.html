@@ -45,8 +45,10 @@
     <script type="module" src="/field/record-field"></script>
     <script type="module" src="/field/checkbox-field"></script>
     <script type="module" src="/field/slider-field"></script> -->
+    <script type="module" src="/field/text-field"></script> 
+    <script type="module" src="/field/upload"></script>
     <script type="module" src="/fab/fab"></script>
-    <script type="module" src="/fab/filled-fab"></script>
+    <!-- <script type="module" src="/fab/filled-fab.js"></script> -->
     <!-- <script type="module" src="/audio/audio"></script> -->
     <!-- <script type="module" src="/field/md-editor"></script>
     <script type="module" src="/field/md-droppable-editor"></script>-->
@@ -71,22 +73,23 @@
 	      {code: '4', name:'radio', label: 'quatre is a long labelquatre is a long labelquatre is a long labelquatre is a long label. Does it wrap correctly? '},
 	      {code: '3', name:'radio', label: 'three', specify: true},
       ] 
-      document.querySelector('lapp-choice-checkbox').options = [...options];
-      document.querySelector('lapp-choice-radio').options = [...options];
-      document.querySelector('lapp-choice-order').options = [...options];
+      // document.querySelector('lapp-choice-checkbox').options = [...options];
+      // document.querySelector('lapp-choice-radio').options = [...options];
+      // document.querySelector('lapp-choice-order').options = [...options];
 
       document.querySelectorAll('md-filled-text-field')
-        .forEach(el => el.addEventListener('focusout', e => {
+        ?.forEach(el => el.addEventListener('focusout', e => {
             e.target.reportValidity();
         }));  
     </script>
-  <div>
+    <lapp-upload label="upload" supporting-text="support text">
+    </lapp-upload>
+    <lapp-text-field label="text" variant="a11y"></lapp-text-field>
 
-    <lapp-fab size="large" label="fab" variant="primary">
+    <!-- <lapp-fab size="large" label="fab" variant="primary">
       <lapp-icon slot="icon">settings</lapp-icon>
-    </lapp-fab>
-    </div>
-    <div>
+    </lapp-fab> -->
+    <!--div>
       <lapp-filled-fab size="large" label="fab" variant="primary">
         <lapp-icon slot="icon">settings</lapp-icon>
       </lapp-filled-fab>
@@ -172,7 +175,7 @@
       <lapp-primary-tab-closable>settings 2<lapp-icon slot="icon">settings</lapp-icon></lapp-primary-tab-closable>
       <md-primary-tab>iconButton<md-icon-button slot="icon" toggle><lapp-icon>settings</lapp-icon><lapp-icon slot="selected">close</lapp-icon></md-icon-button></md-primary-tab>
     </md-tabs>
-        <!--fieldset required>
+        <fieldset required>
           <legend>Choose the colors for your flag.</legend>
           <ul>
             <li>
@@ -220,7 +223,7 @@
               <label><input type="checkbox" name="fc" value="brown" />Brown</label>
             </li>
           </ul>
-        </fieldset-->
+        </fieldset>
     <md-icon-button toggle><lapp-icon>settings</lapp-icon><lapp-icon slot="selected">close</lapp-icon></md-icon-button>
      
     <lapp-choice-radio

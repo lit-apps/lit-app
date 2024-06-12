@@ -27,11 +27,9 @@ import {
 
 } from './types/modelComponent';
 
-// import('@material/mwc-textfield')
 import('@material/mwc-textarea')
 // import('@material/web/textfield/filled-text-field.js')
 import('@preignition/firebase-upload/image-upload')
-import('@preignition/pwi-form-upload')
 import('@preignition/pwi-input/src/pwi-input-translation')
 import('@preignition/pwi-input/src/pwi-input-translation-textarea')
 import('@material/web/checkbox/checkbox.js')
@@ -39,6 +37,7 @@ import('@material/web/switch/switch.js')
 import('@material/web/select/select-option.js')
 import('@lit-app/cmp/field/choice-checkbox')
 import('@lit-app/cmp/field/choice-radio')
+import('../../cmp/field/upload')
 import('../../cmp/field/text-field')
 import('../../cmp/field/md-editor')
 import('../../cmp/field/md-droppable-editor')
@@ -233,7 +232,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .readOnly=${disabled}
       .writeLabel=${label}
       .placeholder=${model.placeholder}
-      .helper=${model.helper}
+      .supportingText=${model.helper}
       .required=${model.required}
       .maxLength=${model.maxLength}
       .minLength=${model.minLength}
@@ -256,7 +255,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .readOnly=${disabled}
       .writeLabel=${label}
       .placeholder=${model.placeholder}
-      .helper=${model.helper}
+      .supportingText=${model.helper}
       .required=${model.required}
       .maxLength=${model.maxLength}
       .minLength=${model.minLength}
@@ -271,12 +270,12 @@ export function renderField<D extends DefaultI>(this: EntityElement,
 
   if (isComponentUpload(model)) {
     return html`
-    <pwi-form-upload
+    <lapp-upload
       class=${cls}
       .name=${name}
       .readonly=${disabled}
       .writeLabel=${label}
-      .helper=${model.helper}
+      .supportingText=${model.helper}
       .required=${model.required}
       .store=${model.store}
       .path=${model.path}
@@ -285,7 +284,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .maxFileSize=${model.maxFileSize}
       .useFirestore=${model.useFirestore}
       .fieldPath=${model.fieldPath || name}
-    ></pwi-form-upload>
+    ></lapp-upload>
     `;
   }
   if (isComponentUploadImage(model)) {

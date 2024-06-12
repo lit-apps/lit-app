@@ -10,6 +10,7 @@ import { PropertyValues, html, nothing } from 'lit';
 export abstract class InputSlider extends MdSlider {
 
   @property() supportingOrErrorText!: string;
+	@property({ type: Boolean }) required = false;
 
   override firstUpdated(props: PropertyValues<this>) {
 		super.firstUpdated(props);

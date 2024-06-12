@@ -6,13 +6,12 @@
 
 import {customElement} from 'lit/decorators.js';
 
-import { MdFilledTextField } from '@material/web/textfield/filled-text-field.js'
+import { MdFilledTextField } from '@material/web/textfield/filled-text-field'
 import filledStyles from './filledStyles';
 import {FilledCheckbox} from './internal/filled-checkbox.js';
 import genericStyles from '../../generic/styles';
 import choiceStyles from '../styles';
 import sharedStyles from './internal/shared-styles';
-import { CSSResult } from 'lit';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -26,7 +25,7 @@ declare global {
  */
 @customElement('lapp-filled-checkbox')
 export class LappFilledCheckbox extends FilledCheckbox {
-  static styles: CSSResult[] = [
+  static styles = [
     ...MdFilledTextField.styles, 
     filledStyles,
     sharedStyles,

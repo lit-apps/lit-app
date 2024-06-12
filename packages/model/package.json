@@ -37,8 +37,8 @@
     "firebase": "^9.22.2",
     "happy-dom": "^8.9.0",
     "typescript": "^5.0.2",
-    "vite": "^5.0.10",
-    "vitest": "^1.0.4"
+    "vite": "^5.3.0",
+    "vitest": "^1.6.0"
   },
   "publishConfig": {
     "access": "public"
@@ -49,16 +49,12 @@
     "@lit-app/state": "workspace:^",
     "@lit/context": "^1.1.2",
     "@material/mwc-textarea": "0.25.3",
-    "@material/mwc-textfield": "0.25.3",
     "@material/web": "1.0.1",
     "@polymer/polymer": "^3.5.1",
     "@preignition/lit-flexbox-literals": "link:../../../packages/lit-flexbox-literals",
     "@preignition/preignition-styles": "link:../../../packages/preignition-styles",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
-    "@preignition/preignition-widget": "link:../../../packages/preignition-widget",
-    "@preignition/pwi-form-upload": "link:../../../packages/pwi-form-upload",
     "@preignition/pwi-input": "link:../../../packages/pwi-input",
-    "@preignition/pwi-md": "link:../../../packages/pwi-md",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/multi-select-combo-box": "link:../../../app-dependencies/web-components/packages/multi-select-combo-box",
     "lit": "^3.1.4",

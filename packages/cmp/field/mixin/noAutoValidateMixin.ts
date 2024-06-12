@@ -2,7 +2,6 @@ import { LitElement, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js'
 
 type Constructor<T = {}> = new (...args: any[]) => T;
-type AConstructor<T = {}> = abstract new (...args: any[]) => T;
 type F = {
 	reportValidity: () => void
 	// field: any
@@ -11,7 +10,7 @@ export declare class NoAutoValidateMixinInterface {
 	/**
 		* Prevent automatic check validity on blur
 		*/
-	noAutoValidate: string
+	noAutoValidate: boolean
 }
 /**
  * NoAutoValidateMixin - a mixin that report validity on blur, 

@@ -9,5 +9,5 @@ import {Slider} from './slider';
  * An outlined text field component
  */
 export class OutlinedSlider extends Slider {
-  protected readonly fieldTag = literal`lapp-outlined-field`;
+  protected override  readonly fieldTag = literal`lapp-outlined-field`;
 }

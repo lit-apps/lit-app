@@ -21,12 +21,12 @@ import { SliderValidator } from './sliderValidator';
 export abstract class Slider extends Generic {
 
   protected fieldName = 'slider';
-
   @query('lapp-slider') override readonly input!: HTMLInputElement;
   @query('lapp-slider') override readonly inputOrTextarea!: HTMLInputElement;
 	
 	@property({attribute: false}) 
-  get value() {
+  // @ts-expect-error -
+  override get value() {
     const input = this.input as unknown as MdSlider;
     if (!this.input) {
       return this._value;
@@ -34,7 +34,7 @@ export abstract class Slider extends Generic {
     return input.range ? [input.valueStart, input.valueEnd] : input.value;
 		
 	}
-	set value(value) {
+	override set value(value) {
     const input = this.input as unknown as MdSlider;
     const isArray = Array.isArray(value);
     if (isArray && !this.range) {
@@ -60,12 +60,12 @@ export abstract class Slider extends Generic {
 	}
 
   // temp holding value
-  private _value 
+  private _value: any
 
   /**
    * Whether or not the slider is disabled.
    */
-  @property({ type: Boolean }) disabled = false;
+  @property({ type: Boolean }) override disabled = false;
 
 
   /**
@@ -82,19 +82,19 @@ export abstract class Slider extends Generic {
    * An optional label for the slider's value displayed when range is
    * false; if not set, the label is the value itself.
    */
-  @property({ attribute: 'value-label' }) valueLabel?: string;
+  @property({ attribute: 'value-label' }) valueLabel: string = '';
 
   /**
    * An optional label for the slider's start value displayed when
    * range is true; if not set, the label is the valueStart itself.
    */
-  @property({ attribute: 'value-label-start' }) valueLabelStart?: string;
+  @property({ attribute: 'value-label-start' }) valueLabelStart: string ='';
 
   /**
    * An optional label for the slider's end value displayed when
    * range is true; if not set, the label is the valueEnd itself.
    */
-  @property({ attribute: 'value-label-end' }) valueLabelEnd?: string;
+  @property({ attribute: 'value-label-end' }) valueLabelEnd: string =' ';
 
   /**
    * Aria label for the slider's start value displayed when
@@ -192,7 +192,7 @@ export abstract class Slider extends Generic {
 	
   [createValidator](): Validator<unknown> {
 		return new SliderValidator(() => this.inputOrTextarea as unknown as InputSlider || { 
-      required: this.required, 
+      required: !!this.required, 
       range: this.range,
       max: this.max || 100,
       min: this.min || 0,
