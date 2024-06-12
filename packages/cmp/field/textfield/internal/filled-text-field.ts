@@ -13,5 +13,5 @@ import {TextField} from './text-field.js';
 
 // tslint:disable-next-line:enforce-comments-on-exported-symbols
 export abstract class FilledTextField extends TextField {
-  protected readonly fieldTag = literal`lapp-filled-field`;
+  protected override readonly fieldTag = literal`lapp-filled-field`;
 }

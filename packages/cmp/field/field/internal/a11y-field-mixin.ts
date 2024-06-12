@@ -1,19 +1,31 @@
-import { nothing, LitElement, PropertyValueMap, PropertyValues, TemplateResult, css, html } from 'lit';
-import { property, query } from 'lit/decorators.js'
-import {classMap} from 'lit/directives/class-map.js';
+import { PropertyValues, TemplateResult, html, nothing } from 'lit';
+import { property, query } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
+import { parseInline } from '@lit-app/md-parser';
 import { Field } from '@material/web/field/internal/field';
-import {parseInline} from '@lit-app/md-parser';
 
 export type Variant = 'a11y'
 
 type Constructor<T = {}> = new (...args: any[]) => T;
-type RenderLabel = (isFloating: boolean) => TemplateResult | typeof nothing;
 export declare class A11yFieldMixinInterface {
-	// Define the interface for the mixin
+	/**
+	 * a variant of the field. Variants are use to render field differently or augment them.
+	 */
 	variant: Variant | undefined;
+	/**
+	 * whether to alway show the label above the field and disable animation
+	 */
 	labelAbove: boolean | undefined;
-	renderLabel: RenderLabel;
+
+	/**
+	 * whether to persist supporting text 
+	 * @default false
+	 */
+	persistSupportingText: boolean | undefined;
+	/**
+   * get the label as text - and parsed when it is markdown
+   */
 	getTextLabel(): string;
 
 }
@@ -27,24 +39,14 @@ export declare class A11yFieldMixinInterface {
  */
 export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 
-
+	// @ts-expect-error - renderLabel is private in Field
 	class A11yFieldMixinClass extends superClass {
 
-		/**
-		 * a variant of the field. Variants are use to render field differently or augment them.
-		 */
 		@property({ reflect: true }) variant!: Variant;
-
-		/**
-		 * whether to alway show the label above the field and disable animation
-		 */
+		@property({ reflect: true, type: Boolean }) persistSupportingText: boolean = false;
 		@property({ type: Boolean, reflect: true }) labelAbove = false;
-
 		@query('.label[aria-hidden="false"]') labelEl!: HTMLElement;
 
-		/**
-		 * get the label as text - and parsed when it is markdown
-		 */
 		getTextLabel() {
 			return this.labelEl?.innerText || '';
 		}
@@ -58,7 +60,7 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 				this.populated = true;
 			}
 			// set markdown label as populated
-			if((props.has('label') || props.has('variant')) && this.variant === 'a11y') {
+			if ((props.has('label') || props.has('variant')) && this.variant === 'a11y') {
 				this._md = this.label ? parseInline(this.label) : nothing;
 			}
 
@@ -70,35 +72,39 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 			super.willUpdate(props);
 		}
 
-		private override renderLabel(isFloating: boolean) {
+		protected override renderLabel(isFloating: boolean) {
 			if (this.variant !== 'a11y') {
+				// @ts-expect-error
 				return super.renderLabel(isFloating);
 			}
 
 			if (!this.label) {
 				return nothing;
 			}
-	
+
 			let visible: boolean;
 			if (isFloating) {
+
 				// Floating label is visible when focused/populated or when animating.
+				// @ts-expect-error
 				visible = this.focused || this.populated || this.isAnimating;
 			} else {
 				// Resting label is visible when unfocused. It is never visible while
 				// animating.
+				// @ts-expect-error
 				visible = !this.focused && !this.populated && !this.isAnimating;
 			}
-	
+
 			const classes = {
 				'hidden': !visible,
 				'floating': isFloating,
 				'resting': !isFloating,
 			};
-	
+
 			// Add '*' if a label is present and the field is required
 			// the difference is that we render a template and not a string
 			const labelHTML = html`${this._md}${this.required ? '*' : ''}`;
-	
+
 			return html`
 				<span class="label ${classMap(classes)}"
 					aria-hidden=${!visible}
@@ -106,9 +112,7 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 			`;
 		}
 
-
 	};
-	// Cast return type to your mixin's interface intersected with the superClass type
 	return A11yFieldMixinClass as unknown as Constructor<A11yFieldMixinInterface> & T;
 }
 

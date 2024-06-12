@@ -8,10 +8,13 @@ import NoAutoValidateMixin from '../../mixin/noAutoValidateMixin';
 import LocalStoragePersist from '../../../mixin/local-storage-persist-mixin.js';
 
 import { StaticValue, html as staticHtml } from 'lit/static-html.js';
+import { GenericI } from '../../generic/generic';
 
+/**
+ * We add real class to avoid TS error
+ */
 class RealClass extends T {
 	protected readonly fieldTag!: StaticValue;
-	// declare readonly field: FilledField | OutlinedField
 }
 /**	
  * PwiTextField is an override of MD3's filled-textfield for Preignition
@@ -22,7 +25,7 @@ class RealClass extends T {
  * - [ ] improved support for readonly (style and behavior) 
  * - [x] support for local storage persistence 
  * - [x] check validity on blur
- * - [ ] only show supportText on focus
+ * - [x] only show supportText on focus
  * - [ ] prevent setting value when value is undefined ?
  * - [ ] possibility to listen when field icon is clicked - see https://github.com/material-components/material-components-web-components/issues/2447
  * - [ ] improved support for some aria attributes: aria-errormessage, aria-invalid role and aria-live
@@ -30,8 +33,8 @@ class RealClass extends T {
 
 // @ts-ignore - TS complains about renderField and field being private in Base class
 export abstract class TextField extends
-NoAutoValidateMixin(
-	LocalStoragePersist(
+	NoAutoValidateMixin(
+		LocalStoragePersist(
 			RealClass)) {
 	/**
 	 * The variant to use for rendering the field
@@ -44,6 +47,11 @@ NoAutoValidateMixin(
 	 */
 	@property({ type: Boolean }) labelAbove: boolean = false
 
+	/**
+   * whether to persist supporting text 
+   * @default false
+   */
+	@property({type: Boolean}) persistSupportingText: boolean = false;
 
 	/**
 	 * The field holding label
@@ -53,14 +61,16 @@ NoAutoValidateMixin(
 	/**
 	 * Override renderField so that we can have htmlResult label and supportingText
 	 */
-	private override renderField() {
+	protected override renderField() {
+		const t = this as unknown as GenericI
 		return staticHtml`<${this.fieldTag}
       class="field textfield"
       count=${this.value.length}
       ?disabled=${this.disabled}
-      ?error=${this.hasError}
-      .errorText=${this.getErrorText()}
-      ?focused=${this.focused}
+      ?error=${t.hasError}
+			.persistSupportingText=${this.persistSupportingText}
+      .errorText=${t.getErrorText()}
+      ?focused=${t.focused}
       ?has-end=${this.hasTrailingIcon}
       ?has-start=${this.hasLeadingIcon}
       .label=${this.label}
@@ -70,9 +80,9 @@ NoAutoValidateMixin(
       ?resizable=${this.type === 'textarea'}
       .supportingText=${this.supportingText}
     >
-      ${this.renderLeadingIcon()}
-      ${this.renderInputOrTextarea()}
-      ${this.renderTrailingIcon()}
+      ${t.renderLeadingIcon()}
+      ${t.renderInputOrTextarea()}
+      ${t.renderTrailingIcon()}
       <div id="description" slot="aria-describedby"></div>
     </${this.fieldTag}>`;
 	}

@@ -8,6 +8,7 @@ import {customElement} from 'lit/decorators.js';
 
 import {OutlinedField} from './internal/outlined-field.js';
 import {MdOutlinedField} from '@material/web/field/outlined-field.js'
+import supportingText from './internal/supporting-text-styles';
 
 
 declare global {
@@ -23,5 +24,5 @@ declare global {
  */
 @customElement('lapp-outlined-field')
 export class LappOutlinedField extends OutlinedField {
-   static override styles= MdOutlinedField.styles;
+   static override styles= [MdOutlinedField.styles, supportingText];
 }

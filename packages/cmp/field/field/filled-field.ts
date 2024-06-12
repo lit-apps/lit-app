@@ -9,6 +9,7 @@ import {customElement} from 'lit/decorators.js';
 import {FilledField} from './internal/filled-field.js';
 import {MdFilledField} from '@material/web/field/filled-field.js'
 import { css } from 'lit';
+import supportingText from './internal/supporting-text-styles';
 
 const styles = css`
   :host([variant=a11y]) .middle {
@@ -42,21 +43,9 @@ const styles = css`
   .supporting-text > span:first-child {
     display: flex;
     flex:1;
-    opacity: 1;
-    transition: opacity var(--transition-quickly);
   }
 
-  /** only display supporting-text on focus */
-  :host(.textfield:not([focused])) .supporting-text:not([role="alert"]) > span:not(.counter) {
-      opacity: 0;
-  }
-  .supporting-text:not([role="alert"]) > span:not(.counter) {
-      opacity: 1;
-      
-  }
-  
-  
-  `
+`
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -71,5 +60,5 @@ declare global {
  */
 @customElement('lapp-filled-field')
 export class LappFilledField extends FilledField {
-  static override styles = [MdFilledField.styles, styles];
+  static override styles = [MdFilledField.styles, styles, supportingText];
 }
