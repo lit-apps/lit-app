@@ -3,7 +3,7 @@ import { get, set } from '@preignition/preignition-util/src/deep';
 import { TemplateResult, html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Dirty, EntityWriteDetail, Update } from './events';
-import { DefaultI, EntityElement}  from './types/entity';
+import { DefaultI, EntityElement } from './types/entity';
 import type { Model, ModelComponent, FieldConfig } from './types/modelComponent';
 // Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
 import '@polymer/polymer';
@@ -26,9 +26,6 @@ import {
   isComponentUploadImage,
 
 } from './types/modelComponent';
-
-import('@material/mwc-textarea')
-// import('@material/web/textfield/filled-text-field.js')
 import('@preignition/firebase-upload/image-upload')
 import('@preignition/pwi-input/src/pwi-input-translation')
 import('@preignition/pwi-input/src/pwi-input-translation-textarea')
@@ -208,24 +205,25 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   }
   if (isComponentTextArea(model)) {
     return html`
-    <mwc-textarea
+    <lapp-text-field 
+			type="textarea"
       class=${cls}
       .name=${name}
       .readOnly=${disabled}
       .placeholder=${model.placeholder}
       .label=${label}
-      .helper=${model.helper}
+      .supportingText=${model.helper}
       .required=${model.required}
       .maxLength=${model.maxLength}
       .minLength=${model.minLength}
       .charCounter=${!!model.maxLength}
       .value=${value || ''}
       @input=${onInputFact('value')}
-    ></mwc-textarea >`;
+    ></lapp-text-field>`;
   }
 
   if (isComponentMdDroppable(model)) {
-      return html`<lapp-md-droppable-editor
+    return html`<lapp-md-droppable-editor
       class=${cls}
       .name=${name}
       .flavour=${model.flavour}
@@ -238,16 +236,16 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .minLength=${model.minLength}
       .charCounter=${!!model.maxLength}
       .path=${model.path}
-      useFirestore=${model.useFirestore || nothing }
-      maxFileSize=${model.maxFileSize || nothing }
+      useFirestore=${model.useFirestore || nothing}
+      maxFileSize=${model.maxFileSize || nothing}
       rows=${model.rows || nothing}
       resize=${model.resize || nothing}
       .md=${value || ''}
       @input=${onInputFact('md')}
     ></lapp-md-droppable-editor>`
-    }
+  }
   if (isComponentMd(model)) {
-  return html`
+    return html`
     <lapp-md-editor
       class=${cls}
       .name=${name}
@@ -371,7 +369,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     return html`
     <label class=${cls}>
       <md-checkbox touch-target="wrapper" 
-      aria-label=${label||''}
+      aria-label=${label || ''}
       .name=${name}
       .checked=${value}
       .disabled=${disabled}
