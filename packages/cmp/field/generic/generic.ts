@@ -54,9 +54,9 @@ export interface GenericI extends TextField {
  */
 // @ts-ignore
 export abstract class Generic extends CompatMixin(TextField) implements GenericI {
-  protected abstract override readonly fieldName: string
+  protected abstract readonly fieldName: string
 
-  @query('.input') protected override readonly input!: HTMLInputElement | null;
+  @query('.input') protected readonly input!: HTMLInputElement | null;
   @query('.input') override readonly inputOrTextarea!: HTMLInputElement | null;
   
   protected override renderField() {
@@ -72,7 +72,7 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
       ?populated=${this.getPopulated()}
       ?required=${this.required}
       .supportingText=${this.supportingText}
-      .errorText=${this.getErrorText()}
+      .errorText=${t.getErrorText()}
     >
       ${t.renderLeadingIcon()}
       ${t.renderInputOrTextarea()}

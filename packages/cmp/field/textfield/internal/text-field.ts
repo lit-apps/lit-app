@@ -9,12 +9,16 @@ import LocalStoragePersist from '../../../mixin/local-storage-persist-mixin.js';
 
 import { StaticValue, html as staticHtml } from 'lit/static-html.js';
 import { GenericI } from '../../generic/generic';
+import CompatMixin from '../../compat/compat-mixin';
 
 /**
  * We add real class to avoid TS error
  */
 class RealClass extends T {
-	protected readonly fieldTag!: StaticValue;
+	protected readonly fieldTag!: StaticValue
+	// input: HTMLInputElement | null | undefined
+	// fieldName: string | undefined
+	// getInputValue:( ()=> string) | undefined
 }
 /**	
  * PwiTextField is an override of MD3's filled-textfield for Preignition
@@ -33,9 +37,10 @@ class RealClass extends T {
 
 // @ts-ignore - TS complains about renderField and field being private in Base class
 export abstract class TextField extends
-	NoAutoValidateMixin(
+NoAutoValidateMixin(
+	CompatMixin(
 		LocalStoragePersist(
-			RealClass)) {
+				RealClass))) {
 	/**
 	 * The variant to use for rendering the field
 	 */

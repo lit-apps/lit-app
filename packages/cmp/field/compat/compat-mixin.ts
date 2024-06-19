@@ -1,13 +1,12 @@
-import { set } from '@preignition/preignition-util';
-import { LitElement, PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js'
-import { Generic, GenericI } from '../generic/generic';
+import { property } from 'lit/decorators.js';
+// import { GenericI } from '../generic/generic';
 
 declare global {
 	interface HTMLElementEventMap {
 		
 	}
 }
+
 
 type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class CompatMixinInterface {
@@ -18,11 +17,10 @@ export declare class CompatMixinInterface {
  * CompatMixin
  * allows to use MD2 property for MD3 fields
  */
-export const CompatMixin = <T extends Constructor<GenericI>>(superClass: T) => {
+export const CompatMixin = <T extends Constructor<{supportingText: string}>>(superClass: T) => {
 
  
 	abstract class CompatMixinClass extends superClass  {
-		
 		/**
 		 * let us know that this is a MD3 field
 		 * this is usefull when processing errors - which is done differently in MD3

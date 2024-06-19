@@ -212,6 +212,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .readOnly=${disabled}
       .placeholder=${model.placeholder}
       .label=${label}
+      ?disabled=${disabled}
       .supportingText=${model.helper}
       .required=${model.required}
       .maxLength=${model.maxLength}
@@ -236,6 +237,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .minLength=${model.minLength}
       .charCounter=${!!model.maxLength}
       .path=${model.path}
+      ?disabled=${disabled}
       useFirestore=${model.useFirestore || nothing}
       maxFileSize=${model.maxFileSize || nothing}
       rows=${model.rows || nothing}
@@ -310,7 +312,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
      <lapp-slider-field
       class=${cls}
       .name=${name}
-      .disabled=${disabled}
+      ?disabled=${disabled}
       .label=${label}
       .ticks=${model.ticks}
       .labeled=${model.labeled}
@@ -357,7 +359,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .itemLabelPath=${'label'}
       .itemValuePath=${'code'}
       .icon=${model.icon}
-      .disabled=${disabled}
+      ?disabled=${disabled}
       .label=${label}
       .helperText=${model.helper}
       .required=${model.required}
@@ -372,7 +374,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       aria-label=${label || ''}
       .name=${name}
       .checked=${value}
-      .disabled=${disabled}
+      ?disabled=${disabled}
       @change=${onInputFact('checked')} 
       ></md-checkbox>
         ${label || ''}
