@@ -34,6 +34,7 @@ export {
 } from './mixin/context-entity-mixin';
 
 export * from './events';
+export * from './types/communication';
 export {
 	type EntityStatusMixinInterface
 } from './mixin/context-entity-status-mixin';
