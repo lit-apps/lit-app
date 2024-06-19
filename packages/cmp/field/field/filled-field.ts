@@ -12,6 +12,9 @@ import { css } from 'lit';
 import supportingText from './internal/supporting-text-styles';
 
 const styles = css`
+	:host([variant=a11y]) {
+	  --md-filled-field-label-text-populated-line-height: 0.2rem;
+  }
   :host([variant=a11y]) .middle {
     flex-direction: column;
     padding-top: inherit;
