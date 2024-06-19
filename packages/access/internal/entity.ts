@@ -160,9 +160,6 @@ export class EntityAccess extends
 			.path=${'actor'}
 			.where=${where}
 			@data-changed=${(e: CustomEvent) => this.invite = e.detail.value}></lif-store>
-			<slot name="header">
-				${this.renderHeader(this.data, this.renderConfig)}
-			</slot>
 			<slot name="sub-header"></slot>
 			<slot name="body">
 				${this.renderBody(this.data, this.renderConfig)}

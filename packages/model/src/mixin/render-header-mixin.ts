@@ -56,7 +56,9 @@ export const RenderHeaderMixin = <T extends Constructor<LitElement> >(superClass
 
 		override render() {
 			return html`
-				${this.renderHeader()}
+				<slot name="header">
+					${this.renderHeader()}
+				</slot>
 				${super.render()}
 			`;
 		
