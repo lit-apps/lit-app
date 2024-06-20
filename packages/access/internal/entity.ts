@@ -147,7 +147,7 @@ export class EntityAccess extends
 			op: '==',
 			value: 'invite'
 		}, {
-			field: 'snapshot.context.targetPath',
+			field: 'snapshot.context.targetRefOrPath',
 			op: '==',
 			value: this.path
 		}, {
