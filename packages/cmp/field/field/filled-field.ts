@@ -34,6 +34,7 @@ const styles = css`
   :host([variant=a11y]) .label {
     text-overflow: inherit;
     white-space: inherit;
+    line-height: inherit;
   }
   /* this is to prevent floating label to appear in front of check boxes and radio 
      pointer-events is set back to initial to allow tooltips.
