@@ -1,20 +1,17 @@
-import '../../../radio/radio';
+import '@material/web/focus/md-focus-ring';
+import '@material/web/icon/icon';
+import { html } from 'lit';
+import { property } from 'lit/decorators.js';
 import '../../../../list/list';
 import '../../../../list/list-item';
-import '@material/web/icon/icon';
-import '@material/web/focus/md-focus-ring';
-import getInnerText from '@preignition/preignition-util/src/getInnerText';
-import { html } from 'lit';
-import { when } from 'lit/directives/when.js';
+import { HTMLEvent } from '../../../../types';
+import '../../../radio/radio';
 import '../../../text-field';
 import { Choice } from '../../choice';
 import IllustrationMixin from '../../illustrationMixin';
+import '../../list-item';
 import SingleMixin from '../../singleMixin';
 import { Option } from '../../types';
-import { HTMLEvent } from '../../../../types';
-import '../../list-item'
-import { property } from 'lit/decorators.js';
-import { MdList } from '@material/web/list/list';
 
 const starTemplate = html`<svg viewBox="0 0 512 512"><path d="M512 198.525l-176.89-25.704-79.11-160.291-79.108 160.291-176.892 25.704 128 124.769-30.216 176.176 158.216-83.179 158.216 83.179-30.217-176.176 128.001-124.769z"></path></svg>`
 const zeroStarTemplate = html`<svg viewBox="0 0 512 512">
@@ -36,6 +33,45 @@ function isActionableKey(key: string): key is ActionableValues {
   return actionableKeySet.has(key as ActionableValues);
 }
 /**
+ * Retrieves the next non-disabled item of a given array of items.
+ *
+ * @param items {Array<ListItem>} The items to search.
+ * @param index {{index: number}} The index to search from.
+ * @return The next activatable item or `null` if none are activatable.
+ */
+function getNextItem<T extends HTMLInputElement>(items: T[], index: number) {
+  for (let i = 1; i < items.length; i++) {
+    const nextIndex = (i + index) % items.length;
+    const item = items[nextIndex];
+    if (!item.disabled) {
+      return item;
+    }
+  }
+
+  return items[index] ? items[index] : null;
+}
+
+/**
+ * Retrieves the previous non-disabled item of a given array of items.
+ *
+ * @param items {Array<ListItem>} The items to search.
+ * @param index {{index: number}} The index to search from.
+ * @return The previous activatable item or `null` if none are activatable.
+ */
+function getPrevItem<T extends HTMLInputElement>(items: T[], index: number) {
+  for (let i = 1; i < items.length; i++) {
+    const prevIndex = (index - i + items.length) % items.length;
+    const item = items[prevIndex];
+
+    if (!item.disabled) {
+      return item;
+    }
+  }
+
+  return items[index] ? items[index] : null;
+}
+
+/**
  * Star group field
  */
 export abstract class Star extends
@@ -53,8 +89,6 @@ export abstract class Star extends
    * when true, add a star with value 0
    */
   @property({ type: Boolean }) allowNoStar = false
-
-
 
   // @ts-ignore
   override get items() {
@@ -104,7 +138,7 @@ export abstract class Star extends
       input.dispatchEvent(new Event('change', { bubbles: true }))
     }
   }
-  protected handleKeydown(event: KeyboardEvent) {
+  protected override handleKeydown(event: KeyboardEvent) {
     const key = event.key;
     if (isActionableKey(key)) {
       event.preventDefault();
@@ -114,13 +148,13 @@ export abstract class Star extends
       if (!items.length) {
         return;
       }
+      const val = this._value as unknown as number
       switch (key) {
         // Activate the next item
         case ACTIONABLE_KEYS.ArrowDown:
         case ACTIONABLE_KEYS.ArrowRight:
-          // @ts-ignore
-          const next = MdList.getNextItem<HTMLInputElement>(items, this._value || 0)
-          if(next) {
+          const next = getNextItem<HTMLInputElement>(items, (val ?? 0))
+          if (next) {
             next.checked = true
             next.dispatchEvent(new Event('change', { bubbles: true }))
           }
@@ -128,15 +162,13 @@ export abstract class Star extends
         // Activate the previous item
         case ACTIONABLE_KEYS.ArrowUp:
         case ACTIONABLE_KEYS.ArrowLeft:
-          // @ts-ignore
-          const prev = MdList.getPrevItem<HTMLInputElement>(items, (this._value ?? 1) - 1)
-          if(prev) {
+          const prev = getPrevItem<HTMLInputElement>(items, (val ?? 1) - 1)
+          if (prev) {
             prev.checked = true
             prev.dispatchEvent(new Event('change', { bubbles: true }))
           }
           break;
       }
-
     }
   }
 
@@ -148,10 +180,10 @@ export abstract class Star extends
     const min = this.allowNoStar ? 0 : 1;
     const max = this.starNumber;
     let label = this.getTextLabel();
-		if (label.endsWith('*')) {
-			label = label.slice(0, -1);
-			label += this.getTranslate('required');
-		}
+    if (label.endsWith('*')) {
+      label = label.slice(0, -1);
+      label += this.getTranslate('required');
+    }
     return this._value === undefined ?
       (label + (readHelper && this.supportingText ? ('. ' + this.getTranslate('hint') + ': ' + this.supportingText) + '. ' : '') + this.getTranslate('giveRate', { min: min, max: max })) :
       (this.getTranslate('givenRate', { count: this._value, max: max }) + label);
