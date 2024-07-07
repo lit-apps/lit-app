@@ -12,14 +12,17 @@ import type { PropertyValues, LitElement } from 'lit';
  * }
  * 
  * from: https://github.com/zdhxiong/mdui/blob/v2/packages/shared/src/decorators/watch.ts
+ * 
+ * The difference from the source is that we operate at `willupdate` 
+ * instead of `update` to avoid the multiple calls to reactive rendering
  */
 export function watch(propName: string, waitUntilFirstUpdate = false) {
   return <T extends LitElement>(proto: T, functionName: string): void => {
     // @ts-ignore
-    const { update } = proto;
+    const { willUpdate } = proto;
     if (propName in proto) {
       // @ts-ignore
-      proto.update = function (this: T, changedProperties: PropertyValues) {
+      proto.willUpdate = function (this: T, changedProperties: PropertyValues) {
         if (changedProperties.has(propName)) {
           const oldValue = changedProperties.get(propName);
           const newValue = this[propName as keyof T];
@@ -32,8 +35,10 @@ export function watch(propName: string, waitUntilFirstUpdate = false) {
           }
         }
 
-        update.call(this, changedProperties);
+        willUpdate.call(this, changedProperties);
       };
     }
   };
 }
+
+export default watch
