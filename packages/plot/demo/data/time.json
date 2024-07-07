@@ -1,0 +1,135 @@
+[{
+  "value": "provisioningSurvey",
+  "date": "2024-07-01",
+  "count": "6"
+}, {
+  "value": "onePager",
+  "date": "2024-07-01",
+  "count": "2"
+}, {
+  "value": "fetchingFormSettings",
+  "date": "2024-07-01",
+  "count": "2"
+}, {
+  "value": "creatingAnonymousUser",
+  "date": "2024-07-01",
+  "count": "2"
+}, {
+  "value": "form.provisioningForm",
+  "date": "2024-07-01",
+  "count": "2"
+}, {
+  "value": "form.ready",
+  "date": "2024-07-01",
+  "count": "2"
+}, {
+  "value": "provisioningSurvey",
+  "date": "2024-06-30",
+  "count": "1"
+}, {
+  "value": "exception.generic",
+  "date": "2024-07-01",
+  "count": "1"
+
+},{
+  "value": "provisioningSurvey",
+  "date": "2024-07-01",
+  "count": "2"
+}, {
+  "value": "onePager",
+  "date": "2024-07-03",
+  "count": "2"
+}, {
+  "value": "fetchingFormSettings",
+  "date": "2024-07-03",
+  "count": "2"
+}, {
+  "value": "creatingAnonymousUser",
+  "date": "2024-07-03",
+  "count": "2"
+}, {
+  "value": "form.provisioningForm",
+  "date": "2024-07-03",
+  "count": "2"
+}, {
+  "value": "form.ready",
+  "date": "2024-07-03",
+  "count": "4"
+}, {
+  "value": "provisioningSurvey",
+  "date": "2024-06-03",
+  "count": "1"
+}, {
+  "value": "exception.generic",
+  "date": "2024-07-03",
+  "count": "1"
+
+},{
+  "value": "provisioningSurvey",
+  "date": "2024-06-04",
+  "count": "5"
+}, {
+  "value": "onePager",
+  "date": "2024-07-03",
+  "count": "2"
+}, {
+  "value": "fetchingFormSettings",
+  "date": "2024-07-06",
+  "count": "2"
+}, {
+  "value": "creatingAnonymousUser",
+  "date": "2024-07-06",
+  "count": "2"
+}, {
+  "value": "form.provisioningForm",
+  "date": "2024-07-06",
+  "count": "2"
+}, {
+  "value": "form.ready",
+  "date": "2024-07-06",
+  "count": "2"
+}, {
+  "value": "provisioningSurvey",
+  "date": "2024-07-06",
+  "count": "1"
+}, {
+  "value": "exception.generic",
+  "date": "2024-07-06",
+  "count": "1"
+
+},{
+  "value": "provisioningSurvey",
+  "date": "2024-07-05",
+  "count": "4"
+}, {
+  "value": "onePager",
+  "date": "2024-07-06",
+  "count": "2"
+}, {
+  "value": "fetchingFormSettings",
+  "date": "2024-07-06",
+  "count": "2"
+}, {
+  "value": "creatingAnonymousUser",
+  "date": "2024-07-06",
+  "count": "2"
+}, {
+  "value": "form.provisioningForm",
+  "date": "2024-07-06",
+  "count": "2"
+}, {
+  "value": "form.ready",
+  "date": "2024-07-06",
+  "count": "6"
+}, {
+  "value": "provisioningSurvey",
+  "date": "2024-07-07",
+  "count": "8"
+}, {
+  "value": "exception.generic",
+  "date": "2024-07-07",
+  "count": "1"
+
+}
+
+]
