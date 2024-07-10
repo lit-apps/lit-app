@@ -1,19 +1,18 @@
-import { html, css, LitElement, nothing } from "lit";
+import { html, css, LitElement, nothing, CSSResult } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { MdRadio } from '@material/web/radio/radio';
 
 import  { LappListItem } from '../../list/list-item';
 import {html as staticHtml, literal, StaticValue} from 'lit/static-html.js';
-import type {ListItemType} from '@material/web/list/internal/list-item.js' 
+import type {ListItemType} from '@material/web/list/internal/listitem/list-item' 
 import {ARIAMixinStrict} from '@material/web/internal/aria/aria.js';
-import {requestUpdateOnAriaChange} from '../../../internal/aria/delegate.js';
-import {createRequestActivationEvent, ListItem} from '../list-navigation-helpers.js';
 
 /**
  * Supported behaviors for a list item.
  */
 export type A11yListItemType = ListItemType | 'a11y';
+
 
 /**
  *  List item for choice
@@ -24,7 +23,7 @@ export type A11yListItemType = ListItemType | 'a11y';
 export default class lappChoiceListItem extends LappListItem {
 
 	static override styles = [
-		...LappListItem.styles,
+		...LappListItem.styles as CSSResult[],
 		css`
 		/** This is to allow list text to wrap */
 		.label-text {
@@ -83,7 +82,7 @@ export default class lappChoiceListItem extends LappListItem {
    *
    * @param content the child content of the list item.
    */
-  override protected renderListItem(content: unknown) {
+  protected override renderListItem(content: unknown) {
     const isAnchor = this.type === 'link';
     let tag: StaticValue;
     switch (this.type) {
@@ -112,7 +111,6 @@ export default class lappChoiceListItem extends LappListItem {
         id="item"
         tabindex="${this.isDisabled || !isInteractive ? -1 : 0}"
         ?disabled=${this.isDisabled}
-        _role="listitem"
         aria-selected=${(this as ARIAMixinStrict).ariaSelected || nothing}
         aria-checked=${(this as ARIAMixinStrict).ariaChecked || nothing}
         aria-expanded=${(this as ARIAMixinStrict).ariaExpanded || nothing}

@@ -33,13 +33,11 @@ export abstract class Radio extends
     return html`
       ${options.map((option, index) => html`
         <lapp-choice-list-item
-          _type="button"
           .selector=${this.choiceInputSelector}
           data-variant="horizontal"
           .listItemRole=${'presentation'}
           .disabled=${this.disabled || !!option.disabled}
           @change=${this.onChange} 
-          @_focus=${(e: HTMLEvent<lappChoiceListItem>) => e.target.inputElement.focus()}
           >
           ${this.renderOptionIllustration(option)}
           ${this.renderRadio(option, index)}
