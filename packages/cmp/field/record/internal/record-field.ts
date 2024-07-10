@@ -10,7 +10,6 @@ import '../input-record'
 
 // @ts-ignore
 import locale  from './record-field-locale.mjs';
-import { requestUpdateOnAriaChange } from '@material/web/internal/aria/delegate';
 import {
 	createValidator
 } from '@material/web/labs/behaviors/constraint-validation.js';
@@ -27,10 +26,7 @@ import { InputRecord } from './input-record';
  */
 // export abstract class RecordField extends translate(Generic, locale, 'readaloud') {
 export abstract class RecordField extends Generic {
-	
-	static {
-		requestUpdateOnAriaChange(this);
-	}
+
 
 	protected fieldName = 'record';
 
