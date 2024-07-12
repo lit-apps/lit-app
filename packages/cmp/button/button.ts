@@ -85,9 +85,8 @@ export class LappButton extends LitElement {
 
   /**
    * True to render a filled-button
-   * TODO: this should be `filled`
    */
-  @property({type: Boolean}) unelevated!: boolean;
+  @property({type: Boolean}) filled!: boolean;
 
   /**
    * True to render a outlined-button
@@ -104,7 +103,7 @@ export class LappButton extends LitElement {
   @property({type: Boolean}) loading!: boolean;
 
   override render() {
-    const tagName = this.unelevated ? filledTag : 
+    const tagName = this.filled ? filledTag : 
     this.tonal ? tonalTag : 
     this.outlined ? outlineTag : 
     defaultTag;

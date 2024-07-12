@@ -42,7 +42,7 @@ const _defaultActions = {
 		icon: 'save',
 		config: (_data: any, entityStatus?: EntityStatus) => {
 			return {
-				unelevated: entityStatus?.isDirty
+				filled: entityStatus?.isDirty
 			}
 		},
 		meta: {

@@ -8,7 +8,7 @@ type Handler = (this: LitElement, ref: DocumentReference, data: any, event: AnyE
 type BtnCfg = {
 	disabled?: boolean
 	outlined?: boolean
-	unelevated?: boolean
+	filled?: boolean
 	tonal?: boolean
 	text?: boolean // true to render a text button
 	label?: string | TemplateResult

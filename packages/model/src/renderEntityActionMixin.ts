@@ -138,7 +138,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			const cfg = Object.assign({}, actionConfig, config);
 			// the button is active when: 
 			const disabled = cfg?.disabled === true
-			const unelevated = cfg?.unelevated ?? false
+			const filled = cfg?.filled ?? false
 			const text = cfg?.text ?? false
 			const outlined = cfg?.outlined ?? !text
 			const label = cfg?.label ?? action.label
@@ -149,7 +149,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 					@click=${this.onActionClick(actionName, data, beforeDispatch, onResolved, () => this.getEvent(actionName, data))}
 					.disabled=${disabled}
 					.outlined=${outlined}
-					.unelevated=${unelevated}
+					.filled=${filled}
 					>
 						${label}
 					</lapp-button>`
@@ -159,7 +159,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			actionName: keyof A,
 			data?: any,
 			beforeDispatch?: () => boolean | string | void,
-			onResolved?:  OnResolvedT,
+			onResolved?: OnResolvedT,
 			eventGetter?: () => CustomEvent,
 		) {
 			return (this.constructor as unknown as StaticEntityActionI<D, A>)
@@ -327,7 +327,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			const cfg = Object.assign({}, actionConfig, config);
 			// the button is active when: 
 			const disabled = cfg?.disabled === true
-			const unelevated = cfg?.unelevated ?? false
+			const filled = cfg?.filled ?? false
 			const tonal = cfg?.tonal ?? false
 			const text = cfg?.text ?? false
 			const outlined = cfg?.outlined ?? !text
@@ -338,7 +338,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 				.disabled=${disabled}
 				.outlined=${outlined}
 				.tonal=${tonal}
-				.unelevated=${unelevated}
+				.filled=${filled}
 				>
 					${action.label}
 				</lapp-button>`
