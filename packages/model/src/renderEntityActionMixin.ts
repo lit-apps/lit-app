@@ -259,7 +259,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			}
 
 			// id is the path after /app/appID, whereas docID is the single id for a document
-			const id: string | null = data?.$id || ((el as EntityElement)?.docId ? (el as EntityElement)?.docId : el?.id) || null;
+			const id: string  = data?.$id || ((el as EntityElement)?.docId ? (el as EntityElement)?.docId : el?.id) || '';
 			let event
 			switch (action.event) {
 

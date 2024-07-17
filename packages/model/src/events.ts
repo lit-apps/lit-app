@@ -18,7 +18,7 @@ export interface EntityCreateDetail<T = any> {
   entityName: string,
   data: T,
   collection?: CollectionReference, // a ref to the collection where the entity is created
-  subCollection?: string, // a string representing the subcollection path relative to this.ref
+  subCollection?: string, // a string representing the subCollection path relative to this.ref
   batch?: WriteBatch,
   promise?: Promise<any>
 }
@@ -197,7 +197,7 @@ class BaseAction<T> extends BaseEvent<T & { promise?: Promise<any> }> {
 
 export interface ActionDetail<T = any> {
   entityName: string,
-  id?: string, // id is set when action is performed on a collection ref, for one specific eneti 
+  id?: string, // id is set when action is performed on a collection ref, for one specific event 
   data?: T,
   selectedItems?: any[],
   promise?: Promise<any>
