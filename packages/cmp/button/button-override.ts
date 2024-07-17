@@ -1,6 +1,5 @@
 import { Button } from '@material/web/button/internal/button';
-import { html, nothing } from 'lit';
-
+import isSafari  from '@lit-app/shared/isSafari';
 /**
  * Override initial version of button to make sure buttons are accessible with 
  * Safari + VoiceOver
@@ -12,9 +11,8 @@ import { html, nothing } from 'lit';
  * We shall remove this end of Jan. 2023.
  */
 
-const isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/)
 
-if (isSafari) {
+if (isSafari()) {
 
 	const firstUpdated = Button.prototype.firstUpdated;
 	Button.prototype.firstUpdated = function (props) {
