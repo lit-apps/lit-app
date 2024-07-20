@@ -1,5 +1,5 @@
 import type { LappButton } from '@lit-app/cmp/button/button';
-import { TemplateResult, html } from 'lit';
+import { TemplateResult, html, nothing } from 'lit';
 import AbstractEntity from '../abstractEntity';
 import {
 	ActionI,
@@ -153,7 +153,7 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 	showActions: boolean
 	actions: A
 	
-	protected renderContent(data: D, config?: RenderConfig): TemplateResult
+	protected renderContent(data: D, config?: RenderConfig): TemplateResult | typeof nothing
 
 	create(details: PartialBy<EntityCreateDetail, 'entityName'>): Create
 	open(entityName: string, id?: string): Open | null
@@ -162,7 +162,7 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 	/**
 	 * Utility render method to render an group of actions
 	 */
-	renderEntityActions(data: D, config?: RenderConfig): TemplateResult
+	renderEntityActions(data: D, config?: RenderConfig): TemplateResult | typeof nothing
 	/**
 	 * Utility render functions for a single entity actions to render as button and trigger an Action event
 	 * @param actionName the name of the action to render

@@ -27,13 +27,12 @@ import { choose } from 'lit/directives/choose.js';
 import { HTMLEvent } from '@lit-app/cmp/types';
 import type { MdTabs } from '@material/web/tabs/tabs';
 import('@material/web/chips/filter-chip.js')
-// import('@material/web/chips/input-chip.js')
-// import('@material/web/chips/filter-chip.js')
 import('@material/web/chips/chip-set.js')
 import('../set-role')
 import('../add-role')
 import('@lit-app/cmp/user/list')
 import('@lit-app/cmp/user/invite-list')
+import closest from '@lit-app/shared/closest';
 
 type User = PartialBy<UserItemRole, 'provider' | 'created'>;
 
@@ -77,7 +76,7 @@ export class EntityAccess extends
 	get path() {
 		// this is a temp hak to fetch the closest 'db-ref-entity' path
 		// once stabilized, we would use @lit/context - but is needs to be in a @lit-app package (and not as firebase persistence)
-		const ref = this.closest('db-ref-entity, db-ref');
+		const ref = closest(this, 'db-ref-entity, db-ref');
 		// @ts-ignore
 		return ref?.path;
 	}

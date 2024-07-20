@@ -95,17 +95,17 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			}
 			return (this.constructor as unknown as StaticEntityActionI<D, A>).getEvent(actionName, data, this.host, bulkAction)
 		}
-		override renderContent(data: any, config?: RenderConfig) {
+		override renderContent(data: any, config: RenderConfig): TemplateResult | typeof nothing {
 			if (this.showActions) {
 				return html`${this.renderEntityActions(data, config)}`
 			}
 			return nothing
 		}
-		renderEntityActions(data: D, config?: RenderConfig) {
-			const entityAccess = config?.entityAccess || this.host.entityAccess;
-			const entityStatus = config?.entityStatus || this.host.entityStatus;
+		renderEntityActions(data: D, config: RenderConfig): TemplateResult | typeof nothing {
+			const entityAccess = config.entityAccess || this.host.entityAccess;
+			const entityStatus = config.entityStatus || this.host.entityStatus;
 
-			if (!entityAccess?.canEdit || this.realTime) return;
+			if (!entityAccess?.canEdit || this.realTime) return nothing;
 			return html`
 			<div class="layout horizontal center">
 				${entityStatus?.isEditing ?

@@ -49,7 +49,7 @@ export const ApplyGetterMixin = <T extends Constructor<ReactiveElement >>(superC
 }
 
 export declare class ProvideAccessMixinInterface extends AccessMixinInterface {
-	getAccessData: (data: any) => Access;
+	accessDataGetter: (data: any) => Access
 	updateAccess: (data: any) => void;
 }
 
@@ -80,7 +80,8 @@ function getAccessDefault(
  * 
  * if getAccessFn is not provided, it uses Entity.getAccess or getAccessDefault
  */
-export const ProvideAccessMixin = <A extends EntityAccess = EntityAccess>(getAccessFn?: GetAccess) => <T extends Constructor<ReactiveElement & {Entity?: EntityI, data: any}> >(superClass: T) => {
+export const ProvideAccessMixin = <A extends EntityAccess = EntityAccess>(getAccessFn?: GetAccess) => 
+	<T extends Constructor<ReactiveElement & {Entity?: EntityI, data: any}> >(superClass: T) => {
 
 	class ProvideAccessMixinClass extends ApplyGetterMixin(superClass) {
 
@@ -88,23 +89,29 @@ export const ProvideAccessMixin = <A extends EntityAccess = EntityAccess>(getAcc
 		@provide({ context: entityAccessContext })
 		@property() override entityAccess!: EntityAccess;
 
+		@property({attribute: false}) accessDataGetter: (data: any) => Access = (data: any) => {
+			console.info('AccessDataGetter', data?.metaData?.access)
+			return data?.metaData?.access;
+		};
+
 		override willUpdate(changedProperties: PropertyValues<this>) {
 			super.willUpdate(changedProperties);
-			if (changedProperties.has('data')) {
+			if (changedProperties.has('data') || changedProperties.has('accessDataGetter')) {
 				this.updateAccess(this.data)
 			}
 		}
 
-		getAccessData(data: any): Access {
-			return data?.metaData?.access;
-		}
+		// getAccessData(data: any): Access {
+		// 	return data?.metaData?.access;
+		// }
 
 		/**
 		 * @param data entity data - to be evaluated for access
 		 * @returns void
 		 */
-		updateAccess(data: any) {
-			const accessData =  this.getAccessData(data);
+		async updateAccess(data: any) {
+			const accessDataGetter = this.Entity?.accessDataGetter || this.accessDataGetter ;
+			const accessData =  await accessDataGetter(data);
 			if (!accessData) {
 				this.entityAccess = {
 					isOwner: false,
@@ -115,7 +122,7 @@ export const ProvideAccessMixin = <A extends EntityAccess = EntityAccess>(getAcc
 				return;
 			}
 			const getAccess = getAccessFn || this.Entity?.getAccess || getAccessDefault;
-			this.entityAccess = getAccess.call(this as EntityMixinInterface, accessData, data);
+			this.entityAccess = await getAccess.call(this as EntityMixinInterface, accessData, data);
 		}
 	};
 	// Cast return type to your mixin's interface intersected with the superClass type

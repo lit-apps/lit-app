@@ -8,7 +8,7 @@ import { ToastEvent } from '@lit-app/event';
 import {
 	AnyEvent
 } from './events';
-import { Role, Strings } from './types';
+import { Access, Role, Strings } from './types';
 import {
 	Actions
 } from './types/action';
@@ -51,7 +51,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	 * }
 	 */
 	static declare getAccess: GetAccess
-	
+	static declare accessDataGetter: (data: any) => Promise<Access>
 	/**
 	 * inspired from https://github.com/Microsoft/TypeScript/issues/3841#issuecomment-1488919713
 	 * We will need to set the type of constructor on all subclasses so that

@@ -41,6 +41,9 @@ importers:
       '@lit-app/model':
         specifier: link:../model
         version: link:../model
+      '@lit-app/shared':
+        specifier: link:../shared
+        version: link:../shared
       '@lit-app/testing':
         specifier: link:../testing
         version: link:../testing

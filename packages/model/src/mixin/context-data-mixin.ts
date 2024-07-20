@@ -1,6 +1,7 @@
 import { consume, ContextConsumer, ContextProvider, createContext } from '@lit/context';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { state, property } from 'lit/decorators.js';
+import DataHasChanged from '@lit-app/event/data-has-changed'
 
 export const dataContext = createContext<any>('data-context');
 
@@ -14,6 +15,10 @@ export declare class DataMixinInterface<D = any> {
 }
 export declare class DataMixinConsumeInterface<D = any> extends DataMixinInterface<D> {
 	preventConsume: boolean;
+	/**
+	 * whether the data has changed for a given entity and path
+	 */
+	hasChanged(path: string, entityName: string): boolean;
 }
 
 export const ConsumeDataMixin = <D = any>() => <T extends Constructor<ReactiveElement>>(superClass: T) => {
@@ -21,14 +26,23 @@ export const ConsumeDataMixin = <D = any>() => <T extends Constructor<ReactiveEl
 	class ContextConsumeDataMixinClass extends superClass {
 
 		@state() data!: D;
-		@property({type: Boolean, attribute: 'prevent-consume'}) preventConsume = false;
+		@property({ type: Boolean, attribute: 'prevent-consume' }) preventConsume = false;
 
-		private cachedData!: any; 
+		/**
+		 * whether the data has changed for a given entity and path
+		 */
+		hasChanged(path: string, entityName: string): boolean {
+			const hasChangedEvent = new DataHasChanged(path, entityName);
+			this.dispatchEvent(hasChangedEvent);
+			return !!hasChangedEvent.detail.hasChanged;
+		}
+
+		private cachedData!: any;
 		consumer = new ContextConsumer(this, {
 			context: dataContext,
 			subscribe: true,
 			callback: (value: any) => {
-				if(this.preventConsume) {
+				if (this.preventConsume) {
 					this.cachedData = value;
 					// this.requestUpdate();
 				} else {
@@ -40,13 +54,13 @@ export const ConsumeDataMixin = <D = any>() => <T extends Constructor<ReactiveEl
 		override willUpdate(prop: PropertyValues) {
 			if (prop.has('preventConsume')) {
 				const old = prop.get('preventConsume');
-				if(old === false && this.preventConsume === true && this.cachedData) {
+				if (old === false && this.preventConsume === true && this.cachedData) {
 					this.data = this.cachedData;
 				}
 			}
 			super.willUpdate(prop);
 		}
-		
+
 
 	};
 	return ContextConsumeDataMixinClass as unknown as Constructor<DataMixinConsumeInterface<D>> & T;
@@ -56,7 +70,7 @@ export const ConsumeDataMixin = <D = any>() => <T extends Constructor<ReactiveEl
  * ProvideDataMixin a mixin that provides data context
  
  */
-export const ProvideDataMixin = <D = any>() => < T extends Constructor<ReactiveElement>>(superClass: T) => {
+export const ProvideDataMixin = <D = any>() => <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	class ContextProvideDataMixinClass extends superClass {
 
@@ -65,23 +79,23 @@ export const ProvideDataMixin = <D = any>() => < T extends Constructor<ReactiveE
 
 		@state() data!: D;
 
-		provider = new ContextProvider(this, {context: dataContext, initialValue: this.data});
+		provider = new ContextProvider(this, { context: dataContext, initialValue: this.data });
 
 		override willUpdate(prop: PropertyValues) {
 
 			// we set parentData as prototype of data if data and parentData are set
 			if (prop.has('parentData') || prop.has('data')) {
-				if(this.data === null && this.parentData) {
+				if (this.data === null && this.parentData) {
 					this.data = {} as D
 				}
-				if(this.data) {
-					if(Object.getPrototypeOf(this.data) === Object.prototype && this.parentData) {
+				if (this.data) {
+					if (Object.getPrototypeOf(this.data) === Object.prototype && this.parentData) {
 						Object.setPrototypeOf(this.data, this.parentData);
 					}
 				}
 				const force = Array.isArray(this.data) ? true : false;
 				this.provider.setValue(this.data, force);
-				
+
 			}
 			super.willUpdate(prop);
 

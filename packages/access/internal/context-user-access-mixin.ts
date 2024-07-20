@@ -71,8 +71,11 @@ export const ProvideUserAccessMixin = <T extends Constructor<ReactiveElement & {
 		override willUpdate(props: PropertyValues<this>) {
 			super.willUpdate(props);
 			if (props.has('data')) {
+				const oldTeam = props.get('data')?.metaData?.access?.team;
 				const team = this.data?.metaData?.access?.team;
-				this.setupTeamID(team);
+				if(team && team !== oldTeam) {
+					this.setupTeamID(team);
+				}
 			}
 		}
 

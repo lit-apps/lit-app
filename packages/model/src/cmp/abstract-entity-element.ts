@@ -35,7 +35,7 @@ export default abstract class AbstractEntityElement extends
 
 	// setLocale must be set to handle translations
 	declare setLocale: (entityName: string, locale: Strings) => void;
-
+  
 	@state() entity!: entityI;
 
 	/**

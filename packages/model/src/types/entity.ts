@@ -22,6 +22,12 @@ export type EntityAccess = {
 interface EntityBase<T extends DefaultI = DefaultI> extends LitElement {
 	entity: entityI<T>
 	data?: T
+	/**
+	 * Whether the data has changed for a given entity and path
+	 * @param path 
+	 * @param entityName 
+	 */
+	hasChanged(path: string, entityName: string): boolean
 	icon?: string
 	heading?: string
 	appID?: string

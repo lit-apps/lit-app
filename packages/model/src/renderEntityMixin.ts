@@ -67,7 +67,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
  *                      this.renderGridColumn() {}         
  *                      <slot name="body-grid-column">       
  *                    }  
-  *               } : 
+ *               } : 
  *            this.renderContent() {
  *                showMetaData ? this.renderMetaData() : ''
  *                showAction ? this.renderAction() : ''
@@ -80,11 +80,8 @@ type Constructor<T = {}> = new (...args: any[]) => T;
  *		`;
  */
 
-
-
-
-
 type Open = (entityName: string, id: string) => void
+
 /**
  * RenderMixin 
  */
@@ -95,7 +92,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
     showMetaData: boolean = false
     itemIdPath: string = '$id' // collectionGroup will need to use $path
 
-    renderGrid(data: Collection<D>, config?: C) {
+    renderGrid(data: Collection<D>, config: C) {
       const onSelected = async (e: CustomEvent) => {
         (this.host as EntityElementList).selectedItems = [...(e.target as Grid).selectedItems];
       }
@@ -117,7 +114,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
         class="flex entity grid ${this.entityName}"
         .itemIdPath=${this.itemIdPath}
         .items=${data}
-        ${gridRowDetailsRenderer(this.renderGridDetail.bind(this))}
+        ${gridRowDetailsRenderer((data:CollectionI<D>, model: any, grid: any) => this.renderGridDetail(data, config, model, grid))}
         @active-item-changed=${config?.gridConfig?.preventDetails ? null : activeItemChanged}
         @dblclick=${config?.gridConfig?.preventDblClick ? null : onDblClick}
         @selected-items-changed=${onSelected}
@@ -127,7 +124,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
       </vaadin-grid>`
     }
 
-    renderGridColumns(_config?: C) {
+    renderGridColumns(_config: C) {
       // console.log('renderGridColumns')
       const model = this.model;
       const colTag = literal`vaadin-grid-column`
@@ -154,12 +151,18 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
         }`
     }
 
-    renderGridDetail(data: CollectionI<D>, _model?: any, _grid?: any) {
+    // renderGridDetail(config: C) {
+    //   return (data: CollectionI<D>, _model: any, _grid?: any) => {
+    //     return html`<div class="layout vertical">
+		// 		  ${this.renderTable(data, config)}
+		// 	  </div>`
+    //   }
+    // }
+    renderGridDetail(data: CollectionI<D>, config: C , _model: any, _grid: any) {
       return html`
 			<div class="layout vertical">
-				${this.renderTable(data)}
-			</div>
-	`
+				${this.renderTable(data, config)}
+			</div>`
     }
 
     renderTable(data: CollectionI<D>, _config?: C) {
@@ -192,11 +195,11 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
      `
     }
 
-    renderMetaData(_data: D, _config?: C) {
+    renderMetaData(_data: D, _config: C) {
       return html`<meta-data></meta-data>`
     }
 
-    renderBody(data: D, config?: C) {
+    renderBody(data: D, config: C) {
       if (Array.isArray(data)) {
         if (data && data.length === 0 && (config?.variant !== 'list')) {
           return this.renderEmptyArray(config);
@@ -206,7 +209,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
       return this.renderContent(data, config)
     }
 
-    override renderContent(data: D, config?: C) {
+    override renderContent(data: D, config: C) {
       if (config?.variant === 'card') {
         return this.renderCardItem(data, config)
       }
@@ -220,16 +223,16 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
             super.renderContent(data, config),
             html`<form id="entityForm">
               ${config?.entityStatus.isNew ?
-              this.renderFormNew(data, config) :
-              this.renderForm(data, config)}
+                this.renderFormNew(data, config) :
+                this.renderForm(data, config)}
             </form>`
-            
+
           ]
         }
 			</div>`
     }
 
-    private renderArrayContent(data: Collection<D>, config?: C) {
+    private renderArrayContent(data: Collection<D>, config: C) {
       if (config?.variant === 'card') {
         return this.renderCard(data, config)
       }
@@ -239,7 +242,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
       return this.renderGrid(data, config)
     }
 
-    renderCard(data: Collection<D>, config?: C) {
+    renderCard(data: Collection<D>, config: C) {
       const layout = config?.layout || 'horizontal'
       const gridMap = (d: D, index: number) => this.renderCardItem(d, config, index)
       const map = (d: D, index: number) => html`<div class="flex">${gridMap(d, index)}</div>`
@@ -249,11 +252,11 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
     </div>`
     }
 
-    renderCardItem(_data: D, _config?: C, _index?: number) {
+    renderCardItem(_data: D, _config: C, _index?: number) {
       return html``
     }
 
-    renderList(data: Collection<D>, config?: C) {
+    renderList(data: Collection<D>, config: C) {
       if (data.length === 0) {
         return this.renderEmptyArray(config)
       }
@@ -264,7 +267,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 
     }
 
-    renderListItem(_data: D, _config?: C, _index?: number) {
+    renderListItem(_data: D, _config: C, _index?: number) {
       return html`<md-list-item></md-list-item>`
     }
 
@@ -272,14 +275,14 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
       return nothing
     }
 
-    renderTitle(_data: D, _config?: C) {
+    renderTitle(_data: D, _config: C) {
       return html`${this.entityName}`
     }
-    renderArrayTitle(_data: D, _config?: C) {
+    renderArrayTitle(_data: D, _config: C) {
       return html`${this.entityName}`
     }
 
-    renderHeader(data: D, config?: C) {
+    renderHeader(data: D, config: C) {
       const title = Array.isArray(data) ? this.renderArrayTitle(data, config) : this.renderTitle(data, config)
       const icon = this.host.icon || this.icon
       return html`${choose(config?.level,
@@ -296,26 +299,26 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
       )}`
     }
 
-    renderSubHeader(_data: D, _config?: C) {
+    renderSubHeader(_data: D, _config: C) {
       return nothing
     }
 
 
-    renderFooter(_data: D, _config?: C) {
+    renderFooter(_data: D, _config: C) {
       return nothing
     }
 
-    renderForm(_data: D, _config?: C) {
+    renderForm(_data: D, _config: C) {
       return html`Form`
     }
-    renderFormNew(data: D, _config?: C) {
+    renderFormNew(data: D, _config: C) {
       return html`
       <div class="layout vertical  wrap">
 				${this.renderFieldUpdate('name', undefined, data)}
 				${this.renderFieldUpdate('title', undefined, data)}
 			</div>`
     }
-    renderFieldUpdate(_name: string, _config?: any, _data?: D): TemplateResult {
+    renderFieldUpdate(_name: string, _config: any, _data?: D): TemplateResult {
       return html``
     }
   };

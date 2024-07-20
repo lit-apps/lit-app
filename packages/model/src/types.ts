@@ -79,6 +79,7 @@ export interface StaticEntityI<D = any, A extends Actions = Actions> {
 	actions: A
 	styles: CSSResult | CSSResult[];
 	getAccess: GetAccess
+	accessDataGetter: (data: any) => Promise<Access>
 	locale?: Strings
 	roles: Role[]
 	userLoader?: (search: string) => Promise<any>
