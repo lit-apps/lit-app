@@ -5,7 +5,7 @@ import DataHasChanged from '@lit-app/event/data-has-changed'
 
 export const dataContext = createContext<any>('data-context');
 
-type Constructor<T = {}> = new (...args: any[]) => T;
+type Constructor<T = {}> = abstract new (...args: any[]) => T;
 
 /**
  * ConsumeDataMixin a mixin that consumes data context
@@ -23,7 +23,7 @@ export declare class DataMixinConsumeInterface<D = any> extends DataMixinInterfa
 
 export const ConsumeDataMixin = <D = any>() => <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
-	class ContextConsumeDataMixinClass extends superClass {
+	abstract class ContextConsumeDataMixinClass extends superClass {
 
 		@state() data!: D;
 		@property({ type: Boolean, attribute: 'prevent-consume' }) preventConsume = false;
@@ -72,7 +72,7 @@ export const ConsumeDataMixin = <D = any>() => <T extends Constructor<ReactiveEl
  */
 export const ProvideDataMixin = <D = any>() => <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
-	class ContextProvideDataMixinClass extends superClass {
+	abstract class ContextProvideDataMixinClass extends superClass {
 
 		@consume({ context: dataContext, subscribe: true })
 		@state() parentData!: any;

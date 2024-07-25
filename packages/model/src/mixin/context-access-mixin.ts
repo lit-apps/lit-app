@@ -13,7 +13,7 @@ import { EntityMixinInterface } from './context-entity-mixin';
 
 export const entityAccessContext = createContext<EntityAccess>('entity-access-context');
 
-type Constructor<T = {}> = new (...args: any[]) => T;
+type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class AccessMixinInterface {
 	entityAccess: EntityAccess; // context storing document access rules
 	// data: any; // entity data - to be evaluated for access
@@ -28,7 +28,7 @@ export declare class AccessMixinInterface {
  */
 export const ApplyGetterMixin = <T extends Constructor<ReactiveElement >>(superClass: T) => {
 
-	class ApplyGetterMixinClass extends superClass {
+	abstract class ApplyGetterMixinClass extends superClass {
 
 		entityAccess!: EntityAccess
 		get isOwner() {
@@ -135,7 +135,7 @@ export const ProvideAccessMixin = <A extends EntityAccess = EntityAccess>(getAcc
  */
 export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
-	class ContextConsumeAccessMixinClass extends ApplyGetterMixin(superClass) {
+	abstract class ContextConsumeAccessMixinClass extends ApplyGetterMixin(superClass) {
 
 		/** context storing document access  */
 		@consume({ context: entityAccessContext, subscribe: true })

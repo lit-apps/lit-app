@@ -5,11 +5,18 @@ import { DefaultI, RenderConfig } from '../types/entity';
 import('@material/web/icon/icon.js')
 
 
-type Constructor<T = {}> = new (...args: any[]) => T;
-// type AConstructor<T = {}> = abstract new (...args: any[]) => T;
+type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class RenderHeaderMixinInterface {
 	heading: string
 	icon: string
+	/**
+	 * The level at which this entity should be rendered 
+	 * 
+	 * level 1 will display a h2 title with icon, 
+   * level 2 a h3 title without icon, 
+   * level 3 a h5 secondary title, 
+   * level 4 no title.
+	 */
 	level: number
 	renderTitle(data?: DefaultI, config?: RenderConfig): TemplateResult
 	renderHeader(data?: DefaultI, config?: RenderConfig): TemplateResult
@@ -27,7 +34,7 @@ export declare class RenderHeaderMixinInterface {
  */
 export const RenderHeaderMixin = <T extends Constructor<LitElement> >(superClass: T) => {
 
-	class RenderHeaderMixinClass extends superClass {
+	abstract class RenderHeaderMixinClass extends superClass {
 
 		@property() heading!: string;
 		@property() icon!: string;

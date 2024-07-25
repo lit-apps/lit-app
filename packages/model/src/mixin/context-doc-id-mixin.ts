@@ -4,7 +4,7 @@ import { property } from 'lit/decorators.js';
 
 export const docIdContext = createContext<DocId>('doc-id-context');
 
-type Constructor<T = {}> = new (...args: any[]) => T;
+type Constructor<T = {}> = abstract new (...args: any[]) => T;
 type DocId = string | undefined;
 /**
  * ConsumeDocIdMixin a mixin that consumes data context
@@ -16,7 +16,7 @@ export declare class DocIdMixinInterface {
 
 export const ConsumeDocIdMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
-	class ContextConsumeDocIdMixinClass extends superClass {
+	abstract class ContextConsumeDocIdMixinClass extends superClass {
 		@consume({ context: docIdContext, subscribe: true })
 		@property() docId!: DocId;
 	};
@@ -28,7 +28,7 @@ export const ConsumeDocIdMixin = <T extends Constructor<ReactiveElement>>(superC
  */
 export const ProvideDocIdMixin = <T extends Constructor<ReactiveElement >>(superClass: T) => {
 
-	class ContextProvideDocIdMixinClass extends superClass {
+	abstract class ContextProvideDocIdMixinClass extends superClass {
 
 		docId: DocId;
 		docIdProvider = new ContextProvider(this, {context: docIdContext});

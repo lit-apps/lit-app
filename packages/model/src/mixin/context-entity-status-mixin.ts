@@ -25,7 +25,7 @@ declare global {
 	}
 }
 
-type Constructor<T = {}> = new (...args: any[]) => T;
+type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class EntityStatusMixinInterface {
 	entityStatus: EntityStatus; // context storing document status
 }
@@ -48,7 +48,7 @@ type S<T> = T & { [statusProcessedSymbol]?: boolean };
  */
 export const ProvideEntityStatusMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
-	class ProvideEntityStatusMixinClass extends superClass {
+	abstract class ProvideEntityStatusMixinClass extends superClass {
 		
 		entityName: string | undefined;
 		Entity: any;
@@ -152,7 +152,7 @@ export const ProvideEntityStatusMixin = <T extends Constructor<ReactiveElement>>
  */
 export const ConsumeEntityStatusMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
-	class ContextConsumeEntityStatusMixinClass extends superClass {
+	abstract class ContextConsumeEntityStatusMixinClass extends superClass {
 		/** context storing document status*/
 		@consume({ context: entityStatusContext, subscribe: true })
 		@property() entityStatus!: EntityStatus ;

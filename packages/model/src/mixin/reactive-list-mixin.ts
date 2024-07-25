@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-type Constructor<T = {}> = new (...args: any[]) => T;
+type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class ReactiveListMixinInterface {
   size: number;
   selectedItems: any[];
@@ -21,7 +21,7 @@ export declare class ReactiveListMixinInterface {
  * 
  */
 export const ReactiveListMixin = <T extends Constructor<LitElement>>(superClass: T) => {
-  class ReactiveListMixinClass extends superClass  {
+  abstract class ReactiveListMixinClass extends superClass  {
     @property({type: Number}) size!: number;
     @property({type: Array}) selectedItems!: any[];
 
