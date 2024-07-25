@@ -1,7 +1,7 @@
 import type {  DocumentReference } from 'firebase/firestore'
-import type { AnyEvent, Dirty, TypeofAnyEvent } from '../events'
+import type { AnyEvent, AppAction, AppActionEmail, Dirty, TypeofAnyEvent } from '../events'
 import type { LitElement, TemplateResult } from 'lit'
-import type { EntityStatus } from './entity'
+import type { EntityElement, EntityStatus } from './entity'
 
 export type OnResolvedT = (resolved: any, host: HTMLElement, event: AnyEvent) => void
 type Handler = (this: LitElement, ref: DocumentReference, data: any, event: AnyEvent) => Promise<unknown>
@@ -48,8 +48,8 @@ export type ActionBase = {
 	handleOnServer?: boolean // true to handle the action on the server (via userAction trigger)
 	// allow to add listener while action runs. This is used for instance to alter data on write
 	// and set `reviewStatus` to `edited`
-  // @deprecated as it is too confusing and difficult to use
-	onAction?: (event: AnyEvent) => void
+  onAction?: ((this: EntityElement, event: AppActionEmail) => void) | 
+		((this: EntityElement, event: AppAction) => void )
 	onResolved?: OnResolvedT // called when the action is resolved
 	
 	// the event to fire when the action is executed - the default is EntityAction

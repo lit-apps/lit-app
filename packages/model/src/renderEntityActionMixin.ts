@@ -259,7 +259,10 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			}
 
 			// id is the path after /app/appID, whereas docID is the single id for a document
-			const id: string  = data?.$id || ((el as EntityElement)?.docId ? (el as EntityElement)?.docId : el?.id) || '';
+			let id: string = ''
+			if (!bulkAction) {
+				id = data?.$id || ((el as EntityElement)?.docId ? (el as EntityElement)?.docId : el?.id) || '';
+			}
 			let event
 			switch (action.event) {
 
@@ -268,7 +271,6 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 				case Reset:
 					if (!id && import.meta.env.DEV) {
 						console.warn('id is required for Edit, Close and Reset')
-
 					}
 					event = new action.event({ id: id, entityName: this.entityName }, action);
 					break;

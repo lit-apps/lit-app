@@ -40,7 +40,7 @@ export default function renderMixin<D extends DataI, A extends Actions>(supercla
 			}
 		}
 
-		processCreateMetaData(metaData: Partial<D["metaData"]> = {}) {
+		processCreateMetaData(metaData: Partial<D["metaData"]> = {}){
 			return {
 				type: this.entityName,
 				deleted: false,
@@ -49,13 +49,13 @@ export default function renderMixin<D extends DataI, A extends Actions>(supercla
 					status: 'private'
 				},
 				...metaData,
-			}
+			} 
 		}
+
 		processCreateRef(ref: Partial<D["ref"]> = {}) {
 			return {
 				app: this.host.appID || null,
 				...ref,
-
 			}
 		}
 

@@ -15,7 +15,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { html as htmlStatic, literal } from 'lit/static-html.js';
 import AbstractEntity from './abstractEntity';
-import { Actions, Collection, CollectionI, ensure, EntityElementList, RenderConfig } from './types';
+import { Actions, Collection, CollectionI, ensure, EntityElementList, isCollection, RenderConfig } from './types';
 import {
   GridConfig,
   Model,
@@ -65,7 +65,6 @@ type Constructor<T = {}> = new (...args: any[]) => T;
  *                        this.renderTable() {}
  *                      }
  *                      this.renderGridColumn() {}         
- *                      <slot name="body-grid-column">       
  *                    }  
  *               } : 
  *            this.renderContent() {
@@ -93,6 +92,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
     itemIdPath: string = '$id' // collectionGroup will need to use $path
 
     renderGrid(data: Collection<D>, config: C) {
+      // bring selection up to host 
       const onSelected = async (e: CustomEvent) => {
         (this.host as EntityElementList).selectedItems = [...(e.target as Grid).selectedItems];
       }
@@ -120,12 +120,12 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
         @selected-items-changed=${onSelected}
         @size-changed=${onSizeChanged}>
         ${this.renderGridColumns(config)}
-        <slot name="body-grid-columns"></slot>
       </vaadin-grid>`
     }
 
-    renderGridColumns(_config: C) {
+    renderGridColumns(config: C) {
       // console.log('renderGridColumns')
+      const showSelectionColumn = config.columnsConfig?.showSelectionColumn;
       const model = this.model;
       const colTag = literal`vaadin-grid-column`
       const colSortTag = literal`vaadin-grid-sort-column`
@@ -133,7 +133,9 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
       const fields = getFieldsFromModel(model, (model) => !!model.grid)
         .sort((a, b) => (a[1].grid?.index || 0) - (b[1].grid?.index || 0));
 
-      return html`${fields.map(([key, m]) => {
+      return html`
+      ${showSelectionColumn ? html`<vaadin-grid-selection-column ></vaadin-grid-selection-column>` : nothing}
+      ${fields.map(([key, m]) => {
 
         const grid = ensure<GridConfig>(m.grid as GridConfig)
 
@@ -278,12 +280,12 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
     renderTitle(_data: D, _config: C) {
       return html`${this.entityName}`
     }
-    renderArrayTitle(_data: D, _config: C) {
+    renderArrayTitle(_data: Collection<D>, _config: C) {
       return html`${this.entityName}`
     }
 
-    renderHeader(data: D, config: C) {
-      const title = Array.isArray(data) ? this.renderArrayTitle(data, config) : this.renderTitle(data, config)
+    renderHeader(data: D | Collection<D>, config: C) {
+      const title = isCollection<D>(data) ? this.renderArrayTitle(data, config) : this.renderTitle(data, config)
       const icon = this.host.icon || this.icon
       return html`${choose(config?.level,
         [
