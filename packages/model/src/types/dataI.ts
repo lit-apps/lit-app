@@ -56,6 +56,12 @@ export interface DataI<M = MetaData, R = Ref> {
 export type CollectionI<T> = (T & {$id: string, $path: string})
 export type Collection<T> = CollectionI<T>[]
 
+
+/**
+ * Checks if the provided data is a collection.
+ * @param data The data to check.
+ * @returns A boolean indicating whether the data is a collection.
+ */
 export function isCollection<T>(data: any): data is Collection<T> {
 	return Array.isArray(data) //&& data.length > 0 && '$id' in data[0] && '$path' in data[0]
 }

@@ -25,8 +25,7 @@ function fetchSvgImage(name: string, noFill: boolean, fetchOptions: RequestInit)
 					if (!svgEl.getAttribute('viewBox')) {
 						svgEl.setAttribute('viewBox', `0 0 ${Icon.opticalSize} ${Icon.opticalSize}`)
 					}
-					// if(!noFill) {
-					// }
+
 					svgEl.setAttribute('fill', 'currentColor');
 					svgEl.removeAttribute('width');
 					svgEl.removeAttribute('height');
