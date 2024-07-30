@@ -6,7 +6,8 @@ import { State, property } from '@lit-app/state';
 import Registry from "./registry";
 import type {
   Snapshot, AnyActorRef, ActorOptions, EventFromLogic, EventObject,
-  MachineContext, MachineSnapshot, StateMachine, StateValue, AnyStateMachine
+  MachineContext, MachineSnapshot, StateMachine, StateValue, AnyStateMachine,
+  StateNode
 } from 'xstate';
 import {
   createActor,
@@ -38,12 +39,27 @@ function getPersistedSnapshot<TContext extends MachineContext,
   return JSON.parse(JSON.stringify(snapshot))
 }
 
+/**
+ * type for event meta data
+ */
+export type EventMetaT = {
+  meta?: {
+    label?: string;
+    helper?: string;
+    filled?: boolean;
+    outlined?: boolean;
+    icon?: string;
+    renderer?: (actor: Actor<any, any>) => HTMLTemplateResult;
+  }
+}
+
 const persistedSnapshotLogic = (actorLogic: any) => {
   // actorLogic.getPersistedSnapshot = getPersistedSnapshot
   return actorLogic
 }
 
 import type { ActorIdT } from './types';
+import { HTMLTemplateResult } from 'lit';
 export type HostT = 'client' | 'server'
 /**
  * Actor State - a state holding an xstate actor
@@ -280,5 +296,50 @@ export default class Actor<
     return this.snapshot?.getMeta();
   }
 
+  /**
+   * get next available events for the given snapshot
+   */
+  getNextEvents() {
+    if(!this.snapshot) {
+      return []
+    }
+    return [...new Set([...this.snapshot._nodes.flatMap((sn) => sn.ownEvents)])];
+  }
+
+  /**
+   * get next allowed events for the given snapshot
+   */
+  getNextAllowedEvents() {
+    if(!this.snapshot) {
+      return []
+    }
+    return [...this.getNextEvents()].filter((event) => {
+      return this.can({type: event } as EventFromLogic<this['machine']> );
+    })
+  }
+
+  /**
+   * get event config descriptor for the given event
+   * @param event - the event name
+   */
+  getEventDescriptors(event: string): EventMetaT {
+    if(!this.snapshot) {
+      return { }
+    }
+    return this.snapshot._nodes.reduce((acc, node) => {
+        // @ts-ignore
+        return {...acc,  ...node.config?.on?.[event]}
+      }, {} as StateNode<TContext, TEvent>)
+    
+  }
+
 }
 
+// import type { AnyMachineSnapshot } from 'xstate';
+
+// function getNextEvents(snapshot: AnyMachineSnapshot) {
+//   return [...new Set([...snapshot._nodes.flatMap((sn) => sn.ownEvents)])];
+// }
+
+// // Instead of `state.nextEvents`:
+// const nextEvents = getNextEvents(state);
