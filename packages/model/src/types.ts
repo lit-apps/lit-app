@@ -39,7 +39,7 @@ export {
 	type EntityStatusMixinInterface
 } from './mixin/context-entity-status-mixin';
 export * from './types/dataI';
-export {isCollection} from './types/dataI';
+export { isCollection } from './types/dataI';
 export * from './types/getAccess';
 export * from './types/resource';
 export * from './types/entityResource';

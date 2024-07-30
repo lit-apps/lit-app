@@ -48,9 +48,10 @@ export const ApplyGetterMixin = <T extends Constructor<ReactiveElement >>(superC
 	return ApplyGetterMixinClass as unknown as Constructor<AccessMixinInterface> & T;
 }
 
-export declare class ProvideAccessMixinInterface extends AccessMixinInterface {
+export declare class ProvideAccessMixinInterface<A extends EntityAccess = EntityAccess> extends AccessMixinInterface {
 	accessDataGetter: (data: any) => Access
 	updateAccess: (data: any) => void;
+	entityAccess: A;
 }
 
 // const defaultAccessFalse = (_access: Access, _data: any) => {
@@ -74,7 +75,8 @@ function getAccessDefault(
 }  ;
 
 /**
- * ProvideAccessMixin 
+ * ## ProvideAccessMixin 
+ * 
  * A mixin to be applied to entities at root level. It set entityAccess for the entity: 
  * Entity Access stores access information about the entity, like `isOwner`, `canEdit`, `canView`, `canDelete`
  * 
@@ -87,7 +89,7 @@ export const ProvideAccessMixin = <A extends EntityAccess = EntityAccess>(getAcc
 
 		/** context storing document access  */
 		@provide({ context: entityAccessContext })
-		@property() override entityAccess!: EntityAccess;
+		@property({attribute: false}) override entityAccess!: EntityAccess;
 
 		@property({attribute: false}) accessDataGetter: (data: any) => Access = (data: any) => {
 			console.info('AccessDataGetter', data?.metaData?.access)
@@ -126,7 +128,7 @@ export const ProvideAccessMixin = <A extends EntityAccess = EntityAccess>(getAcc
 		}
 	};
 	// Cast return type to your mixin's interface intersected with the superClass type
-	return ProvideAccessMixinClass as unknown as Constructor<ProvideAccessMixinInterface> & T;
+	return ProvideAccessMixinClass as unknown as Constructor<ProvideAccessMixinInterface<A>> & T;
 }
 
 /**

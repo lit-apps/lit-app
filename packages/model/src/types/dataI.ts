@@ -63,5 +63,6 @@ export type Collection<T> = CollectionI<T>[]
  * @returns A boolean indicating whether the data is a collection.
  */
 export function isCollection<T>(data: any): data is Collection<T> {
-	return Array.isArray(data) //&& data.length > 0 && '$id' in data[0] && '$path' in data[0]
+	//return Array.isArray(data) && data.length > 0 && '$id' in data[0] && '$path' in data[0]
+	return Array.isArray(data) 
 }
