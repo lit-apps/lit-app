@@ -92,7 +92,7 @@ export const ProvideAccessMixin = <A extends EntityAccess = EntityAccess>(getAcc
 		@property({attribute: false}) override entityAccess!: EntityAccess;
 
 		@property({attribute: false}) accessDataGetter: (data: any) => Access = (data: any) => {
-			console.info('AccessDataGetter', data?.metaData?.access)
+			// console.info('AccessDataGetter', data?.metaData?.access)
 			return data?.metaData?.access;
 		};
 

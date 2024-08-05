@@ -14,7 +14,7 @@ export declare class ReactiveListMixinInterface {
 }
 
 /**
- * A mixin in to add Reactive properties for grids and lists: 
+ * A mixin to add relevant reactive properties for grids and lists: 
  * 
  * @property {Number} size - number of items in the list
  * @property {Array} selectedItems - list of selected items in a grid

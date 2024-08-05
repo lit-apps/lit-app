@@ -34,7 +34,7 @@ export default class EntityHolder extends AbstractEntity {
 	 * @returns boolean
 	 */
 	isFormValid(): boolean {
-		return [...(this.entityForm?.elements || [])].every((el) => (el as HTMLFormElement).validity.valid === true);
+		return [...(this.entityForm?.elements || [])].every((el) => (el as HTMLFormElement).validity?.valid !== false);
 	}
 
 	override get renderConfig(): RenderConfig {
@@ -43,6 +43,7 @@ export default class EntityHolder extends AbstractEntity {
 			variant: this.variant,
 			layout: this.layout,
 			baseURL: this.baseURL, 
+			
 		}
 	}
 

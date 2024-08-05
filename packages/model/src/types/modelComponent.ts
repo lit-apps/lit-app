@@ -5,6 +5,7 @@ import {
 	GridColumnBodyLitRenderer,
 	GridColumnHeaderLitRenderer
 } from 'lit-vaadin-helpers';
+import { RenderConfig } from '../types';
 
 type TextComponent = 'textfield' | 'textarea' 
 type MdComponent = 'md'
@@ -21,7 +22,14 @@ type TableConfig<T = any> = {
 	index: number
 	label?: string
 	path?: string
+	/**
+	 * optional will not be rendered if value is undefined
+	 */
 	optional?: boolean
+	/**
+	 * condition to render the column depending on renderCofing
+	 */
+	condition?: (config: RenderConfig) => boolean
 	renderer?: (data: T) => TemplateResult | typeof nothing
 }
 
@@ -33,6 +41,10 @@ export type GridConfig<T = any> = {
 	width?: string
 	resizable?: boolean
 	sortable?: boolean
+	/**
+	 * condition to render the column depending on renderCofing
+	 */
+	condition?: (config: RenderConfig) => boolean
 	headerRenderer?: GridColumnHeaderLitRenderer
 	bodyRenderer?: GridColumnBodyLitRenderer<T>
 }
@@ -55,7 +67,7 @@ interface ModelComponentBase<T = any> {
 	onInput?: (data: any, value: any, el: LitElement) => void // function called when the component value is updated
 }
 export interface Lookup<T = string> {
-	label: string
+	label: string | TemplateResult
 	code: T
 	key?: string
 	index?: number

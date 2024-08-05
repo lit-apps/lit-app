@@ -97,17 +97,20 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 		}
 		override renderContent(data: any, config: RenderConfig): TemplateResult | typeof nothing {
 			if (this.showActions) {
-				return html`${this.renderEntityActions(data, config)}`
+				return html`<div class="layout horizontal center">${this.renderEntityActions(data, config)}</div>`
 			}
 			return nothing
 		}
 		renderEntityActions(data: D, config: RenderConfig): TemplateResult | typeof nothing {
+			return this.renderBaseActions(data, config)
+		}
+
+		renderBaseActions(data: D, config: RenderConfig): TemplateResult | typeof nothing {
 			const entityAccess = config.entityAccess || this.host.entityAccess;
 			const entityStatus = config.entityStatus || this.host.entityStatus;
 
 			if (!entityAccess?.canEdit || this.realTime) return nothing;
 			return html`
-			<div class="layout horizontal center">
 				${entityStatus?.isEditing ?
 					html`
 						${this.renderAction('write', data)}
@@ -119,7 +122,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 				}
 				<span class="flex"></span>
 				${entityStatus?.isEditing ? this.renderEditActions(data) : this.renderDefaultActions(data)}
-			</div>`
+			`
 		}
 
 		renderAction(

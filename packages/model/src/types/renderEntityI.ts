@@ -22,6 +22,7 @@ export declare class RenderInterface<
 	/* renderContent should be private, but we use it in renderEntityActionMixin */
 	// protected renderContent(data: D, config?: C): TemplateResult
 
+	protected renderDataLoading( config: C): TemplateResult
 	protected renderTitle(data: D, config: C): TemplateResult
 	protected renderArrayTitle(data: Collection<D>, config: C): TemplateResult
 	protected renderGridColumns(config: C): TemplateResult

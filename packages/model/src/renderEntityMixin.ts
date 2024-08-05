@@ -49,8 +49,10 @@ type Constructor<T = {}> = new (...args: any[]) => T;
  *				${this.renderSubHeader()}
  *			</slot>
  *			<slot name="body">
- *				${this.renderBody() {
+ *				${this.renderBody(data, config) {
+ *          data === undefined ? this.renderDataLoading() : 
  *          array ? 
+ *            array.length === 0 ? this.renderEmptyArray() :  
  *              this.renderArrayContent() {
  *                 variant === 'card' ?
  *                   this.renderCard() {
@@ -130,7 +132,8 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
       const colTag = literal`vaadin-grid-column`
       const colSortTag = literal`vaadin-grid-sort-column`
 
-      const fields = getFieldsFromModel(model, (model) => !!model.grid)
+      // const fields = getFieldsFromModel(model, model?.grid?.condition ? model.grid?.condition : (model) => !!model.grid)
+      const fields = getFieldsFromModel(model, config, (model) => model.grid)
         .sort((a, b) => (a[1].grid?.index || 0) - (b[1].grid?.index || 0));
 
       return html`
@@ -167,10 +170,10 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 			</div>`
     }
 
-    renderTable(data: CollectionI<D>, _config?: C) {
+    renderTable(data: CollectionI<D>, config: C) {
       const model = this.model;
       // get the fields to render in table
-      const fields = getFieldsFromModel(model, (model) => !!model.table)
+      const fields = getFieldsFromModel(model, config, (model) => model.table)
         .sort((a, b) => (a[1].table?.index || 0) - (b[1].table?.index || 0));
 
       return html`
@@ -202,6 +205,9 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
     }
 
     renderBody(data: D, config: C) {
+      if(data === undefined) {
+        return this.renderDataLoading(config)
+      }
       if (Array.isArray(data)) {
         if (data && data.length === 0 && (config?.variant !== 'list')) {
           return this.renderEmptyArray(config);
@@ -209,6 +215,10 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
         return this.renderArrayContent(data, config)
       }
       return this.renderContent(data, config)
+    }
+
+    renderDataLoading(config: C) {
+      return html`Loading...`
     }
 
     override renderContent(data: D, config: C) {
@@ -327,15 +337,22 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
   return R as unknown as Constructor<RenderInterface<D, A, C>> & typeof superclass;
 }
 
-function getFieldsFromModel(model: Model<any>, condition: (m: ModelComponent) => boolean): [string, ModelComponent][] {
+function getFieldsFromModel(model: Model<any>, renderConfig: RenderConfig,  getConfig: (m: ModelComponent) => ModelComponent['grid'] | ModelComponent['table'] | undefined): [string, ModelComponent][] {
   function getFields(model: Model<any>, path: string = ''): [string, ModelComponent][] {
     const fields: [string, ModelComponent][] = [];
 
     for (const key in model) {
       const component = model[key];
       const p = path ? `${path}.${key}` : key
-      if (condition(component)) {
+      const config = getConfig(component)
+      if (config) {
+        if (config?.condition && !config.condition(renderConfig)) {
+          continue;
+        }
         fields.push([p, component]);
+      }
+      else if (typeof component === 'object') {
+        fields.push(...getFields(component as Model<any>, p));
       }
       else if (typeof component === 'object') {
         fields.push(...getFields(component as Model<any>, p));

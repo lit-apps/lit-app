@@ -12,6 +12,59 @@ export {
 	defaultActions
 }
 
+/**
+ * # Abstract Entity Factory 
+ * 
+ * This is the base class for all Entity classes.
+ * 
+ * If applies a series of mixin that define the rendering and action of the entity: 
+ * 
+ * ```ts
+ *  renderEntityAccess() {
+ *		return html`
+ *			<slot name="header">
+ *				${this.renderHeader(){
+ *             this.renderTitle
+ *         }}
+ *			</slot>
+ *     <slot name="sub-header">
+ *				${this.renderSubHeader()}
+ *			</slot>
+ *			<slot name="body">
+ *				${this.renderBody() {
+ *          array ? 
+ *              this.renderArrayContent() {
+ *                 variant === 'card' ?
+ *                   this.renderCard() {
+ *                     this.renderCardItem() {}
+ *                   } :     
+ * 								 variant === 'list' ?
+ *                   this.renderList() {
+ *                     this.renderListItem() {}
+ *                   } :  
+ *                   this.renderGrid() {
+ *                      this.renderGridDetail() {
+ *                        this.renderTable() {}
+ *                      }
+ *                      this.renderGridColumn() {}         
+ *                    }  
+ *               } : 
+ *            this.renderContent() {
+ *                showMetaData ? this.renderMetaData() : ''
+ *                showAction ? this.renderEntityActions() : ''
+ * 								config.entityStatus.isNew ? this.renderFormNew() : this.renderForm() 
+ *           }}
+ *			</slot>
+ *			<slot name="footer">
+ *				${this.renderFooter()}
+ *			</slot>
+ *		`;
+ * ```
+ * 
+ * @param model 
+ * @param action 
+ * @returns 
+ */
 export default function abstractEntityFact<
 	D extends DefaultI, 
 	C extends RenderConfig = RenderConfig,

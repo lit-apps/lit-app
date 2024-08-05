@@ -120,6 +120,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 		}
 		// @ts-ignore
 		if (import.meta.hot) {
+			console.info('Entity HMR attempt')
 			// @ts-ignore
 			import.meta.hot.accept((Entity: AbstractEntity) => {
 				console.info('Entity HMR', Entity)

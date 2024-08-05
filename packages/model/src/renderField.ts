@@ -170,6 +170,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       <lapp-md-editor 
         .rows=${3}
         .name=${name}
+        .required=${model.required}
         .writeLabel=${label}
         .translate=${true} 
         .readOnly=${disabled}

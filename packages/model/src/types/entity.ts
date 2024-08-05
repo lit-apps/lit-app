@@ -42,6 +42,7 @@ export interface EntityElement<T extends DefaultI = DefaultI> extends EntityBase
 	docId: string | undefined
 	entityStatus: EntityStatus
 	entityAccess: EntityAccess
+	isFormValid: () => boolean
 }
 
 // interface for list

@@ -159,10 +159,14 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 	open(entityName: string, id?: string): Open | null
 	markDirty(dirty?: boolean): Dirty
 	dispatchAction(actionName: keyof A): CustomEvent
+		/**
+	 * Utility render method to render an group of actions - 
+	 */
+	protected renderBaseActions(data: D, config?: RenderConfig): TemplateResult | typeof nothing
 	/**
 	 * Utility render method to render an group of actions
 	 */
-	renderEntityActions(data: D, config?: RenderConfig): TemplateResult | typeof nothing
+	protected renderEntityActions(data: D, config?: RenderConfig): TemplateResult | typeof nothing
 	/**
 	 * Utility render functions for a single entity actions to render as button and trigger an Action event
 	 * @param actionName the name of the action to render
