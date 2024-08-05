@@ -2,7 +2,7 @@ import type { UserUidRoleT } from '@lit-app/cmp/user/internal/types';
 import { ResourceI } from '@lit-app/model';
 import { ContextProvider, consume, createContext } from '@lit/context';
 import { PropertyValues, ReactiveElement } from 'lit';
-import { state } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import usersFromData from './usersFromData';
 import { FirestoreDocumentController } from '@preignition/lit-firebase';
 import { doc, getFirestore } from 'firebase/firestore';
@@ -18,7 +18,7 @@ export declare class UserAccessMixinConsumeInterface {
 	accessUsers: UserUidRoleT[];
 }
 export declare class UserAccessMixinProvideInterface {
-
+	teamId: string;
 }
 
 export const ConsumeUserAccessMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
@@ -42,6 +42,8 @@ export const ProvideUserAccessMixin = <T extends Constructor<ReactiveElement & {
 
 		private accessUserProvider = new ContextProvider(this, { context: userAccessContext });
 		private accessUserController!: FirestoreDocumentController<ResourceI>;
+
+		@property() teamId!: string;
 
 		async setupTeamID(teamID: string) {
 			console.log('setupTeamID', teamID);
@@ -71,8 +73,8 @@ export const ProvideUserAccessMixin = <T extends Constructor<ReactiveElement & {
 		override willUpdate(props: PropertyValues<this>) {
 			super.willUpdate(props);
 			if (props.has('data')) {
-				const oldTeam = props.get('data')?.metaData?.access?.team;
-				const team = this.data?.metaData?.access?.team;
+				const oldTeam = props.get('data')?.metaData?.access?.team || props.get('teamId');
+				const team = this.data?.metaData?.access?.team || this.teamId;
 				if(team && team !== oldTeam) {
 					this.setupTeamID(team);
 				}
