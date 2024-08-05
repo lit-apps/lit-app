@@ -38,7 +38,8 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 				width: fit-content;
 				margin-left: 0px;
 				margin-right: auto;
-				
+				/* we need z-index to make sure the tabs are working ok with dialog - see https://github.com/material-components/material-web/issues/4948  */
+				z-index: 0;
 			}
 			lapp-text-field {
 				resize: vertical;
@@ -127,10 +128,11 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 		const classes = { ...this.accessibilityClasses, 'markdown-body': this.flavour === 'github' };
 		const viewer = html`<div id="markdown" class="markdown ${classMap(classes)}">${parse(this._selected === 1 ? this.md : this.mdtranslate)}</div>`
 
+		const writeLabel = this.required ? this.writeLabel + '*' : this.writeLabel;
 		// Note: we use cache to keep the heigh of the textarea when switching between tabs
 		return html`
 			<md-tabs .activeTabIndex=${this._selected} @change=${onChange}>
-					<md-secondary-tab >${this.writeLabel}</md-secondary-tab>
+					<md-secondary-tab >${writeLabel}</md-secondary-tab>
 					<md-secondary-tab >${this.previewLabel}</md-secondary-tab>
 					${this.translate ? translateTabs : nothing}
       </md-tabs>
