@@ -21,23 +21,23 @@ import {
  * @deprecated - not to be used as it removes all 
  * refs from invoked ans spawned actors
  */
-function getPersistedSnapshot<TContext extends MachineContext,
-  TEvent extends EventObject,
-  TChildren extends Record<string, AnyActorRef | undefined>,
-  TStateValue extends StateValue,
-  TTag extends string,
-  TOutput>(snapshot: MachineSnapshot<
-    TContext,
-    TEvent,
-    TChildren,
-    TStateValue,
-    TTag,
-    TOutput, 
-    any
-  >
-  ): Snapshot<unknown> {
-  return JSON.parse(JSON.stringify(snapshot))
-}
+// function getPersistedSnapshot<TContext extends MachineContext,
+//   TEvent extends EventObject,
+//   TChildren extends Record<string, AnyActorRef | undefined>,
+//   TStateValue extends StateValue,
+//   TTag extends string,
+//   TOutput>(snapshot: MachineSnapshot<
+//     TContext,
+//     TEvent,
+//     TChildren,
+//     TStateValue,
+//     TTag,
+//     TOutput, 
+//     any
+//   >
+//   ): Snapshot<unknown> {
+//   return JSON.parse(JSON.stringify(snapshot))
+// }
 
 /**
  * type for event meta data
@@ -50,6 +50,12 @@ export type EventMetaT = {
     outlined?: boolean;
     icon?: string;
     renderer?: (actor: Actor<any, any>) => HTMLTemplateResult;
+    confirm?: {
+      heading: string;
+      renderer: (actor: Actor<any, any>) => HTMLTemplateResult;
+      confirmLabel?: string;
+      cancelLabel?: string;
+    };
   }
 }
 
@@ -95,7 +101,7 @@ export type HostT = 'client' | 'server'
  * }
  * ```
  * 
- * @param machine - The state machine associated with the actor.
+ * @param machine - The state machine associated with the actor - or an actor instance
  * @param options - The options for the actor.
  * @param actorId - The ID of the actor.
  * @param rootPath - The root path of the actor in the db - for subclasses.
@@ -109,7 +115,7 @@ export default class Actor<
   static hostType: HostT = 'client'
 
   constructor(
-    public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any>,
+    public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any> | XstateActor<any>,
     protected options: ActorOptions<any> = {},
     actorId: ActorIdT,
     protected rootPath: string ='actor') {
