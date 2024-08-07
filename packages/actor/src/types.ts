@@ -1,3 +1,6 @@
+import { type HTMLTemplateResult } from 'lit';
+import  type Actor  from './actor.js';
+
 /**
  * Utils type constructor for events
  * inspired by https://www.sandromaglione.com/articles/getting-started-with-xstate-and-effect-audio-player
@@ -35,3 +38,24 @@ export type MachineParams<A extends Record<string, Record<string, any>>> =
     : never;
 
 export type ActorIdT = string | undefined | null
+
+/**
+ * type for event meta data 
+ * 
+ * event meta is used in machines to provide additional information about an event 
+ * and allows to know how to render as buttons or other UI elements
+ */
+export type EventMetaT = {
+    label?: string;
+    helper?: string;
+    filled?: boolean;
+    outlined?: boolean;
+    icon?: string;
+    renderer?: (actor: Actor<any, any>) => HTMLTemplateResult;
+    confirm?: {
+      heading: string;
+      renderer: (actor: Actor<any, any>) => HTMLTemplateResult;
+      confirmLabel?: string;
+      cancelLabel?: string;
+    };
+}

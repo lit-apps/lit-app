@@ -14,6 +14,7 @@ import {
   EmittedFrom,
   Actor as XstateActor
 } from 'xstate';
+import { type EventMetaT } from './types';
 
 /**
  * Remove undefined values from snapshot
@@ -42,22 +43,6 @@ import {
 /**
  * type for event meta data
  */
-export type EventMetaT = {
-  meta?: {
-    label?: string;
-    helper?: string;
-    filled?: boolean;
-    outlined?: boolean;
-    icon?: string;
-    renderer?: (actor: Actor<any, any>) => HTMLTemplateResult;
-    confirm?: {
-      heading: string;
-      renderer: (actor: Actor<any, any>) => HTMLTemplateResult;
-      confirmLabel?: string;
-      cancelLabel?: string;
-    };
-  }
-}
 
 const persistedSnapshotLogic = (actorLogic: any) => {
   // actorLogic.getPersistedSnapshot = getPersistedSnapshot
@@ -65,7 +50,6 @@ const persistedSnapshotLogic = (actorLogic: any) => {
 }
 
 import type { ActorIdT } from './types';
-import { HTMLTemplateResult } from 'lit';
 export type HostT = 'client' | 'server'
 /**
  * Actor State - a state holding an xstate actor
@@ -328,7 +312,7 @@ export default class Actor<
    * get event config descriptor for the given event
    * @param event - the event name
    */
-  getEventDescriptors(event: string): EventMetaT {
+  getEventDescriptors(event: string): {meta?:EventMetaT} {
     if(!this.snapshot) {
       return { }
     }

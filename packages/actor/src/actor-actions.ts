@@ -2,7 +2,8 @@ import { css, LitElement, nothing, HTMLTemplateResult, html } from "lit";
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ConsumeActorMixin } from "./context-actor";
 import { html as htmlStatic, literal } from 'lit/static-html.js';
-import Actor, { EventMetaT } from "./actor";
+import Actor from "./actor";
+import { type EventMetaT } from "./types";
 import '@material/web/button/filled-button.js';
 import '@material/web/button/outlined-button.js';
 import '@material/web/button/text-button.js';
@@ -99,10 +100,10 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
 					<div slot="actions">
           <md-outlined-button
             form="form-confirm-action"
-            value="close">Cancel</md-outlined-button>
+            value="close">${confirm.cancelLabel || 'Cancel'}</md-outlined-button>
 					<md-filled-button
           form="form-confirm-action"
-          value="ok">${confirm.label || 'Confirm' }</md-filled-button>
+          value="ok">${confirm.confirmLabel || 'Confirm' }</md-filled-button>
 					</div>
 				</md-dialog>
     `
