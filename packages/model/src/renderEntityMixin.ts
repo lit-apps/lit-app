@@ -156,13 +156,6 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
         }`
     }
 
-    // renderGridDetail(config: C) {
-    //   return (data: CollectionI<D>, _model: any, _grid?: any) => {
-    //     return html`<div class="layout vertical">
-		// 		  ${this.renderTable(data, config)}
-		// 	  </div>`
-    //   }
-    // }
     renderGridDetail(data: CollectionI<D>, config: C , _model: any, _grid: any) {
       return html`
 			<div class="layout vertical">

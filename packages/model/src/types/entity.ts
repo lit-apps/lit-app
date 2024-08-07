@@ -67,7 +67,10 @@ export type GridConfig = {
 	preventDblClick?: boolean // when true, will not react to dbClick
 }
 
-export type RenderConfigOptional<T = any> = {
+type OptionsT = {
+	[key: string]: any
+}
+export type RenderConfigOptional< O = OptionsT, T = any> = {
 	columnsConfig?: ColumnsConfig,
 	gridConfig?: GridConfig,
 	cardConfig?: { [K in keyof Partial<T>]: T[K] }
@@ -76,12 +79,10 @@ export type RenderConfigOptional<T = any> = {
 	baseURL?: string // base url for the entity
 	//isNew?: boolean // true when the entity is new
 	layout?: 'horizontal' | 'vertical' | 'grid' // set the layout for card variant
-	options?: {
-		[key: string]: boolean
-	}
+	options?: O
 }
 
-export type RenderConfig<T = any> = RenderConfigOptional<T> & {
+export type RenderConfig<O = OptionsT, T = any> = RenderConfigOptional<O, T> & {
 	entityAccess: EntityAccess,
 	entityStatus: EntityStatus
 }

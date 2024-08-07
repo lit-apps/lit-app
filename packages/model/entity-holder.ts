@@ -17,10 +17,11 @@ declare global {
  * Component holding an entity
  * 
  * @slot header - slot to display header
- * @slot subheader - slot to display under header
+ * @slot sub-header - slot to display under header
  * @slot body - slot to display as main body
  * @slot footer - slot to display as footer
- * @slot header-control - slot to display control(s) in header
+ * @slot footer-data - slot to display a footer when there is data
+ * @slot footer-no-data - slot to display when there is no data
  */
 @customElement('lapp-entity-holder')
 export class LappEntityHolder extends EntityHolder {

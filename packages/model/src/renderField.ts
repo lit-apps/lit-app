@@ -67,7 +67,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   entity: AbstractEntity,
   config?: FieldConfig<D>,
   mode: 'edit' | 'translate' | 'view' = 'edit'
-): TemplateResult {
+): TemplateResult | typeof nothing {
   let model: ModelComponent<any> = get(name, m);
   if (!model && import.meta.env.DEV) {
     console.warn(`No model found for ${name}`);
@@ -141,6 +141,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       <pwi-input-translation 
         class=${cls}
         .name=${name}
+        style=${ifDefined(model.style)}
         .readOnly=${disabled}
         .label=${label}
         .value=${origin}
@@ -156,6 +157,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       <pwi-input-translation-textarea 
         class=${cls}
         .name=${name}
+        style=${ifDefined(model.style)}
         .readOnly=${disabled}
         .label=${label}
         .value=${origin}
@@ -170,6 +172,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       <lapp-md-editor 
         .rows=${3}
         .name=${name}
+        style=${ifDefined(model.style)}
         .required=${model.required}
         .writeLabel=${label}
         .translate=${true} 
@@ -189,7 +192,8 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     <lapp-filled-text-field
       class=${cls}
       .name=${name}
-      type=${ifDefined(model.type) || undefined}
+      style=${ifDefined(model.style)}
+      type=${ifDefined(model.type)}
       .icon=${model.icon}
       .readOnly=${disabled}
       .placeholder=${model.placeholder}
@@ -209,11 +213,11 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     <lapp-text-field 
 			type="textarea"
       class=${cls}
+      style=${ifDefined(model.style)}
       .name=${name}
       .readOnly=${disabled}
       .placeholder=${model.placeholder}
       .label=${label}
-      ?disabled=${disabled}
       .supportingText=${model.helper}
       .required=${model.required}
       .maxLength=${model.maxLength}
@@ -228,6 +232,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     return html`<lapp-md-droppable-editor
       class=${cls}
       .name=${name}
+      style=${ifDefined(model.style)}
       .flavour=${model.flavour}
       .readOnly=${disabled}
       .writeLabel=${label}
@@ -252,6 +257,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     <lapp-md-editor
       class=${cls}
       .name=${name}
+      style=${ifDefined(model.style)}
       .flavour=${model.flavour}
       .readOnly=${disabled}
       .writeLabel=${label}
@@ -274,6 +280,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     <lapp-upload
       class=${cls}
       .name=${name}
+      style=${ifDefined(model.style)}
       .readonly=${disabled}
       .writeLabel=${label}
       .supportingText=${model.helper}
@@ -293,6 +300,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     <firebase-image-upload
       class=${cls}
       .name=${name}
+      style=${ifDefined(model.style)}
       .readonly=${disabled}
       .writeLabel=${label}
       .helper=${model.helper}
@@ -313,6 +321,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
      <lapp-slider-field
       class=${cls}
       .name=${name}
+      style=${ifDefined(model.style)}
       ?disabled=${disabled}
       .label=${label}
       .ticks=${model.ticks}
@@ -335,6 +344,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       quick
       class=${cls}
       .name=${name}
+      style=${ifDefined(model.style)}
       .icon=${model.icon}
       .readOnly=${disabled}
       .label=${label}
@@ -354,11 +364,13 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     <vaadin-multi-select-combo-box
       class=${cls}
       .name=${name}
+      style=${ifDefined(model.style)}
       .items=${model.items}
       .selectedItems=${(model.items || []).filter(item => (value || []).indexOf(item.code) > -1)}
-      @change=${onInputFact('selectedValues')}
+      @change=${onInputFact('selectedValue')}
       .itemLabelPath=${'label'}
-      .itemValuePath=${'code'}
+      .itemIdPath=${'code'}
+      .itemColorPath=${'color'}
       .icon=${model.icon}
       ?disabled=${disabled}
       .label=${label}
@@ -374,6 +386,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       <md-checkbox touch-target="wrapper" 
       aria-label=${label || ''}
       .name=${name}
+      style=${ifDefined(model.style)}
       .checked=${value}
       ?disabled=${disabled}
       @change=${onInputFact('checked')} 
@@ -400,6 +413,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
    <lapp-choice-checkbox
       class=${cls}
       .name=${name}
+      style=${ifDefined(model.style)}
       .icon=${model.icon}
       .readOnly=${disabled}
       .label=${label}
@@ -416,6 +430,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
    <lapp-choice-radio
       class=${cls}
       .name=${name}
+      style=${ifDefined(model.style)}
       .icon=${model.icon}
       .readOnly=${disabled}
       .label=${label}

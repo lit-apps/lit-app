@@ -54,6 +54,7 @@ interface ModelComponentBase<T = any> {
 	required?: boolean
 	disabled?: boolean
 	icon?: string
+	style?: string
 	class?: string
 	table?: TableConfig<T>
 	grid?: GridConfig<T>
