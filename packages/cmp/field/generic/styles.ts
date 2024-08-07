@@ -6,7 +6,9 @@ const styles: CSSResult = css`
 	flex: 1;
 	align-items: flex-start; 
 }
-
+input[type="color"] {
+	min-height: 24px;
+}
 
 `
 export default styles;
