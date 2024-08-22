@@ -184,7 +184,7 @@ export abstract class Star extends
       label = label.slice(0, -1);
       label += this.getTranslate('required');
     }
-    return this._value === undefined ?
+    return this._value === undefined || this._value === '' ?
       (label + (readHelper && this.supportingText ? ('. ' + this.getTranslate('hint') + ': ' + this.supportingText) + '. ' : '') + this.getTranslate('giveRate', { min: min, max: max })) :
       (this.getTranslate('givenRate', { count: this._value, max: max }) + label);
   }

@@ -8,6 +8,10 @@ const styles: CSSResult = css`
 :host {
 	--_color-star: var(--lapp-star-color, rgba(0, 0, 0, 0.38));
 }
+:host([readonly]) {
+	pointer-events: none;
+}
+
 svg {
 	width: 100%;
 	height: 100%;
