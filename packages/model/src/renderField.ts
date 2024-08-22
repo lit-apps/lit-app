@@ -24,6 +24,7 @@ import {
   isComponentSlider,
   isComponentUpload,
   isComponentUploadImage,
+  isComponentStar,
 
 } from './types/modelComponent';
 import('@preignition/firebase-upload/image-upload')
@@ -32,8 +33,9 @@ import('@preignition/pwi-input/src/pwi-input-translation-textarea')
 import('@material/web/checkbox/checkbox.js')
 import('@material/web/switch/switch.js')
 import('@material/web/select/select-option.js')
-import('@lit-app/cmp/field/choice-checkbox')
-import('@lit-app/cmp/field/choice-radio')
+import('../../cmp/field/choice-checkbox')
+import('../../cmp/field/choice-radio')
+import('../../cmp/field/choice-star')
 import('../../cmp/field/upload')
 import('../../cmp/field/text-field')
 import('../../cmp/field/md-editor')
@@ -54,9 +56,11 @@ const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetai
  * @param name - the name of the model
  * @param data - current data
  * @param update - when true, updates the data automatically
- * @param m - the model
+ * @param model - the model
  * @param entity - the entity
- * @param config - additional config
+ * @param config? - additional config
+ * @param mode? - the mode of the field: edit, translate or view
+ * @param path? - the path of the model. this is needed when name is not the same as the path (for instance for nested model, with different keys)
  * @returns 
  */
 export function renderField<D extends DefaultI>(this: EntityElement,
@@ -66,9 +70,10 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   m: Model<D>,
   entity: AbstractEntity,
   config?: FieldConfig<D>,
-  mode: 'edit' | 'translate' | 'view' = 'edit'
+  mode: 'edit' | 'translate' | 'view' = 'edit',
+  path?: string
 ): TemplateResult | typeof nothing {
-  let model: ModelComponent<any> = get(name, m);
+  let model: ModelComponent<any> = get(path || name, m);
   if (!model && import.meta.env.DEV) {
     console.warn(`No model found for ${name}`);
     return html`<i class="field" style="color:var(--color-warning);">Missing model for "${name}" in "${entity.entityName}"</i>`
@@ -101,7 +106,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   const id = this.docId ? this.docId : this.id;
   const dirtyEvent = new Dirty({ entityName: entity.entityName, dirty: true });
 
-  const canEdit = (this.entityStatus?.isEditing || this.entityStatus?.isNew || (entity.realTime && this.entityAccess.canEdit)) && !(config?.disabled === true);
+  const canEdit = (this.entityStatus?.isEditing || this.entityStatus?.isNew || (entity.realTime && this.entityAccess.canEdit)) && !(config?.disabled === true) && mode !== 'view';
   const disabled = !canEdit;
 
   const label = model.label ?? (key || '');
@@ -253,12 +258,16 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     ></lapp-md-droppable-editor>`
   }
   if (isComponentMd(model)) {
+    const md = value ||
+      (model.defaultValueOnEmpty && disabled && model.hideTabsOnReadOnly ?
+        model.defaultValueOnEmpty : '');
     return html`
     <lapp-md-editor
       class=${cls}
       .name=${name}
       style=${ifDefined(model.style)}
       .flavour=${model.flavour}
+      .hideTabsOnReadOnly=${model.hideTabsOnReadOnly || false}
       .readOnly=${disabled}
       .writeLabel=${label}
       .placeholder=${model.placeholder}
@@ -269,7 +278,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .charCounter=${!!model.maxLength}
       rows=${ifDefined(model.rows) || undefined}
       resize=${ifDefined(model.resize) || undefined}
-      .md=${value || ''}
+      .md=${md}
       @input=${onInputFact('md')}
     ></lapp-md-editor>
     `;
@@ -370,6 +379,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       @change=${onInputFact('selectedValue')}
       .itemLabelPath=${'label'}
       .itemIdPath=${'code'}
+      .itemValuePath=${'code'}
       .itemColorPath=${'color'}
       .icon=${model.icon}
       ?disabled=${disabled}
@@ -440,6 +450,23 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .options=${model.items}
       @selected-changed=${onInputFact('selected')}
     ></lapp-choice-radio>
+    `;
+  }
+  if (isComponentStar(model)) {
+    return html`
+   <lapp-choice-star
+      class=${cls}
+      .name=${name}
+      style=${ifDefined(model.style)}
+      .readOnly=${disabled}
+      .label=${label}
+      .supportingText=${model.helper}
+      .required=${model.required}
+      .selected=${value || ''}
+      .allowNoStar=${model.allowNoStar || false} 
+      starNumber=${ifDefined(model.starNumber)}
+      @selected-changed=${onInputFact('selected')}
+    ></lapp-choice-star>
     `;
   }
   throw new Error(`No component found for ${name}`);

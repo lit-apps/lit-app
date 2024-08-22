@@ -11,6 +11,7 @@ type TextComponent = 'textfield' | 'textarea'
 type MdComponent = 'md'
 type DateComponent = 'datefield'
 type SliderComponent = 'slider'
+type StarComponent = 'star'
 type UploadComponent = 'upload'
 type UploadComponentImage = 'upload-image'
 type BooleanComponent = 'checkbox' | 'switch'
@@ -165,6 +166,14 @@ export interface ModelComponentMd<T = any> extends ModelComponentBase<T> {
 	maxLength?: number
 	minLength?: number
 	resize?: 'vertical' | 'horizontal' | 'auto'
+	/**
+	 * When true, tabs are hidden when the field is readonly and the preview is shown
+	 */
+	hideTabsOnReadOnly?: boolean
+	/**
+	 * The value to display when readonly and the value is empty
+	 */
+	defaultValueOnEmpty?: string
 }
 export interface ModelComponentMdDroppable<T = any> extends ModelComponentMd<T> {
 	droppable: boolean
@@ -175,6 +184,12 @@ export interface ModelComponentMdDroppable<T = any> extends ModelComponentMd<T> 
 }
 export interface ModelComponentBoolean<T = any> extends ModelComponentBase<T> {
 	component: BooleanComponent
+}
+
+export interface ModelComponentStart<T = any> extends ModelComponentBase<T> {
+	component: StarComponent,
+	starNumber?: number
+	allowNoStar?: boolean
 }
 
 export type ModelComponent<T = any> =
@@ -188,7 +203,8 @@ export type ModelComponent<T = any> =
 	ModelComponentBoolean<T> |
 	ModelComponentSlider<T> |
  	ModelComponentUpload<T> |
- 	ModelComponentUploadImage<T> 
+ 	ModelComponentUploadImage<T> | 
+	ModelComponentStart<T>
 
 export type FieldConfig<T = any> = Partial<ModelComponent<T>>
 
@@ -235,4 +251,7 @@ export function isComponentUpload<T = any>(model: ModelComponent<T>): model is M
 }
 export function isComponentUploadImage<T = any>(model: ModelComponent<T>): model is ModelComponentUploadImage<T> {
 	return model.component === 'upload-image';
+}
+export function isComponentStar<T = any>(model: ModelComponent<T>): model is ModelComponentStart<T> {
+	return model.component === 'star';
 }
