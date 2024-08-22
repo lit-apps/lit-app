@@ -107,17 +107,22 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	@property({ type: Boolean }) required!: boolean;
 	@property({ type: Boolean }) disabled!: boolean;
 	@property({ type: Boolean, attribute: 'readonly' }) readOnly!: boolean;
+	/**
+	 * When true, tabs are hidden when the field is readonly and the preview is shown
+	 */
+	@property({ type: Boolean, attribute: 'hide-tabs-on-read-only' }) hideTabsOnReadOnly!: boolean;
 	@property({ type: Number, attribute: 'maxlength' }) maxLength!: number;
 	@property({ type: Number, attribute: 'minlength' }) minLength!: number;
 
-	@state() _selected = 0;
+
+	@property() selected = 0;
 
 	@query('lapp-text-field') _input!: MdFilledTextField;
 	@query('md-tabs') _tabs!: HTMLElement;
 
 	override render() {
 		const onChange = (e: CustomEvent) => {
-			this._selected = e.target?.activeTabIndex
+			this.selected = e.target?.activeTabIndex
 		}
 
 		const translateTabs = html`
@@ -126,28 +131,31 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 		`
 		const editor = this.renderEditor()
 		const classes = { ...this.accessibilityClasses, 'markdown-body': this.flavour === 'github' };
-		const viewer = html`<div id="markdown" class="markdown ${classMap(classes)}">${parse(this._selected === 1 ? this.md : this.mdtranslate)}</div>`
+		const selected = this.readOnly && this.hideTabsOnReadOnly ? 1 : this.selected;
+		const viewer = html`<div id="markdown" class="markdown ${classMap(classes)}">${parse(selected === 1 ? this.md : this.mdtranslate)}</div>`
 
 		const writeLabel = this.required ? this.writeLabel + '*' : this.writeLabel;
-		// Note: we use cache to keep the heigh of the textarea when switching between tabs
-		return html`
-			<md-tabs .activeTabIndex=${this._selected} @change=${onChange}>
+		const tabs = this.hideTabsOnReadOnly && this.readOnly ? nothing : html`
+			<md-tabs .activeTabIndex=${this.selected} @change=${onChange}>
 					<md-secondary-tab >${writeLabel}</md-secondary-tab>
 					<md-secondary-tab >${this.previewLabel}</md-secondary-tab>
 					${this.translate ? translateTabs : nothing}
-      </md-tabs>
+      </md-tabs>`
+		
+		return html`
+			${tabs}
 			<div id="container">
-				${cache(choose(this._selected, [
-			[0, () => editor],
-			[2, () => editor]
-		], () => viewer))}
+				${cache(choose(selected, [
+					[0, () => editor],
+					[2, () => editor]
+				], () => viewer))}
 			</div>
 		`
 	}
 
 	protected renderEditor() {
-		const value = this._selected === 0 ? this.md : this.mdtranslate
-		const readonly = this._selected === 0 && this.translate ? true : this.readOnly;
+		const value = this.selected === 0 ? this.md : this.mdtranslate
+		const readonly = this.selected === 0 && this.translate ? true : this.readOnly;
 
 		return html`<lapp-text-field 
 			type="textarea"
@@ -169,7 +177,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	}
 	protected renderSupportingText() {
 		return html`
-		<div style="gap: 4px; display:flex; flex: 1; align-items: center;">${this._selected === 2 ? this.helperTranslate : this.helper} <span style="flex:1;"></span><span><a rel="noopener" href="https://en.wikipedia.org/wiki/Markdown" target="_blank">Markdown</a> is supported. </span>${this.renderSupportingAction()}</div>
+		<div style="gap: 4px; display:flex; flex: 1; align-items: center;">${this.selected === 2 ? this.helperTranslate : this.helper} <span style="flex:1;"></span><span><a rel="noopener" href="https://en.wikipedia.org/wiki/Markdown" target="_blank">Markdown</a> is supported. </span>${this.renderSupportingAction()}</div>
 		`
 	}
 	protected renderSupportingAction() {
@@ -177,7 +185,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	}
 
 	override focus() {
-		if (this._selected === 0 || this._selected === 2) {
+		if (this.selected === 0 || this.selected === 2) {
 			this._input.focus();
 			return
 		}
@@ -186,11 +194,11 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 
 	onValueChanged(e: CustomEvent) {
 		const value = e.target.value;
-		if (this._selected === 0) {
+		if (this.selected === 0) {
 			this.md = value;
 			this.dispatchEvent(new CustomEvent('md-changed', { detail: { value: this.md }, bubbles: true, composed: true }));
 		}
-		if (this._selected === 2) {
+		if (this.selected === 2) {
 			this.mdtranslate = value;
 			this.dispatchEvent(new CustomEvent('mdtranslate-changed', { detail: { value: this.mdtranslate }, bubbles: true, composed: true }));
 		}
