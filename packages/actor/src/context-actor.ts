@@ -27,7 +27,7 @@ export const ConsumeActorMixin = <T extends Constructor<LitElement>>(superClass:
 		@state() actor!: Actor<any, any>;
 
 		@watch('actor')
-		_actorChanged(_oldActor: Actor<any, any>,  actor: Actor<any, any>) {
+		_actorChanged(actor: Actor<any, any>) {
 			this._bindActor = new StateController(this, actor);
 			
 		}

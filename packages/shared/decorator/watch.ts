@@ -7,7 +7,7 @@ import type { PropertyValues, LitElement } from 'lit';
  * @returns A decorator function that can be applied to a method.
  * 
  * @watch('propName')
- * handlePropChange(oldValue, newValue) {
+ * handlePropChange(newValue, oldValue) {
  *
  * }
  * 
@@ -30,7 +30,7 @@ export function watch(propName: string, waitUntilFirstUpdate = false) {
           if (oldValue !== newValue) {
             if (!waitUntilFirstUpdate || this.hasUpdated) {
               // @ts-ignore
-              this[functionName](oldValue, newValue);
+              this[functionName](newValue, oldValue);
             }
           }
         }
