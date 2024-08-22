@@ -31,11 +31,11 @@ export declare abstract class MultiChoiceMixinInterface {
 
 }
 /**
- * MultiChoiceMixin - a mixin to be applied to multi choice fields (e.g. checkbox group)
+ * SingleChoiceMixin - a mixin to be applied to multi choice fields (e.g. checkbox group)
  */
-export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) => {
+export const SingleChoiceMixin = <T extends Constructor<Choice>>(superClass: T) => {
 
-	abstract class MultiChoiceMixinClass extends superClass {
+	abstract class SingleChoiceMixinClass extends superClass {
 
 		protected override readonly isMulti = false;
 		protected override readonly choiceInputSelector = '[data-role=radio]';
@@ -63,7 +63,7 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 			return value || '';
 		}
 
-		syncSelected(value: string[] | string) {
+		override syncSelected(value: string[] | string) {
 			// do Nothing
 			return value
 		}
@@ -94,8 +94,8 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 
 	};
 	// Cast return type to your mixin's interface intersected with the superClass type
-	return MultiChoiceMixinClass as unknown as Constructor<MultiChoiceMixinInterface> & T;
+	return SingleChoiceMixinClass as unknown as Constructor<SingleChoiceMixinInterface> & T;
 }
 
-export default MultiChoiceMixin;
+export default SingleChoiceMixin;
 
