@@ -20,22 +20,6 @@ export default class EntityHolder extends AbstractEntity {
 	@property() isNew: boolean = false
 	@property({attribute: 'base-url'}) baseURL: string = ''
 
-	
-	/**
-	 * @returns the form element for the entity (either renderForm or renderFormNew)
-	 */
-	get entityForm(): HTMLFormElement | null{
-		return this.renderRoot?.querySelector('#entityForm');
-	}
-
-	/**
-	 * whether the form containing the entity data-entry (either renderForm or renderFormNew)
-	 * is valid, without reporting the validity of the form elements
-	 * @returns boolean
-	 */
-	isFormValid(): boolean {
-		return [...(this.entityForm?.elements || [])].every((el) => (el as HTMLFormElement).validity?.valid !== false);
-	}
 
 	override get renderConfig(): RenderConfig {
 		return {

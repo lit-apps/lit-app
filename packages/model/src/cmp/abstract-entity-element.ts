@@ -84,6 +84,22 @@ export default abstract class AbstractEntityElement extends
 		}
 		super.willUpdate(props);
 	}
+		/**
+	 * @returns the form element for the entity (either renderForm or renderFormNew)
+	 */
+		get entityForm(): HTMLFormElement | null{
+			return this.renderRoot?.querySelector('#entityForm');
+		}
+	
+		/**
+		 * whether the form containing the entity data-entry (either renderForm or renderFormNew)
+		 * is valid, without reporting the validity of the form elements
+		 * @returns boolean
+		 */
+		isFormValid(): boolean {
+			return [...(this.entityForm?.elements || [])].every((el) => (el as HTMLFormElement).validity?.valid !== false);
+		}
+		
 	protected setEntity(E: EntityI) {
 		this.entity = new E(this, this.realTime, this.listenOnAction)
 
