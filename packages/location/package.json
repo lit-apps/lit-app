@@ -1,0 +1,46 @@
+{
+  "name": "@lit-app/location",
+  "version": "1.0.0",
+  "description": "location module for lit-app",
+  "type": "module",
+  "scripts": {
+    "start": "vite --force",
+    "dev": "vite",
+    "test": "vitest",
+    "test:browser": "vitest --browser \"chrome\"",
+    "test:ui": "vitest --ui"
+  },
+  "keywords": [
+    "lit",
+    "vitejs",
+    "web-components"
+  ],
+  "authors": [
+    "christophe.geiser <christophe@preignition.org>"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@lit-app/cmp": "link:../cmp",
+    "@lit-app/event": "link:../event",
+    "@lit-app/shared": "link:../shared",
+    "@lit-app/testing": "link:../testing",
+    "@lit/context": "^1.1.2",
+    "@material/web": "link:../../../app-dependencies/material-web",
+    "@preignition/preignition-config": "link:../../../packages/preignition-config",
+    "@preignition/preignition-styles": "link:../../../packages/preignition-styles",
+    "@preignition/preignition-util": "link:../../../packages/preignition-util",
+    "lit": "^3.2.0"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.3",
+    "@custom-elements-manifest/to-markdown": "^0.1.0",
+    "@vitest/browser": "^2.0.5",
+    "@vitest/utils": "^2.0.5",
+    "eslint": "^9.9.1",
+    "loupe": "^3.1.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2",
+    "vitest": "^2.0.5",
+    "wireit": "^0.14.8"
+  }
+}

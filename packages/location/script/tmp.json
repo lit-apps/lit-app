@@ -1,0 +1,1738 @@
+     {
+      "010_ATA": {
+        "ID_0": "_INT",
+        "ID_1": "010",
+        "ID_2": "ATA",
+        "index": 8,
+        "label": "Antartica"
+      },
+      "AFR_AGO": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "AGO",
+        "index": 6,
+        "label": "Angola"
+      },
+      "AFR_ATF": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "ATF",
+        "index": 83,
+        "label": "French Southern Territories"
+      },
+      "AFR_BDI": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "BDI",
+        "index": 37,
+        "label": "Burundi"
+      },
+      "AFR_BEN": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "BEN",
+        "index": 23,
+        "label": "Benin"
+      },
+      "AFR_BFA": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "BFA",
+        "index": 36,
+        "label": "Burkina Faso"
+      },
+      "AFR_BWA": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "BWA",
+        "index": 29,
+        "label": "Botswana"
+      },
+      "AFR_CAF": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "CAF",
+        "index": 43,
+        "label": "Central African Republic"
+      },
+      "AFR_CIV": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "CIV",
+        "index": 56,
+        "label": "Côte d’Ivoire"
+      },
+      "AFR_CMR": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "CMR",
+        "index": 40,
+        "label": "Cameroon"
+      },
+      "AFR_COD": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "COD",
+        "index": 63,
+        "label": "Democratic Republic of the Congo"
+      },
+      "AFR_COG": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "COG",
+        "index": 53,
+        "label": "Congo"
+      },
+      "AFR_COM": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "COM",
+        "index": 52,
+        "label": "Comoros"
+      },
+      "AFR_CPV": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "CPV",
+        "index": 38,
+        "label": "Cabo Verde"
+      },
+      "AFR_DJI": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "DJI",
+        "index": 65,
+        "label": "Djibouti"
+      },
+      "AFR_DZA": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "DZA",
+        "index": 3,
+        "label": "Algeria"
+      },
+      "AFR_EGY": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "EGY",
+        "index": 69,
+        "label": "Egypt"
+      },
+      "AFR_ERI": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "ERI",
+        "index": 72,
+        "label": "Eritrea"
+      },
+      "AFR_ESH": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "ESH",
+        "index": 245,
+        "label": "Western Sahara"
+      },
+      "AFR_ETH": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "ETH",
+        "index": 75,
+        "label": "Ethiopia"
+      },
+      "AFR_GAB": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "GAB",
+        "index": 84,
+        "label": "Gabon"
+      },
+      "AFR_GHA": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "GHA",
+        "index": 88,
+        "label": "Ghana"
+      },
+      "AFR_GIN": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "GIN",
+        "index": 97,
+        "label": "Guinea"
+      },
+      "AFR_GMB": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "GMB",
+        "index": 85,
+        "label": "Gambia"
+      },
+      "AFR_GNB": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "GNB",
+        "index": 98,
+        "label": "Guinea-Bissau"
+      },
+      "AFR_GNQ": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "GNQ",
+        "index": 71,
+        "label": "Equatorial Guinea"
+      },
+      "AFR_IOT": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "IOT",
+        "index": 32,
+        "label": "British Indian Ocean Territory"
+      },
+      "AFR_KEN": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "KEN",
+        "index": 119,
+        "label": "Kenya"
+      },
+      "AFR_LBR": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "LBR",
+        "index": 127,
+        "label": "Liberia"
+      },
+      "AFR_LBY": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "LBY",
+        "index": 128,
+        "label": "Libya"
+      },
+      "AFR_LSO": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "LSO",
+        "index": 126,
+        "label": "Lesotho"
+      },
+      "AFR_MAR": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "MAR",
+        "index": 149,
+        "label": "Morocco"
+      },
+      "AFR_MDG": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "MDG",
+        "index": 132,
+        "label": "Madagascar"
+      },
+      "AFR_MLI": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "MLI",
+        "index": 136,
+        "label": "Mali"
+      },
+      "AFR_MOZ": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "MOZ",
+        "index": 150,
+        "label": "Mozambique"
+      },
+      "AFR_MRT": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "MRT",
+        "index": 140,
+        "label": "Mauritania"
+      },
+      "AFR_MUS": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "MUS",
+        "index": 141,
+        "label": "Mauritius"
+      },
+      "AFR_MWI": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "MWI",
+        "index": 133,
+        "label": "Malawi"
+      },
+      "AFR_MYT": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "MYT",
+        "index": 142,
+        "label": "Mayotte"
+      },
+      "AFR_NAM": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "NAM",
+        "index": 152,
+        "label": "Namibia"
+      },
+      "AFR_NER": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "NER",
+        "index": 159,
+        "label": "Niger"
+      },
+      "AFR_NGA": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "NGA",
+        "index": 160,
+        "label": "Nigeria"
+      },
+      "AFR_REU": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "REU",
+        "index": 181,
+        "label": "Réunion"
+      },
+      "AFR_RWA": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "RWA",
+        "index": 184,
+        "label": "Rwanda"
+      },
+      "AFR_SDN": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "SDN",
+        "index": 213,
+        "label": "Sudan"
+      },
+      "AFR_SEN": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "SEN",
+        "index": 197,
+        "label": "Senegal"
+      },
+      "AFR_SHN": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "SHN",
+        "index": 186,
+        "label": "Saint Helena"
+      },
+      "AFR_SLE": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "SLE",
+        "index": 200,
+        "label": "Sierra Leone"
+      },
+      "AFR_SOM": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "SOM",
+        "index": 206,
+        "label": "Somalia"
+      },
+      "AFR_SSD": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "SSD",
+        "index": 209,
+        "label": "South Sudan"
+      },
+      "AFR_STP": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "STP",
+        "index": 194,
+        "label": "Sao Tome and Principe"
+      },
+      "AFR_SWZ": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "SWZ",
+        "index": 74,
+        "label": "Eswatini"
+      },
+      "AFR_SYC": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "SYC",
+        "index": 199,
+        "label": "Seychelles"
+      },
+      "AFR_TCD": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "TCD",
+        "index": 44,
+        "label": "Chad"
+      },
+      "AFR_TGO": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "TGO",
+        "index": 222,
+        "label": "Togo"
+      },
+      "AFR_TUN": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "TUN",
+        "index": 226,
+        "label": "Tunisia"
+      },
+      "AFR_TZA": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "TZA",
+        "index": 235,
+        "label": "United Republic of Tanzania"
+      },
+      "AFR_UGA": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "UGA",
+        "index": 231,
+        "label": "Uganda"
+      },
+      "AFR_ZAF": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "ZAF",
+        "index": 207,
+        "label": "South Africa"
+      },
+      "AFR_ZMB": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "ZMB",
+        "index": 247,
+        "label": "Zambia"
+      },
+      "AFR_ZWE": {
+        "ID_0": "_INT",
+        "ID_1": "AFR",
+        "ID_2": "ZWE",
+        "index": 248,
+        "label": "Zimbabwe"
+      },
+      "ASI_AFG": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "AFG",
+        "index": 0,
+        "label": "Afghanistan"
+      },
+      "ASI_ARE": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "ARE",
+        "index": 233,
+        "label": "United Arab Emirates"
+      },
+      "ASI_ARM": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "ARM",
+        "index": 11,
+        "label": "Armenia"
+      },
+      "ASI_AZE": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "AZE",
+        "index": 15,
+        "label": "Azerbaijan"
+      },
+      "ASI_BGD": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "BGD",
+        "index": 18,
+        "label": "Bangladesh"
+      },
+      "ASI_BHR": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "BHR",
+        "index": 17,
+        "label": "Bahrain"
+      },
+      "ASI_BRN": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "BRN",
+        "index": 34,
+        "label": "Brunei Darussalam"
+      },
+      "ASI_BTN": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "BTN",
+        "index": 25,
+        "label": "Bhutan"
+      },
+      "ASI_CHN": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "CHN",
+        "index": 46,
+        "label": "China"
+      },
+      "ASI_CYP": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "CYP",
+        "index": 60,
+        "label": "Cyprus"
+      },
+      "ASI_GEO": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "GEO",
+        "index": 86,
+        "label": "Georgia"
+      },
+      "ASI_HKG": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "HKG",
+        "index": 47,
+        "label": "China, Hong Kong Special Administrative Region"
+      },
+      "ASI_IDN": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "IDN",
+        "index": 107,
+        "label": "Indonesia"
+      },
+      "ASI_IND": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "IND",
+        "index": 106,
+        "label": "India"
+      },
+      "ASI_IRN": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "IRN",
+        "index": 108,
+        "label": "Iran (Islamic Republic of)"
+      },
+      "ASI_IRQ": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "IRQ",
+        "index": 109,
+        "label": "Iraq"
+      },
+      "ASI_ISR": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "ISR",
+        "index": 112,
+        "label": "Israel"
+      },
+      "ASI_JOR": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "JOR",
+        "index": 117,
+        "label": "Jordan"
+      },
+      "ASI_JPN": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "JPN",
+        "index": 115,
+        "label": "Japan"
+      },
+      "ASI_KAZ": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "KAZ",
+        "index": 118,
+        "label": "Kazakhstan"
+      },
+      "ASI_KGZ": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "KGZ",
+        "index": 122,
+        "label": "Kyrgyzstan"
+      },
+      "ASI_KHM": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "KHM",
+        "index": 39,
+        "label": "Cambodia"
+      },
+      "ASI_KOR": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "KOR",
+        "index": 179,
+        "label": "Republic of Korea"
+      },
+      "ASI_KWT": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "KWT",
+        "index": 121,
+        "label": "Kuwait"
+      },
+      "ASI_LAO": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "LAO",
+        "index": 123,
+        "label": "Lao People's Democratic Republic"
+      },
+      "ASI_LBN": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "LBN",
+        "index": 125,
+        "label": "Lebanon"
+      },
+      "ASI_LKA": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "LKA",
+        "index": 211,
+        "label": "Sri Lanka"
+      },
+      "ASI_MAC": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "MAC",
+        "index": 48,
+        "label": "China, Macao Special Administrative Region"
+      },
+      "ASI_MDV": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "MDV",
+        "index": 135,
+        "label": "Maldives"
+      },
+      "ASI_MMR": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "MMR",
+        "index": 151,
+        "label": "Myanmar"
+      },
+      "ASI_MNG": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "MNG",
+        "index": 146,
+        "label": "Mongolia"
+      },
+      "ASI_MYS": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "MYS",
+        "index": 134,
+        "label": "Malaysia"
+      },
+      "ASI_NPL": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "NPL",
+        "index": 154,
+        "label": "Nepal"
+      },
+      "ASI_OMN": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "OMN",
+        "index": 166,
+        "label": "Oman"
+      },
+      "ASI_PAK": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "PAK",
+        "index": 167,
+        "label": "Pakistan"
+      },
+      "ASI_PHL": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "PHL",
+        "index": 173,
+        "label": "Philippines"
+      },
+      "ASI_PRK": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "PRK",
+        "index": 62,
+        "label": "Democratic People's Republic of Korea"
+      },
+      "ASI_PSE": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "PSE",
+        "index": 212,
+        "label": "State of Palestine"
+      },
+      "ASI_QAT": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "QAT",
+        "index": 178,
+        "label": "Qatar"
+      },
+      "ASI_SAU": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "SAU",
+        "index": 196,
+        "label": "Saudi Arabia"
+      },
+      "ASI_SGP": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "SGP",
+        "index": 201,
+        "label": "Singapore"
+      },
+      "ASI_SYR": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "SYR",
+        "index": 218,
+        "label": "Syrian Arab Republic"
+      },
+      "ASI_THA": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "THA",
+        "index": 220,
+        "label": "Thailand"
+      },
+      "ASI_TJK": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "TJK",
+        "index": 219,
+        "label": "Tajikistan"
+      },
+      "ASI_TKM": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "TKM",
+        "index": 228,
+        "label": "Turkmenistan"
+      },
+      "ASI_TLS": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "TLS",
+        "index": 221,
+        "label": "Timor-Leste"
+      },
+      "ASI_TUR": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "TUR",
+        "index": 227,
+        "label": "Turkey"
+      },
+      "ASI_UZB": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "UZB",
+        "index": 240,
+        "label": "Uzbekistan"
+      },
+      "ASI_VNM": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "VNM",
+        "index": 243,
+        "label": "Viet Nam"
+      },
+      "ASI_YEM": {
+        "ID_0": "_INT",
+        "ID_1": "ASI",
+        "ID_2": "YEM",
+        "index": 246,
+        "label": "Yemen"
+      },
+      "EUR_ALA": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "ALA",
+        "index": 1,
+        "label": "Åland Islands"
+      },
+      "EUR_ALB": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "ALB",
+        "index": 2,
+        "label": "Albania"
+      },
+      "EUR_AND": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "AND",
+        "index": 5,
+        "label": "Andorra"
+      },
+      "EUR_AUT": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "AUT",
+        "index": 14,
+        "label": "Austria"
+      },
+      "EUR_BEL": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "BEL",
+        "index": 21,
+        "label": "Belgium"
+      },
+      "EUR_BGR": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "BGR",
+        "index": 35,
+        "label": "Bulgaria"
+      },
+      "EUR_BIH": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "BIH",
+        "index": 28,
+        "label": "Bosnia and Herzegovina"
+      },
+      "EUR_BLR": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "BLR",
+        "index": 20,
+        "label": "Belarus"
+      },
+      "EUR_CHE": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "CHE",
+        "index": 217,
+        "label": "Switzerland"
+      },
+      "EUR_CZE": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "CZE",
+        "index": 61,
+        "label": "Czechia"
+      },
+      "EUR_DEU": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "DEU",
+        "index": 87,
+        "label": "Germany"
+      },
+      "EUR_DNK": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "DNK",
+        "index": 64,
+        "label": "Denmark"
+      },
+      "EUR_ESP": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "ESP",
+        "index": 210,
+        "label": "Spain"
+      },
+      "EUR_EST": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "EST",
+        "index": 73,
+        "label": "Estonia"
+      },
+      "EUR_FIN": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "FIN",
+        "index": 79,
+        "label": "Finland"
+      },
+      "EUR_FRA": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "FRA",
+        "index": 80,
+        "label": "France"
+      },
+      "EUR_FRO": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "FRO",
+        "index": 77,
+        "label": "Faroe Islands"
+      },
+      "EUR_GBR": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "GBR",
+        "index": 234,
+        "label": "United Kingdom of Great Britain and Northern Ireland"
+      },
+      "EUR_GGY": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "GGY",
+        "index": 96,
+        "label": "Guernsey"
+      },
+      "EUR_GIB": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "GIB",
+        "index": 89,
+        "label": "Gibraltar"
+      },
+      "EUR_GRC": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "GRC",
+        "index": 90,
+        "label": "Greece"
+      },
+      "EUR_HRV": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "HRV",
+        "index": 57,
+        "label": "Croatia"
+      },
+      "EUR_HUN": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "HUN",
+        "index": 104,
+        "label": "Hungary"
+      },
+      "EUR_IMN": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "IMN",
+        "index": 111,
+        "label": "Isle of Man"
+      },
+      "EUR_IRL": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "IRL",
+        "index": 110,
+        "label": "Ireland"
+      },
+      "EUR_ISL": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "ISL",
+        "index": 105,
+        "label": "Iceland"
+      },
+      "EUR_ITA": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "ITA",
+        "index": 113,
+        "label": "Italy"
+      },
+      "EUR_JEY": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "JEY",
+        "index": 116,
+        "label": "Jersey"
+      },
+      "EUR_LIE": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "LIE",
+        "index": 129,
+        "label": "Liechtenstein"
+      },
+      "EUR_LTU": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "LTU",
+        "index": 130,
+        "label": "Lithuania"
+      },
+      "EUR_LUX": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "LUX",
+        "index": 131,
+        "label": "Luxembourg"
+      },
+      "EUR_LVA": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "LVA",
+        "index": 124,
+        "label": "Latvia"
+      },
+      "EUR_MCO": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "MCO",
+        "index": 145,
+        "label": "Monaco"
+      },
+      "EUR_MDA": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "MDA",
+        "index": 180,
+        "label": "Republic of Moldova"
+      },
+      "EUR_MKD": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "MKD",
+        "index": 163,
+        "label": "North Macedonia"
+      },
+      "EUR_MLT": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "MLT",
+        "index": 137,
+        "label": "Malta"
+      },
+      "EUR_MNE": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "MNE",
+        "index": 147,
+        "label": "Montenegro"
+      },
+      "EUR_NLD": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "NLD",
+        "index": 155,
+        "label": "Netherlands"
+      },
+      "EUR_NOR": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "NOR",
+        "index": 165,
+        "label": "Norway"
+      },
+      "EUR_POL": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "POL",
+        "index": 175,
+        "label": "Poland"
+      },
+      "EUR_PRT": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "PRT",
+        "index": 176,
+        "label": "Portugal"
+      },
+      "EUR_ROU": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "ROU",
+        "index": 182,
+        "label": "Romania"
+      },
+      "EUR_RUS": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "RUS",
+        "index": 183,
+        "label": "Russian Federation"
+      },
+      "EUR_SJM": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "SJM",
+        "index": 215,
+        "label": "Svalbard and Jan Mayen Islands"
+      },
+      "EUR_SMR": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "SMR",
+        "index": 193,
+        "label": "San Marino"
+      },
+      "EUR_SRB": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "SRB",
+        "index": 198,
+        "label": "Serbia"
+      },
+      "EUR_SVK": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "SVK",
+        "index": 203,
+        "label": "Slovakia"
+      },
+      "EUR_SVN": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "SVN",
+        "index": 204,
+        "label": "Slovenia"
+      },
+      "EUR_SWE": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "SWE",
+        "index": 216,
+        "label": "Sweden"
+      },
+      "EUR_UKR": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "UKR",
+        "index": 232,
+        "label": "Ukraine"
+      },
+      "EUR_VAT": {
+        "ID_0": "_INT",
+        "ID_1": "EUR",
+        "ID_2": "VAT",
+        "index": 102,
+        "label": "Holy See"
+      },
+      "LAC_ABW": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "ABW",
+        "index": 12,
+        "label": "Aruba"
+      },
+      "LAC_AIA": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "AIA",
+        "index": 7,
+        "label": "Anguilla"
+      },
+      "LAC_ARG": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "ARG",
+        "index": 10,
+        "label": "Argentina"
+      },
+      "LAC_ATG": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "ATG",
+        "index": 9,
+        "label": "Antigua and Barbuda"
+      },
+      "LAC_BES": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "BES",
+        "index": 27,
+        "label": "Bonaire, Sint Eustatius and Saba"
+      },
+      "LAC_BHS": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "BHS",
+        "index": 16,
+        "label": "Bahamas"
+      },
+      "LAC_BLM": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "BLM",
+        "index": 185,
+        "label": "Saint Barthélemy"
+      },
+      "LAC_BLZ": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "BLZ",
+        "index": 22,
+        "label": "Belize"
+      },
+      "LAC_BOL": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "BOL",
+        "index": 26,
+        "label": "Bolivia (Plurinational State of)"
+      },
+      "LAC_BRA": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "BRA",
+        "index": 31,
+        "label": "Brazil"
+      },
+      "LAC_BRB": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "BRB",
+        "index": 19,
+        "label": "Barbados"
+      },
+      "LAC_BVT": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "BVT",
+        "index": 30,
+        "label": "Bouvet Island"
+      },
+      "LAC_CHL": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "CHL",
+        "index": 45,
+        "label": "Chile"
+      },
+      "LAC_COL": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "COL",
+        "index": 51,
+        "label": "Colombia"
+      },
+      "LAC_CRI": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "CRI",
+        "index": 55,
+        "label": "Costa Rica"
+      },
+      "LAC_CUB": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "CUB",
+        "index": 58,
+        "label": "Cuba"
+      },
+      "LAC_CUW": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "CUW",
+        "index": 59,
+        "label": "Curaçao"
+      },
+      "LAC_CYM": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "CYM",
+        "index": 42,
+        "label": "Cayman Islands"
+      },
+      "LAC_DMA": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "DMA",
+        "index": 66,
+        "label": "Dominica"
+      },
+      "LAC_DOM": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "DOM",
+        "index": 67,
+        "label": "Dominican Republic"
+      },
+      "LAC_ECU": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "ECU",
+        "index": 68,
+        "label": "Ecuador"
+      },
+      "LAC_FLK": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "FLK",
+        "index": 76,
+        "label": "Falkland Islands (Malvinas)"
+      },
+      "LAC_GLP": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "GLP",
+        "index": 93,
+        "label": "Guadeloupe"
+      },
+      "LAC_GRD": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "GRD",
+        "index": 92,
+        "label": "Grenada"
+      },
+      "LAC_GTM": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "GTM",
+        "index": 95,
+        "label": "Guatemala"
+      },
+      "LAC_GUF": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "GUF",
+        "index": 81,
+        "label": "French Guiana"
+      },
+      "LAC_GUY": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "GUY",
+        "index": 99,
+        "label": "Guyana"
+      },
+      "LAC_HND": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "HND",
+        "index": 103,
+        "label": "Honduras"
+      },
+      "LAC_HTI": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "HTI",
+        "index": 100,
+        "label": "Haiti"
+      },
+      "LAC_JAM": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "JAM",
+        "index": 114,
+        "label": "Jamaica"
+      },
+      "LAC_KNA": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "KNA",
+        "index": 187,
+        "label": "Saint Kitts and Nevis"
+      },
+      "LAC_LCA": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "LCA",
+        "index": 188,
+        "label": "Saint Lucia"
+      },
+      "LAC_MAF": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "MAF",
+        "index": 189,
+        "label": "Saint Martin (French Part)"
+      },
+      "LAC_MEX": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "MEX",
+        "index": 143,
+        "label": "Mexico"
+      },
+      "LAC_MSR": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "MSR",
+        "index": 148,
+        "label": "Montserrat"
+      },
+      "LAC_MTQ": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "MTQ",
+        "index": 139,
+        "label": "Martinique"
+      },
+      "LAC_NIC": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "NIC",
+        "index": 158,
+        "label": "Nicaragua"
+      },
+      "LAC_PAN": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "PAN",
+        "index": 169,
+        "label": "Panama"
+      },
+      "LAC_PER": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "PER",
+        "index": 172,
+        "label": "Peru"
+      },
+      "LAC_PRI": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "PRI",
+        "index": 177,
+        "label": "Puerto Rico"
+      },
+      "LAC_PRY": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "PRY",
+        "index": 171,
+        "label": "Paraguay"
+      },
+      "LAC_SGS": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "SGS",
+        "index": 208,
+        "label": "South Georgia and the South Sandwich Islands"
+      },
+      "LAC_SLV": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "SLV",
+        "index": 70,
+        "label": "El Salvador"
+      },
+      "LAC_SUR": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "SUR",
+        "index": 214,
+        "label": "Suriname"
+      },
+      "LAC_SXM": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "SXM",
+        "index": 202,
+        "label": "Sint Maarten (Dutch part)"
+      },
+      "LAC_TCA": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "TCA",
+        "index": 229,
+        "label": "Turks and Caicos Islands"
+      },
+      "LAC_TTO": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "TTO",
+        "index": 225,
+        "label": "Trinidad and Tobago"
+      },
+      "LAC_URY": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "URY",
+        "index": 239,
+        "label": "Uruguay"
+      },
+      "LAC_VCT": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "VCT",
+        "index": 191,
+        "label": "Saint Vincent and the Grenadines"
+      },
+      "LAC_VEN": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "VEN",
+        "index": 242,
+        "label": "Venezuela (Bolivarian Republic of)"
+      },
+      "LAC_VGB": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "VGB",
+        "index": 33,
+        "label": "British Virgin Islands"
+      },
+      "LAC_VIR": {
+        "ID_0": "_INT",
+        "ID_1": "LAC",
+        "ID_2": "VIR",
+        "index": 238,
+        "label": "United States Virgin Islands"
+      },
+      "NOA_BMU": {
+        "ID_0": "_INT",
+        "ID_1": "NOA",
+        "ID_2": "BMU",
+        "index": 24,
+        "label": "Bermuda"
+      },
+      "NOA_CAN": {
+        "ID_0": "_INT",
+        "ID_1": "NOA",
+        "ID_2": "CAN",
+        "index": 41,
+        "label": "Canada"
+      },
+      "NOA_GRL": {
+        "ID_0": "_INT",
+        "ID_1": "NOA",
+        "ID_2": "GRL",
+        "index": 91,
+        "label": "Greenland"
+      },
+      "NOA_SPM": {
+        "ID_0": "_INT",
+        "ID_1": "NOA",
+        "ID_2": "SPM",
+        "index": 190,
+        "label": "Saint Pierre and Miquelon"
+      },
+      "NOA_USA": {
+        "ID_0": "_INT",
+        "ID_1": "NOA",
+        "ID_2": "USA",
+        "index": 237,
+        "label": "United States of America"
+      },
+      "OCE_ASM": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "ASM",
+        "index": 4,
+        "label": "American Samoa"
+      },
+      "OCE_AUS": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "AUS",
+        "index": 13,
+        "label": "Australia"
+      },
+      "OCE_CCK": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "CCK",
+        "index": 50,
+        "label": "Cocos (Keeling) Islands"
+      },
+      "OCE_COK": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "COK",
+        "index": 54,
+        "label": "Cook Islands"
+      },
+      "OCE_CXR": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "CXR",
+        "index": 49,
+        "label": "Christmas Island"
+      },
+      "OCE_FJI": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "FJI",
+        "index": 78,
+        "label": "Fiji"
+      },
+      "OCE_FSM": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "FSM",
+        "index": 144,
+        "label": "Micronesia (Federated States of)"
+      },
+      "OCE_GUM": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "GUM",
+        "index": 94,
+        "label": "Guam"
+      },
+      "OCE_HMD": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "HMD",
+        "index": 101,
+        "label": "Heard Island and McDonald Islands"
+      },
+      "OCE_KIR": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "KIR",
+        "index": 120,
+        "label": "Kiribati"
+      },
+      "OCE_MHL": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "MHL",
+        "index": 138,
+        "label": "Marshall Islands"
+      },
+      "OCE_MNP": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "MNP",
+        "index": 164,
+        "label": "Northern Mariana Islands"
+      },
+      "OCE_NCL": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "NCL",
+        "index": 156,
+        "label": "New Caledonia"
+      },
+      "OCE_NFK": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "NFK",
+        "index": 162,
+        "label": "Norfolk Island"
+      },
+      "OCE_NIU": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "NIU",
+        "index": 161,
+        "label": "Niue"
+      },
+      "OCE_NRU": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "NRU",
+        "index": 153,
+        "label": "Nauru"
+      },
+      "OCE_NZL": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "NZL",
+        "index": 157,
+        "label": "New Zealand"
+      },
+      "OCE_PCN": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "PCN",
+        "index": 174,
+        "label": "Pitcairn"
+      },
+      "OCE_PLW": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "PLW",
+        "index": 168,
+        "label": "Palau"
+      },
+      "OCE_PNG": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "PNG",
+        "index": 170,
+        "label": "Papua New Guinea"
+      },
+      "OCE_PYF": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "PYF",
+        "index": 82,
+        "label": "French Polynesia"
+      },
+      "OCE_SLB": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "SLB",
+        "index": 205,
+        "label": "Solomon Islands"
+      },
+      "OCE_TKL": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "TKL",
+        "index": 223,
+        "label": "Tokelau"
+      },
+      "OCE_TON": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "TON",
+        "index": 224,
+        "label": "Tonga"
+      },
+      "OCE_TUV": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "TUV",
+        "index": 230,
+        "label": "Tuvalu"
+      },
+      "OCE_UMI": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "UMI",
+        "index": 236,
+        "label": "United States Minor Outlying Islands"
+      },
+      "OCE_VUT": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "VUT",
+        "index": 241,
+        "label": "Vanuatu"
+      },
+      "OCE_WLF": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "WLF",
+        "index": 244,
+        "label": "Wallis and Futuna Islands"
+      },
+      "OCE_WSM": {
+        "ID_0": "_INT",
+        "ID_1": "OCE",
+        "ID_2": "WSM",
+        "index": 192,
+        "label": "Samoa"
+      }
+    }
