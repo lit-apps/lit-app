@@ -1,5 +1,6 @@
 import { css, LitElement, nothing, HTMLTemplateResult, html } from "lit";
 import { customElement, property, query, state } from 'lit/decorators.js';
+import {ifDefined} from 'lit/directives/if-defined.js';
 import { ConsumeActorMixin } from "./context-actor";
 import { html as htmlStatic, literal } from 'lit/static-html.js';
 import Actor from "./actor";
@@ -12,7 +13,7 @@ import '@material/web/iconbutton/filled-icon-button.js';
 import '@material/web/iconbutton/outlined-icon-button.js';
 import '@material/web/iconbutton/icon-button.js';
 import '@material/web/dialog/dialog.js';
-import type { MdDialog } from '@material/web/dialog/dialog.js';
+import type { MdDialog } from '@material/web/dialog/dialog';
 
 const filledButtonTag = literal`md-filled-button`;
 const outlineButtonTag = literal`md-outlined-button`;
@@ -35,7 +36,7 @@ const tags = {
   }
 }
 
-type MappedT = [string, EventMetaT, boolean];
+type MappedT = [string, {meta?:EventMetaT}, boolean];
 
 /**
  *  
@@ -52,6 +53,11 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
    * when true, actions are displayed as icon buttons
    */
   @property({ type: Boolean }) iconButton: boolean = false;
+
+  /**
+   * data to be passed to action renderer - this is useful when we need to add data on the dialog
+   */
+  @property({ attribute: false }) data: unknown;
 
   /**
    * the current Event for an action
@@ -95,7 +101,7 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
 					@close=${onClose}>
 					<div slot="headline">${confirm?.heading || 'Please Confirm'}</div>
 						<form slot="content" method="dialog" id="form-confirm-action">
-              ${confirm?.renderer.call(this, this.actor)}
+              ${confirm?.renderer.call(this, this.actor, this.data)}
   				  </form>
 					<div slot="actions">
           <md-outlined-button
@@ -128,10 +134,10 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
           return orderA - orderB;
         })
         .map(([event, eventConfig, disabled]) => {
-          if (hideGuarded && disabled) {
+          if (hideGuarded && disabled || !eventConfig.meta) {
             return nothing;
           }
-          const { label, helper, filled, outlined, icon, renderer, confirm } = eventConfig.meta || {}
+          const { label, helper, filled, outlined, icon, renderer, confirm, style } = eventConfig.meta || {}
           if (renderer) {
             return renderer(actor);
           }
@@ -148,6 +154,7 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
             <${tag}
               ?soft-disabled=${disabled}
               @click=${onClick}
+              style=${ifDefined(style)} 
             >
               ${icon ? html`<lapp-icon slot="icon">${icon}</lapp-icon>` : nothing}
               ${label}

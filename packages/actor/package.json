@@ -18,6 +18,7 @@
     "@lit-app/shared": "link:../shared",
     "@lit-app/state": "link:../state",
     "@lit/context": "^1.1.2",
+    "@material/web": "link:../../../app-dependencies/material-web",
     "lit": "^3.1.4",
     "xstate": "link:../../../app-dependencies/xstate/packages/core"
   },

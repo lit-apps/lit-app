@@ -51,10 +51,11 @@ export type EventMetaT = {
     filled?: boolean;
     outlined?: boolean;
     icon?: string;
+    style?: string;
     renderer?: (actor: Actor<any, any>) => HTMLTemplateResult;
     confirm?: {
       heading: string;
-      renderer: (actor: Actor<any, any>) => HTMLTemplateResult;
+      renderer: (actor: Actor<any, any>, data?: any) => HTMLTemplateResult;
       confirmLabel?: string;
       cancelLabel?: string;
     };

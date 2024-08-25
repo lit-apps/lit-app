@@ -266,7 +266,7 @@ export default class Actor<
    * @param  {string} tag
    */
   hasTag(tag: string) {
-    return this.snapshot.hasTag(tag);
+    return this.snapshot?.hasTag(tag);
   }
   /**
    * Determines whether sending the `event` will cause a non-forbidden transition
@@ -276,7 +276,7 @@ export default class Actor<
    * @param  {TEvent} event
    */
   can(event: EventFromLogic<this['machine']>) {
-    return this.snapshot.can(event);
+    return this.snapshot?.can(event);
   }
 
   /**
