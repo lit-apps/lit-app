@@ -1,5 +1,5 @@
 import { Select as S } from '@material/web/select/internal/select';
-import { Variant } from '../../field/internal/a11y-field-mixin';
+import { type Variant } from '../../field/internal/a11y-field-mixin';
 import { property} from 'lit/decorators.js';
 import { nothing, PropertyValues } from 'lit';
 import { html } from 'lit';
@@ -21,7 +21,7 @@ class RealClass extends S {
  * @fires change Fired when a selection is made by the user via mouse or
  * keyboard interaction.
  */
-export abstract class Select extends 
+export class Select extends 
   NoAutoValidateMixin(
     translate(RealClass, locale, 'readaloud')) {
   /**
