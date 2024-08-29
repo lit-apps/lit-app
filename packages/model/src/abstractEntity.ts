@@ -6,7 +6,8 @@ import entries from './typeUtils/entries';
 
 import { ToastEvent } from '@lit-app/event';
 import {
-	AnyEvent
+	AnyEvent,
+	AppActionEmail
 } from './events';
 import { Access, Role, Strings } from './types';
 import {
@@ -89,11 +90,11 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	}
 
 	/**
- * @param element the element to render the action on
- * @param realTime when true, will dispatch update events on data-input 
- *         this also changes the rendering of renderEntityActions
- * @param listenOnAction when true, will listen to action events on the element
- */
+	 * @param element the element to render the action on
+	 * @param realTime when true, will dispatch update events on data-input 
+	 *         this also changes the rendering of renderEntityActions
+	 * @param listenOnAction when true, will listen to action events on the element
+ 	 */
 	constructor(public host: EntityElement, public realTime: boolean = false, public listenOnAction: boolean = false) {
 		
 		if(!this.constructor.entityName) {
@@ -112,7 +113,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 			entries<Actions>(this.actions).forEach(([_k, action]) => {
 				if (action.event && action.onAction) {
 					host.addEventListener(action.event.eventName, ((event: AnyEvent) => {
-						action.onAction?.call(this.host, event)
+						action.onAction?.call(this.host, event as AppActionEmail)
 						event.onActionProcessed = true;
 					}) as EventListener)
 				}

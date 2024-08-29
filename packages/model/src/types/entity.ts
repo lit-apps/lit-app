@@ -43,6 +43,7 @@ export interface EntityElement<T extends DefaultI = DefaultI> extends EntityBase
 	entityStatus: EntityStatus
 	entityAccess: EntityAccess
 	isFormValid: () => boolean
+	get canEdit(): boolean
 }
 
 // interface for list

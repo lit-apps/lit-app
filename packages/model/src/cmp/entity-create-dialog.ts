@@ -1,7 +1,7 @@
 import type { MdDialog } from '@material/web/dialog/dialog.js';
 import { html, LitElement } from "lit";
 import { query, state } from 'lit/decorators.js';
-import {entityI} from '../types';
+import {entityI, RenderConfig} from '../types';
 import { ConsumeAppIdMixin } from '../mixin/context-app-id-mixin';
 import { ConsumeEntityMixin } from '../mixin/context-entity-mixin';
 import { EntityAccess, EntityElement, EntityStatus } from '../types';
@@ -52,7 +52,7 @@ export default class entityCreateDialog extends
 				<slot slot="headline" name="headline"></slot>
         <form id="entity-create" method="dialog" slot="content">
 					<slot slot="content" name="content"></slot>
-      		${this.entity?.renderFormNew(this.data)}
+      		${this.entity?.renderFormNew(this.data, {} as RenderConfig)}
 				</form>
 				<div slot="actions"> 
 					<md-outlined-button 
