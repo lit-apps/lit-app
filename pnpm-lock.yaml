@@ -194,8 +194,8 @@ importers:
         specifier: ^3.1.4
         version: 3.2.0
       xstate:
-        specifier: link:../../../app-dependencies/xstate/packages/core
-        version: link:../../../app-dependencies/xstate/packages/core
+        specifier: ^5.17.4
+        version: 5.17.4
     devDependencies:
       vite:
         specifier: ^5.3.1
@@ -4521,6 +4521,9 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+
+  xstate@5.17.4:
+    resolution: {integrity: sha512-KM2FYVOUJ04HlOO4TY3wEXqoYPR/XsDu+ewm+IWw0vilXqND0jVfvv04tEFwp8Mkk7I/oHXM8t1Ex9xJyUS4ZA==}
 
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
@@ -9653,6 +9656,8 @@ snapshots:
   ws@8.16.0: {}
 
   ws@8.18.0: {}
+
+  xstate@5.17.4: {}
 
   y18n@5.0.8: {}
 
