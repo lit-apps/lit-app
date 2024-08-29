@@ -2,18 +2,19 @@
  * A factory for creating State from xstate 
  */
 
-import { State, property } from '@lit-app/state';
-import Registry from "./registry";
+import { property, State } from '@lit-app/state';
 import type {
-  Snapshot, AnyActorRef, ActorOptions, EventFromLogic, EventObject,
-  MachineContext, MachineSnapshot, StateMachine, StateValue, AnyStateMachine,
-  StateNode
+  ActorOptions, EventFromLogic, EventObject,
+  MachineContext, MachineSnapshot, StateMachine,
+  StateNode,
+  StateValue
 } from 'xstate';
 import {
   createActor,
   EmittedFrom,
   Actor as XstateActor
 } from 'xstate';
+import Registry from "./registry";
 import { type EventMetaT } from './types';
 
 /**
@@ -99,7 +100,8 @@ export default class Actor<
   static hostType: HostT = 'client'
 
   constructor(
-    public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any> | XstateActor<any>,
+    public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any, any, any> , //| XstateActor<any>,
+    // public machine: AnyActorLogic,
     protected options: ActorOptions<any> = {},
     actorId: ActorIdT,
     protected rootPath: string ='actor') {
@@ -111,7 +113,7 @@ export default class Actor<
   /**
    * Actor snapshot - requestUpdate is called whenever snapshot is updated
   */
-  @property({ type: Object }) snapshot!: MachineSnapshot<TContext, TEvent, any, any, any, any, any>
+  @property({ type: Object }) snapshot!: MachineSnapshot<TContext, TEvent, any, any, any, any, any, any>
 
   /**
    * Gets the type of the host for the actor state.
@@ -204,7 +206,7 @@ export default class Actor<
   protected async setupActorID(_actorId: ActorIdT) {
   }
 
-  private _actor!: XstateActor<StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any>>;
+  private _actor!: XstateActor<StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any, any, any>>;
 
   get actor() {
     return this._actor;
@@ -214,7 +216,7 @@ export default class Actor<
     this.subscribeActor(actor);
   }
 
-  protected subscribeActor(actor: XstateActor<StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any>>) {
+  protected subscribeActor(actor: XstateActor<StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any, any, any>>) {
     actor.subscribe((snapshot) => {
       // console.log('actor subscription snapshot', snapshot.value, snapshot)
       this.snapshot = snapshot;

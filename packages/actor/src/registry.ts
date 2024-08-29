@@ -42,6 +42,7 @@ class ActorRegistry {
 }
 
 // expose the ActorRegistry  on dev
+// @ts-ignore
 if (import.meta.env.DEV) {
 	// @ts-ignore
 	window._actorRegistry = ActorRegistry;
