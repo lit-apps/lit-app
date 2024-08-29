@@ -1,3 +1,4 @@
+
 import { Variant } from "@lit-app/cmp/field/field/internal/a11y-field-mixin";
 import { html, css, LitElement, nothing } from "lit";
 import { customElement, property } from 'lit/decorators.js';
@@ -6,13 +7,15 @@ import './continent';
 import './country';
 
 type ChangeT = {
-  continent: string | undefined;
-  country: string | undefined;
+  continent: string;
+  country: string;
 }
-/**
- *  
- */
 
+/**
+ * Represents a custom element for selecting a continent and country.
+ *
+ * @fires value-changed<{country: string, continent: string}> - This event is fired when the continent or country selection is changed .
+ */
 @customElement('lapp-location-continent-country')
 export default class lappLocationContinentCountry extends LitElement {
 
@@ -22,8 +25,8 @@ export default class lappLocationContinentCountry extends LitElement {
       }
     `;
 
-  @property() continent!: string;
-  @property() country!: string;
+  @property() continent!: string | undefined;
+  @property() country!: string | undefined;
   @property({ type: Boolean, attribute: 'show-flag' }) showFlag: boolean = false;
   @property({attribute: 'country-label'}) countryLabel: string = 'Select a Country';
   @property({attribute: 'continent-label'}) continentLabel: string = 'Select a Continent';
@@ -31,12 +34,17 @@ export default class lappLocationContinentCountry extends LitElement {
   @property({attribute: 'country-supporting-text'}) countrySupportingText!: string;
   @property({ type: Boolean }) required: boolean = false;
   @property({ type: Boolean }) disabled: boolean = false;
-  @property({ type: Boolean }) readonly: boolean = false;
+  @property({ type: Boolean, attribute: 'readonly' }) readOnly: boolean = false;
+  @property({ type: Boolean, attribute: 'show-country-on-empty-continent' }) showCountryOnEmptyContinent: boolean = false;
   @property() variant!: Variant;
 
-  private dispatchChange() {
-    this.dispatchEvent(new ValueChangedEvent<ChangeT>({ continent: this.continent, country: this.country }));
+  get value(): ChangeT {
+    return { continent: this.continent || '', country: this.country || '' };
   }
+
+  private dispatchChange() {
+    this.dispatchEvent(new ValueChangedEvent<ChangeT>(this.value));
+  } 
 
   override render() {
     const onContinentInput = (e: any) => {
@@ -54,20 +62,22 @@ export default class lappLocationContinentCountry extends LitElement {
         .label=${this.continentLabel}
         .supportingText=${this.continentSupportingText}
         .disabled=${this.disabled}
+        .readOnly=${this.readOnly}
         .required=${this.required}
         .variant=${this.variant}
         .value=${this.continent ||''}
         @input=${onContinentInput}></lapp-location-continent>
-      ${this.continent ? html`
+      ${this.continent || this.showCountryOnEmptyContinent ? html`
         <lapp-location-country 
           class="field" 
           .label=${this.countryLabel}
           .supportingText=${this.countrySupportingText}
           .showFlag=${this.showFlag} 
           .disabled=${this.disabled}
+          .readOnly=${this.readOnly}
           .required=${this.required}
           .variant=${this.variant}
-          .continent=${this.continent} 
+          .continent=${this.continent || ''} 
           .value=${this.country ||''}
           @input=${onCountryInput}></lapp-location-country>
       ` : nothing}

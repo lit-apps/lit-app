@@ -23,7 +23,7 @@ export default class Base extends LitElement {
   @property() supportingText!: string;
   @property({ type: Boolean }) required: boolean = false;
   @property({ type: Boolean }) disabled: boolean = false;
-  @property({ type: Boolean }) readonly: boolean = false;
+  @property({ type: Boolean, attribute: 'readonly' }) readOnly: boolean = false;
   @property() variant!: Variant;
 
   @query('lapp-select') select!: LappSelect;
@@ -45,7 +45,8 @@ export default class Base extends LitElement {
       .value=${this.value}
       .supportingText=${this.supportingText}
       quick
-      .disabled=${this.disabled}
+      .disabled=${this.disabled }
+      .readOnly=${this.readOnly}
       .required=${this.required}
       .variant=${this.variant}
       >
