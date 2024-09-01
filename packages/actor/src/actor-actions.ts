@@ -5,14 +5,14 @@ import { ConsumeActorMixin } from "./context-actor";
 import { html as htmlStatic, literal } from 'lit/static-html.js';
 import Actor from "./actor";
 import { type EventMetaT } from "./types";
-import '@material/web/button/filled-button.js';
-import '@material/web/button/outlined-button.js';
-import '@material/web/button/text-button.js';
+import ('@material/web/button/filled-button.js');
+import ('@material/web/button/outlined-button.js');
+import ('@material/web/button/text-button.js');
 
-import '@material/web/iconbutton/filled-icon-button.js';
-import '@material/web/iconbutton/outlined-icon-button.js';
-import '@material/web/iconbutton/icon-button.js';
-import '@material/web/dialog/dialog.js';
+import ('@material/web/iconbutton/filled-icon-button.js');
+import ('@material/web/iconbutton/outlined-icon-button.js');
+import ('@material/web/iconbutton/icon-button.js');
+import ('@material/web/dialog/dialog.js');
 import type { MdDialog } from '@material/web/dialog/dialog';
 
 const filledButtonTag = literal`md-filled-button`;

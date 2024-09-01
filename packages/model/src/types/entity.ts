@@ -86,5 +86,9 @@ export type RenderConfigOptional< O = OptionsT, T = any> = {
 export type RenderConfig<O = OptionsT, T = any> = RenderConfigOptional<O, T> & {
 	entityAccess: EntityAccess,
 	entityStatus: EntityStatus
+	/**
+	 * The id of the entity (docId)
+	 */
+	$id: string | undefined
 }
 

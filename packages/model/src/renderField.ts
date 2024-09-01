@@ -163,6 +163,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         class=${cls}
         .name=${name}
         style=${ifDefined(model.style)}
+        rows=${ifDefined(model.rows)}
         .readOnly=${disabled}
         .label=${label}
         .value=${origin}
@@ -219,6 +220,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
 			type="textarea"
       class=${cls}
       style=${ifDefined(model.style)}
+      rows=${ifDefined(model.rows)}
       .name=${name}
       .readOnly=${disabled}
       .placeholder=${model.placeholder}
@@ -238,11 +240,12 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       class=${cls}
       .name=${name}
       style=${ifDefined(model.style)}
+      
       .flavour=${model.flavour}
       .readOnly=${disabled}
       .writeLabel=${label}
       .placeholder=${model.placeholder}
-      .supportingText=${model.helper}
+      .helper=${model.helper}
       .required=${model.required}
       .maxLength=${model.maxLength}
       .minLength=${model.minLength}
@@ -271,7 +274,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .readOnly=${disabled}
       .writeLabel=${label}
       .placeholder=${model.placeholder}
-      .supportingText=${model.helper}
+      .helper=${model.helper}
       .required=${model.required}
       .maxLength=${model.maxLength}
       .minLength=${model.minLength}

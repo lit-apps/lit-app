@@ -10,12 +10,12 @@ import { LitElement, css } from 'lit';
 import { when } from 'lit/directives/when.js';
 import {icon} from '@preignition/preignition-styles';
 
-import '@material/web/button/elevated-button.js';
-import '@material/web/button/filled-button.js';
-import '@material/web/button/filled-tonal-button.js';
-import '@material/web/button/outlined-button.js';
-import '@material/web/button/text-button.js';
-import '@material/web/progress/circular-progress.js';
+import ('@material/web/button/elevated-button.js');
+import ('@material/web/button/filled-button.js');
+import ('@material/web/button/filled-tonal-button.js');
+import ('@material/web/button/outlined-button.js');
+import ('@material/web/button/text-button.js');
+import ('@material/web/progress/circular-progress.js');
 
 const filledTag = literal`md-filled-button`;
 const outlineTag = literal`md-outlined-button`;

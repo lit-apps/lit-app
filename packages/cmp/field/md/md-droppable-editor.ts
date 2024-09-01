@@ -5,7 +5,7 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import droppableStyles from './droppable-styles';
 import('@material/web/progress/linear-progress.js');
 import('@material/web/button/outlined-button.js');
-import '../../button/small-outlined-button'
+import('../../button/small-outlined-button')
 import('@preignition/firebase-upload/document-upload')
 
 type UploadStatusT = {

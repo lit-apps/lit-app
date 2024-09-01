@@ -206,7 +206,7 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 	renderBulkActions(selectedItems: Collection<D>, data: Collection<D>, entityAccess?: EntityAccess, entityStatus?: EntityStatus): TemplateResult
 
 	renderEditActions(data: D, config?: RenderConfig): TemplateResult
-	renderDefaultActions(data: D): TemplateResult
+	renderDefaultActions(data: D, config: RenderConfig): TemplateResult
 	renderBulkActions(selectedItems: Collection<D>, data: Collection<D>, entityAccess?: EntityAccess, entityStatus?: EntityStatus): TemplateResult
 	renderBulkAction(selectedItems: Collection<D>, data: Collection<D>, action: Action, actionName: keyof A): TemplateResult
 }

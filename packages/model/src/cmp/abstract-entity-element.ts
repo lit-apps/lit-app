@@ -67,6 +67,7 @@ export default abstract class AbstractEntityElement extends
 			entityAccess: this.entityAccess,
 			entityStatus: this.entityStatus,
 			level: this.level,
+			$id: this.docId,
 			...this.entityRenderOptions,
 		}
 	}

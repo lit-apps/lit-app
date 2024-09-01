@@ -188,7 +188,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			return edit;
 
 		}
-		renderDefaultActions(data: D) {
+		renderDefaultActions(data: D, _config?: RenderConfig) {
 			const edit = []
 			// we loop with key in as we want to include prototype properties
 			for (const key in this.actions) {
