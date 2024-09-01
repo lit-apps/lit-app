@@ -209,7 +209,7 @@ export class EntityAccess extends
 		const inviteListTpl = html`<lapp-invite-list
 			.items=${this.invite}
 			></lapp-invite-list>`
-		const canSetOwnership = renderConfig.entityAccess.isOwner || !hasOwner || this.superAdmin;
+		const canSetOwnership = renderConfig.entityAccess?.isOwner || !hasOwner || this.superAdmin;
 		const onChange = (e: HTMLEvent<MdTabs>) => {
 			this.selected = e.target.activeTabIndex
 		}
