@@ -10,7 +10,11 @@ import('../../field/text-field')
 import('../../copy/copy')
 import { MdDialog } from '@material/web/dialog/dialog';
 import { HTMLEvent } from "../../types";
+import { DownloadEvent } from "../dialog-download.js";
+import downloadJSON from '../downloadJSON.js';
+import downloadCSV from '../downloadCSV.js';
 
+type AllowedExportFormats = 'json' | 'csv'
 
 /**
  *  A dialog to download a file
@@ -82,7 +86,15 @@ export class DialogDownload extends LitElement {
   /** 
    * download format
    */
-  @property() format: string = 'json';
+  @property() format: AllowedExportFormats = 'json';
+
+  /**
+   * available formats for download
+   * 
+   * If set, the dialog will display a radio button to select the format
+   * @example:  ['json', 'csv']
+   */
+  @property({ attribute: false }) formats!: AllowedExportFormats[];
 
   /** 
   *  - api href
@@ -142,7 +154,8 @@ export class DialogDownload extends LitElement {
         [this.renderUnderstandRisk(),
         this._understandRisk ?
           [html`<div class="separator"></div>`,
-          this.renderSettings()
+          this.renderSettings(),
+          this.formats?.length ? this.renderSelectFormat(this.formats) : ''
           ] : ''
         ]}
         ${this.allowCopy ? this.renderCopy() : ''}
@@ -169,13 +182,30 @@ export class DialogDownload extends LitElement {
   renderSettings() {
     return html`
     <slot>
-      <p>Set the type of export before proceeding.</p>
+      <p>Set the name of export before proceeding.</p>
       <lapp-text-field
         label="export file name" 
         helper="Name under which the export will be saved" 
         .value=${this.name || ''} 
         @input=${(e: HTMLEvent<HTMLInputElement>) => this.name = e.target.value}></lapp-text-field>
     </slot>
+    `
+  }
+
+  renderSelectFormat(formats: string[]) {
+    const onSelected = (e: HTMLEvent<HTMLInputElement>) => {
+      this.format = e.target.value as AllowedExportFormats;
+    }
+    return html`
+    <p>Set the type of export before proceeding.</p>
+       <lapp-choice-radio 
+        dense
+        label="Type of export" 
+        name="format"
+        .selected=${this.format} 
+        .options=${formats.map(f => ({ label: f, code: f }))}
+        @selected-changed=${onSelected}
+      ></lapp-choice-radio>
     `
   }
 
@@ -207,25 +237,15 @@ export class DialogDownload extends LitElement {
 
 
   renderAction() {
-    return [
-      this.clientSide ?
-        html`<md-filled-button 
-          value="ok"
-          form="form-download"
-          .disabled=${this.downloadDisabled} 
-          autofocus
-          ><lapp-icon slot="icon">cloud_download</lapp-icon>Export Now</md-filled-button>` :
-
-        html`<md-filled-button 
-            value="ok"
-            form="form-download"
-            .disabled=${this.downloadDisabled} 
-            @click=${this._clickDownload} 
-            autofocus
-            ><lapp-icon slot="icon">cloud_download</lapp-icon>Export Now</md-filled-button>
-        `,
-      html`<md-text-button form="form-download" value="close">Cancel</md-text-button>`
-    ];
+    return html`
+      <md-filled-button 
+        value="ok"
+        form="form-download"
+        .disabled=${this.downloadDisabled} 
+        @click=${this.clientSide ? this._clickDownloadClient : this._clickDownload} 
+        autofocus
+        ><lapp-icon slot="icon">cloud_download</lapp-icon>Export Now</md-filled-button>
+      <md-text-button form="form-download" value="close">Cancel</md-text-button>`
   }
 
   onCopy(e: CustomEvent) {
@@ -233,17 +253,40 @@ export class DialogDownload extends LitElement {
     e.stopPropagation();
   }
 
-  async _clickDownload() {
-    // console.info('click download');
+  private async _clickDownload() {
     this.downloading = true;
     await this.initiateDownload(this.href + '?' + this.query, this.downloadName);
     this.downloading = false;
     this.close()
-
-    // const event = new RefreshToken({})
-    // this.dispatchEvent(event);
-    // await event.detail.promise;
-
+  }
+  /**
+   * download client-side 
+   * This will emit an form-download event, which should be handled by the parent components
+   * and return the download data.
+   * 
+   */
+  private async _clickDownloadClient() {
+    const event = new DownloadEvent({})
+    this.dispatchEvent(event)
+    const data = await event.detail.promise;
+    if (data) {
+      console.log('download data', data)
+      if (this.format === 'json') {
+        return downloadJSON(data, this.downloadName)
+      }
+      if (this.format === 'csv') {
+        // Method to convert data to CSV format
+        // TODO: make this work for nested csv
+        const convertToCSV = (data: any[]): string => {
+          const headers = Object.keys(data[0]);
+          const csvRows = data.map(row =>
+            headers.map(header => JSON.stringify(row[header], (key, value) => value === null ? '' : value)).join(',')
+          );
+          return [headers.join(','), ...csvRows].join('\r\n');
+        }
+        return downloadCSV(convertToCSV(data), this.downloadName)
+      }
+    }
 
   }
 
