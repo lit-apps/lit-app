@@ -89,6 +89,6 @@ export type RenderConfig<O = OptionsT, T = any> = RenderConfigOptional<O, T> & {
 	/**
 	 * The id of the entity (docId)
 	 */
-	$id: string | undefined
+	$id?: string | undefined
 }
 

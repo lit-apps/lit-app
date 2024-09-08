@@ -163,10 +163,10 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 			</div>`
     }
 
-    renderTable(data: CollectionI<D>, config: C) {
+    renderTable(data: CollectionI<D>, config: C, tableFields? : [string, ModelComponent][]) {
       const model = this.model;
       // get the fields to render in table
-      const fields = getFieldsFromModel(model, config, (model) => model.table)
+      const fields = tableFields || getFieldsFromModel(model, config, (model) => model.table)
         .sort((a, b) => (a[1].table?.index || 0) - (b[1].table?.index || 0));
 
       return html`
@@ -289,6 +289,9 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
 
     renderHeader(data: D | Collection<D>, config: C) {
       const title = isCollection<D>(data) ? this.renderArrayTitle(data, config) : this.renderTitle(data, config)
+      if(!title) {
+        return nothing;
+      }
       const icon = this.host.icon || this.icon
       return html`${choose(config?.level,
         [

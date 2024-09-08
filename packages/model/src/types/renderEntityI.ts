@@ -3,6 +3,7 @@ import { Actions } from './action';
 import { Collection, CollectionI } from './dataI';
 import { DefaultI, RenderConfig } from './entity';
 import { RenderInterface as RenderActionInterface } from './renderEntityActionI';
+import { ModelComponent } from './modelComponent.js';
 
 export declare class RenderInterface<
 	D extends DefaultI = DefaultI, 
@@ -23,11 +24,11 @@ export declare class RenderInterface<
 	// protected renderContent(data: D, config?: C): TemplateResult
 
 	protected renderDataLoading( config: C): TemplateResult
-	protected renderTitle(data: D, config: C): TemplateResult
-	protected renderArrayTitle(data: Collection<D>, config: C): TemplateResult
+	protected renderTitle(data: D, config: C): TemplateResult | string
+	protected renderArrayTitle(data: Collection<D>, config: C): TemplateResult | string
 	protected renderGridColumns(config: C): TemplateResult
 	protected renderGridDetail(data: CollectionI<D>, config: C, _model: any, _grid: any): TemplateResult
-	protected renderTable(data: CollectionI<D>, config: C): TemplateResult
+	protected renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]): TemplateResult
 	protected renderMetaData(_data: D, _config: C): TemplateResult
 	protected renderCard(data: Collection<D>, config: C): TemplateResult
 	protected renderCardItem(data: D, config: C, index?: number): TemplateResult

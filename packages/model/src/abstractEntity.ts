@@ -26,6 +26,7 @@ import { GetAccess } from './types/getAccess';
 export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Actions = Actions> {
 
 	static declare entityName: string
+	
 	static declare icon: string
 	static declare model: Model<any>
 	static declare actions: Actions
@@ -82,6 +83,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 		return (this.constructor).entityName
 
 	}
+
 	get model(): Model<D> {
 		return (this.constructor).model;
 	}

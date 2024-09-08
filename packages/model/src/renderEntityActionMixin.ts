@@ -121,7 +121,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 						`
 				}
 				<span class="flex"></span>
-				${entityStatus?.isEditing ? this.renderEditActions(data) : this.renderDefaultActions(data)}
+				${entityStatus?.isEditing ? this.renderEditActions(data, config) : this.renderDefaultActions(data, config)}
 			`
 		}
 
@@ -169,7 +169,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 				.onActionClick(actionName, this.host, data, beforeDispatch, onResolved, eventGetter)
 
 		}
-		renderEditActions(data: D) {
+		renderEditActions(data: D, _config: RenderConfig) {
 			const edit = []
 			// we loop with key in as we want to include prototype properties
 			for (const key in this.actions) {

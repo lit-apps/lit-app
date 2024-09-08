@@ -102,11 +102,6 @@ export const ProvideAccessMixin = <A extends EntityAccess = EntityAccess>(getAcc
 				this.updateAccess(this.data)
 			}
 		}
-
-		// getAccessData(data: any): Access {
-		// 	return data?.metaData?.access;
-		// }
-
 		/**
 		 * @param data entity data - to be evaluated for access
 		 * @returns void

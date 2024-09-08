@@ -85,7 +85,8 @@ const _defaultActions = {
 		confirmDialog: {
 			heading: 'Confirm Delete',
 			render(data: any): TemplateResult {
-				return html`<p>You are about to delete <strong>${data.name || data.title || 'an entity'}</strong>. Please confirm.</p>`;
+				const name = data.hasOwnProperty('name') && data.name ? data.name : data.hasOwnProperty('title') && data.title ? data.title : 'an entity';
+				return html`<p>You are about to delete <strong>${name}</strong>. Please confirm.</p>`;
 			}
 		},
 	},
@@ -100,7 +101,8 @@ const _defaultActions = {
 		confirmDialog: {
 			heading: 'Confirm Delete',
 			render(data: any): TemplateResult {
-				return html`<p>You are about to mark <strong>${data.name || data.title || 'an entity'}</strong> as deleted. Please confirm.</p>`;
+				const name = data.hasOwnProperty('name') && data.name ? data.name : data.hasOwnProperty('title') && data.title ? data.title : 'an entity';
+				return html`<p>You are about to mark <strong>${name}</strong> as deleted. Please confirm.</p>`;
 			}
 		},
 	},
