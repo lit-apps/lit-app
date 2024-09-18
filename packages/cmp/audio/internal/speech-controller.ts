@@ -11,7 +11,7 @@ const wait = (ms: number) => new Promise(res => setTimeout(res, ms));
 const touchscreen = hasTouchscreen();
 let synth = window.speechSynthesis;
 
-let voice;
+let voice: SpeechSynthesisVoice | undefined;
 let voices: SpeechSynthesisVoice[] = [];
 let countPopulate = 0;
 const populateVoice = async () => {
@@ -57,10 +57,11 @@ const init = async () => {
 	}
 	setVoice(navigator.language || 'en-GB');
 	initiated = true;
+	return
 }
 
-let pauseTimeout; // we reset the controller when paused after 6 seconds
-let synthTimeout; 
+let pauseTimeout : NodeJS.Timeout; // we reset the controller when paused after 6 seconds
+let synthTimeout: NodeJS.Timeout; 
 async function synthTimer() {
 	// Note(CG): removing pause as it seems to cause problems in chrome android
 	// https://stackoverflow.com/questions/21947730/chrome-speech-synthesis-with-longer-texts
@@ -69,7 +70,7 @@ async function synthTimer() {
 		await wait(5);
 	}
 	synth.resume();
-	synthTimeout = setTimeout(synthTimer, 10000);
+	synthTimeout = setTimeout(synthTimer, 6000);
 }
 
 const clear = () => {
@@ -88,7 +89,7 @@ const utter = (utterance: SpeechSynthesisUtterance, paused: boolean) => {
 	paused ? synth.resume() : synth.speak(utterance);
 }
 const applyConfig = (utterance: SpeechSynthesisUtterance, config: SpeechConfigI) => {
-	utterance.voice = voice
+	utterance.voice = voice || null
 	utterance.pitch = config.pitch || 1
 	utterance.rate = config.rate || 1
 	// Always set the utterance language to the utterance voice's language
@@ -111,8 +112,8 @@ export function cancelSynth() {
 export class SpeechController implements ReactiveController, PlayerI {
 
 	private utterance: SpeechSynthesisUtterance | undefined;
-	private _speech: string
-	private _error: string
+	private _speech!: string
+	private _error!: string
 	private _speaking: boolean = false
 	private _paused: boolean = false // we need to keep track of the paused state because of https://issues.chromium.org/issues/40885979
 	private _config: SpeechConfigI = {
@@ -188,6 +189,7 @@ export class SpeechController implements ReactiveController, PlayerI {
 
 	constructor(protected host: ReactiveControllerHost, speech?: string, speechConfig?: SpeechConfigI) {
 		// Register for lifecycle updates
+		console.log('Creating Speech Controller', speech);
 		host.addController(this);
 		this.config = speechConfig ?? this.config;
 		this.speech = speech ?? '';
@@ -217,7 +219,7 @@ export class SpeechController implements ReactiveController, PlayerI {
 		}
 		// onpause and onresume are not called on chrome
 		this.utterance.onend = () => { console.log('end'); clear(); this.paused = false; this.speaking = false; }
-		this.utterance.onstart = () => { console.log('start'); clear(); this.paused = false; this.speaking = true; }
+		this.utterance.onstart = () => { console.log('start'); this.paused = false; this.speaking = true; }
 	}
 
 
@@ -236,7 +238,7 @@ export class SpeechController implements ReactiveController, PlayerI {
 				clearTimeout(pauseTimeout);
 			}
 		} catch (error) {
-			this.error = error.message;
+			this.error = (error as Error).message;
 			throw error
 		}
 	}

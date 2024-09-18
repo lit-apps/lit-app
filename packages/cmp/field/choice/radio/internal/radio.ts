@@ -57,7 +57,7 @@ export abstract class Radio extends
       data-role="radio"
       slot="start"
       .name=${name}
-      .ariaLabel=${option.label}
+      .ariaLabel=${option.innerTextLabel}
       aria-description=${option.supportingText || nothing}
       .disabled=${this.readOnly || this.disabled || !!option.disabled}
       .readOnly=${this.readOnly}

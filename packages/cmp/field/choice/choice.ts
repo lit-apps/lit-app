@@ -67,6 +67,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	 */
 	@property({ type: Array }) options!: Option[]
 
+
 	/**
 	 * true to auto validate on change
 	 */
@@ -120,6 +121,14 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		// handle focus events
 		this.addEventListener('focusin', () => this.field.focused = true );
 		this.addEventListener('focusout', () =>	this.field.focused = false);
+	}
+
+	override willUpdate(props: PropertyValues<this>) {
+		if(props.has('options')) {
+		for (const option of this.options) {
+			option.innerTextLabel = getInnerText(option.label);
+		}}
+		super.willUpdate(props);
 	}
 
 	override renderInputOrTextarea(): TemplateResult {

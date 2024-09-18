@@ -14,7 +14,6 @@ import { SpeechController } from './speech-controller';
  * 
  */
 
-let pauseTimeout
 
 export class PlayerController implements ReactiveController, PlayerI {
 

@@ -195,7 +195,7 @@ export abstract class Order extends
     const up = () => html`
      <md-outlined-icon-button 
       slot="end" 
-      aria-label=${this.tr('order.moveUp', { label: option.label })}
+      aria-label=${this.tr('order.moveUp', { label: option.innerTextLabel })}
       class="swap up" 
       @click=${onClick(index - 1)} >
       <lapp-icon>arrow_upward</lapp-icon></md-outlined-icon-button>
@@ -203,7 +203,7 @@ export abstract class Order extends
     const down = () => html`
     <md-outlined-icon-button 
      slot="end" 
-     aria-label=${this.tr('order.moveDown', { label: option.label })}
+     aria-label=${this.tr('order.moveDown', { label: option.innerTextLabel })}
      class="swap down" 
      @click=${onClick(index + 1)} >
      <lapp-icon>arrow_downward</lapp-icon></md-outlined-icon-button>

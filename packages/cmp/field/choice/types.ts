@@ -30,6 +30,10 @@ type OptionBase = {
 	index?: number
 	media?: Media
 	alt?: string
+	/**
+	 * The label as text (label can contain markdown)
+	 */
+	innerTextLabel?: string
 }
 type OptionLabel = OptionBase &  {
 	label: string

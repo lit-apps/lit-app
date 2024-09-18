@@ -63,7 +63,7 @@ import type { HTMLEvent } from '../../../../types';
       data-role="checkbox"
       slot="start"
       .disabled=${this.isDisabled(option)}
-      .ariaLabel=${option.label}
+      .ariaLabel=${option.innerTextLabel}
       aria-description=${option.supportingText || nothing}
       ?aria-invalid=${(this as unknown as GenericI).hasError}
       .ariaControls=${option.specify ? `specify${index}` : undefined}
