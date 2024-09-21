@@ -220,6 +220,6 @@ export interface StaticEntityActionI<D extends DefaultI, A extends Actions > ext
 	renderAction(actionName: keyof A, element: HTMLElement, data: any, config?: ButtonConfig, beforeDispatch?: () => boolean | string | void, onResolved?: (promise: any) => void): TemplateResult
 	onActionClick(actionName: keyof A, host: HTMLElement, data?: any, beforeDispatch?: () => boolean | string | void, onResolved?: OnResolvedT, eventGetter?: () => CustomEvent): (e: Event & { target: LappButton }) => Promise<void>
 	getAction(key: keyof A): Action
-	getEntityAction<T extends ActionI = ActionI>(detail: T['detail'], actionName: T['actionName'], confirmed?: boolean, bulkAction?: boolean): EntityAction<T>
+	getEntityAction<T extends ActionI = ActionI>(detail: T['detail'], actionName: keyof A, confirmed?: boolean, bulkAction?: boolean): EntityAction<T>
 	setPrototypeOfActions(actions: DefaultActionsType , Proto: AbstractEntity): void
 }

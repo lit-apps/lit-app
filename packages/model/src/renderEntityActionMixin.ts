@@ -245,10 +245,6 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 	}
 
 
-	// const staticApply: AbstractEntity & {
-	// 	_dispatchTriggerEvent: (e: CustomEvent, el: HTMLElement) => CustomEvent
-	// 	create: (data: Partial<D>, el: HTMLElement) => CustomEvent
-	// } 
 	const staticApply = {
 		actions: actions || defaultActions,
 		_dispatchTriggerEvent(event: CustomEvent, el: HTMLElement) {
