@@ -20,7 +20,6 @@ import { type EventMetaT } from './types';
 /**
  * Remove undefined values from snapshot
  * 
- * @deprecated - not to be used as it removes all 
  * refs from invoked ans spawned actors
  */
 // function getPersistedSnapshot<TContext extends MachineContext,
@@ -98,15 +97,16 @@ export default class Actor<
 
   declare ['constructor']: typeof Actor<{}>;
   static hostType: HostT = 'client'
-
+  domHost: HTMLElement | undefined;
   constructor(
     public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any, any, any> , //| XstateActor<any>,
     // public machine: AnyActorLogic,
-    protected options: ActorOptions<any> = {},
+    protected options: ActorOptions<any> & {domHost?: HTMLElement | undefined} = {},
     actorId: ActorIdT,
     protected rootPath: string ='actor') {
     super();
     this.actorId = actorId
+    this.domHost = options.domHost
     this.setupActor();
   }
 
@@ -326,12 +326,3 @@ export default class Actor<
   }
 
 }
-
-// import type { AnyMachineSnapshot } from 'xstate';
-
-// function getNextEvents(snapshot: AnyMachineSnapshot) {
-//   return [...new Set([...snapshot._nodes.flatMap((sn) => sn.ownEvents)])];
-// }
-
-// // Instead of `state.nextEvents`:
-// const nextEvents = getNextEvents(state);
