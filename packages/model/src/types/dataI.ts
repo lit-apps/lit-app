@@ -36,7 +36,7 @@ export type Status = 'public' | 'private'
 export type Access = {
 	app: string
 	user: UserAccess
-	userById: {[key: string]: UserAccess[]}
+	userById: {[key: string]: (keyof UserAccess)[]}
 	status: Status
 }
 
