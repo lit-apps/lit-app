@@ -33,6 +33,7 @@ export class UserList extends LitElement {
 			}
 			vaadin-grid {
 				flex: 1;
+				min-height: var(--lapp-user-grid-min-height, 350px);
 			}
 			lapp-user-card {
 				margin-top: -8px;

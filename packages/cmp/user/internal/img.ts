@@ -1,5 +1,5 @@
 import { LitElement, html, css, nothing } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import userMixin from './user-mixin';
 import '@preignition/lit-firebase/document';
 /**
@@ -46,25 +46,16 @@ export class UserImg  extends userMixin(LitElement) {
   @property() gravatarSize!: string;
   @property() gravatarType: string = 'mm';
   @property() gravatarURL: string ='https://www.gravatar.com/avatar';
-  @property() photoURL!: string;
-  @state() displayName!: string;
+
 
   override render() {
-    return html `
-      ${this.uid ? html`
-        <lif-document @data-changed=${this.setPhotoURL} .path=${this.photoPath}></lif-document>
-        <lif-document @data-changed=${(e: CustomEvent) => this.displayName = e.detail.value} .path=${this.namePath}></lif-document>
-      ` : nothing}
-      ${this.photoURL ? html`<div part="photo"><img src="${this.photoURL}" loading="lazy" alt="${this.displayName}"></div>` : nothing}
-    `;
-  }
-
-  setPhotoURL(e: CustomEvent) {
-    if (e && e.detail.value) {
-      this.photoURL = e.detail.value;
-      return;
+    if(this.isDeleted || this.isLoading) {
+      return nothing;
     }
-    this.photoURL = `${this.gravatarURL}/${this.uid}?d=${this.gravatarType}${this.gravatarSize ? ('size=' + this.gravatarSize) : ''}`;
+    const url = this.photoURL || `${this.gravatarURL}/${this.uid}?d=${this.gravatarType}${this.gravatarSize ? ('size=' + this.gravatarSize) : ''}`;
+    return html `
+      ${this.photoURL ? html`<div part="photo"><img src="${url}" loading="lazy" alt="${this.displayName}"></div>` : nothing}
+    `;
   }
 
 }

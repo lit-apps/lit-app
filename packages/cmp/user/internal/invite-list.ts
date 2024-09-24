@@ -36,6 +36,7 @@ export class InviteList extends LitElement {
 			}
 			vaadin-grid {
 				flex: 1;
+				min-height: var(--lapp-user-grid-min-height, 350px);
 			}`;
 
 	/** the  items to display on the list */

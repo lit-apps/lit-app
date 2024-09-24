@@ -4,7 +4,7 @@ import { InviteList } from './internal/invite-list.js';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lapp-user-list': LappInviteList;
+    'lapp-invite-list': LappInviteList;
   }
 }
 

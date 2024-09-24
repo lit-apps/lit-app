@@ -36,7 +36,7 @@ export class UserSearch extends LitElement {
       }
 		`];
 
-	@property() label: string = 'Search Users';
+	@property() label: string = 'Search or Invite Users';
 	@property({ attribute: 'supporting-text' }) supportingText!: string;
 
 	/** a loader for searching Users */
@@ -122,7 +122,7 @@ export class UserSearch extends LitElement {
 	renderNoItems() {
 		return html`<div style="padding: 10px;">
 			<p><strong>Find users by email or name.</strong></p>
-			<p>Type at least 3 letters or a valid email address...</p>
+			<p>Type at least 3 letters or a valid and exact email address...</p>
 		</div>`
 	}
 
@@ -133,7 +133,7 @@ export class UserSearch extends LitElement {
 
 		return html`<div style="padding: 10px;">
 			<p><strong>Find users by email or name.</strong></p>
-			<p>No users found. ${!isValidEmail ?  'Type a valid email address...' : ''}</p>
+			<p>No users found. ${!isValidEmail ?  'Type a valid email address for invite...' : ''}</p>
 			${when(isValidEmail, () => html`<md-filled-button .disabled=${searchValue === this.inviteEmail} @click=${onInvite}>Set ${searchValue} as a User to Invite</md-filled-button>` )}
 		</div>`
 	}

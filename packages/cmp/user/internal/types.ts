@@ -1,3 +1,4 @@
+
 type UserUidT = {
 	uid: string
 };
@@ -11,7 +12,22 @@ export type UserItem = UserUidT & {
 
 };
 
-type Role = 'admin' | 'editor' | 'viewer' | 'owner' | 'guest'  // | 'superAdmin' ;
+// TODO: once this is a separate package, we can get Role from userAccess
+type Role = 'admin' | 'editor' | 'owner' | 'guest'  // | 'superAdmin' ;
+
+// TODO: once this is a separate package, we can get Role from User
+export type UserProfileT = {
+	deleted: boolean
+	disabled: boolean
+	displayName: string
+	email: string
+	photoURL: string
+	phoneNumber: string
+	emailVerified: boolean
+	type: 'user'
+	uid: string
+}
+
 
 export type UserUidRoleT = UserUidT & { roles: Role[] };
 

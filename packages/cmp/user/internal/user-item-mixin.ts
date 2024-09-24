@@ -1,5 +1,5 @@
 
-import { html } from 'lit';
+import { html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js'
 import { MdListItem } from '@material/web/list/list-item.js';
 import userMixin from './user-mixin.js';
@@ -22,7 +22,6 @@ export const UserItemMixin = <T extends Constructor<MdListItem>>(superClass: T) 
 
   class UserItemMixinClass extends userMixin(superClass) {
 
-		@property() email!: string | undefined;
 		@property() supportingText!: string | undefined;
 		@property() headline!: string | undefined;
 		
@@ -45,7 +44,7 @@ export const UserItemMixin = <T extends Constructor<MdListItem>>(superClass: T) 
 						${this.renderFocusRing()}
 					</div>
 					<slot name="start" slot="start">
-						<lapp-user-img slot="start" part="img"  .uid=${this.uid}></lapp-user-img>
+						<lapp-user-img slot="start" part="img" .uid=${this.uid}></lapp-user-img>
 					</slot>
 					<slot name="end" slot="end"></slot>
 					${this.renderBody()}
@@ -56,8 +55,15 @@ export const UserItemMixin = <T extends Constructor<MdListItem>>(superClass: T) 
 			 * Handles rendering the headline and supporting text.
 			 */
 			override renderBody() {
+				if (this.isLoading) {
+					return html`
+					<slot></slot>
+					<slot name="headline" slot="headline">loading...</slot>
+					
+					`;
+				}
 				const supportingText = this.renderSupportingText();
-				const headline = this.headline ? this.headline : html`<lif-span .path=${this.namePath}></lif-span>`;
+				const headline = this.headline ? this.headline : html`<span>${this.displayName}</span>`;
 		
 					return html `
 				<slot></slot>
@@ -73,10 +79,9 @@ export const UserItemMixin = <T extends Constructor<MdListItem>>(superClass: T) 
 		 */
 		protected renderSupportingText() {
 		 return this.supportingText ? this.supportingText : 
+				this.isDeleted ? html`<span part="email">user deleted</span>` :
 				this.email ? html`<span part="email">${this.email}</span>` :
-				html`<lif-span 
-					@error=${(e: HTMLEvent<LifSpan> ) => e.target.valueController.value = ''}
-					part="email" .defaultValue=${'no email'} .path=${this.emailPath}></lif-span>`
+				html`<span part="email">no email</span>`;
 	
 		}
 

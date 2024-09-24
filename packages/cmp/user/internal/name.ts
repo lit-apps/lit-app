@@ -1,8 +1,6 @@
-import { LitElement, html, css, PropertyValueMap, PropertyValues } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { LifSpan } from '@preignition/lit-firebase/span';
+import { css, html } from 'lit';
 import userMixin from './user-mixin';
-import {LifSpan} from '@preignition/lit-firebase/span';
 
 /**
  *  
@@ -16,13 +14,15 @@ export class UserName extends userMixin(LifSpan) {
     }
     `;
 
-  override willUpdate(props: PropertyValues<this>){
-    if (props.has('uid')) {
-      this.path = this.namePath;
+  override render() {
+    if (this.isLoading) {
+      return html`<span>Loading ...</span>`;
     }
-    super.willUpdate(props);
-    
-  }  
+    if (this.isDeleted) {
+      return html`<span>User Deleted</span>`;
+    }
+    return html`<span>${this.displayName || ''} </span>`
+  }
 
 }
 
