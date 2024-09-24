@@ -52,6 +52,9 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 				align-items: center;
 				flex-wrap: wrap;
 			}
+			md-filled-button md-circular-progress {
+   		 --md-sys-color-primary: var(--color-on-primary);
+  		}
 		`];
 
 	/** uid of current user */
@@ -182,7 +185,7 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 								`Invite ${this.newName || ''} as ${this.accessRole || ''} ${this.isLocaleRole ? `(${this.languageRole})` : ''}`
 							}</lapp-user-name>
 						${this.isLoading ?
-								html`<md-circular-progress slot="icon"></md-circular-progress>` :
+								html`<md-circular-progress indeterminate slot="icon"></md-circular-progress>` :
 								html`<lapp-icon slot="icon">contact_mail</lapp-icon>`
 							}
 					</md-filled-button>` :
@@ -194,7 +197,7 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 								`Add ${this.newName || ''} as ${this.accessRole || ''} ${this.isLocaleRole ? `(${this.languageRole})` : ''}`
 							}</lapp-user-name>
 						${this.isLoading ?
-								html`<md-circular-progress slot="icon"></md-circular-progress>` :
+								html`<md-circular-progress indeterminate slot="icon"></md-circular-progress>` :
 								html`<lapp-icon slot="icon">person</lapp-icon>`
 							}
 					</md-filled-button>`}
@@ -202,7 +205,7 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 				html`
 					<md-outlined-button @click=${() => this.isEditing = true}>
 						${this.label}
-						<lapp-icon slot="icon">person</lapp-icon>
+						<lapp-icon slot="icon">person_add</lapp-icon>
 					</md-outlined-button>
 					
 					`

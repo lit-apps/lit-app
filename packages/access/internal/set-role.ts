@@ -31,7 +31,6 @@ export class SetRole extends ConsumeUserAccessMixin(LitElement) {
 			:host {
 				display: flex;
 				flex-direction: column;
-				gap: var(--space-medium);
 				--_width: var(--user-card-width, 380px);
 				
 			}
@@ -51,6 +50,9 @@ export class SetRole extends ConsumeUserAccessMixin(LitElement) {
 				align-items: center;
 				flex-wrap: wrap;
 
+			}
+			md-filled-button md-circular-progress {
+				--md-sys-color-primary: var(--color-on-primary);
 			}
 		`];
 
@@ -126,7 +128,7 @@ export class SetRole extends ConsumeUserAccessMixin(LitElement) {
 					<md-filled-button @click=${setAccess} .disabled=${!this.newUid}>
 						set ${this.newName || ''} as ${this.accessRole}</lapp-user-name>
 						${this.isLoading ?
-						html`<md-circular-progress></md-circular-progress>` :
+						html`<md-circular-progress indeterminate></md-circular-progress>` :
 						html`<lapp-icon slot="icon">person</lapp-icon>`
 					}
 					</md-filled-button>

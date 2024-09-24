@@ -28,6 +28,9 @@ import { HTMLEvent } from '@lit-app/cmp/types';
 import type { MdTabs } from '@material/web/tabs/tabs';
 import('@material/web/chips/filter-chip.js')
 import('@material/web/chips/chip-set.js')
+import('@material/web/divider/divider.js')
+import('@material/web/tabs/tabs.js')
+import('@material/web/tabs/secondary-tab.js')
 import('../set-role')
 import('../add-role')
 import('@lit-app/cmp/user/list')
@@ -52,8 +55,6 @@ const getAccess: GetAccess = function (this: EntityAccess, access: Access, _data
  * An element that renders access utilities against an entity, 
  * like setOwner, addAccess, removeAccess, etc.
  * 
- * TODO: this should be a subclass of entity-abstract-el
- * 
  */
 
 export class EntityAccess extends
@@ -77,7 +78,7 @@ export class EntityAccess extends
 		// this is a temp hak to fetch the closest 'db-ref-entity' path
 		// once stabilized, we would use @lit/context - but is needs to be in a @lit-app package (and not as firebase persistence)
 		const ref = closest(this, 'db-ref-entity, db-ref');
-		// @ts-ignore
+		// @ts-expect-error - we know ref has path
 		return ref?.path;
 	}
 
@@ -187,14 +188,12 @@ export class EntityAccess extends
 			}
 			const onClick = (e: CustomEvent) => {
 				e.preventDefault();
-
 			}
 			const canEdit = it === 'owner' ? this.canEdit && !hasOneOwner : this.canEdit;
 			return html`<md-filter-chip 
 				@remove=${onActionRevoke}
 				@click=${onClick}
 				.removable=${canEdit}
-
 				.label=${it}></md-filter-chip>`
 		})}
 		</md-chip-set>`;
@@ -224,7 +223,7 @@ export class EntityAccess extends
 				.Entity=${this.Entity}
 			></lapp-access-set-role>
 		</section>
-		${when(renderConfig.entityAccess.canEdit, () => html`
+		${when(renderConfig.entityAccess?.canEdit, () => html`
 		<section class="content">
 			<h5 class="secondary">Membership</h5>
 			<lapp-access-add-role
@@ -233,6 +232,7 @@ export class EntityAccess extends
 				.Entity=${this.Entity}
 			></lapp-access-add-role>
 		</section>`)}
+		<md-divider class="m top bottom large"></md-divider>
 		<section class="flex content layout vertical no-gap">
 				${this.hasInvite ?
 				html`<md-tabs 
