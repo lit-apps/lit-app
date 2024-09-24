@@ -13,7 +13,7 @@ const styles = css`
     padding: 0px;
 		padding-block: 0px;
 		padding-inline: 0px;
-		line-height: 0px;
+		line-height: 1.5rem;
 		cursor: text;
 	}
 

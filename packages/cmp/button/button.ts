@@ -35,7 +35,9 @@ const style = css`
   md-filled-button {
     --md-circular-color: var(--color-on-primary);
     --md-circular-progress-active-indicator-color: var(--color-on-primary);
-
+  }
+  md-filled-button md-circular-progress {
+    --md-sys-color-primary: var(--color-on-primary);
   }
   `
 
