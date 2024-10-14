@@ -18,10 +18,10 @@ export interface DefaultActionI extends BaseActionI {
 
 export function isDefaultAction(data: AllActionI): data is DefaultActionI {
 	const actionName = data.actionName
-	return actionName === 'markDeleted' || actionName === 'restore' 
+	return actionName === 'markDeleted' || actionName === 'restore'
 }
 
-type PrivacyAction = 'setPrivate' | 'setPublic' 
+type PrivacyAction = 'setPrivate' | 'setPublic'
 type PrivacyDetail = Detail & {
 }
 
@@ -35,7 +35,7 @@ export function isPrivacyAction(data: AllActionI): data is PrivateActionI {
 	return actionName === 'setPrivate' || actionName === 'setPublic'
 }
 
-type NameAction = 'setName' 
+type NameAction = 'setName'
 type NameDetail = Detail & {
 	name: string
 }
@@ -49,8 +49,22 @@ export function isNameAction(data: AllActionI): data is NameActionI {
 	return actionName === 'setName'
 }
 
-type AccessAction = 'setAccess' | 'addAccess' | 'removeAccess' 
-type Role = keyof Access['user'] 
+type InviteAction = 'invite'
+type InviteDetail = Detail & {
+	role: string
+}
+export interface InviteActionI extends BaseActionI {
+	actionName: InviteAction
+	detail: InviteDetail
+}
+
+export function isInviteAction(data: AllActionI): data is InviteActionI {
+	const actionName = data.actionName
+	return actionName === 'invite'
+}
+
+type AccessAction = 'setAccess' | 'addAccess' | 'removeAccess'
+type Role = keyof Access['user']
 type AccessDetail = Detail & {
 	uid: string
 	role: Role
@@ -63,40 +77,16 @@ export interface AccessActionI extends BaseActionI {
 	detail: AccessDetail
 }
 
-
 export function isAccessAction(data: AllActionI): data is AccessActionI {
 	const actionName = data.actionName
 	return actionName === 'setAccess' || actionName === 'addAccess' || actionName === 'removeAccess'
 }
 
-
-type InviteAction = 'invite'
-type InviteDetail = Detail & {
-	uid: string
-  role: string
-  language?: string // potential language for the role (e.g. translator)
-	inviteId?: string
-}
-export interface InviteActionI extends BaseActionI {
-	actionName: InviteAction
-	detail: InviteDetail
-}
-
-type RevokeInviteAction = 'revokeInvite' 
-type RevokeInviteDetail = Detail & {
-	uid: string
-	inviteId: string
-}
-
-export interface RevokeInviteActionI extends BaseActionI {
-	actionName: RevokeInviteAction
-	detail: RevokeInviteDetail
-}
-
-export function isInviteAction(data: AllActionI): data is InviteActionI {
-	const actionName = data.actionName
-	return actionName === 'revokeInvite' || actionName === 'invite'
-}
-
-export type AllActionI = PrivateActionI | AccessActionI | NameActionI | InviteActionI | RevokeInviteActionI | DefaultActionI
+export type AllActionI =
+	
+PrivateActionI |
+	AccessActionI |
+	InviteActionI |
+	NameActionI |
+	DefaultActionI
 export type AllAction = AllActionI['actionName'] 

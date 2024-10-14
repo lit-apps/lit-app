@@ -2,7 +2,8 @@ import { CSSResult, nothing, TemplateResult } from 'lit';
 import {
 	Model
 } from './types/modelComponent';
-import entries from './typeUtils/entries';
+import { entries } from '@lit-app/shared/types.js';
+
 
 import { ToastEvent } from '@lit-app/event';
 import {
@@ -97,7 +98,11 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	 *         this also changes the rendering of renderEntityActions
 	 * @param listenOnAction when true, will listen to action events on the element
  	 */
-	constructor(public host: EntityElement, public realTime: boolean = false, public listenOnAction: boolean = false) {
+	constructor(
+		public host: EntityElement,
+		public realTime: boolean = false,
+		public listenOnAction: boolean = false
+	) {
 		
 		if(!this.constructor.entityName) {
 			throw new Error('entityName is required')
@@ -121,10 +126,10 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 				}
 			})
 		}
-		// @ts-ignore
+		// @ts-expect-error - dev stuff
 		if (import.meta.hot) {
 			console.info('Entity HMR attempt')
-			// @ts-ignore
+			// @ts-expect-error - dev stuff
 			import.meta.hot.accept((Entity: AbstractEntity) => {
 				console.info('Entity HMR', Entity)
 				if (Entity) {

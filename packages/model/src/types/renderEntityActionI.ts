@@ -15,12 +15,17 @@ import {
 	Reset,
 	Write
 } from '../events';
-import type { PartialBy } from '../typeUtils/partialBy';
+import { PartialBy } from '@lit-app/shared/types';
+
 import { Action, ActionType, Actions, ButtonConfig, OnResolvedT } from './action';
 import { Collection, CollectionI, DataI } from './dataI';
 import { DefaultI, EntityAccess, EntityStatus, RenderConfig } from './entity';
 import { AccessActionI } from './entityAction';
 import { RenderEntityCreateInterface } from './renderEntityCreateI';
+
+
+
+
 /**
  * Actions inherited by all entities (provided they use @mergeStatic('actions'))
  * We do not set pushHistory those actions are automatically added
@@ -130,9 +135,10 @@ const _defaultActions = {
 		label: 'Add Access',
 		event: EntityAction<AccessActionI>
 	},
+
 	invite: {
 		label: 'Invite',
-		machineId: 'invite',
+		event: EntityAction<AccessActionI>
 	},
 	removeAccess: {
 		label: 'Revoke Access',
@@ -154,16 +160,16 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 	 */
 	showActions: boolean
 	actions: A
-	
+
 	protected renderContent(data: D, config?: RenderConfig): TemplateResult | typeof nothing
 
 	create(details: PartialBy<EntityCreateDetail, 'entityName'>): Create
 	open(entityName: string, id?: string): Open | null
 	markDirty(dirty?: boolean): Dirty
 	dispatchAction(actionName: keyof A): CustomEvent
-		/**
-	 * Utility render method to render an group of actions - 
-	 */
+	/**
+ * Utility render method to render an group of actions - 
+ */
 	protected renderBaseActions(data: D, config?: RenderConfig): TemplateResult | typeof nothing
 	/**
 	 * Utility render method to render an group of actions
@@ -193,11 +199,11 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 	 * @param eventGetter 
 	 */
 	onActionClick(
-		actionName: keyof A, 
+		actionName: keyof A,
 		data?: any, // for serverActions this is the data to send to the server ! we should be able to type more strictly
-		beforeDispatch?: () => boolean | string | void, 
-		onResolved?: OnResolvedT, 
-		eventGetter?: () => CustomEvent): (e: Event & { target: LappButton }) => Promise<void>		
+		beforeDispatch?: () => boolean | string | void,
+		onResolved?: OnResolvedT,
+		eventGetter?: () => CustomEvent): (e: Event & { target: LappButton }) => Promise<void>
 	/**
  * Utility render functions for a group of entity actions to render as buttons icons
  * @param entityAccess 
@@ -213,13 +219,13 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
 	renderBulkAction(selectedItems: Collection<D>, data: Collection<D>, action: Action, actionName: keyof A): TemplateResult
 }
 
-export interface StaticEntityActionI<D extends DefaultI, A extends Actions > extends AbstractEntity<D> {
-	actions: A 
+export interface StaticEntityActionI<D extends DefaultI, A extends Actions> extends AbstractEntity<D> {
+	actions: A
 	_dispatchTriggerEvent(event: CustomEvent, el: HTMLElement): CustomEvent
 	getEvent(actionName: keyof A, data: D, el?: HTMLElement, bulkAction?: boolean): AnyEvent
 	renderAction(actionName: keyof A, element: HTMLElement, data: any, config?: ButtonConfig, beforeDispatch?: () => boolean | string | void, onResolved?: (promise: any) => void): TemplateResult
 	onActionClick(actionName: keyof A, host: HTMLElement, data?: any, beforeDispatch?: () => boolean | string | void, onResolved?: OnResolvedT, eventGetter?: () => CustomEvent): (e: Event & { target: LappButton }) => Promise<void>
 	getAction(key: keyof A): Action
 	getEntityAction<T extends ActionI = ActionI>(detail: T['detail'], actionName: keyof A, confirmed?: boolean, bulkAction?: boolean): EntityAction<T>
-	setPrototypeOfActions(actions: DefaultActionsType , Proto: AbstractEntity): void
+	setPrototypeOfActions(actions: DefaultActionsType, Proto: AbstractEntity): void
 }

@@ -1,4 +1,4 @@
-import { adoptStyles, html, nothing, PropertyValues } from "lit";
+import { adoptStyles, html, PropertyValues } from "lit";
 import { property } from 'lit/decorators.js';
 import {entityI, EntityI} from '../types';
 
@@ -37,7 +37,9 @@ export default class EntityHolder extends AbstractEntity {
 		/** Handle Styles */
 		if (this.Entity?.styles) {
 			const root = this.renderRoot as ShadowRoot
-			const styles = Array.isArray(this.Entity.styles) ? this.Entity.styles : [this.Entity.styles]
+			const styles = Array.isArray(this.Entity.styles) 
+				? this.Entity.styles 
+				: [this.Entity.styles]
 			adoptStyles(
 				root,
 				[...root.adoptedStyleSheets, ...styles]

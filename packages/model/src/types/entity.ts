@@ -76,6 +76,7 @@ export type RenderConfigOptional< O = OptionsT, T = any> = {
 	gridConfig?: GridConfig,
 	cardConfig?: { [K in keyof Partial<T>]: T[K] }
 	level?: number, // level to render the entity
+	heading?: string // heading to render
 	variant?: 'card' | 'list' | 'default' 
 	baseURL?: string // base url for the entity
 	//isNew?: boolean // true when the entity is new

@@ -21,8 +21,8 @@ export declare class RenderInterface<
 	private renderArrayContent(data: Collection<D>, config: C): TemplateResult
 	private renderGrid(data: Collection<D>, config: C): TemplateResult
 	/* renderContent should be private, but we use it in renderEntityActionMixin */
-	// protected renderContent(data: D, config?: C): TemplateResult
-
+	protected onGridDblClick(e: CustomEvent ): void
+  protected onActiveItemChanged(e: CustomEvent): void
 	protected renderDataLoading( config: C): TemplateResult
 	protected renderTitle(data: D, config: C): TemplateResult | string
 	protected renderArrayTitle(data: Collection<D>, config: C): TemplateResult | string

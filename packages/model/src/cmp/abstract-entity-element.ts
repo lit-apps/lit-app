@@ -66,6 +66,7 @@ export default abstract class AbstractEntityElement extends
 		return {
 			entityAccess: this.entityAccess,
 			entityStatus: this.entityStatus,
+			heading: this.heading,
 			level: this.level,
 			$id: this.docId,
 			...this.entityRenderOptions,
@@ -98,7 +99,9 @@ export default abstract class AbstractEntityElement extends
 		 * @returns boolean
 		 */
 		isFormValid(): boolean {
-			return [...(this.entityForm?.elements || [])].every((el) => (el as HTMLFormElement).validity?.valid !== false);
+			return [...(this.entityForm?.elements || [])].every(
+				(el) => (el as HTMLFormElement).validity?.valid !== false
+			);
 		}
 		
 	protected setEntity(E: EntityI) {

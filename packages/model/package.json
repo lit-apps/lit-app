@@ -46,9 +46,9 @@
   "dependencies": {
     "@lit-app/cmp": "link:../cmp",
     "@lit-app/event": "link:../event",
+    "@lit-app/shared": "link:../shared",
     "@lit-app/state": "workspace:^",
     "@lit/context": "^1.1.2",
-     
     "@material/web": "1.0.1",
     "@polymer/polymer": "^3.5.1",
     "@preignition/lit-flexbox-literals": "link:../../../packages/lit-flexbox-literals",
@@ -58,6 +58,7 @@
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/multi-select-combo-box": "link:../../../app-dependencies/web-components/packages/multi-select-combo-box",
     "lit": "^3.1.4",
-    "lit-vaadin-helpers": "^0.3.1"
+    "lit-vaadin-helpers": "^0.3.1",
+    "xstate": "5.17.4"
   }
 }

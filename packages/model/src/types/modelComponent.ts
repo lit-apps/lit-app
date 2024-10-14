@@ -54,6 +54,7 @@ interface ModelComponentBase<T = any> {
 	helper?: string
 	required?: boolean
 	disabled?: boolean
+	readOnly?: boolean
 	icon?: string
 	style?: string
 	class?: string

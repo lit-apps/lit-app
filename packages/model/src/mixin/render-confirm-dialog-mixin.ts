@@ -79,7 +79,10 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 					const promises: (Promise<any> | undefined)[] = [];
 					try {
 						this.selectedItems.forEach(item => {
-							const newEvent = Reflect.construct(event.constructor, [event.detail, action, event.actionName])
+							const newEvent = Reflect.construct(
+								event.constructor, 
+								[event.detail, action, event.actionName]
+							);
 							newEvent.confirmed = true;
 							newEvent.detail.id = item.$id
 							this.dispatchEvent(newEvent);
@@ -90,7 +93,10 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 						dispatchError(e as Error)
 					}
 				} else {
-					const newEvent = Reflect.construct(event.constructor, [event.detail, action, event.actionName])
+					const newEvent = Reflect.construct(
+						event.constructor, 
+						[event.detail, action, event.actionName]
+					);
 					newEvent.confirmed = true;
 					try {
 						this.dispatchEvent(newEvent)

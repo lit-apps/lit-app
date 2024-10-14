@@ -49,9 +49,8 @@ export {
 export * from './types/entityAction';
 export * from './types/mixin';
 
-import ensure from './typeUtils/ensure';
-import entries from './typeUtils/entries';
-import type { PartialBy } from './typeUtils/partialBy';
+// import type { ensure, entries, PartialBy } from '@lit-app/shared/types.js'
+
 
 export type Strings = {
 	[key: string]: string | Strings;
@@ -64,9 +63,9 @@ export type Role = {
 	locale?: boolean // true to mark this role as dependent on locale (e.g. translator)
 }
 
-export {
-	ensure, entries, PartialBy
-};
+// export {
+// 	ensure, entries, PartialBy
+// };
 
 import { RenderInterface as FieldI, StaticEntityField } from './types/renderEntityFieldI';
 import { RenderInterface as RenderI } from './types/renderEntityI';

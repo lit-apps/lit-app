@@ -19,7 +19,9 @@ import {
 	Write
 } from './events';
 import RenderEntityCreateMixin from './renderEntityCreateMixin';
-import { ActionDetail, AnyEvent, Collection, EntityAccess, EntityElement, EntityStatus, PartialBy, RenderConfig } from './types';
+import { PartialBy } from '@lit-app/shared/types';
+
+import { ActionDetail, AnyEvent, Collection, EntityAccess, EntityElement, EntityStatus, RenderConfig } from './types';
 import {
 	Action,
 	Actions,
@@ -28,7 +30,8 @@ import {
 	OnResolvedT
 } from './types/action';
 import { DefaultI } from './types/entity';
-import entries from './typeUtils/entries';
+import { entries } from '@lit-app/shared/types.js';
+
 import('@lit-app/cmp/button/button');
 import('@material/web/icon/icon');
 import('@material/web/iconbutton/filled-icon-button.js');
@@ -420,7 +423,11 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 				entityName: action.entityName || this.entityName,
 				data: detail
 			}
-			// @ts-ignore  
+			if (detail.id || detail.$id) {
+				d.id = detail.id || detail.$id
+			}
+
+			// @ts-expect-error - problem with actionName
 			return new EntityAction<T>(d as ActionDetail<T['detail']>, action, actionName, confirmed, bulkAction)
 		},
 		/** setPrototypeOfActions

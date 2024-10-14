@@ -41,8 +41,12 @@ export const RenderHeaderMixin = <T extends Constructor<LitElement> >(superClass
 		@property({ type: Number }) level: number = 1;
 
 
-		renderTitle(_data?: DefaultI, _config?: RenderConfig) {
-			return html`${this.heading}`
+		renderTitle(_data?: DefaultI, config?: RenderConfig) {
+			return html`${config?.heading || this.heading}`
+		}
+		
+		renderArrayTitle(_data?: DefaultI, config?: RenderConfig) {
+			return html`${config?.heading || this.heading}`
 		}
 	
 		renderHeader(data?: DefaultI, config?: RenderConfig) {

@@ -4,7 +4,12 @@ import type { LitElement, TemplateResult } from 'lit'
 import type { EntityElement, EntityStatus } from './entity'
 
 export type OnResolvedT = (resolved: any, host: HTMLElement, event: AnyEvent) => void
-type Handler = (this: LitElement, ref: DocumentReference, data: any, event: AnyEvent) => Promise<unknown>
+type Handler = (
+  this: LitElement,
+  ref: DocumentReference,
+  data: any,
+  event: AnyEvent
+) => Promise<unknown>
 type BtnCfg = {
 	disabled?: boolean
 	outlined?: boolean
@@ -59,9 +64,6 @@ export type ActionBase = {
 export type DefaultAction = ActionBase & {
 }
 
-export type FsmAction = ActionBase & {
-	machineId: string
-}
 
 // export type OnClickAction = Omit<ActionBase, 'onResolved' > & {
 export type OnClickAction = ActionBase & {
@@ -75,21 +77,14 @@ export type OnClickAction = ActionBase & {
 export type HandlerAction = ActionBase & {
 	handler: Handler
 }
-export type Action = FsmAction | HandlerAction | OnClickAction | DefaultAction
+export type Action =  HandlerAction | OnClickAction | DefaultAction
 
 export type DefaultActions = 
 	'create' | 'edit' | 'write' | 'cancel' | 'delete' |'markDeleted' | 'restore' | 'open' | 'close' |
   'removeAccess' | 'setAccess' | 'addAccess' | 'invite'
 export type Actions = Record<string , Action>
 
-/**
- * Returns true if `action` contain a machineId
- * @param action Action
- * @returns Boolean
- */
-export function isFsmAction(action: Action): action is FsmAction {
-	return 'machineId' in action
-}
+
 
 /**
  * Returns true if `action` contains a handler

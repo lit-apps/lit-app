@@ -15,7 +15,8 @@ import { repeat } from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { html as htmlStatic, literal } from 'lit/static-html.js';
 import AbstractEntity from './abstractEntity';
-import { Actions, Collection, CollectionI, ensure, EntityElementList, isCollection, RenderConfig } from './types';
+import { Actions, Collection, CollectionI, EntityElementList, isCollection, RenderConfig } from './types';
+import { ensure } from '@lit-app/shared/types.js';
 import {
   GridConfig,
   Model,
@@ -30,13 +31,10 @@ export type { RenderInterface } from './types/renderEntityI';
 import { DefaultI } from './types/entity';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
+type Open = (entityName: string, id: string) => void
 
 /**
- * 
- * 
  * Mixin in charge of the overall rendering of an entity
- * 
- * 
  * 
  * renderEntityAccess() {
  *		return html`
@@ -80,19 +78,22 @@ type Constructor<T = {}> = new (...args: any[]) => T;
  *			</slot>
  *		`;
  */
-
-type Open = (entityName: string, id: string) => void
-
-/**
- * RenderMixin 
- */
-export default function renderMixin<D extends DefaultI, A extends Actions = Actions, C extends RenderConfig = RenderConfig>(superclass: Constructor<AbstractEntity & { open: Open }>) {
+export default function renderMixin<
+  D extends DefaultI, 
+  A extends Actions = Actions, 
+  C extends RenderConfig = RenderConfig
+>(
+  superclass: Constructor<AbstractEntity & { open: Open }>
+) {
   class R extends superclass {
     // class R extends RenderActionMixin(superclass) {
 
     showMetaData: boolean = false
     itemIdPath: string = '$id' // collectionGroup will need to use $path
 
+    protected onActiveItemChanged(e: CustomEvent) {
+      activeItemChanged(e)
+    }
     renderGrid(data: Collection<D>, config: C) {
       // bring selection up to host 
       const onSelected = async (e: CustomEvent) => {
@@ -103,26 +104,29 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
         (this.host as EntityElementList).size = e.detail.value;
       }
 
-      const onDblClick = async (e: CustomEvent) => {
-        const context = (e.currentTarget as Grid).getEventContext(e);
-        // by default, open the item
-        if (context.item) {
-          this.open(this.entityName, context.item.$id)
-        }
+      const onActiveItemChanged = (e: CustomEvent) => {
+        this.onActiveItemChanged(e);
       }
-
       return html`<vaadin-grid 
         id="grid"
         class="flex entity grid ${this.entityName}"
         .itemIdPath=${this.itemIdPath}
         .items=${data}
         ${gridRowDetailsRenderer((data:CollectionI<D>, model: any, grid: any) => this.renderGridDetail(data, config, model, grid))}
-        @active-item-changed=${config?.gridConfig?.preventDetails ? null : activeItemChanged}
-        @dblclick=${config?.gridConfig?.preventDblClick ? null : onDblClick}
+        @active-item-changed=${config?.gridConfig?.preventDetails ? null : onActiveItemChanged}
+        @dblclick=${config?.gridConfig?.preventDblClick ? null : this.onGridDblClick.bind(this)}
         @selected-items-changed=${onSelected}
         @size-changed=${onSizeChanged}>
         ${this.renderGridColumns(config)}
       </vaadin-grid>`
+    }
+
+    protected onGridDblClick(e: CustomEvent) {
+      const context = (e.currentTarget as Grid).getEventContext(e);
+      // by default, open the item
+      if (context.item) {
+        this.open(this.entityName, context.item.$id)
+      }
     }
 
     renderGridColumns(config: C) {
@@ -280,11 +284,11 @@ export default function renderMixin<D extends DefaultI, A extends Actions = Acti
       return nothing
     }
 
-    renderTitle(_data: D, _config: C) {
-      return html`${this.entityName}`
+    renderTitle(_data: D, config: C) {
+      return html`${config.heading || this.entityName}`
     }
-    renderArrayTitle(_data: Collection<D>, _config: C) {
-      return html`${this.entityName}`
+    renderArrayTitle(_data: Collection<D>, config: C) {
+      return html`${config.heading || this.entityName}`
     }
 
     renderHeader(data: D | Collection<D>, config: C) {
@@ -339,6 +343,9 @@ function getFieldsFromModel(model: Model<any>, renderConfig: RenderConfig,  getC
 
     for (const key in model) {
       const component = model[key];
+      if (!component) {
+        continue
+      }
       const p = path ? `${path}.${key}` : key
       const config = getConfig(component)
       if (config) {
@@ -350,9 +357,7 @@ function getFieldsFromModel(model: Model<any>, renderConfig: RenderConfig,  getC
       else if (typeof component === 'object') {
         fields.push(...getFields(component as Model<any>, p));
       }
-      else if (typeof component === 'object') {
-        fields.push(...getFields(component as Model<any>, p));
-      }
+
     }
 
     return fields;
