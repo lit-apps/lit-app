@@ -30,7 +30,7 @@ export type PropertyMapOptions = PropertyOptions &
 /**
  * Callback function - used as callback subscription to a state change 
  */
-export type Callback = (key: string, value: any, state: State) => void
+export type Callback<T = State> = (key: string, value: any, state: T) => void
 
 /**
  * A state, firing `lit-state-change` when any of it property changes
@@ -156,7 +156,11 @@ export class State extends EventTarget {
    * @param nameOrNames 
    * @returns a unsubscribe function. 
    */
-  subscribe(callback: Callback, nameOrNames?: string | string[], options?: AddEventListenerOptions): Unsubscribe {
+  subscribe(
+    callback: Callback<this>, 
+    nameOrNames?: string | string[], 
+    options?: AddEventListenerOptions
+  ): Unsubscribe {
 
     if (nameOrNames && !Array.isArray(nameOrNames)) {
       nameOrNames = [nameOrNames]
