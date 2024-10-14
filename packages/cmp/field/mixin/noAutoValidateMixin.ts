@@ -20,7 +20,6 @@ export const NoAutoValidateMixin = <T extends Constructor<LitElement & F>>(super
 
 	class NoAutoValidateMixinClass extends superClass {
 
-		
 		/**
 		 * Prevent automatic check validity on blur
 		 */

@@ -9,10 +9,11 @@ import('@material/web/button/filled-button.js')
 import('../../field/text-field')
 import('../../copy/copy')
 import { MdDialog } from '@material/web/dialog/dialog';
-import { HTMLEvent } from "../../types";
+import { HTMLEvent } from '@lit-app/shared/types';
 import { DownloadEvent } from "../dialog-download.js";
 import downloadJSON from '../downloadJSON.js';
 import downloadCSV from '../downloadCSV.js';
+import { LappChoiceRadio } from "../../field/choice-radio.js";
 
 type AllowedExportFormats = 'json' | 'csv'
 
@@ -193,8 +194,8 @@ export class DialogDownload extends LitElement {
   }
 
   renderSelectFormat(formats: string[]) {
-    const onSelected = (e: HTMLEvent<HTMLInputElement>) => {
-      this.format = e.target.value as AllowedExportFormats;
+    const onSelected = (e: HTMLEvent<LappChoiceRadio>) => {
+      this.format = e.target.selected as AllowedExportFormats;
     }
     return html`
     <p>Set the type of export before proceeding.</p>

@@ -3,7 +3,7 @@ import { Generic } from '../generic/generic';
 import { html, LitElement, nothing } from 'lit';
 import type { PropertyValues, TemplateResult } from 'lit';
 import { AriaList, Option } from './types';
-import { HTMLEvent } from '../../types';
+import { HTMLEvent } from '@lit-app/shared/types';
 import { GenericI } from '../generic/generic'
 import { List as MdList } from '@material/web/list/internal/list'
 import '../../list/list'
@@ -13,7 +13,7 @@ import { Checkbox } from './checkbox/internal/checkbox';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import './list'
 import { when } from 'lit/directives/when.js';
-import getInnerText from '@preignition/preignition-util/src/getInnerText.js';
+import  getInnerText  from '@lit-app/shared/getInnerText.js';
 import translate  from '@preignition/preignition-util/translate-mixin.js';
 import {ListController, NavigableKeys} from '@material/web/list/internal/list-controller.js';
 import {ListItem } from '@material/web/list/internal/list-navigation-helpers.js';

@@ -2,7 +2,7 @@ import { html, css, LitElement, PropertyValues } from "lit";
 import { when } from 'lit/directives/when.js';
 import { property, state, query } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { HTMLEvent } from '../../types'
+import { HTMLEvent } from '@lit-app/shared/types'
 import '../../field/select-input'
 import type { LappSelectInput } from '../../field/select-input';
 import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';

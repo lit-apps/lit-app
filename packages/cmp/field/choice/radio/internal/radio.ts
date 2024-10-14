@@ -10,7 +10,7 @@ import IllustrationMixin from '../../illustrationMixin';
 import SingleMixin from '../../singleMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
 import type {  Option } from '../../types';
-import type { HTMLEvent } from '../../../../types';
+import { HTMLEvent } from '@lit-app/shared/types';
 import '../../list-item'
 import lappChoiceListItem from '../../list-item';
 import {nothing} from 'lit';

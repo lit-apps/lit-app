@@ -68,6 +68,7 @@ export class Select extends
 
   override firstUpdated(changedProperties: PropertyValues<this>) {
     this.propagateToField(changedProperties);
+    this.addEventListener('input', this.reportValidity)
     return super.firstUpdated(changedProperties);
   }
 
@@ -161,7 +162,7 @@ export class Select extends
         setTimeout(() => {
           this.value = this.lastUserSetValue;
           this.updateValueAndDisplayText()  
-        ,100})
+      }, 600)
       }
 		}
     return html`<slot @slotchange=${onSlotChange}></slot>`;

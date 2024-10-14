@@ -6,7 +6,6 @@ import userMixin from './user-mixin.js';
 import '../img.js';
 import '@preignition/lit-firebase/span';
 import type {LifSpan} from '@preignition/lit-firebase/span';
-import { HTMLEvent } from '../../types.js';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 export declare class UserMixinInterface {

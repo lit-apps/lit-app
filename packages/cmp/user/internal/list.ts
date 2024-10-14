@@ -46,7 +46,7 @@ export class UserList extends LitElement {
 	@property({attribute: false}) items!: UserItemRole[];
 
 	/** a renderer for row details */
-	@property({attribute: false}) rowDetailsRenderer!: GridRowDetailsRenderer<UserItem>;
+	@property({attribute: false}) rowDetailsRenderer!: GridRowDetailsRenderer<UserItem> | null;
 
 	/** a renderer for row details */
 	@property({attribute: false}) cellClassNameGenerator!: GridCellClassNameGenerator<UserItem>;

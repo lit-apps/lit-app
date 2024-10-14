@@ -34,7 +34,7 @@ import '../../list-item'
 
 import IllustrationMixin from '../../illustrationMixin';
 import type { Option } from '../../types';
-import type { HTMLEvent } from '../../../../types';
+import { HTMLEvent } from '@lit-app/shared/types';
 import { Checkbox } from '../../checkbox/internal/checkbox';
 // type Option = O & { initialIndex: number }
 export abstract class Order extends

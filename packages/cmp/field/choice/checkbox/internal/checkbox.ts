@@ -14,7 +14,7 @@ import MultiChoiceMixin from '../../multiMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
 import { nothing } from 'lit';
 import type { Option } from '../../types';
-import type { HTMLEvent } from '../../../../types';
+import { HTMLEvent } from '@lit-app/shared/types';
 
 /**
  * Checkbox field 
