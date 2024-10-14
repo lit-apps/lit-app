@@ -8,7 +8,7 @@ import { LappUserSearch } from '@lit-app/cmp/user/search';
 import '@lit-app/cmp/user/search';
 import '@lit-app/cmp/user/select-item';
 import '@lit-app/cmp/user/name';
-import { HTMLEvent } from '@lit-app/cmp/types';
+import { HTMLEvent } from '@lit-app/shared/types';
 import('@lit-app/cmp/user/card')
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')

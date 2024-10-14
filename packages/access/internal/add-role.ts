@@ -1,5 +1,5 @@
 // import { EntityI } from '@lit-app/model/src/types/entity';
-import { HTMLEvent } from '@lit-app/cmp/types';
+import { HTMLEvent } from '@lit-app/shared/types';
 import { UserSearch } from '@lit-app/cmp/user/internal/search';
 import '@lit-app/cmp/user/name';
 import '@lit-app/cmp/user/search';

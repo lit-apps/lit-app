@@ -1,4 +1,6 @@
-import { ResourceI, entries } from '@lit-app/model';
+import { ResourceI } from '@lit-app/model';
+import { entries } from '@lit-app/shared/types.js';
+
 import type { UserUidRoleT } from '@lit-app/cmp/user/internal/types';
 
 /**

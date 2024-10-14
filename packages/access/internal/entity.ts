@@ -7,12 +7,14 @@ import {
 	ConsumeEntityStatusMixin,
 	ConsumeUidMixin,
 	GetAccess,
-	PartialBy,
 	ProvideAccessMixin,
 	RenderConfig,
 	RenderHeaderMixin,
-	entries
 } from '@lit-app/model';
+import {
+	PartialBy,
+	entries
+} from '@lit-app/shared/types.js';
 import { Where } from '@preignition/lit-firebase/src/types';
 import '@preignition/lit-firebase/store';
 import { LitElement, html } from "lit";
@@ -24,7 +26,7 @@ import { when } from 'lit/directives/when.js';
 import { ProvideUserAccessMixin } from './context-user-access-mixin';
 import hasUserRole from './hasUserRole';
 import { choose } from 'lit/directives/choose.js';
-import { HTMLEvent } from '@lit-app/cmp/types';
+import { HTMLEvent } from '@lit-app/shared/types';
 import type { MdTabs } from '@material/web/tabs/tabs';
 import('@material/web/chips/filter-chip.js')
 import('@material/web/chips/chip-set.js')
@@ -100,6 +102,7 @@ export class EntityAccess extends
 		// loop through all metaData roles and return users
 		const users: User[] = [];
 		entries<Access['user']>(this.metaData?.access?.user || {})
+			.filter(([_role, value]) => value !== undefined && value !== null)
 			.forEach(([role, value]) => {
 				const v = Array.isArray(value) ? value : [value];
 				v.forEach((uid: string) => {
