@@ -209,7 +209,7 @@ importers:
         specifier: ^3.1.4
         version: 3.2.0
       xstate:
-        specifier: ^5.17.4
+        specifier: ^5.18.2
         version: 5.18.2
     devDependencies:
       vite:
@@ -275,6 +275,9 @@ importers:
       effect:
         specifier: ^2.4.0
         version: 2.4.19
+      firebase:
+        specifier: ^10.13.2
+        version: 10.13.2
       lit:
         specifier: ^3.2.0
         version: 3.2.0
@@ -403,6 +406,9 @@ importers:
       '@lit-app/event':
         specifier: link:../event
         version: link:../event
+      '@lit-app/shared':
+        specifier: link:../shared
+        version: link:../shared
       '@lit-app/state':
         specifier: workspace:^
         version: link:../state
@@ -439,6 +445,9 @@ importers:
       lit-vaadin-helpers:
         specifier: ^0.3.1
         version: 0.3.1
+      xstate:
+        specifier: 5.17.4
+        version: 5.17.4
     devDependencies:
       '@custom-elements-manifest/analyzer':
         specifier: ^0.5.7
@@ -2721,6 +2730,7 @@ packages:
   eslint@8.57.1:
     resolution: {integrity: sha512-ypowyDxpVSYpkXr9WPv2PAZCtNip1Mv5KTW0SCurXv/9iOpcrH9PaqUElksqEB6pChqHGDRCFTyrZlGhnLNGiA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   eslint@9.11.0:
@@ -4638,6 +4648,9 @@ packages:
       utf-8-validate:
         optional: true
 
+  xstate@5.17.4:
+    resolution: {integrity: sha512-KM2FYVOUJ04HlOO4TY3wEXqoYPR/XsDu+ewm+IWw0vilXqND0jVfvv04tEFwp8Mkk7I/oHXM8t1Ex9xJyUS4ZA==}
+
   xstate@5.18.2:
     resolution: {integrity: sha512-hab5VOe29D0agy8/7dH1lGw+7kilRQyXwpaChoMu4fe6rDP+nsHYhDYKfS2O4iXE7myA98TW6qMEudj/8NXEkA==}
 
@@ -6399,7 +6412,7 @@ snapshots:
       '@vitest/utils': 1.6.0
       magic-string: 0.30.11
       sirv: 2.0.4
-      vitest: 1.6.0(@types/node@22.5.5)(@vitest/browser@1.6.0)(happy-dom@15.7.4)
+      vitest: 1.6.0(@types/node@22.5.5)(@vitest/browser@1.6.0)(happy-dom@8.9.0)
     optionalDependencies:
       webdriverio: 9.0.9
 
@@ -9910,6 +9923,8 @@ snapshots:
   ws@8.16.0: {}
 
   ws@8.18.0: {}
+
+  xstate@5.17.4: {}
 
   xstate@5.18.2: {}
 
