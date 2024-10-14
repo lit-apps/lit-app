@@ -11,8 +11,8 @@ export const ActorContext = createContext<Actor<any, any>>('actor-context');
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 /**
- * ConsumeActorMixin a mixin that consumes survey context:
- * - @property -Actor - actor<any, SurveyEventT>
+ * ConsumeActorMixin a mixin that consumes actor context:
+ * - @property - Actor<any,any>
  */
 export declare class ContextActorMixinInterface {
 	actor: Actor<any, any>;
@@ -39,8 +39,7 @@ export declare class ContextProvideActorMixinInterface {
 	actorProvider: ContextProvider<typeof ActorContext>;
 }
 /**
- * ProvideActorMixin a mixin that consumes survey context:
- * - @property - uid - true when test
+ * ProvideActorMixin a mixin that consumes actor context:
  */
 export const ProvideActorMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
@@ -48,5 +47,6 @@ export const ProvideActorMixin = <T extends Constructor<LitElement>>(superClass:
 		actorProvider = new ContextProvider(this, { context: ActorContext });
 	};
 
-	return ContextProvideActorMixinClass as unknown as Constructor<ContextProvideActorMixinInterface> & T;
+	return ContextProvideActorMixinClass as unknown as 
+		Constructor<ContextProvideActorMixinInterface> & T;
 }

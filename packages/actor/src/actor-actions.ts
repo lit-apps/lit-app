@@ -115,7 +115,11 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
     `
   }
 
-  private renderActions(actor: Actor<any, any>, hideGuarded: boolean = false, iconButton: boolean = false) {
+  private renderActions(
+    actor: Actor<any, any>, 
+    hideGuarded: boolean = false, 
+    iconButton: boolean = false
+  ) {
     const nextEvents = actor.getNextEvents();
     const nextAllowedEvents = actor.getNextAllowedEvents();
 
@@ -137,15 +141,26 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
           if (hideGuarded && disabled || !eventConfig.meta) {
             return nothing;
           }
-          const { label, helper, filled, outlined, icon, renderer, confirm, style } = eventConfig.meta || {}
+          const { 
+            label, 
+            helper, 
+            filled, 
+            outlined, 
+            icon, 
+            renderer, 
+            confirm, 
+            style 
+          } = eventConfig.meta || {}
           if (renderer) {
             return renderer(actor);
           }
 
           const onClick = () => {
-            confirm ? 
-              this.currentEvent = event :
-              actor.send({ type: event })
+            if (confirm) {
+              this.currentEvent = event;
+            } else {
+              actor.send({ type: event });
+            }
           };
 
           const tag = tags[iconButton ? 'iconButton' : 'button'][filled ? 'filled' : outlined ? 'outlined' : 'default'];

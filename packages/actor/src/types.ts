@@ -1,5 +1,6 @@
-import { type HTMLTemplateResult } from 'lit';
+import { type TemplateResult, type HTMLTemplateResult } from 'lit';
 import  type Actor  from './actor.js';
+import { AnyEventObject, EventObject, MachineContext } from 'xstate';
 
 /**
  * Utils type constructor for events
@@ -59,4 +60,15 @@ export type EventMetaT = {
       confirmLabel?: string;
       cancelLabel?: string;
     };
+}
+
+/**
+ * type for lit - we use this in actor renderer
+ */
+export type TemplateT = (str: TemplateStringsArray, ...values: any[]) => TemplateResult
+export type RendererMetaT<
+  TContext extends MachineContext, 
+  TEvent extends EventObject = AnyEventObject
+> = {
+  renderer: (html: TemplateT, state: Actor<TContext, TEvent>) => TemplateResult
 }
