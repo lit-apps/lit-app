@@ -101,7 +101,7 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
 					@close=${onClose}>
 					<div slot="headline">${confirm?.heading || 'Please Confirm'}</div>
 						<form slot="content" method="dialog" id="form-confirm-action">
-              ${confirm?.renderer.call(this, this.actor, this.data)}
+              ${confirm?.renderer.call(this, html, this.actor, this.data)}
   				  </form>
 					<div slot="actions">
           <md-outlined-button
@@ -152,7 +152,7 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
             style 
           } = eventConfig.meta || {}
           if (renderer) {
-            return renderer(actor);
+            return renderer.call(this, html, actor);
           }
 
           const onClick = () => {

@@ -1,4 +1,4 @@
-import { type TemplateResult, type HTMLTemplateResult } from 'lit';
+import { type TemplateResult } from 'lit';
 import  type Actor  from './actor.js';
 import { AnyEventObject, EventObject, MachineContext } from 'xstate';
 
@@ -53,10 +53,10 @@ export type EventMetaT = {
     outlined?: boolean;
     icon?: string;
     style?: string;
-    renderer?: (actor: Actor<any, any>) => HTMLTemplateResult;
+    renderer?: (html: TemplateT, actor: Actor<any, any>) => TemplateResult;
     confirm?: {
       heading: string;
-      renderer: (actor: Actor<any, any>, data?: any) => HTMLTemplateResult;
+      renderer: (html: TemplateT, actor: Actor<any, any>, data?: any) => TemplateResult;
       confirmLabel?: string;
       cancelLabel?: string;
     };
