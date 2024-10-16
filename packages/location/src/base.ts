@@ -4,7 +4,7 @@ import '@material/web/select/select-option'
 import { LappSelect } from "@lit-app/cmp/field/select";
 import type { DistributeFunctionParamT } from "@lit-app/shared/types";
 
-import { css, html, LitElement, nothing } from "lit";
+import { css, html, LitElement, nothing, PropertyValues } from "lit";
 import { property, query, state } from 'lit/decorators.js';
 
 // export type FilterT = (item: string | string[]) =>  boolean;
@@ -15,7 +15,7 @@ export type FilterT = DistributeFunctionParamT<string | string[], boolean>;
  */
 
 export default class Base extends LitElement {
-  static readonly formAssociated = true;
+  // static readonly formAssociated = true;
 
   static override styles = css`
       :host {
@@ -30,28 +30,50 @@ export default class Base extends LitElement {
   @property({ type: Boolean }) disabled: boolean = false;
   @property({ type: Boolean, attribute: 'readonly' }) readOnly: boolean = false;
   @property() variant!: Variant;
-  @property({ attribute: false }) filter!:FilterT;
+  @property({ attribute: false }) filter!: FilterT;
   @query('lapp-select') select!: LappSelect;
 
-  get form() {
-    let parent = this.parentNode;
-    while (parent) {
-      if (parent instanceof HTMLFormElement) {
-      return parent;
-      }
-      parent = (parent as ShadowRoot)?.host ?? parent.parentNode;
-    }
-    return null;
-  }
+  /**
+  * Used for initializing select when the user sets the `value` directly.
+  */
+  private lastUserSetValue: string | undefined ;
+
+  // not used this is linked to the problem encountered here: https://github.com/WICG/webcomponents/issues/1075
+  // get form() {
+  //   let parent = this.parentNode;
+  //   while (parent) {
+  //     if (parent instanceof HTMLFormElement) {
+  //     return parent;
+  //     }
+  //     parent = (parent as ShadowRoot)?.host ?? parent.parentNode;
+  //   }
+  //   return null;
+  // }
 
   get value() {
-    return this.select?.value;
+    return this.lastUserSetValue || this.select?.value;
 
   }
   set value(value: string) {
     if (this.select) {
       this.select.value = value;
+    } else {
+      this.lastUserSetValue = value;
+      console.warn('no select');
     }
+
+  }
+
+  protected override firstUpdated(_changedProperties: PropertyValues<this>): void {
+    super.firstUpdated(_changedProperties);
+    if (this.lastUserSetValue) {
+      this.value = this.lastUserSetValue;
+      // it is possible that options are not yet rendered - so we need to wait a bit
+      setTimeout(() => {
+        this.lastUserSetValue = undefined
+      });
+    }
+
   }
 
   get _items() {
@@ -64,7 +86,7 @@ export default class Base extends LitElement {
 
   constructor() {
     super();
-    this.internals = this.attachInternals();
+    // this.internals = this.attachInternals();
   }
 
   override render() {

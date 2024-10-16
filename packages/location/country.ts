@@ -37,9 +37,10 @@ export default class lappLocationCountry extends assetTranslate(Base, locale as 
     if (this.continent) {
       items = countryContinent.filter((item: any) => item[1] === this.continent);
     }
+    const value = this.value;
 
     return html`${items.map((item: any) => html`
-    <md-select-option value="${item[0]}" ?selected=${this.value === item[0]}>
+    <md-select-option value="${item[0]}" ?selected=${value === item[0]}>
       ${this.showFlag ? html`
         <img slot="start" class="flag" src="/flags/4x3/${item[0].toLowerCase()}.svg" alt="${item[0]}"/>
       ` : nothing}

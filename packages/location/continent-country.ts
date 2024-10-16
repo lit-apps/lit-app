@@ -5,16 +5,16 @@ import { customElement, property, query } from 'lit/decorators.js';
 import ValueChangedEvent from '@lit-app/event/value-changed';
 import './continent';
 import './country';
-import {
-  internals,
-  mixinElementInternals,
-} from '@material/web/labs/behaviors/element-internals.js';
-import {
-	createValidator
-} from '@material/web/labs/behaviors/constraint-validation.js';
-import {RecordValidator} from './recordValidator';
-import { Validator } from '@material/web/labs/behaviors/validators/validator';
-import type { DistributeFunctionParamT as D} from "@lit-app/shared/types";
+// import {
+//   internals,
+//   mixinElementInternals,
+// } from '@material/web/labs/behaviors/element-internals.js';
+// import {
+// 	createValidator
+// } from '@material/web/labs/behaviors/constraint-validation.js';
+// import {RecordValidator} from './recordValidator';
+// import { Validator } from '@material/web/labs/behaviors/validators/validator';
+// import type { DistributeFunctionParamT as D} from "@lit-app/shared/types";
 import type { FilterT } from "./src/base.js";
 
 type ChangeT = {
@@ -30,7 +30,7 @@ type ChangeT = {
 @customElement('lapp-location-continent-country')
 // export default class lappLocationContinentCountry extends mixinElementInternals(LitElement) {
 export default class lappLocationContinentCountry extends LitElement {
-  static readonly formAssociated = true;
+  // static readonly formAssociated = true;
 
   static override styles = css`
       :host, form {
