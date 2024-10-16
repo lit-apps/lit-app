@@ -35,8 +35,8 @@ class RealClass extends T {
  * - [ ] improved support for some aria attributes: aria-errormessage, aria-invalid role and aria-live
  */
 
-// @ts-ignore - TS complains about renderField and field being private in Base class
-export abstract class TextField extends
+// @ts-expect-error - TS complains about renderField and field being private in Base class
+export class TextField extends
 NoAutoValidateMixin(
 	CompatMixin(
 		LocalStoragePersist(

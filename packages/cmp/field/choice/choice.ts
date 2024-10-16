@@ -21,7 +21,7 @@ import {ListItem } from '@material/web/list/internal/list-navigation-helpers.js'
 const NAVIGABLE_KEY_SET = new Set<string>(Object.values(NavigableKeys));
 const isNavigableKey = (key: string) => NAVIGABLE_KEY_SET.has(key);
 
-// @ts-ignore
+// @ts-expect-error - not types
 import locale  from './readaloud-locale.mjs';
 
 /**

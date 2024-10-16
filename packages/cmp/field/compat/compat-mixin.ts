@@ -1,29 +1,24 @@
+import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-// import { GenericI } from '../generic/generic';
 
-declare global {
-	interface HTMLElementEventMap {
-		
-	}
-}
+type Constructor<T = {}> = new (...args: any[]) => T;
 
-
-type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class CompatMixinInterface {
-	// Define the interface for the mixin
 	helper: string
 }
+
 /**
  * CompatMixin
  * allows to use MD2 property for MD3 fields
  */
-export const CompatMixin = <T extends Constructor<{supportingText: string}>>(superClass: T) => {
-
+export const CompatMixin = <T extends Constructor<LitElement>>(superClass: T) => {
  
 	abstract class CompatMixinClass extends superClass  {
+		 supportingText?: string | undefined;
+
 		/**
 		 * let us know that this is a MD3 field
-		 * this is usefull when processing errors - which is done differently in MD3
+		 * this is useful when processing errors - which is done differently in MD3
 		 */
 		isMD3: boolean = true;
 	 

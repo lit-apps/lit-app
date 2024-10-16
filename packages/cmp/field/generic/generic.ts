@@ -15,7 +15,7 @@ import { Field } from '@material/web/field/internal/field';
 import { A11yFieldMixinInterface } from '../field/internal/a11y-field-mixin';
 
 
-// @ts-ignore
+// @ts-expect-error - field is not the same type
 export interface GenericI extends TextField {
   hasError: boolean
   focused: boolean
@@ -37,7 +37,7 @@ export interface GenericI extends TextField {
   // renderSupportingText(): TemplateResult
   // renderCounter(): TemplateResult
   // getAriaDescribedBy(): string
-  getInputValue(): string
+  // getInputValue(): string
   getErrorText(): string
 
   // syncValidity(): void
@@ -46,13 +46,13 @@ export interface GenericI extends TextField {
 }
 
 /**
- * Generic Abstract class for constructing input fields.
+ * Generic class for constructing input fields.
  * 
  * This class is meant to be overridden. Subclasses MUST implement the following:
  * - renderInput - the input element, which is the main element of the field and MUST have teh value for the field
  * - input query getting the input element
  */
-// @ts-ignore
+// @ts-expect-error - private fields in TextField are public in GenericI
 export abstract class Generic extends CompatMixin(TextField) implements GenericI {
   protected abstract readonly fieldName: string
 
@@ -110,15 +110,15 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
     return true
   }
 
-  protected override renderInputOrTextarea(): TemplateResult {
+  protected override renderInputOrTextarea() {
     return html`
       <slot><input id="input" class="input"></input></slot>
       `;
   }
 
-  protected override getInputOrTextarea() {
-		return this.input
-	}
+  // protected override getInputOrTextarea() {
+	// 	return this.input
+	// }
 
   // we override onREportValidity to prevent the default behavior
   // // focusing on the element

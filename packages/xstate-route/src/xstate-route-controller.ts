@@ -16,7 +16,7 @@ import type {
   AnyStateMachine,
   Actor,
   StateNode,
-  AnyMachineSnapshot
+  AnyMachineSnapshot  
 } from 'xstate';
 
 import type { XstateDataT } from './types';
@@ -141,17 +141,22 @@ class RouteStateController implements ReactiveController {
     this.routerSlot.addEventListener('changestate', changeState);
 
     const actorToURL = (snap: AnyMachineSnapshot) => {
-      const routeConfig = snap._nodes.find((node: StateNode) => node.config?.route !== undefined)?.config?.route;
+      const routeConfig = snap._nodes
+        .find((node: StateNode) => node.config?.route !== undefined)
+        ?.config?.route;
       if (routeConfig) {
         // find the route in the routerSlot build the path and navigate to it
         const route = this.routerSlot.routes
           .find(r => r.data?.xstate && snap.matches(r.data?.xstate))
         if (route) {
           console.log('actorToURL, route:', route)
-          const path = constructAbsolutePath(this.routerSlot, route.path.replace(/:(\w+)/g, (match, paramName) => {
-            const contextValue = snap.context[paramName];
-            return contextValue !== undefined ? String(contextValue) : match;
-          }));
+          const path = constructAbsolutePath(
+            this.routerSlot, 
+            route.path.replace(/:(\w+)/g, (match, paramName) => {
+              const contextValue = snap.context[paramName];
+              return contextValue !== undefined ? String(contextValue) : match;
+            })
+          );
           this._preventSetState = true;
           console.log('actorToURL, path:', path)
           if (window.location.pathname !== path || this.routerSlot.match === null) {

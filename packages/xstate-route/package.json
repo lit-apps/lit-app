@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "router-slot": "link:../../../app-dependencies/router-slot",
-    "xstate": "link:../../../app-dependencies/xstate/packages/core"
+    "xstate": "github:statelyai/xstate#v5/routes&path:/packages/core"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.9.0",
