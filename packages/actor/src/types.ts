@@ -1,6 +1,5 @@
 import { type TemplateResult } from 'lit';
 import  type Actor  from './actor.js';
-import { AnyEventObject, EventObject, MachineContext } from 'xstate';
 
 /**
  * Utils type constructor for events
@@ -53,10 +52,10 @@ export type EventMetaT = {
     outlined?: boolean;
     icon?: string;
     style?: string;
-    renderer?: (html: TemplateT, actor: Actor<any, any>) => TemplateResult;
+    renderer?: (html: TemplateT, actor: Actor) => TemplateResult;
     confirm?: {
       heading: string;
-      renderer: (html: TemplateT, actor: Actor<any, any>, data?: any) => TemplateResult;
+      renderer: (html: TemplateT, actor: Actor, data?: any) => TemplateResult;
       confirmLabel?: string;
       cancelLabel?: string;
     };
@@ -66,9 +65,7 @@ export type EventMetaT = {
  * type for lit - we use this in actor renderer
  */
 export type TemplateT = (str: TemplateStringsArray, ...values: any[]) => TemplateResult
-export type RendererMetaT<
-  TContext extends MachineContext, 
-  TEvent extends EventObject = AnyEventObject
-> = {
-  renderer: (html: TemplateT, state: Actor<TContext, TEvent>) => TemplateResult
+export type RendererMetaT = {
+  renderer: (html: TemplateT, state: Actor) => TemplateResult
 }
+export type DOMHostT = HTMLElement | (() => HTMLElement) | undefined;

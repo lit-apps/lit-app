@@ -1,9 +1,11 @@
-import { css, LitElement, nothing, HTMLTemplateResult, html } from "lit";
-import { customElement, property, query, state } from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
-import { ConsumeActorMixin } from "./context-actor";
+
+import type { MdDialog } from '@material/web/dialog/dialog';
+import { html, LitElement, nothing } from 'lit';
+import { property, query, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { html as htmlStatic, literal } from 'lit/static-html.js';
 import Actor from "./actor";
+import { ConsumeActorMixin } from "./context-actor";
 import { type EventMetaT } from "./types";
 import ('@material/web/button/filled-button.js');
 import ('@material/web/button/outlined-button.js');
@@ -13,7 +15,6 @@ import ('@material/web/iconbutton/filled-icon-button.js');
 import ('@material/web/iconbutton/outlined-icon-button.js');
 import ('@material/web/iconbutton/icon-button.js');
 import ('@material/web/dialog/dialog.js');
-import type { MdDialog } from '@material/web/dialog/dialog';
 
 const filledButtonTag = literal`md-filled-button`;
 const outlineButtonTag = literal`md-outlined-button`;
@@ -116,7 +117,7 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
   }
 
   private renderActions(
-    actor: Actor<any, any>, 
+    actor: Actor, 
     hideGuarded: boolean = false, 
     iconButton: boolean = false
   ) {

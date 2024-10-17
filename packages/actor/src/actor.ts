@@ -4,8 +4,10 @@
 
 import { property, State } from '@lit-app/state';
 import type {
-  ActorOptions, EventFromLogic, EventObject,
-  MachineContext, MachineSnapshot, StateMachine,
+  ActorLogicFrom,
+  ActorOptions,
+  AnyActorLogic, AnyStateMachine, ContextFrom, EventFromLogic,
+  MachineSnapshot,
   StateNode,
   StateValue
 } from 'xstate';
@@ -49,7 +51,7 @@ const persistedSnapshotLogic = (actorLogic: any) => {
   return actorLogic
 }
 
-import type { ActorIdT } from './types';
+import type { ActorIdT, DOMHostT } from './types';
 export type HostT = 'client' | 'server'
 /**
  * Actor State - a state holding an xstate actor
@@ -91,29 +93,29 @@ export type HostT = 'client' | 'server'
  * @param rootPath - The root path of the actor in the db - for subclasses.
  * 
  */
-export default class Actor<
-  TContext extends MachineContext, TEvent extends EventObject = EventObject
-> extends State {
+export default class Actor extends State {
 
-  declare ['constructor']: typeof Actor<{}>;
+  declare ['constructor']: typeof Actor;
   static hostType: HostT = 'client'
   domHost: HTMLElement | undefined;
   constructor(
-    public machine: StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any, any, any> , //| XstateActor<any>,
-    // public machine: AnyActorLogic,
-    protected options: ActorOptions<any> & {domHost?: HTMLElement | undefined} = {},
+    public machine: AnyStateMachine,
+    protected options: ActorOptions<AnyActorLogic> & { domHost?: DOMHostT } = {},
     actorId: ActorIdT,
-    protected rootPath: string ='actor') {
+    protected rootPath: string = 'actor') {
     super();
     this.actorId = actorId
-    this.domHost = options.domHost
+    this.domHost = typeof options.domHost === 'function' ? options.domHost() : options.domHost;
     this.setupActor();
   }
 
   /**
    * Actor snapshot - requestUpdate is called whenever snapshot is updated
   */
-  @property({ type: Object }) snapshot!: MachineSnapshot<TContext, TEvent, any, any, any, any, any, any>
+  // @property({ type: Object }) snapshot!: SnapshotFrom< typeof this['machine']>;
+  @property({ type: Object }) snapshot!: MachineSnapshot<
+    ContextFrom<this['machine']>, EventFromLogic<this['machine']>, any, any, any, any, any, any
+  >;
 
   /**
    * Gets the type of the host for the actor state.
@@ -128,7 +130,7 @@ export default class Actor<
    * Gets the context of the actor state.
    * @returns The context of the actor state.
    */
-  get context() {
+  get context(): ContextFrom<this['machine']> {
     return this.snapshot?.context;
   }
   /**
@@ -206,7 +208,9 @@ export default class Actor<
   protected async setupActorID(_actorId: ActorIdT) {
   }
 
-  private _actor!: XstateActor<StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any, any, any>>;
+  private _actor!: XstateActor<ActorLogicFrom<this['machine']>>;
+  // private _actor!: XstateActor<this['machine']>;
+  //  XstateActor<StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any, any, any>>;
 
   get actor() {
     return this._actor;
@@ -216,7 +220,8 @@ export default class Actor<
     this.subscribeActor(actor);
   }
 
-  protected subscribeActor(actor: XstateActor<StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any, any, any>>) {
+  // protected subscribeActor(actor) {
+  protected subscribeActor(actor: XstateActor<typeof this['machine']>) {
     actor.subscribe((snapshot) => {
       // console.log('actor subscription snapshot', snapshot.value, snapshot)
       this.snapshot = snapshot;
@@ -237,7 +242,7 @@ export default class Actor<
     this.actor = createActor(persistedSnapshotLogic(this.machine), this.options);
   }
 
-  send(event: TEvent, _clientLevel = false) {
+  send(event: EventFromLogic<this['machine']>, _clientLevel = false) {
     return this.actor.send(event);
   }
 
@@ -292,7 +297,7 @@ export default class Actor<
    * get next available events for the given snapshot
    */
   getNextEvents() {
-    if(!this.snapshot) {
+    if (!this.snapshot) {
       return []
     }
     return [...new Set([...this.snapshot._nodes.flatMap((sn) => sn.ownEvents)])];
@@ -302,11 +307,11 @@ export default class Actor<
    * get next allowed events for the given snapshot
    */
   getNextAllowedEvents() {
-    if(!this.snapshot) {
+    if (!this.snapshot) {
       return []
     }
     return [...this.getNextEvents()].filter((event) => {
-      return this.can({type: event } as EventFromLogic<this['machine']> );
+      return this.can({ type: event } as EventFromLogic<this['machine']>);
     })
   }
 
@@ -314,15 +319,16 @@ export default class Actor<
    * get event config descriptor for the given event
    * @param event - the event name
    */
-  getEventDescriptors(event: string): {meta?:EventMetaT} {
-    if(!this.snapshot) {
-      return { }
+  getEventDescriptors(event: string): { meta?: EventMetaT } {
+    if (!this.snapshot) {
+      return {}
     }
     return this.snapshot._nodes.reduce((acc, node) => {
-        // @ts-ignore
-        return {...acc,  ...node.config?.on?.[event]}
-      }, {} as StateNode<TContext, TEvent>)
-    
+      // @ts-expect-error - explicitly ignore the error 
+      return { ...acc, ...node.config?.on?.[event] }
+    }, {} as StateNode<
+      ContextFrom<this['machine']>, EventFromLogic<this['machine']>>)
+
   }
 
 }

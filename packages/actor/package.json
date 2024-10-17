@@ -19,7 +19,7 @@
     "@lit-app/state": "link:../state",
     "@lit/context": "^1.1.2",
     "@material/web": "link:../../../app-dependencies/material-web",
-    "lit": "^3.1.4",
+    "lit": "^3.2.0",
     "xstate": "github:statelyai/xstate#v5/routes&path:/packages/core"
   },
   "devDependencies": {

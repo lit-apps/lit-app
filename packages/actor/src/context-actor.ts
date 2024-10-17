@@ -6,7 +6,7 @@ import watch from '@lit-app/shared/decorator/watch';
 import { StateController } from '@lit-app/state';
 
 // context for holding surveyContext
-export const ActorContext = createContext<Actor<any, any>>('actor-context');
+export const ActorContext = createContext<Actor>('actor-context');
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
@@ -15,19 +15,19 @@ type Constructor<T = {}> = new (...args: any[]) => T;
  * - @property - Actor<any,any>
  */
 export declare class ContextActorMixinInterface {
-	actor: Actor<any, any>;
+	actor: Actor;
 }
 
 export const ConsumeActorMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
 	class ContextConsumeActorMixinClass extends superClass {
-		_bindActor!: StateController<Actor<any, any>>;
+		_bindActor!: StateController<Actor>;
 
 		@consume({ context: ActorContext, subscribe: true })
-		@state() actor!: Actor<any, any>;
+		@state() actor!: Actor;
 
 		@watch('actor')
-		_actorChanged(actor: Actor<any, any>) {
+		_actorChanged(actor: Actor) {
 			this._bindActor = new StateController(this, actor);
 			
 		}
