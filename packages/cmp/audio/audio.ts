@@ -24,7 +24,7 @@ import { PlayerController } from './internal/player-controller';
 @customElement('lapp-audio')
 export default class lappAudio extends LitElement {
 
-	bindActorState!: StateController<ActorState<any, any>> // = new StateController(this, actorState)
+	bindActorState!: StateController<ActorState> // = new StateController(this, actorState)
 
 	playerController = new PlayerController(this, src[0], 'this is some text to speech', { pitch: 1, rate: 1, language: 'en' });
 	static override styles = css`

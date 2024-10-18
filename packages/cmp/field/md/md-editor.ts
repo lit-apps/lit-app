@@ -114,8 +114,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	@property({ type: Number, attribute: 'maxlength' }) maxLength!: number;
 	@property({ type: Number, attribute: 'minlength' }) minLength!: number;
 
-
-	@property() selected = 0;
+	@state() selected = 0;
 
 	@query('lapp-text-field') _input!: MdFilledTextField;
 	@query('md-tabs') _tabs!: HTMLElement;

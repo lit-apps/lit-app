@@ -16,7 +16,7 @@ const spy = vi.fn(cb)
 class TestHook extends Hook {
 	static override hookName = 'test'
 	override fromState(...args): void {
-		// @ts-ignore
+		// @ts-expect-error  - we are cheating
 		spy(...args)
 	}
 }

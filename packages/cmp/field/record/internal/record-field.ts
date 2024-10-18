@@ -8,7 +8,7 @@ import { when } from 'lit/directives/when.js';
 import translate  from '@preignition/preignition-util/translate-mixin.js';
 import '../input-record'
 
-// @ts-ignore
+// @ts-expect-error  - we are cheating
 import locale  from './record-field-locale.mjs';
 import {
 	createValidator

@@ -141,7 +141,7 @@ export class State extends EventTarget {
     this.hookMap.forEach(hook => hook.reset());
 
     [...this.propertyMap]
-      // @ts-ignore
+      // @ts-expect-error  - we are cheating
       .filter(([key, definition]) => !(definition.skipReset === true || definition.resetValue === undefined))
       .forEach(([key, definition]) => {
           (this as {} as { [key: string]: unknown })[key as string] = definition.resetValue;

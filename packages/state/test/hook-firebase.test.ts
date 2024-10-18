@@ -62,10 +62,10 @@ describe("hook", () => {
 	it("settings a value to the state reflects to firebase", async () => {
 		expect(myState.a).not.toBeDefined()
 		expect(myState.b).not.toBeDefined()
-		// @ts-ignore
+		// @ts-expect-error  - we are cheating
 		expect(hookFirebase._unsubscribe.length).toBe(0) 
 		hookFirebase.ref = testRef
-		// @ts-ignore
+		// @ts-expect-error  - we are cheating
 		expect(hookFirebase._unsubscribe.length).toBe(2) 
 		myState.a = 1
 		myState.b = 2
@@ -82,10 +82,10 @@ describe("hook", () => {
 		const hookFirebase = new HookFirebase(s)
 		expect(s.a).not.toBeDefined()
 		expect(s.b).not.toBeDefined()
-		// @ts-ignore
+		// @ts-expect-error  - we are cheating
 		expect(hookFirebase._unsubscribe.length).toBe(0) 
 		hookFirebase.ref = testRef
-		// @ts-ignore
+		// @ts-expect-error  - we are cheating
 		expect(hookFirebase._unsubscribe.length).toBe(2) 
 		await set(child(testRef, 'a'), 1)
 		await set(child(testRef, 'bPath'), 2)

@@ -46,16 +46,16 @@ export default fixture;
  */
 try {
   // we should not assume that our users load mocha types globally
-  // @ts-ignore
+  // @ts-expect-error  - we are cheating
   if ('afterEach' in window) {
-    // @ts-ignore
+    // @ts-expect-error  - we are cheating
     afterEach(() => {
       fixtureCleanup();
     });
   }
-  // @ts-ignore
+  // @ts-expect-error  - we are cheating
   if ('teardown' in window) {
-    // @ts-ignore
+    // @ts-expect-error  - we are cheating
     teardown(() => {
       fixtureCleanup();
     });

@@ -49,12 +49,12 @@ export class Hook {
 		.forEach(([key, value]) =>  (this.state as {} as { [key: string]: unknown })[key as string] = value) 
 	}
 	
-	// @ts-ignore 
+	// @ts-expect-error  - we are cheating 
 	fromState(key: string, value: unknown, state: State) {
 		throw ('fromState must be implemented in subclasses')
 	}
 	
-	// @ts-ignore 
+	// @ts-expect-error  - we are cheating 
 	reset() {
 		throw ('reset hook must be implemented in subclasses')
 	}

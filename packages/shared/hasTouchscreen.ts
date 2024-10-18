@@ -8,10 +8,10 @@ export default () => {
   if ("maxTouchPoints" in navigator) {
     hasTouchScreen = navigator.maxTouchPoints > 0;
   } else if ("msMaxTouchPoints" in navigator) {
-		// @ts-ignore
+		// @ts-expect-error  - we are cheating
     hasTouchScreen = navigator.msMaxTouchPoints > 0;
   } else {
-		// @ts-ignore
+		// @ts-expect-error  - we are cheating
     const mQ = window.matchMedia && matchMedia("(pointer:coarse)");
     if (mQ && mQ.media === "(pointer:coarse)") {
       hasTouchScreen = !!mQ.matches;
@@ -19,7 +19,7 @@ export default () => {
       hasTouchScreen = true; // deprecated, but good fallback
     } else {
       // Only as a last resort, fall back to user agent sniffing
-			// @ts-ignore
+			// @ts-expect-error  - we are cheating
       const UA = navigator.userAgent;
       hasTouchScreen = (
         /\b(BlackBerry|webOS|iPhone|IEMobile)\b/i.test(UA) ||

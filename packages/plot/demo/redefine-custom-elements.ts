@@ -544,5 +544,5 @@ Object.assign(CustomElementRegistry.prototype, {
 });
 
 // patching HTMLElement constructor associated to the global object
-// @ts-ignore
+// @ts-expect-error  - we are cheating
 window.HTMLElement = patchedHTMLElement;

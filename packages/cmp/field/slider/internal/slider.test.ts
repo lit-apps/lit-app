@@ -30,7 +30,7 @@ describe('slider', () => {
 			throw new Error('Could not query rendered <test-slider>.');
 		}
 		const input  = element.input as unknown as MdSlider;
-		//@ts-ignore
+		//@ts-expect-error  - we are cheating
 		const {inputEnd, inputStart}  = input
 		return {
 			element,

@@ -18,10 +18,10 @@ import type { PropertyValues, LitElement } from 'lit';
  */
 export function watch(propName: string, waitUntilFirstUpdate = false) {
   return <T extends LitElement>(proto: T, functionName: string): void => {
-    // @ts-ignore
+    // @ts-expect-error  - we are cheating
     const { willUpdate } = proto;
     if (propName in proto) {
-      // @ts-ignore
+      // @ts-expect-error  - we are cheating
       proto.willUpdate = function (this: T, changedProperties: PropertyValues) {
         if (changedProperties.has(propName)) {
           const oldValue = changedProperties.get(propName);
@@ -29,7 +29,7 @@ export function watch(propName: string, waitUntilFirstUpdate = false) {
 
           if (oldValue !== newValue) {
             if (!waitUntilFirstUpdate || this.hasUpdated) {
-              // @ts-ignore
+              // @ts-expect-error  - we are cheating
               this[functionName](newValue, oldValue);
             }
           }

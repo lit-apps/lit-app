@@ -64,7 +64,7 @@ export function property(
     // define in createProperty() with the original descriptor. We don't do this
     // for fields, which don't have a descriptor, because this could overwrite
     // descriptor defined by other decorators.
-    // @ts-ignore
+    // @ts-expect-error  - we are cheating
     return hasOwnProperty
       ? Object.getOwnPropertyDescriptor(proto, name)
       : undefined;

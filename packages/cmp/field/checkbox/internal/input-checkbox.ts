@@ -20,7 +20,7 @@ export abstract class InputCheckbox extends MdCheckbox {
 
   override firstUpdated(props: PropertyValues<this>) {
 		super.firstUpdated(props);
-    // @ts-ignore
+    // @ts-expect-error  - we are cheating
 		this.input.setAttribute('aria-describedby', 'description');
 	}
 	override render() {

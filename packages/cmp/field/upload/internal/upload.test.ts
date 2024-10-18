@@ -29,7 +29,7 @@ describe('upload', () => {
 			throw new Error('Could not query rendered <test-upload>.');
 		}
 		const input  = element.input as unknown as FirebaseDocumentUpload;
-		//@ts-ignore
+		//@ts-expect-error  - we are cheating
 		const {inputEnd, inputStart}  = input
 		return {
 			element,

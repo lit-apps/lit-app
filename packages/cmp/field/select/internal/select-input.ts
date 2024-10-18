@@ -9,7 +9,7 @@ import { html, nothing } from 'lit';
 import { SelectOption } from '@material/web/select/internal/shared.js';
 import { property, query, state } from 'lit/decorators.js';
 
-// @ts-ignore
+// @ts-expect-error  - we are cheating
 export abstract class SelectInput extends Select {
 	private _searchHasFocus = false; 
 
