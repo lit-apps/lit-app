@@ -90,7 +90,7 @@ export abstract class Star extends
    */
   @property({ type: Boolean }) allowNoStar = false
 
-  // @ts-ignore
+  // @ts-expect-error  - we are cheating
   override get items() {
     return [...this._queryItems('input[type=radio]') as NodeListOf<HTMLInputElement>]
   }

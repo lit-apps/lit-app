@@ -110,7 +110,7 @@ describe('radio', () => {
 				const { element } = await setupTest(template);
 				element.reportValidity()
 				await element.updateComplete;
-				// @ts-ignore
+				// @ts-expect-error  - we are cheating
 				expect(element.validity.valid).toEqual(true);
 			})
 
@@ -119,7 +119,7 @@ describe('radio', () => {
 				const { element } = await setupTest(template);
 				element.reportValidity()
 				await element.updateComplete;
-				// @ts-ignore
+				// @ts-expect-error  - we are cheating
 				expect(element.validity.valid).toEqual(false);
 			})
 			it('should be valid when required and has a value', async () => {
@@ -127,7 +127,7 @@ describe('radio', () => {
 				const { element } = await setupTest(template);
 				element.reportValidity()
 				await element.updateComplete;
-				// @ts-ignore
+				// @ts-expect-error  - we are cheating
 				expect(element.validity.valid).toEqual(true);
 			})
 		})

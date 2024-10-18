@@ -1,16 +1,20 @@
-import { LitElement, PropertyValueMap, PropertyValues } from "lit";
-import { html, TemplateResult, nothing } from 'lit';
-import { when } from 'lit/directives/when.js';
-import { property, query, state } from 'lit/decorators.js';
-import { repeat } from 'lit/directives/repeat.js'
-import '../../../../list/list'
-import '../../../../list/list-item'
-import '@material/web/icon/icon'
-import '@material/web/iconbutton/outlined-icon-button'
-import '@material/web/iconbutton/filled-tonal-icon-button'
 import { animate } from '@lit-labs/motion';
+import '@material/web/icon/icon';
+import '@material/web/iconbutton/filled-tonal-icon-button';
+import '@material/web/iconbutton/outlined-icon-button';
+import { html, LitElement, PropertyValues } from "lit";
+import { state } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
+import { when } from 'lit/directives/when.js';
+import '../../../../list/list';
+import '../../../../list/list-item';
+import '../../list-item';
 import MultiChoiceMixin from '../../multiMixin';
-import '../../list-item'
+import { HTMLEvent } from '@lit-app/shared/types';
+import { Checkbox } from '../../checkbox/internal/checkbox';
+import IllustrationMixin from '../../illustrationMixin';
+import type { Option } from '../../types';
+
 /**
  * An example element.
  *  
@@ -31,12 +35,6 @@ import '../../list-item'
  * - we calculate the new margin-top for the item to move and the item to move to
  * - we reset options to the appropriate order at the end of the animation
  */
-
-import IllustrationMixin from '../../illustrationMixin';
-import type { Option } from '../../types';
-import { HTMLEvent } from '@lit-app/shared/types';
-import { Checkbox } from '../../checkbox/internal/checkbox';
-// type Option = O & { initialIndex: number }
 export abstract class Order extends
   MultiChoiceMixin(
     IllustrationMixin(

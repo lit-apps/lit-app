@@ -37,6 +37,15 @@ export default class lappChoiceListItem extends LappListItem {
 		button#item {
 			width: 100%;
 		}
+
+		/** for print - we want denser layout */ 
+		@media print {
+			:host {
+			--md-list-item-bottom-space: 4px;
+			--md-list-item-top-space: 4px;
+			--md-list-item-one-line-container-height: 48px.;
+			}
+		}
 		`
 	]
 

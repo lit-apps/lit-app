@@ -36,6 +36,22 @@ const swapButtonStyles = css`
 	}
 	`
 
+const printStyles = css`
+	/** checkbox are not printed without this */
+	md-checkbox {
+		-webkit-print-color-adjust:exact !important;
+		print-color-adjust:exact !important;
+	}
+	
+	/** we want some denser layout for print */
+	@media print {
+		*[data-role="checkbox"] {
+			margin-top: 2px;
+			margin-bottom: 2px;
+		}
+
+	}`
+
 /**
  * Styles to be applied both to filled and outlined choice fields.
  * 
@@ -45,7 +61,8 @@ const styles: CSSResult[] = [
 	choiceStyles,
 	genericStyles,
 	priorityStyles,
-	swapButtonStyles
+	swapButtonStyles, 
+	printStyles
 ]
 
 export default styles
