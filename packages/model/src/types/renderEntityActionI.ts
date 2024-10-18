@@ -154,7 +154,10 @@ const _defaultActions = {
 type DefaultActionsType = ActionType<typeof _defaultActions>
 export const defaultActions: DefaultActionsType = _defaultActions
 
-export declare class RenderInterface<D extends DefaultI, A extends Actions = Actions> extends RenderEntityCreateInterface<D & DataI> {
+export declare class RenderInterface<
+	D extends DefaultI, 
+	A extends Actions = Actions
+> extends RenderEntityCreateInterface<D & DataI> {
 	/**
 	 * Show actions: set true to show actions
 	 */
@@ -171,6 +174,16 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
  * Utility render method to render an group of actions - 
  */
 	protected renderBaseActions(data: D, config?: RenderConfig): TemplateResult | typeof nothing
+	/**
+	 * Utility render method to render default action is Viewing mode (edit action)
+	 */
+	protected renderViewingActions(data: D, config?: RenderConfig): TemplateResult | typeof nothing
+	/**
+	 * Utility render method to render default action is Editing mode (save, cancel action)
+	 */
+	protected renderEditingActions(data: D, config?: RenderConfig): TemplateResult | typeof nothing
+
+
 	/**
 	 * Utility render method to render an group of actions
 	 */
@@ -211,20 +224,52 @@ export declare class RenderInterface<D extends DefaultI, A extends Actions = Act
  * @param data 
  * @returns 
  */
-	renderBulkActions(selectedItems: Collection<D>, data: Collection<D>, entityAccess?: EntityAccess, entityStatus?: EntityStatus): TemplateResult
+	renderBulkActions(
+		selectedItems: Collection<D>, 
+		data: Collection<D>, 
+		entityAccess?: EntityAccess, 
+		entityStatus?: EntityStatus
+	): TemplateResult
 
 	renderEditActions(data: D, config?: RenderConfig): TemplateResult
 	renderDefaultActions(data: D, config: RenderConfig): TemplateResult
-	renderBulkActions(selectedItems: Collection<D>, data: Collection<D>, entityAccess?: EntityAccess, entityStatus?: EntityStatus): TemplateResult
-	renderBulkAction(selectedItems: Collection<D>, data: Collection<D>, action: Action, actionName: keyof A): TemplateResult
+	renderBulkActions(
+		selectedItems: Collection<D>, 
+		data: Collection<D>, 
+		entityAccess?: EntityAccess, 
+		entityStatus?: EntityStatus
+	): TemplateResult
+	renderBulkAction(
+		selectedItems: Collection<D>, 
+		data: Collection<D>, 
+		action: Action, 
+		actionName: keyof A
+	): TemplateResult
 }
 
-export interface StaticEntityActionI<D extends DefaultI, A extends Actions> extends AbstractEntity<D> {
+export interface StaticEntityActionI<
+	D extends DefaultI, 
+	A extends Actions
+> extends AbstractEntity<D> {
 	actions: A
 	_dispatchTriggerEvent(event: CustomEvent, el: HTMLElement): CustomEvent
 	getEvent(actionName: keyof A, data: D, el?: HTMLElement, bulkAction?: boolean): AnyEvent
-	renderAction(actionName: keyof A, element: HTMLElement, data: any, config?: ButtonConfig, beforeDispatch?: () => boolean | string | void, onResolved?: (promise: any) => void): TemplateResult
-	onActionClick(actionName: keyof A, host: HTMLElement, data?: any, beforeDispatch?: () => boolean | string | void, onResolved?: OnResolvedT, eventGetter?: () => CustomEvent): (e: Event & { target: LappButton }) => Promise<void>
+	renderAction(
+		actionName: keyof A,
+		element: HTMLElement,
+		data: any,
+		config?: ButtonConfig,
+		beforeDispatch?: () => boolean | string | void,
+		onResolved?: (promise: any) => void
+	): TemplateResult
+	onActionClick(
+		actionName: keyof A, 
+		host: HTMLElement, 
+		data?: any, 
+		beforeDispatch?: () => boolean | string | void, 
+		onResolved?: OnResolvedT, 
+		eventGetter?: () => CustomEvent
+	): (e: Event & { target: LappButton }) => Promise<void>
 	getAction(key: keyof A): Action
 	getEntityAction<T extends ActionI = ActionI>(detail: T['detail'], actionName: keyof A, confirmed?: boolean, bulkAction?: boolean): EntityAction<T>
 	setPrototypeOfActions(actions: DefaultActionsType, Proto: AbstractEntity): void

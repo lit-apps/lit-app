@@ -20,7 +20,12 @@ type BtnCfg = {
 }
 
 export type ButtonConfig = BtnCfg | ((data: any, entityStatus?: EntityStatus) => BtnCfg)
-
+type BulkT = {
+	render: (selectedItems: any[], data?:  any) => TemplateResult
+	index: number // index used to sort the actions
+	tooltip?: string,
+	disabled?: (data: any[]) => boolean
+}
 export type ActionBase = {
 	label?: string
 	icon?: string
@@ -41,12 +46,7 @@ export type ActionBase = {
 		label: string,
 		index: number // index used to sort the actions
 	},
-	bulk?: {
-		render: (selectedItems: any[], data?:  any) => TemplateResult
-		index: number // index used to sort the actions
-		tooltip?: string,
-		disabled?: (data: any[]) => boolean
-	},
+	bulk?: BulkT
 	entityName?: string // the name of the entity - this is useful for actions that need to be handled at the correct db reference
 	pushHistory?: boolean // true to push the action to the history when executed
 	preventWriteEvent?: boolean // true to prevent the event to be written on /internals/event
@@ -64,6 +64,15 @@ export type ActionBase = {
 export type DefaultAction = ActionBase & {
 }
 
+// export type RendererAction = {
+// 	renderer: (this: EntityElement, data: any, config: BtnCfg) => TemplateResult
+// 	description?: string
+// 	showDefault?: ((data: any) => boolean) | boolean // whether to show as a default action (appearing when not editing)
+// 	showEdit?: ((data: any) => boolean ) | boolean // whether to show as an edit action (appearing when  editing)
+// 	bulk?: BulkT
+// 	entityName?: string // the name of the entity - this is useful for actions that need to be handled at the correct db reference
+
+// }
 
 // export type OnClickAction = Omit<ActionBase, 'onResolved' > & {
 export type OnClickAction = ActionBase & {
@@ -77,7 +86,7 @@ export type OnClickAction = ActionBase & {
 export type HandlerAction = ActionBase & {
 	handler: Handler
 }
-export type Action =  HandlerAction | OnClickAction | DefaultAction
+export type Action =  HandlerAction | OnClickAction | DefaultAction 
 
 export type DefaultActions = 
 	'create' | 'edit' | 'write' | 'cancel' | 'delete' |'markDeleted' | 'restore' | 'open' | 'close' |

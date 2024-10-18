@@ -1,4 +1,5 @@
-import { camelToDash } from '@preignition/preignition-util';
+import  camelToDash  from "@lit-app/shared/camelToDash.js";
+
 import { TemplateResult } from 'lit';
 import { html, LitElement, PropertyValues } from "lit";
 import { property, state } from 'lit/decorators.js';
@@ -62,12 +63,26 @@ export default abstract class AbstractEntityElement extends
 
   @property({ attribute: false }) entityRenderOptions!: RenderConfigOptional;
 
+	/**
+	 * The render mode for the entity
+	 * 
+	 * It affects how renderField is processed.
+	 * 
+	 * view: view mode
+	 * edit: edit mode
+	 * translate: translate mode
+	 * print: print mode
+	 * default is edit	
+	 */
+	@property() consumingMode: RenderConfig['consumingMode'] = 'edit';
+
 	get renderConfig(): RenderConfig {
 		return {
 			entityAccess: this.entityAccess,
 			entityStatus: this.entityStatus,
 			heading: this.heading,
 			level: this.level,
+			consumingMode: this.consumingMode,
 			$id: this.docId,
 			...this.entityRenderOptions,
 		}

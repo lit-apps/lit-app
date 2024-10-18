@@ -51,7 +51,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			* We will need to set the type of constructor on all subclasses so that
 			* the type of actions is properly inferred. 
 			*/
-		// @ts-ignore
+		// @ts-expect-error  - we are cheating
 		declare ['constructor']: typeof R
 
 		create(details: PartialBy<EntityCreateDetail, 'entityName'>) {
@@ -80,7 +80,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 
 
 		public dispatchAction(actionName: keyof A): CustomEvent {
-			// @ts-ignore
+			// @ts-expect-error  - we are cheating
 			const action = this.actions[actionName];
 			const event = new EntityAction({ id: this.host.id, entityName: action.entityName || this.entityName }, action, String(actionName));
 			return this._dispatchTriggerEvent(event);
@@ -115,17 +115,22 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			if (!entityAccess?.canEdit || this.realTime) return nothing;
 			return html`
 				${entityStatus?.isEditing ?
-					html`
-						${this.renderAction('write', data)}
-						${this.renderAction('cancel', data)}
-						` :
-					html`
-						${this.renderAction('edit', data)}
-						`
+					this.renderEditingActions(data, config) :
+					this.renderViewingActions(data, config)
 				}
 				<span class="flex"></span>
 				${entityStatus?.isEditing ? this.renderEditActions(data, config) : this.renderDefaultActions(data, config)}
 			`
+		}
+
+		renderEditingActions(data: D, config: RenderConfig) {
+			return html`
+			${this.renderAction('write', data)}
+			${this.renderAction('cancel', data)}
+			`
+		}
+		renderViewingActions(data: D, config: RenderConfig) {
+			return this.renderAction('edit', data)
 		}
 
 		renderAction(
@@ -134,7 +139,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			config?: ButtonConfig,
 			beforeDispatch?: () => boolean | string | void,
 			onResolved?: OnResolvedT) {
-			// @ts-ignore
+			// @ts-expect-error  - we are cheating
 			const action = (this.actions)[actionName];
 			if (!action) {
 				console.error(`Entity ${this.entityName} has no action found for ${String(actionName)}`);
@@ -142,17 +147,22 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			const actionConfig = typeof (action.config) === 'function' ? action.config(data || this.host.data, this.host.entityStatus) : action.config;
 			config = typeof (config) === 'function' ? config(data || this.host.data, this.host.entityStatus) : config;
 			const cfg = Object.assign({}, actionConfig, config);
+			if (action.renderer) {
+				return action.renderer.call(this, data, config)
+			}
 			// the button is active when: 
 			const disabled = cfg?.disabled === true
 			const filled = cfg?.filled ?? false
 			const text = cfg?.text ?? false
 			const outlined = cfg?.outlined ?? !text
 			const label = cfg?.label ?? action.label
+			const onClick = this.onActionClick(
+				actionName, data, beforeDispatch, onResolved, () => this.getEvent(actionName, data)
+			)
 			return html`<lapp-button 
 					class="${actionName} action"
 					.icon=${action.icon || ''} 
-					
-					@click=${this.onActionClick(actionName, data, beforeDispatch, onResolved, () => this.getEvent(actionName, data))}
+					@click=${onClick}
 					.disabled=${disabled}
 					.outlined=${outlined}
 					.filled=${filled}
@@ -210,7 +220,12 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			return edit;
 		}
 
-		renderBulkActions(selectedItems: Collection<D>, data: Collection<D>, _entityAccess?: EntityAccess, _entityStatus?: EntityStatus) {
+		renderBulkActions(
+			selectedItems: Collection<D>,
+			data: Collection<D>,
+			_entityAccess?: EntityAccess,
+			_entityStatus?: EntityStatus
+		) {
 			const bulkActions = entries<Actions>(this.actions)
 				.filter(([_key, action]) => action.bulk)
 				.sort(([_ka, a], [_kb, b]) => ((a.bulk?.index || 0) - (b.bulk?.index || 0)))
@@ -223,9 +238,16 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 		</div>`
 		}
 
-		renderBulkAction(selectedItems: Collection<D>, data: Collection<D>, action: Action, actionName: keyof A) {
+		renderBulkAction(
+			selectedItems: Collection<D>,
+			data: Collection<D>,
+			action: Action,
+			actionName: keyof A
+		) {
 			const bulkActionHandler = () => {
-				const event = this.getEvent(actionName, data, true) as EntityAction | AppAction | AppActionEmail;
+				const event = this.getEvent(
+					actionName, data, true
+				) as EntityAction | AppAction | AppActionEmail;
 				event.detail.selectedItems = selectedItems
 
 				// const event = new EntityAction({ id: this.host.id, entityName: this.entityName }, action, actionName);
@@ -453,6 +475,8 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 
 	}
 	Object.assign(R, staticApply);
-	return R as unknown as Constructor<RenderInterface<D, A>> & typeof superclass & StaticEntityActionI<D, A>;
+	return R as unknown as Constructor<RenderInterface<D, A>> & 
+		typeof superclass & 
+		StaticEntityActionI<D, A>;
 }
 

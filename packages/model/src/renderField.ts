@@ -3,8 +3,23 @@ import { get, set } from '@preignition/preignition-util/src/deep';
 import { TemplateResult, html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Dirty, EntityWriteDetail, Update } from './events';
-import { DefaultI, EntityElement } from './types/entity';
-import type { Model, ModelComponent, FieldConfig } from './types/modelComponent';
+import { DefaultI, EntityElement, RenderConfig } from './types/entity';
+import type {
+  Model,
+  ModelComponent,
+  FieldConfig,
+  ModelComponentText,
+  ModelComponentCheckboxGroup,
+  ModelComponentTextArea,
+  ModelComponentStar,
+  ModelComponentRadioGroup,
+  ModelComponentBoolean,
+  ModelComponentSelect,
+  ModelComponentSlider,
+  ModelComponentUpload,
+  ModelComponentUploadImage,
+  ModelComponentMd
+} from './types/modelComponent';
 // Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
 import '@polymer/polymer';
 import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-box';
@@ -25,8 +40,23 @@ import {
   isComponentUpload,
   isComponentUploadImage,
   isComponentStar,
-
 } from './types/modelComponent';
+
+
+type OComponentText = Omit<ModelComponentText, 'component'>;
+type OComponentCheckboxGroup = Omit<ModelComponentCheckboxGroup, 'component'>;
+type OComponentTextArea = Omit<ModelComponentTextArea, 'component'>;
+type OComponentStar = Omit<ModelComponentStar, 'component'>;
+type OComponentRadioGroup = Omit<ModelComponentRadioGroup, 'component'>;
+type OComponentBoolean = Omit<ModelComponentBoolean, 'component'>;
+type OComponentSelect = Omit<ModelComponentSelect, 'component'>;
+type OComponentSlider = Omit<ModelComponentSlider, 'component'>;
+type OComponentUpload = Omit<ModelComponentUpload, 'component'>;
+type OComponentUploadImage = Omit<ModelComponentUploadImage, 'component'>;
+type OComponentMd = Omit<ModelComponentMd, 'component'>;
+
+
+// @ts-expect-error - not typed
 import('@preignition/firebase-upload/image-upload')
 import('@preignition/pwi-input/src/pwi-input-translation')
 import('@preignition/pwi-input/src/pwi-input-translation-textarea')
@@ -50,18 +80,19 @@ const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetai
 
 
 /**
- * Renders a data entry field for a given model. It also handles the update of the data.
- * 
- * @param this 
- * @param name - the name of the model
- * @param data - current data
- * @param update - when true, updates the data automatically
- * @param model - the model
- * @param entity - the entity
- * @param config? - additional config
- * @param mode? - the mode of the field: edit, translate or view
- * @param path? - the path of the model. this is needed when name is not the same as the path (for instance for nested model, with different keys)
- * @returns 
+ * Renders a field based on the provided model and configuration.
+ *
+ * @template D - The type of the data object.
+ * @param {string} name - The name of the field.
+ * @param {D} [data={}] - The data object containing field values.
+ * @param {boolean} update - Flag indicating whether to update the field.
+ * @param {Model<D>} m - The model object defining the field structure.
+ * @param {AbstractEntity} entity - The entity to which the field belongs.
+ * @param {FieldConfig<D>} [config] - Optional configuration for the field.
+ * @param {RenderConfig['consumingMode']} [consumingMode='edit'] - The mode in which the field is being consumed (e.g., 'edit', 'view', 'translate').
+ * @param {string} [path] - Optional path to the field within the model.
+ * @returns {TemplateResult | typeof nothing} - The rendered field as a TemplateResult or `nothing` if the field should not be rendered.
+ * @throws {Error} - Throws an error if no model is found for the specified field name.
  */
 export function renderField<D extends DefaultI>(this: EntityElement,
   name: string,
@@ -70,7 +101,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   m: Model<D>,
   entity: AbstractEntity,
   config?: FieldConfig<D>,
-  mode: 'edit' | 'translate' | 'view' = 'edit',
+  consumingMode: RenderConfig['consumingMode'] = 'edit',
   path?: string
 ): TemplateResult | typeof nothing {
   let model: ModelComponent<any> = get(path || name, m);
@@ -81,9 +112,14 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   if (config) {
     model = { ...model, ...config }
   }
+
+  if (!model) {
+    throw new Error(`No model found for ${name}`);
+  }
+
   const key = name.split('.').pop();
 
-  let { component } = model;
+  const { component } = model;
   if (!component) {
     model.component = 'textfield';
   }
@@ -106,19 +142,32 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   const id = this.docId ? this.docId : this.id;
   const dirtyEvent = new Dirty({ entityName: entity.entityName, dirty: true });
 
-  const canEdit = (this.entityStatus?.isEditing || this.entityStatus?.isNew || (entity.realTime && this.entityAccess.canEdit)) && !(config?.disabled === true) && mode !== 'view';
-  const disabled = !canEdit;
 
   const label = model.label ?? (key || '');
 
-  if (!model) {
-    throw new Error(`No model found for ${name}`);
-  }
+  // Handle specific attributes that have different behavior depending on the consumingMode (placeholder, disabled)
+  const placeholder = consumingMode === 'edit' || consumingMode === 'translate' ?
+    ((model as ModelComponentText).placeholder || '') : '';
+  const canEdit = (consumingMode === 'offline') || ((
+    this.entityStatus?.isEditing ||
+    this.entityStatus?.isNew ||
+    (entity.realTime && this.entityAccess.canEdit)
+  ) && !(config?.disabled === true)
+    && consumingMode !== 'view');
+  let disabled = !canEdit;
 
+
+  // input handler
   const value = get(name, data);
   const onInputFact = (property: string) => {
     return async (e: CustomEvent) => {
-      // @ts-ignore
+      if (consumingMode === 'offline' 
+        || consumingMode === 'view'
+        || consumingMode === 'print'
+      ) {
+        return;
+      }
+      // @ts-expect-error - not typed
       const v = e.target?.[property];
       if (v !== value) {
         this.dispatchEvent(dirtyEvent);
@@ -139,7 +188,8 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     };
   };
 
-  if (mode === 'translate') {
+  // Handle translation First
+  if (consumingMode === 'translate') {
     const origin = get(name, Object.getPrototypeOf(data));
     if (isComponentText(model)) {
       return html`
@@ -179,7 +229,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         .rows=${3}
         .name=${name}
         style=${ifDefined(model.style)}
-        .required=${model.required}
+        .required=${!!model.required}
         .writeLabel=${label}
         .translate=${true} 
         .readOnly=${disabled}
@@ -194,120 +244,189 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   }
 
   if (isComponentText(model)) {
-    return html`
-    <lapp-filled-text-field
-      class=${cls}
-      .name=${name}
-      style=${ifDefined(model.style)}
-      type=${ifDefined(model.type)}
-      .icon=${model.icon}
-      .readOnly=${disabled}
-      .placeholder=${model.placeholder}
-      .label=${label}
-      .supportingText=${model.helper}
-      .required=${model.required}
-      .maxLength=${model.maxLength}
-      .minLength=${model.minLength}
-      .charCounter=${!!model.maxLength}
-      .value=${value || ''}
-      @input=${onInputFact('value')}
-    ></lapp-filled-text-field>
-    `
+    return renderText(model);
   }
+
   if (isComponentTextArea(model)) {
-    return html`
-    <lapp-text-field 
-			type="textarea"
-      class=${cls}
-      style=${ifDefined(model.style)}
-      rows=${ifDefined(model.rows)}
-      .name=${name}
-      .readOnly=${disabled}
-      .placeholder=${model.placeholder}
-      .label=${label}
-      .supportingText=${model.helper}
-      .required=${model.required}
-      .maxLength=${model.maxLength}
-      .minLength=${model.minLength}
-      .charCounter=${!!model.maxLength}
-      .value=${value || ''}
-      @input=${onInputFact('value')}
-    ></lapp-text-field>`;
+    return renderTextArea(model)
   }
 
   if (isComponentMdDroppable(model)) {
-    return html`<lapp-md-droppable-editor
-      class=${cls}
-      .name=${name}
-      style=${ifDefined(model.style)}
-      
-      .flavour=${model.flavour}
-      .readOnly=${disabled}
-      .writeLabel=${label}
-      .placeholder=${model.placeholder}
-      .helper=${model.helper}
-      .required=${model.required}
-      .maxLength=${model.maxLength}
-      .minLength=${model.minLength}
-      .charCounter=${!!model.maxLength}
-      .path=${model.path}
-      ?disabled=${disabled}
-      useFirestore=${model.useFirestore || nothing}
-      maxFileSize=${model.maxFileSize || nothing}
-      rows=${model.rows || nothing}
-      resize=${model.resize || nothing}
-      .md=${value || ''}
-      @input=${onInputFact('md')}
-    ></lapp-md-droppable-editor>`
+    if (consumingMode === 'print') {
+      model.hideTabsOnReadOnly = true;
+      disabled = true;
+    }
+    return renderMdDroppable(model)
   }
   if (isComponentMd(model)) {
+    if (consumingMode === 'print') {
+      model.hideTabsOnReadOnly = true;
+      disabled = true;
+    }
+    return renderMd(model)
+  }
+
+  if (isComponentUpload(model)) {
+    return renderUpload(model)
+  }
+  if (isComponentUploadImage(model)) {
+    return renderUploadImage(model)
+  }
+  if (isComponentSlider(model)) {
+    if (consumingMode === 'offline') {
+      return renderText(model)
+    }
+    return renderRadioSlider(model)
+  }
+  if (isComponentSelect(model)) {
+    if (consumingMode === 'offline') {
+      return renderRadioGroup(model)
+    }
+    return renderRadioSelect(model)
+
+  }
+  if (isComponentMultiSelect(model)) {
+    if (consumingMode === 'offline') {
+      return renderCheckboxGroup(model)
+    }
+    return renderMultiSelect(model)
+  }
+  if (isComponentCheckbox(model)) {
+    return renderCheckbox(model)
+  }
+  if (isComponentSwitch(model)) {
+    if (consumingMode === 'offline') {
+      return renderCheckbox(model)
+    }
+    return renderSwitch(model)
+  }
+  if (isComponentCheckboxGroup(model)) {
+    return renderCheckboxGroup(model)
+  }
+  if (isComponentRadioGroup(model)) {
+    return renderRadioGroup(model)
+  }
+  if (isComponentStar(model)) {
+    return renderStar(model)
+  }
+  throw new Error(`No component found for ${name}`);
+
+
+  // All the rendering functions
+  function renderText(model: OComponentText) {
+    return html`
+      <lapp-filled-text-field
+        class=${cls}
+        .name=${name}
+        style=${ifDefined(model.style)}
+        type=${ifDefined(model.type)}
+        .icon=${model.icon}
+        .readOnly=${disabled}
+        .placeholder=${placeholder}
+        .label=${label}
+        .supportingText=${model.helper}
+        .required=${!!model.required}
+        .maxLength=${model.maxLength}
+        .minLength=${model.minLength}
+        .value=${value || ''}
+        @input=${onInputFact('value')}
+      ></lapp-filled-text-field>
+    `
+  }
+  function renderTextArea(model: OComponentTextArea) {
+    return html`
+      <lapp-text-field 
+        type="textarea"
+        class=${cls}
+        style=${ifDefined(model.style)}
+        rows=${ifDefined(model.rows)}
+        .name=${name}
+        .readOnly=${disabled}
+        .placeholder=${placeholder}
+        .label=${label}
+        .supportingText=${model.helper}
+        .required=${!!model.required}
+        .maxLength=${model.maxLength}
+        .minLength=${model.minLength}
+        .value=${value || ''}
+        @input=${onInputFact('value')}
+      ></lapp-text-field>`;
+  }
+
+  function renderMdDroppable(model: OComponentMd) {
+    return html`
+      <lapp-md-droppable-editor
+        class=${cls}
+        .name=${name}
+        style=${ifDefined(model.style)}
+        
+        .flavour=${model.flavour}
+        .readOnly=${disabled}
+        .writeLabel=${label}
+        .placeholder=${placeholder}
+        .helper=${model.helper}
+        .required=${!!model.required}
+        .maxLength=${model.maxLength}
+        .minLength=${model.minLength}
+        .path=${model.path}
+        ?disabled=${disabled}
+        useFirestore=${model.useFirestore || nothing}
+        maxFileSize=${model.maxFileSize || nothing}
+        rows=${model.rows || nothing}
+        resize=${model.resize || nothing}
+        .md=${value || ''}
+        @input=${onInputFact('md')}
+      ></lapp-md-droppable-editor>`
+  }
+
+  function renderMd(model: OComponentMd) {
     const md = value ||
       (model.defaultValueOnEmpty && disabled && model.hideTabsOnReadOnly ?
         model.defaultValueOnEmpty : '');
     return html`
-    <lapp-md-editor
-      class=${cls}
-      .name=${name}
-      style=${ifDefined(model.style)}
-      .flavour=${model.flavour}
-      .hideTabsOnReadOnly=${model.hideTabsOnReadOnly || false}
-      .readOnly=${disabled}
-      .writeLabel=${label}
-      .placeholder=${model.placeholder}
-      .helper=${model.helper}
-      .required=${model.required}
-      .maxLength=${model.maxLength}
-      .minLength=${model.minLength}
-      .charCounter=${!!model.maxLength}
-      rows=${ifDefined(model.rows) || undefined}
-      resize=${ifDefined(model.resize) || undefined}
-      .md=${md}
-      @input=${onInputFact('md')}
-    ></lapp-md-editor>
+      <lapp-md-editor
+        class=${cls}
+        .name=${name}
+        style=${ifDefined(model.style)}
+        .flavour=${model.flavour}
+        .hideTabsOnReadOnly=${model.hideTabsOnReadOnly || false}
+        .readOnly=${disabled}
+        .writeLabel=${label}
+        .placeholder=${placeholder}
+        .helper=${model.helper}
+        .required=${!!model.required}
+        .maxLength=${model.maxLength}
+        .minLength=${model.minLength}
+        rows=${ifDefined(model.rows) || undefined}
+        resize=${ifDefined(model.resize) || undefined}
+        .md=${md}
+        @input=${onInputFact('md')}
+      ></lapp-md-editor>
     `;
   }
 
-  if (isComponentUpload(model)) {
+  function renderUpload(model: OComponentUpload) {
     return html`
-    <lapp-upload
-      class=${cls}
-      .name=${name}
-      style=${ifDefined(model.style)}
-      .readonly=${disabled}
-      .writeLabel=${label}
-      .supportingText=${model.helper}
-      .required=${model.required}
-      .store=${model.store}
-      .path=${model.path}
-      .maxFiles=${model.maxFiles}
-      .accept=${model.accept}
-      .maxFileSize=${model.maxFileSize}
-      .useFirestore=${model.useFirestore}
-      .fieldPath=${model.fieldPath || name}
-    ></lapp-upload>
-    `;
+      <lapp-upload
+        class=${cls}
+        .name=${name}
+        style=${ifDefined(model.style)}
+        .readOnly=${disabled}
+        .writeLabel=${label}
+        .supportingText=${model.helper}
+        .required=${!!model.required}
+        .store=${model.store}
+        .path=${model.path}
+        .maxFiles=${model.maxFiles}
+        .accept=${model.accept}
+        .maxFileSize=${model.maxFileSize}
+        .useFirestore=${model.useFirestore}
+        .fieldPath=${model.fieldPath || name}
+      ></lapp-upload>
+      `;
   }
-  if (isComponentUploadImage(model)) {
+
+  function renderUploadImage(model: OComponentUploadImage) {
     return html`
     <firebase-image-upload
       class=${cls}
@@ -316,7 +435,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .readonly=${disabled}
       .writeLabel=${label}
       .helper=${model.helper}
-      .required=${model.required}
+      .required=${!!model.required}
       .store=${model.store}
       .path=${model.path}
       .accept=${model.accept}
@@ -327,51 +446,51 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     ></firebase-image-upload>
     `;
   }
-  if (isComponentSlider(model)) {
-    // For the time being, we render as number text field as slider is not working
-    return html`
-     <lapp-slider-field
-      class=${cls}
-      .name=${name}
-      style=${ifDefined(model.style)}
-      ?disabled=${disabled}
-      .label=${label}
-      .ticks=${model.ticks}
-      .labeled=${model.labeled}
-      .supportingText=${model.helper}
-      .required=${model.required}
-      .value=${value || ''}
-      @change=${onInputFact('value')}
-      .min=${model.min}
-      .max=${model.max}
-      step=${ifDefined(model.step)}
-    ></lapp-slider-field>
 
-    `;
-
-  }
-  if (isComponentSelect(model)) {
+  function renderRadioSlider(model: OComponentSlider) {
     return html`
-    <lapp-select
-      quick
-      class=${cls}
-      .name=${name}
-      style=${ifDefined(model.style)}
-      .icon=${model.icon}
-      .readOnly=${disabled}
-      .label=${label}
-      .supportingText=${model.helper}
-      .required=${model.required}
-      .value=${value || ''}
-      @change=${onInputFact('value')}
-      >${(model.items || []).map(item => html`
-        <md-select-option .value=${item.code} ?selected=${item.code === value}>
-          <div slot="headline">${item.label}</div>
-        </md-select-option>`)}
-    </lapp-select >
-  `;
+      <lapp-slider-field
+          class=${cls}
+          .name=${name}
+          style=${ifDefined(model.style)}
+          ?disabled=${disabled}
+          .label=${label}
+          .ticks=${model.ticks}
+          .labeled=${model.labeled}
+          .supportingText=${model.helper}
+          .required=${!!model.required}
+          .value=${value || ''}
+          @change=${onInputFact('value')}
+          .min=${model.min}
+          .max=${model.max}
+          step=${ifDefined(model.step)}
+        ></lapp-slider-field>
+   `;
   }
-  if (isComponentMultiSelect(model)) {
+
+  function renderRadioSelect(model: OComponentSelect) {
+    return html`
+      <lapp-select
+        quick
+        class=${cls}
+        .name=${name}
+        style=${ifDefined(model.style)}
+        .icon=${model.icon}
+        .readOnly=${disabled}
+        .label=${label}
+        .supportingText=${model.helper}
+        .required=${!!model.required}
+        .value=${value || ''}
+        @change=${onInputFact('value')}
+        >${(model.items || []).map(item => html`
+          <md-select-option .value=${item.code} ?selected=${item.code === value}>
+            <div slot="headline">${item.label}</div>
+          </md-select-option>`)}
+      </lapp-select >
+      `;
+  }
+
+  function renderMultiSelect(model: OComponentSelect) {
     return html`
     <vaadin-multi-select-combo-box
       class=${cls}
@@ -388,89 +507,95 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       ?disabled=${disabled}
       .label=${label}
       .helperText=${model.helper}
-      .required=${model.required}
+      .required=${!!model.required}
       >
     </vaadin-multi-select-combo-box>
   `;
   }
-  if (isComponentCheckbox(model)) {
+
+  function renderCheckbox(model: OComponentBoolean) {
     return html`
-    <label class=${cls}>
-      <md-checkbox touch-target="wrapper" 
-      aria-label=${label || ''}
-      .name=${name}
-      style=${ifDefined(model.style)}
-      .checked=${value}
-      ?disabled=${disabled}
-      @change=${onInputFact('checked')} 
-      ></md-checkbox>
+      <label class=${cls}>
+        <md-checkbox touch-target="wrapper" 
+        aria-label=${label || ''}
+        .name=${name}
+        style=${ifDefined(model.style)}
+        .checked=${value}
+        ?disabled=${disabled}
+        @change=${onInputFact('checked')} 
+        ></md-checkbox>
         ${label || ''}
       </label>
-    `;
+      `;
   }
-  if (isComponentSwitch(model)) {
+
+  function renderSwitch(model: OComponentBoolean) {
     return html`
-    <label class=${cls}>
-      ${label || ''}
-      <md-switch 
-        .selected=${value}
+      <label class=${cls}>
+        ${label || ''}
+        <md-switch 
+          .selected=${value}
+          .name=${name}
+          .disabled=${disabled}
+          @change=${onInputFact('selected')} 
+          ></md-switch>
+        </label>
+      `;
+  }
+
+  function renderCheckboxGroup(model: OComponentCheckboxGroup) {
+    return html`
+      <lapp-choice-checkbox
+        class=${cls}
         .name=${name}
-        .disabled=${disabled}
-        @change=${onInputFact('selected')} 
-        ></md-switch>
-      </label>
-    `;
+        style=${ifDefined(model.style)}
+        .icon=${model.icon}
+        .readOnly=${disabled}
+        .label=${label}
+        .supportingText=${model.helper}
+        .required=${!!model.required}
+        .selected=${value || ''}
+        .options=${model.items}
+        @selected-changed=${onInputFact('selected')}
+      ></lapp-choice-checkbox>
+      `;
   }
-  if (isComponentCheckboxGroup(model)) {
+
+  function renderRadioGroup(model: OComponentRadioGroup) {
     return html`
-   <lapp-choice-checkbox
-      class=${cls}
-      .name=${name}
-      style=${ifDefined(model.style)}
-      .icon=${model.icon}
-      .readOnly=${disabled}
-      .label=${label}
-      .supportingText=${model.helper}
-      .required=${model.required}
-      .selected=${value || ''}
-      .options=${model.items}
-      @selected-changed=${onInputFact('selected')}
-    ></lapp-choice-checkbox>
-    `;
+      <lapp-choice-radio
+        class=${cls}
+        .name=${name}
+        style=${ifDefined(model.style)}
+        .icon=${model.icon}
+        .readOnly=${disabled}
+        .label=${label}
+        .supportingText=${model.helper}
+        .required=${!!model.required}
+        .selected=${value || ''}
+        .options=${model.items}
+        @selected-changed=${onInputFact('selected')}
+      ></lapp-choice-radio>
+      `;
   }
-  if (isComponentRadioGroup(model)) {
+
+  function renderStar(model: OComponentStar) {
     return html`
-   <lapp-choice-radio
-      class=${cls}
-      .name=${name}
-      style=${ifDefined(model.style)}
-      .icon=${model.icon}
-      .readOnly=${disabled}
-      .label=${label}
-      .supportingText=${model.helper}
-      .required=${model.required}
-      .selected=${value || ''}
-      .options=${model.items}
-      @selected-changed=${onInputFact('selected')}
-    ></lapp-choice-radio>
+      <lapp-choice-star
+        class=${cls}
+        .name=${name}
+        style=${ifDefined(model.style)}
+        .readOnly=${disabled}
+        .label=${label}
+        .supportingText=${model.helper}
+        .required=${!!model.required}
+        .selected=${value || ''}
+        .allowNoStar=${model.allowNoStar || false} 
+        starNumber=${ifDefined(model.starNumber)}
+        @selected-changed=${onInputFact('selected')}
+      ></lapp-choice-star>
     `;
   }
-  if (isComponentStar(model)) {
-    return html`
-   <lapp-choice-star
-      class=${cls}
-      .name=${name}
-      style=${ifDefined(model.style)}
-      .readOnly=${disabled}
-      .label=${label}
-      .supportingText=${model.helper}
-      .required=${model.required}
-      .selected=${value || ''}
-      .allowNoStar=${model.allowNoStar || false} 
-      starNumber=${ifDefined(model.starNumber)}
-      @selected-changed=${onInputFact('selected')}
-    ></lapp-choice-star>
-    `;
-  }
-  throw new Error(`No component found for ${name}`);
+
+
 }

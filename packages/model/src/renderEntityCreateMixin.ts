@@ -27,7 +27,7 @@ export default function renderMixin<D extends DataI, A extends Actions>(supercla
 		 */
 		// TODO : this should be a static method		
 		// getNewData(..._args: any[]): Partial<D> {
-		// 	// @ts-ignore
+		// 	// @ts-expect-error  - we are cheating
 		// 	console.warn('getNewData is deprecated', this.entityName)
 		// 	return {}
 		// }

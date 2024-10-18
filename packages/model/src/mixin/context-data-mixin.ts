@@ -21,7 +21,30 @@ export declare class DataMixinConsumeInterface<D = any> extends DataMixinInterfa
 	hasChanged(path: string, entityName: string): boolean;
 }
 
-export const ConsumeDataMixin = <D = any>() => <T extends Constructor<ReactiveElement>>(superClass: T) => {
+/**
+ * A mixin function that provides data consumption capabilities to a LitElement-based component.
+ * 
+ * @template D - The type of data to be consumed.
+ * @template T - The type of the superclass, which extends ReactiveElement.
+ * 
+ * @param superClass - The superclass to be extended by the mixin.
+ * 
+ * @returns A class that extends the provided superclass with data consumption capabilities.
+ * 
+ * @property {D} data - The data consumed from the context.
+ * @property {boolean} preventConsume - A flag to prevent data consumption.
+ * 
+ * @event DataHasChanged - Dispatched to check if the data has changed.
+ * 
+ * @example
+ * ```typescript
+ * class MyElement extends ConsumeDataMixin<DataType>()(LitElement) {
+ *   // Your element implementation
+ * }
+ * ```
+ */
+export const ConsumeDataMixin = <D = any>() => 
+  <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	abstract class ContextConsumeDataMixinClass extends superClass {
 
@@ -70,7 +93,27 @@ export const ConsumeDataMixin = <D = any>() => <T extends Constructor<ReactiveEl
  * ProvideDataMixin a mixin that provides data context
  
  */
-export const ProvideDataMixin = <D = any>() => <T extends Constructor<ReactiveElement>>(superClass: T) => {
+/**
+ * A mixin function that provides context data to a LitElement component.
+ * 
+ * This mixin consumes data from a parent context and provides it to child components
+ * using the `ContextProvider`. It ensures that the `data` property is set as the prototype
+ * of `parentData` if both are defined, and updates the context provider with the current data.
+ * 
+ * @template D - The type of data to be provided.
+ * @returns A class that extends the given superclass with context data providing capabilities.
+ * 
+ * @property {D} data - The data provided by the context.
+ * 
+ * @example
+ * ```typescript
+ * class MyElement extends ProvideDataMixin<MyDataType>()(LitElement) {
+ *   // Your element implementation
+ * }
+ * ```
+ */
+export const ProvideDataMixin = <D = any>() => 
+  <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	abstract class ContextProvideDataMixinClass extends superClass {
 

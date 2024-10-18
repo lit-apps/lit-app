@@ -269,7 +269,8 @@ export default function renderMixin<
       if (data.length === 0) {
         return this.renderEmptyArray(config)
       }
-      return html`<md-list class="entity list ${this.entityName}">
+      return html`
+      <md-list class="entity list ${this.entityName}">
 				${repeat(data, (d: CollectionI<D>) => d.$id, (d: CollectionI<D>, index: number) => this.renderListItem(d, config, index))}
 			</md-list>`
 

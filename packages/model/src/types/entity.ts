@@ -43,6 +43,7 @@ export interface EntityElement<T extends DefaultI = DefaultI> extends EntityBase
 	entityStatus: EntityStatus
 	entityAccess: EntityAccess
 	isFormValid: () => boolean
+	consumingMode: RenderConfig['consumingMode']
 	get canEdit(): boolean
 }
 
@@ -85,8 +86,18 @@ export type RenderConfigOptional< O = OptionsT, T = any> = {
 }
 
 export type RenderConfig<O = OptionsT, T = any> = RenderConfigOptional<O, T> & {
-	entityAccess: EntityAccess,
+	entityAccess: EntityAccess
 	entityStatus: EntityStatus
+	/**
+	 * The mode in which the entity going to be consumed
+	 * 
+	 * **edit**: the default mode for data entry
+	 * **offline**: data-entry mode for offline data
+	 * **print**: print mode - no data-entry fields
+	 * **translate**: translation mode
+	 * **view**: like data-entry mode but with all fields disabled / readonly
+	 */
+	consumingMode: 'view' | 'edit' | 'translate' | 'print' | 'offline'
 	/**
 	 * The id of the entity (docId)
 	 */

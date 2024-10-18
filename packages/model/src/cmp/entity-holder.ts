@@ -17,7 +17,7 @@ export default class EntityHolder extends AbstractEntity {
 	 */
 	@property() variant: RenderConfig['variant'] = 'default'
 	@property() layout: RenderConfig['layout'] = 'horizontal'
-	@property() isNew: boolean = false
+	@property({type: Boolean}) isNew: boolean = false
 	@property({attribute: 'base-url'}) baseURL: string = ''
 
 
@@ -32,8 +32,9 @@ export default class EntityHolder extends AbstractEntity {
 	}
 
 	protected override setEntity(E: EntityI) {
-		// const E = Entity as unknown as typeof Entity
+		
 		super.setEntity(E)
+		
 		/** Handle Styles */
 		if (this.Entity?.styles) {
 			const root = this.renderRoot as ShadowRoot

@@ -7,7 +7,7 @@ import {
 } from 'lit-vaadin-helpers';
 import { RenderConfig } from '../types';
 
-type TextComponent = 'textfield' | 'textarea' 
+type TextComponent = 'textfield' | 'textarea'
 type MdComponent = 'md'
 type DateComponent = 'datefield'
 type SliderComponent = 'slider'
@@ -114,7 +114,7 @@ export interface ModelComponentUploadImage<T = any> extends ModelComponentBase<T
 	fileName?: string
 	dropText?: { one: string, many: string }
 	buttonText?: { one: string, many: string }
-	
+
 }
 
 export interface ModelComponentSelect<T = any> extends ModelComponentBase<T> {
@@ -141,7 +141,7 @@ export interface ModelComponentText<T = any> extends ModelComponentBase<T> {
 	type?: 'text' | 'number' | 'email' | 'password' | 'tel' | 'url' | 'search' | 'color' | 'date' | 'datetime-local' | 'month' | 'time' | 'week'
 }
 export interface ModelComponentTextArea<T = any> extends ModelComponentBase<T> {
-	component: TextComponent 
+	component: TextComponent
 	rows?: number
 	placeholder?: string
 	/**
@@ -157,7 +157,7 @@ export interface ModelComponentMd<T = any> extends ModelComponentBase<T> {
 	/**
 	 * flavour of the markdown editor
 	 */
-	flavour?: 'github' 
+	flavour?: 'github'
 	rows?: number
 	placeholder?: string
 	/**
@@ -187,7 +187,7 @@ export interface ModelComponentBoolean<T = any> extends ModelComponentBase<T> {
 	component: BooleanComponent
 }
 
-export interface ModelComponentStart<T = any> extends ModelComponentBase<T> {
+export interface ModelComponentStar<T = any> extends ModelComponentBase<T> {
 	component: StarComponent,
 	starNumber?: number
 	allowNoStar?: boolean
@@ -203,56 +203,84 @@ export type ModelComponent<T = any> =
 	ModelComponentMdDroppable<T> |
 	ModelComponentBoolean<T> |
 	ModelComponentSlider<T> |
- 	ModelComponentUpload<T> |
- 	ModelComponentUploadImage<T> | 
-	ModelComponentStart<T>
+	ModelComponentUpload<T> |
+	ModelComponentUploadImage<T> |
+	ModelComponentStar<T>
 
 export type FieldConfig<T = any> = Partial<ModelComponent<T>>
 
 export type Model<T, B = T> = {
 	[key in keyof Partial<T>]: ModelComponent<B> | Model<T[key], B>
-}  
+}
 
-export function isComponentSelect<T = any>(model: ModelComponent<T>): model is ModelComponentSelect<T> {
-	return model.component === 'select' ;
+export function isComponentSelect<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentSelect<T> {
+	return model.component === 'select';
 }
 // TODO: remove this once we get rid of vaadin-multi-select-combo-box
-export function isComponentMultiSelect<T = any>(model: ModelComponent<T>): model is ModelComponentSelect<T> {
-	return  model.component === 'multi-select';
+export function isComponentMultiSelect<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentSelect<T> {
+	return model.component === 'multi-select';
 }
-export function isComponentRadioGroup<T = any>(model: ModelComponent<T>): model is ModelComponentRadioGroup<T> {
+export function isComponentRadioGroup<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentRadioGroup<T> {
 	return model.component === 'radio-group';
 }
-export function isComponentCheckboxGroup<T = any>(model: ModelComponent<T>): model is ModelComponentCheckboxGroup<T> {
+export function isComponentCheckboxGroup<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentCheckboxGroup<T> {
 	return model.component === 'checkbox-group';
 }
-export function isComponentText<T = any>(model: ModelComponent<T>): model is ModelComponentText<T> {
+export function isComponentText<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentText<T> {
 	return model.component === 'textfield' || model.component === 'datefield';
 }
-export function isComponentTextArea<T = any>(model: ModelComponent<T>): model is ModelComponentTextArea<T> {
+export function isComponentTextArea<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentTextArea<T> {
 	return model.component === 'textarea';
 }
-export function isComponentMd<T = any>(model: ModelComponent<T>): model is ModelComponentMd<T> {
+export function isComponentMd<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentMd<T> {
 	return model.component === 'md';
 }
-export function isComponentMdDroppable<T = any>(model: ModelComponent<T>): model is ModelComponentMdDroppable<T> {
+export function isComponentMdDroppable<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentMdDroppable<T> {
 	return model.component === 'md' && (model as ModelComponentMdDroppable).droppable !== undefined;
 }
-export function isComponentCheckbox<T = any>(model: ModelComponent<T>): model is ModelComponentBoolean<T> {
-	return model.component === 'checkbox' ;
+export function isComponentCheckbox<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentBoolean<T> {
+	return model.component === 'checkbox';
 }
-export function isComponentSwitch<T = any>(model: ModelComponent<T>): model is ModelComponentBoolean<T> {
-	return  model.component === 'switch';
+export function isComponentSwitch<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentBoolean<T> {
+	return model.component === 'switch';
 }
-export function isComponentSlider<T = any>(model: ModelComponent<T>): model is ModelComponentSlider<T> {
+export function isComponentSlider<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentSlider<T> {
 	return model.component === 'slider';
 }
-export function isComponentUpload<T = any>(model: ModelComponent<T>): model is ModelComponentUpload<T> {
+export function isComponentUpload<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentUpload<T> {
 	return model.component === 'upload';
 }
-export function isComponentUploadImage<T = any>(model: ModelComponent<T>): model is ModelComponentUploadImage<T> {
+export function isComponentUploadImage<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentUploadImage<T> {
 	return model.component === 'upload-image';
 }
-export function isComponentStar<T = any>(model: ModelComponent<T>): model is ModelComponentStart<T> {
+export function isComponentStar<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponentStar<T> {
 	return model.component === 'star';
 }
