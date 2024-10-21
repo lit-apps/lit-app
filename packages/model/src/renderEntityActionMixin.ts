@@ -100,7 +100,9 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 		}
 		override renderContent(data: any, config: RenderConfig): TemplateResult | typeof nothing {
 			if (this.showActions) {
-				return html`<div class="layout horizontal center">${this.renderEntityActions(data, config)}</div>`
+				return html`
+					<div id="action" class="sticky layout horizontal center wrap">${this.renderEntityActions(data, config)}</div>
+				`
 			}
 			return nothing
 		}

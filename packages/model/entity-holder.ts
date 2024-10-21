@@ -4,7 +4,7 @@ import { form, label, alignMwc, page } from '@preignition/preignition-styles';
 import padding from '@preignition/preignition-styles/padding';
 import margin from '@preignition/preignition-styles/margin';
 import gap from '@preignition/preignition-styles/gap';
-
+import sticky from '@preignition/preignition-styles/sticky';
 import EntityHolder from './src/cmp/entity-holder';
 
 declare global {
@@ -33,10 +33,22 @@ export class LappEntityHolder extends EntityHolder {
 		margin,
 		gap,
 		label,
+		sticky,
 		css`
-		:host {
-			display: contents;
-		}
+			:host {
+				display: contents;
+			}
+/* 			
+			
+			#action {
+				padding: 0 var(--space-small);
+				position: sticky;
+				top: 68px;
+				z-index: 1;
+				background-color: var(--color-background);
+			} */
+
+
 		`
 	]
   
