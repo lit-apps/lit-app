@@ -53,6 +53,10 @@ export type EventMetaT = {
     icon?: string;
     style?: string;
     renderer?: (html: TemplateT, actor: Actor) => TemplateResult;
+    /**
+     * a function that returns true if the action should be hidden when guarded
+     */
+    hideGuarded?: boolean | ((actor: Actor) => boolean);
     confirm?: {
       heading: string;
       renderer: (html: TemplateT, actor: Actor, data?: any) => TemplateResult;

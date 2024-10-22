@@ -139,12 +139,20 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
           return orderA - orderB;
         })
         .map(([event, eventConfig, disabled]) => {
-          if (hideGuarded && disabled || !eventConfig.meta) {
+          if (!eventConfig.meta) {
             return nothing;
+          }
+          if(disabled) {
+            if (typeof eventConfig.meta.hideGuarded === 'function') {
+              if (eventConfig.meta.hideGuarded(actor) == true) {
+                return nothing;
+              }
+            } else if(eventConfig.meta.hideGuarded == true || hideGuarded === true) {
+              return nothing;
+            } 
           }
           const { 
             label, 
-            helper, 
             filled, 
             outlined, 
             icon, 

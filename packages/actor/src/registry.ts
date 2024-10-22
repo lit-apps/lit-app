@@ -43,6 +43,7 @@ class ActorRegistry {
 }
 
 // expose the ActorRegistry  on dev
+// @ts-expect-error - does not exist with current module settings for cloud functions'
 if (import.meta.env.DEV) {
 	// @ts-expect-error - expose the ActorRegistry on the window object
 	window._actorRegistry = ActorRegistry;
