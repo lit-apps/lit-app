@@ -51,7 +51,7 @@ export class State extends EventTarget {
       this.propertyMap = new Map<string, PropertyMapOptions>()
     }
   }
-  
+
   get propertyMap() {
     return (this.constructor as typeof State).propertyMap
   }
@@ -141,10 +141,13 @@ export class State extends EventTarget {
     this.hookMap.forEach(hook => hook.reset());
 
     [...this.propertyMap]
-      // @ts-expect-error  - we are cheating
-      .filter(([key, definition]) => !(definition.skipReset === true || definition.resetValue === undefined))
+      .filter(
+        ([key, definition]) => !(
+          definition.skipReset === true ||
+          definition.resetValue === undefined)
+      )
       .forEach(([key, definition]) => {
-          (this as {} as { [key: string]: unknown })[key as string] = definition.resetValue;
+        (this as {} as { [key: string]: unknown })[key as string] = definition.resetValue;
       })
   }
 
@@ -157,8 +160,8 @@ export class State extends EventTarget {
    * @returns a unsubscribe function. 
    */
   subscribe(
-    callback: Callback<this>, 
-    nameOrNames?: string | string[], 
+    callback: Callback<this>,
+    nameOrNames?: string | string[],
     options?: AddEventListenerOptions
   ): Unsubscribe {
 
