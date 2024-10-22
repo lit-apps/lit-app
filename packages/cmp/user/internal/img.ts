@@ -1,6 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import userMixin from './user-mixin';
+import '@lit-app/cmp/avatar/avatar.js';
 import '@preignition/lit-firebase/document';
 /**
  * Displays an image for a user
@@ -20,7 +21,7 @@ export class UserImg  extends userMixin(LitElement) {
       --_color: var(--lapp-user-img-color, var(--color-surface-container-high, #dadce0)); 
     }
 
-    img {
+    img, lapp-avatar {
       height: var(--_size);
       width: var(--_size);
       min-width: var(--_size);
@@ -32,6 +33,8 @@ export class UserImg  extends userMixin(LitElement) {
       overflow: hidden;
       max-width: 100%;
       vertical-align: middle;
+    }
+    img {
       filter: grayscale(60%);
     }
 
@@ -43,18 +46,19 @@ export class UserImg  extends userMixin(LitElement) {
     }     
     `;
   
-  @property() gravatarSize!: string;
-  @property() gravatarType: string = 'mm';
-  @property() gravatarURL: string ='https://www.gravatar.com/avatar';
-
+  get gravatar() {
+    // TODO: create or own avatar renderer !
+    return `https://api.dicebear.com/9.x/initials/svg?seed=${this.displayName}`;
+  }
 
   override render() {
     if(this.isDeleted || this.isLoading) {
       return nothing;
     }
-    const url = this.photoURL || `${this.gravatarURL}/${this.uid}?d=${this.gravatarType}${this.gravatarSize ? ('size=' + this.gravatarSize) : ''}`;
+    const url = this.photoURL || this.gravatar;
+    const img = this.photoURL ? html`<img src="${url}" loading="lazy" alt="${this.displayName}">` : html`<lapp-avatar .seed=${this.displayName}></lapp-avatar>`;
     return html `
-      ${this.photoURL ? html`<div part="photo"><img src="${url}" loading="lazy" alt="${this.displayName}"></div>` : nothing}
+      <div part="photo">${img}</div>
     `;
   }
 
