@@ -99,7 +99,8 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			return (this.constructor as unknown as StaticEntityActionI<D, A>).getEvent(actionName, data, this.host, bulkAction)
 		}
 		override renderContent(data: any, config: RenderConfig): TemplateResult | typeof nothing {
-			if (this.showActions) {
+			const consumingMode = (this.host as EntityElement<D>).consumingMode ?? 'edit';
+			if (this.showActions && consumingMode !== 'print' && consumingMode !== 'offline') {
 				return html`
 					<div id="action" class="sticky layout horizontal center wrap">${this.renderEntityActions(data, config)}</div>
 				`

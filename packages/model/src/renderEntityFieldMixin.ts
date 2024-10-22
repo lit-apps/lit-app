@@ -16,7 +16,6 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 
 
 import { RenderInterface, StaticEntityField } from './types/renderEntityFieldI';
-import { deprecate } from 'util';
 import { deprecated } from '@preignition/preignition-util';
 export type { RenderInterface, StaticEntityField } from './types/renderEntityFieldI';
 
@@ -37,7 +36,6 @@ export default function renderMixin<
 			}
 			
 			const consumingMode = (this.host as EntityElement<D>).consumingMode ?? 'edit';
-			console.debug('consumingMode', consumingMode);
 			return renderField.call(
 				this.host as EntityElement<D>,
 				name,

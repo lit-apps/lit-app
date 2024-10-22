@@ -1,6 +1,6 @@
 import { Media } from '@lit-app/cmp/field/choice/types';
 import type { LitElement } from 'lit';
-import { TemplateResult, nothing } from 'lit';
+import { TemplateResult } from 'lit';
 import {
 	GridColumnBodyLitRenderer,
 	GridColumnHeaderLitRenderer
@@ -31,7 +31,7 @@ type TableConfig<T = any> = {
 	 * condition to render the column depending on renderCofing
 	 */
 	condition?: (config: RenderConfig) => boolean
-	renderer?: (data: T) => TemplateResult | typeof nothing
+	renderer?: (data: T) => TemplateResult | string
 }
 
 export type GridConfig<T = any> = {

@@ -197,12 +197,16 @@ export default function renderMixin<
      `
     }
 
+    protected shallWaitRender(data: D, config: C) {
+      const consumingMode = this.host.consumingMode || 'edit';
+      return consumingMode !== 'print' && consumingMode !== 'offline' && data === undefined;
+    }
     renderMetaData(_data: D, _config: C) {
       return html`<meta-data></meta-data>`
     }
 
     renderBody(data: D, config: C) {
-      if(data === undefined) {
+      if(this.shallWaitRender(data, config)) {
         return this.renderDataLoading(config)
       }
       if (Array.isArray(data)) {
@@ -222,10 +226,9 @@ export default function renderMixin<
       if (config?.variant === 'card') {
         return this.renderCardItem(data, config)
       }
-
       return html`
 			<div class="layout vertical">							
-				${data === undefined ? html`Loading...` :
+				${this.shallWaitRender(data, config) ? html`Loading...` :
           [
             this.showMetaData ? this.renderMetaData(data, config) : html``,
             // this should be renderEntityActions from renderEntityActionMixin
