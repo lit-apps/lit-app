@@ -8,7 +8,8 @@ import type { LappSelectInput } from '../../field/select-input';
 import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';
 // import '../card'
 import { Loader, UserItem } from './types';
-import slotList from '@preignition/preignition-styles/src/slot-list.js';
+import { slotList } from '@lit-app/shared/styles';
+
 import('@material/web/progress/linear-progress.js');
 import('@material/web/select/select-option.js');
 

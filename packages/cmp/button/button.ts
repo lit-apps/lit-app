@@ -8,7 +8,6 @@ import { customElement, property } from 'lit/decorators.js';
 import { html, literal } from 'lit/static-html.js';
 import { LitElement, css } from 'lit';
 import { when } from 'lit/directives/when.js';
-import {icon} from '@preignition/preignition-styles';
 
 import ('@material/web/button/elevated-button.js');
 import ('@material/web/button/filled-button.js');
@@ -53,7 +52,7 @@ declare global {
 @customElement('lapp-button')
 export class LappButton extends LitElement {
 
-  static override styles = [icon, style];
+  static override styles = [ style];
   /**
    * Whether or not the button is disabled.
    */

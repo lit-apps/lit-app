@@ -1,10 +1,14 @@
 import { css } from 'lit';
 import {customElement} from 'lit/decorators.js';
-import { form, label, alignMwc, page } from '@preignition/preignition-styles';
-import padding from '@preignition/preignition-styles/padding';
-import margin from '@preignition/preignition-styles/margin';
-import gap from '@preignition/preignition-styles/gap';
-import sticky from '@preignition/preignition-styles/sticky';
+import page from '@lit-app/shared/styles/page.js';;
+import { form } from '@lit-app/shared/styles';
+import { label } from '@lit-app/shared/styles';
+
+import alignMwc from '@lit-app/shared/styles/patch/alignMwc.js';
+import { padding } from '@lit-app/shared/styles';
+import { margin } from '@lit-app/shared/styles';
+import { gap } from '@lit-app/shared/styles';
+import { sticky } from '@lit-app/shared/styles';
 import EntityHolder from './src/cmp/entity-holder';
 
 declare global {
@@ -38,17 +42,6 @@ export class LappEntityHolder extends EntityHolder {
 			:host {
 				display: contents;
 			}
-/* 			
-			
-			#action {
-				padding: 0 var(--space-small);
-				position: sticky;
-				top: 68px;
-				z-index: 1;
-				background-color: var(--color-background);
-			} */
-
-
 		`
 	]
   

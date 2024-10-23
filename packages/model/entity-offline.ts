@@ -1,4 +1,4 @@
-import print from "@preignition/preignition-styles/print.js";
+import print from "@lit-app/shared/styles/class/print.js";
 import { customElement } from 'lit/decorators.js';
 import { LappEntityHolder } from "./entity-holder.js";
 

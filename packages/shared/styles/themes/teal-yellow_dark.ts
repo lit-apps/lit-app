@@ -1,0 +1,50 @@
+import {type theme} from './type'
+const th: theme = {
+  name: 'alternative',
+  index: -60,
+  desc: 'alternative theme',
+  longDesc: 'teal and yellow colors',
+  lightTheme: '_tealYellow',
+  theme: {
+    '--dark-theme': true,
+
+    '--color-accent-rgb':'255, 214, 0',
+    '--color-accent':'#ffd600',
+    '--color-brand-rgb':'2, 131, 109',
+    '--color-brand':'#02836d',
+    '--color-outline':'#938F99',
+    '--color-secondary-text':'#cbcbcb',
+    '--color-disabled-text':'#a8a8a8',
+    '--md-sys-color-primary':'#5bdbbf',
+    '--md-sys-color-primary-rgb':'91, 219, 191',
+    '--md-sys-color-on-primary':'#00382d',
+    '--md-sys-color-on-primary-rgb':'0, 56, 45',
+    '--md-sys-color-primary-container':'#005142',
+    '--md-sys-color-on-primary-container':'#7af8db',
+    '--md-sys-color-secondary':'#CCC2DC',
+    '--md-sys-color-secondary-rgb':'204, 194, 220',
+    '--md-sys-color-on-secondary':'#332D41',
+    '--md-sys-color-on-secondary-rgb':'51, 45, 65',
+    '--md-sys-color-secondary-container':'#4A4458',
+    '--md-sys-color-on-secondary-container':'#E8DEF8',
+    '--md-sys-color-tertiary':'#cdcd00',
+    '--md-sys-color-tertiary-rgb':'205, 205, 0',
+    '--md-sys-color-on-tertiary':'#323200',
+    '--md-sys-color-on-tertiary-rgb':'50, 50, 0',
+    '--md-sys-color-tertiary-container':'#4a4900',
+    '--md-sys-color-on-tertiary-container':'#eaea00',
+    '--md-sys-color-background':'#1C1B1F',
+    '--md-sys-color-on-background':'#E6E1E5',
+    '--md-sys-color-surface':'#1C1B1F',
+    '--md-sys-color-on-surface':'#E6E1E5',
+    '--md-sys-color-inverse-surface':'#E6E1E5',
+    '--md-sys-color-inverse-on-surface':'#1C1B1F',
+    '--md-sys-color-surface-variant':'#49454F',
+    '--md-sys-color-on-surface-variant':'#CAC4D0',
+
+    '--md-sys-color-background-rgb': '28, 27, 31',
+    '--md-sys-color-surface-rgb': '28, 27, 31',
+  }
+}
+
+export default th

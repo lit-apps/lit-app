@@ -4,9 +4,9 @@ import { cache } from 'lit/directives/cache.js';
 import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ConsumeAccessibilityMixin } from '../../mixin/context-accessibility-mixin';
-import { md } from '@preignition/preignition-styles';
-import githubMd from '@preignition/preignition-styles/src/github-md-css'
-import githubHighlight from '@preignition/preignition-styles/src/github-highlight-css'
+import md from '@lit-app/shared/styles/md.js';;
+import { githubHMd } from '@lit-app/shared/styles'
+import { githubHighlight } from '@lit-app/shared/styles'
 
 import { parse } from '@lit-app/md-parser';
 import { MdFilledTextField } from '@material/web/textfield/filled-text-field';

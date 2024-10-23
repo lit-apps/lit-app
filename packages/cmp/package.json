@@ -33,7 +33,6 @@
     "@preignition/firebase-upload": "link:../../../packages/firebase-upload",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
-    "@preignition/preignition-styles": "link:../../../packages/preignition-styles",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
     "@vaadin/a11y-base": "24.1.0",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",

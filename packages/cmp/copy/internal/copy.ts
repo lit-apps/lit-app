@@ -1,7 +1,8 @@
 import { css, LitElement, nothing } from "lit";
 import { html, unsafeStatic } from 'lit/static-html.js'
 import { property, state, query } from 'lit/decorators.js';
-import { tooltip } from '@preignition/preignition-styles';
+import { tooltip } from '@lit-app/shared/styles';
+
 import('@material/web/iconbutton/outlined-icon-button.js');
 import('@material/web/iconbutton/filled-icon-button.js');
 import('@material/web/icon/icon.js');

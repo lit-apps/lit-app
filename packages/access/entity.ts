@@ -1,7 +1,9 @@
 import { css } from 'lit';
 import {customElement} from 'lit/decorators.js';
-import { form, label, page } from '@preignition/preignition-styles';
-import margin from '@preignition/preignition-styles/margin';
+import page from '@lit-app/shared/styles/page.js';;
+import { form } from '@lit-app/shared/styles';
+import { label } from '@lit-app/shared/styles';
+import { margin } from '@lit-app/shared/styles';
 
 import {EntityAccess} from './internal/entity';
 

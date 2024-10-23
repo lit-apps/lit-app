@@ -54,6 +54,7 @@
       "lit-html": "^3.2.1",
       "xstate": "link:../app-dependencies/xstate/packages/core",
       "@material/web": "link:../app-dependencies/material-web",
+      "@a11y/form": "workspace:*",
       "@lit-app/access": "workspace:*",
       "@lit-app/actor": "workspace:*",
       "@lit-app/cmp": "workspace:*",

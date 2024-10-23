@@ -6,7 +6,6 @@ import '@lit-app/cmp/user/search';
 import '@lit-app/cmp/user/select-item';
 import { AccessActionI, Role } from '@lit-app/model';
 import { EntityI } from '@lit-app/model/src/types';
-import { icon } from '@preignition/preignition-styles';
 import { LitElement, css, html } from "lit";
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -29,7 +28,6 @@ import('@material/web/progress/circular-progress')
 export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 
 	static override styles = [
-		icon,
 		css`
 			:host {
 				display: flex;

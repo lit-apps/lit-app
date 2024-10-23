@@ -3,7 +3,6 @@ import { html, css, LitElement } from "lit";
 import { when } from 'lit/directives/when.js';
 import { AccessActionI, Role } from '@lit-app/model';
 import { property, state } from 'lit/decorators.js';
-import { icon } from '@preignition/preignition-styles';
 import { LappUserSearch } from '@lit-app/cmp/user/search';
 import '@lit-app/cmp/user/search';
 import '@lit-app/cmp/user/select-item';
@@ -26,7 +25,6 @@ import { ConsumeUserAccessMixin } from './context-user-access-mixin';
 export class SetRole extends ConsumeUserAccessMixin(LitElement) {
 
 	static override styles = [
-		icon,
 		css`
 			:host {
 				display: flex;

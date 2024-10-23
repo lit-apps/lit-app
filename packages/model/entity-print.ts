@@ -1,7 +1,7 @@
 import { customElement } from 'lit/decorators.js';
 import { LappEntityHolder } from "./entity-holder.js";
 
-import print from "@preignition/preignition-styles/print.js";
+import print from "@lit-app/shared/styles/class/print.js";
 
 /**
  * Entity holder for when we want an offline version

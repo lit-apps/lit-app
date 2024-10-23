@@ -30,7 +30,6 @@
     "@material/web": "1.0.1",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
-    "@preignition/preignition-styles": "link:../../../packages/preignition-styles",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
     "firebase": "^10.7.1",
     "lit": "^3.2.1",

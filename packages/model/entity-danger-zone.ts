@@ -1,5 +1,7 @@
-import { form, page } from '@preignition/preignition-styles';
-import outlined from '@preignition/preignition-styles/src/outlined';
+import page from '@lit-app/shared/styles/page.js';;
+import { form } from '@lit-app/shared/styles';
+import { outlined } from '@lit-app/shared/styles';
+
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import EntityDangerZone from './src/cmp/entity-danger-zone';

@@ -1,7 +1,7 @@
 import { LitElement, adoptStyles } from 'lit';
 import { property } from 'lit/decorators.js'
 import { consume, provide, createContext, ContextProvider } from '@lit/context';
-import { showWhenAccessibility } from '@preignition/preignition-styles';
+import { showWhenAccessibility } from '@lit-app/shared/styles';
 import { State, StateController } from '../../state/src';
 import { AccessibilityStateI } from '../../state/src/types';
 
@@ -44,11 +44,13 @@ export const ConsumeAccessibilityMixin = <T extends Constructor<LitElement>>(sup
 			return {
 				issignlanguage: this.accessibility?.signlanguage || false,
 				isreadaloud: this.accessibility?.readaloud || false,
-				iseasyread: this.accessibility?.easyread || this.accessibility?.easyreadEmulate || false
+				iseasyread: this.accessibility?.easyread ||
+					this.accessibility?.easyreadEmulate || false
 			}
 		}
 	};
-	return ContextConsumeAccessibilityMixinClass as unknown as Constructor<ContextAccessibilityMixinInterface> & T;
+	return ContextConsumeAccessibilityMixinClass as unknown as
+		Constructor<ContextAccessibilityMixinInterface> & T;
 }
 
 /**
@@ -58,14 +60,26 @@ export const ConsumeAccessibilityMixin = <T extends Constructor<LitElement>>(sup
  * We are gradually switching to use context approach in order to better adapt to DOM native API, and are not 
  * sure about how state will work when we distribute part of the app as web components.
  */
-export const ProvideAccessibilityMixin = (state: AccessibilityStateI) => <T extends Constructor<LitElement>>(superClass: T) => {
+export const ProvideAccessibilityMixin =
+	(state: AccessibilityStateI) =>
+		<T extends Constructor<LitElement>>(superClass: T) => {
 
-	class ContextProvideAccessibilityMixinClass extends superClass {
-		// this controller pass updated state value to consumers
-		_accessibilityProvider = new ContextProvider(this, { context: accessibilityContext, initialValue: state });
-		// this controller notify _accessibilityProvider about accessibility state changes
-		_accessibilityStateController = new StateController(this, state, () => this._accessibilityProvider.setValue(state, true));
-	};
+			class ContextProvideAccessibilityMixinClass extends superClass {
 
-	return ContextProvideAccessibilityMixinClass as unknown as Constructor<ContextAccessibilityMixinInterface> & T;
-}
+				// this controller pass updated state value to consumers
+				_accessibilityProvider = new ContextProvider(
+					this,
+					{ context: accessibilityContext, initialValue: state }
+				);
+
+				// this controller notify _accessibilityProvider about accessibility state changes
+				_accessibilityStateController = new StateController(
+					this,
+					state,
+					() => this._accessibilityProvider.setValue(state, true)
+				);
+			};
+
+			return ContextProvideAccessibilityMixinClass as unknown as
+				Constructor<ContextAccessibilityMixinInterface> & T;
+		}

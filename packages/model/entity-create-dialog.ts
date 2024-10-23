@@ -1,4 +1,6 @@
-import { form, label, page } from '@preignition/preignition-styles';
+import page from '@lit-app/shared/styles/page.js';;
+import { label } from '@lit-app/shared/styles';
+import { form } from '@lit-app/shared/styles';
 import { customElement } from 'lit/decorators.js';
 import { css } from 'lit';
 import CreateDialog from './src/cmp/entity-create-dialog';

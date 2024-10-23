@@ -1,5 +1,5 @@
 import { CSSResult, css } from 'lit';
-import { accessibility } from '@preignition/preignition-styles';
+import { srOnly } from '@lit-app/shared/styles';
 import genericStyles from '../../../generic/styles';
 import choiceStyles from '../../styles';
 
@@ -74,6 +74,6 @@ input[id="star0"]:checked + label {
 export default [
 	genericStyles,
 	choiceStyles,
-	accessibility,
+	srOnly,
 	styles
 ]
