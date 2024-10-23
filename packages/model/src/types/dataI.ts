@@ -19,6 +19,7 @@ export type UserAccess = {
 	viewer?: uid[] // can view DEPRECATED
 	guest?: uid[] // can view
 	reviewer?: uid[] // can review entity
+	
 }
 // Group is a collection of users with a name 
 // when a user is added as a member, their tokens are modified to include the group group[${teamId}_${groupName}] = timestamp
