@@ -38,6 +38,13 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-empty-object-type": "off"
     }
+  }, {
+    ignores: [
+      "**/dist/**/*",
+      "**/build/**/*",
+      "**/test/**/*",
+      "**/redefine-custom-elements.ts",
+    ]
   }
 );
 
