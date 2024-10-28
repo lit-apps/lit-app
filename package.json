@@ -64,6 +64,7 @@
       "@lit-app/plot": "workspace:*",
       "@lit-app/shared": "workspace:*",
       "@lit-app/state": "workspace:*",
+      "@lit-app/testing": "workspace:*",
       "@lit-app/xstate-route": "workspace:*"
     }
   }

@@ -23,7 +23,6 @@ export default defineConfig({
       "@lit/context",
       "lit",
       "api-viewer-element",
-      "loupe",  
       "@material/web",
       "@material/mwc-base",
       "@material/mwc-base/form-element.js",

@@ -47,7 +47,6 @@
     "@vitest/utils": "^1.6.0",
     "eslint": "^8.40.0",
     "lit": "^3.2.1",
-    "loupe": "^3.1.0",
     "providers": "link:@vitest/browser/providers",
     "rimraf": "^5.0.5",
     "typescript": "^5.4.2",

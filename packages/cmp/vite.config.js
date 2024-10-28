@@ -21,7 +21,6 @@ export default defineConfig({
       "router-slot",
       "lit",
       "api-viewer-element",
-      "loupe",  
       "@material/web",
       "@material/mwc-base",
       "@material/mwc-base/form-element.js",

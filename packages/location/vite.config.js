@@ -22,7 +22,6 @@ export default defineConfig({
     dedupe: [
       "router-slot",
       "lit",
-      "loupe",  
       "@material/web",
       "@material/mwc-base",
       "@material/mwc-base/form-element.js",
