@@ -5,7 +5,7 @@ import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ConsumeAccessibilityMixin } from '../../mixin/context-accessibility-mixin';
 import md from '@lit-app/shared/styles/md.js';;
-import { githubHMd } from '@lit-app/shared/styles'
+import { githubMd } from '@lit-app/shared/styles'
 import { githubHighlight } from '@lit-app/shared/styles'
 
 import { parse } from '@lit-app/md-parser';
