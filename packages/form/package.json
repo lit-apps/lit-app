@@ -1,0 +1,45 @@
+{
+  "name": "@a11y/form",
+  "version": "0.0.1",
+  "description": "base elements for accessible form",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite --force",
+    "dev": "vite",
+    "test": "vitest --watch",
+    "test:browser": "vitest --browser \"chrome\"",
+    "test:ui": "vitest --ui"
+  },
+  "keywords": [
+    "lit",
+    "vitejs",
+    "web-components"
+  ],
+  "authors": [
+    "christophe.geiser <christophe@preignition.org>"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@lit-app/event": "*",
+    "@lit-app/shared": "*",
+    "@lit/context": "^1.1.2",
+    "@material/web": "*",
+    "@preignition/preignition-config": "link:../../../packages/preignition-config",
+    "@preignition/preignition-util": "link:../../../packages/preignition-util",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.3",
+    "@custom-elements-manifest/to-markdown": "^0.1.0",
+    "@lit-app/cmp": "workspace:*",
+    "@lit-app/testing": "workspace:*",
+    "@vitest/browser": "^2.1.4",
+    "@vitest/utils": "^2.1.4",
+    "eslint": "^9.9.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.4",
+    "wireit": "^0.14.8"
+  }
+}

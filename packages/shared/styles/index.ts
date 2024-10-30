@@ -19,7 +19,7 @@ export { default as responsiveMedia } from './class/responsive-media.js';
 export { default as semanticLayout } from './class/semantic-layout.js';
 export { default as showHover } from './class/show-hover.js';
 export { default as showWhenAccessibility } from './class/show-when-accessibility.js';
-export { default as skipnav } from './class/skipnav.js';
+export { default as skipNav } from './class/skip-nav.js';
 export { default as slotList } from './class/slot-list.js';
 export { default as srOnly } from './class/sr-only.js';
 export { default as tabVariant } from './class/tab-variant.js';

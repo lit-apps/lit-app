@@ -10,7 +10,7 @@ import LocalStoragePersist from '../../../mixin/local-storage-persist-mixin.js';
 import { StaticValue, html as staticHtml } from 'lit/static-html.js';
 import { GenericI } from '../../generic/generic';
 import CompatMixin from '../../compat/compat-mixin';
-
+import { ConsumeFormMixin } from '@a11y/form';
 /**
  * We add real class to avoid TS error
  */
@@ -37,10 +37,11 @@ class RealClass extends T {
 
 // @ts-expect-error - TS complains about renderField and field being private in Base class
 export class TextField extends
-NoAutoValidateMixin(
-	CompatMixin(
-		LocalStoragePersist(
-				RealClass))) {
+	ConsumeFormMixin(
+		NoAutoValidateMixin(
+			CompatMixin(
+				LocalStoragePersist(
+					RealClass)))) {
 	/**
 	 * The variant to use for rendering the field
 	 */
@@ -53,10 +54,10 @@ NoAutoValidateMixin(
 	@property({ type: Boolean }) labelAbove: boolean = false
 
 	/**
-   * whether to persist supporting text 
-   * @default false
-   */
-	@property({type: Boolean}) persistSupportingText: boolean = false;
+	 * whether to persist supporting text 
+	 * @default false
+	 */
+	@property({ type: Boolean }) persistSupportingText: boolean = false;
 
 	/**
 	 * The field holding label
@@ -131,4 +132,6 @@ NoAutoValidateMixin(
 	// 	}
 	// 	return valid;
 	// }
+
+
 }

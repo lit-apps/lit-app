@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+
 import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest'
 import { customElement } from 'lit/decorators.js';
 import {literal} from 'lit/static-html.js';
