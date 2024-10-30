@@ -111,12 +111,15 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 			return this.renderBaseActions(data, config)
 		}
 
-		renderBaseActions(data: D, config: RenderConfig): TemplateResult | typeof nothing {
+		protected canViewActions(_data: D, config: RenderConfig): boolean {
 			const entityAccess = config.entityAccess || this.host.entityAccess;
+			return entityAccess?.canEdit && !this.realTime
+		}
+		
+		renderBaseActions(data: D, config: RenderConfig): TemplateResult | typeof nothing {
 			const entityStatus = config.entityStatus || this.host.entityStatus;
 
-			if (!entityAccess?.canEdit || this.realTime) return nothing;
-			return html`
+			if (this.canViewActions(data, config)) return html`
 				${entityStatus?.isEditing ?
 					this.renderEditingActions(data, config) :
 					this.renderViewingActions(data, config)
@@ -124,6 +127,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 				<span class="flex"></span>
 				${entityStatus?.isEditing ? this.renderEditActions(data, config) : this.renderDefaultActions(data, config)}
 			`
+			return nothing
 		}
 
 		renderEditingActions(data: D, config: RenderConfig) {

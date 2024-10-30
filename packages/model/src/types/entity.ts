@@ -85,8 +85,8 @@ export type RenderConfigOptional< O = OptionsT, T = any> = {
 	options?: O
 }
 
-export type RenderConfig<O = OptionsT, T = any> = RenderConfigOptional<O, T> & {
-	entityAccess: EntityAccess
+export type RenderConfig<O = OptionsT, A = EntityAccess,  T = any> = RenderConfigOptional<O, T> & {
+	entityAccess: A
 	entityStatus: EntityStatus
 	/**
 	 * The mode in which the entity going to be consumed

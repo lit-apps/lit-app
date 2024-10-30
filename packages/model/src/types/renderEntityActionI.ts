@@ -155,7 +155,7 @@ type DefaultActionsType = ActionType<typeof _defaultActions>
 export const defaultActions: DefaultActionsType = _defaultActions
 
 export declare class RenderInterface<
-	D extends DefaultI, 
+	D extends DefaultI,
 	A extends Actions = Actions
 > extends RenderEntityCreateInterface<D & DataI> {
 	/**
@@ -170,9 +170,16 @@ export declare class RenderInterface<
 	open(entityName: string, id?: string): Open | null
 	markDirty(dirty?: boolean): Dirty
 	dispatchAction(actionName: keyof A): CustomEvent
+
 	/**
- * Utility render method to render an group of actions - 
- */
+	 * Whether the actions should be displayed
+	 */
+
+	protected canViewActions(data: D, config: RenderConfig): boolean
+
+	/**
+	 * Utility render method to render an group of actions - 
+ 	 */
 	protected renderBaseActions(data: D, config?: RenderConfig): TemplateResult | typeof nothing
 	/**
 	 * Utility render method to render default action is Viewing mode (edit action)
@@ -225,30 +232,30 @@ export declare class RenderInterface<
  * @returns 
  */
 	renderBulkActions(
-		selectedItems: Collection<D>, 
-		data: Collection<D>, 
-		entityAccess?: EntityAccess, 
+		selectedItems: Collection<D>,
+		data: Collection<D>,
+		entityAccess?: EntityAccess,
 		entityStatus?: EntityStatus
 	): TemplateResult
 
 	renderEditActions(data: D, config?: RenderConfig): TemplateResult
 	renderDefaultActions(data: D, config: RenderConfig): TemplateResult
 	renderBulkActions(
-		selectedItems: Collection<D>, 
-		data: Collection<D>, 
-		entityAccess?: EntityAccess, 
+		selectedItems: Collection<D>,
+		data: Collection<D>,
+		entityAccess?: EntityAccess,
 		entityStatus?: EntityStatus
 	): TemplateResult
 	renderBulkAction(
-		selectedItems: Collection<D>, 
-		data: Collection<D>, 
-		action: Action, 
+		selectedItems: Collection<D>,
+		data: Collection<D>,
+		action: Action,
 		actionName: keyof A
 	): TemplateResult
 }
 
 export interface StaticEntityActionI<
-	D extends DefaultI, 
+	D extends DefaultI,
 	A extends Actions
 > extends AbstractEntity<D> {
 	actions: A
@@ -263,11 +270,11 @@ export interface StaticEntityActionI<
 		onResolved?: (promise: any) => void
 	): TemplateResult
 	onActionClick(
-		actionName: keyof A, 
-		host: HTMLElement, 
-		data?: any, 
-		beforeDispatch?: () => boolean | string | void, 
-		onResolved?: OnResolvedT, 
+		actionName: keyof A,
+		host: HTMLElement,
+		data?: any,
+		beforeDispatch?: () => boolean | string | void,
+		onResolved?: OnResolvedT,
 		eventGetter?: () => CustomEvent
 	): (e: Event & { target: LappButton }) => Promise<void>
 	getAction(key: keyof A): Action
