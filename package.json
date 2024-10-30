@@ -65,7 +65,29 @@
       "@lit-app/shared": "workspace:*",
       "@lit-app/state": "workspace:*",
       "@lit-app/testing": "workspace:*",
-      "@lit-app/xstate-route": "workspace:*"
+      "@lit-app/xstate-route": "workspace:*",
+      "@vaadin/a11y-base": "link:../app-dependencies/web-components/packages/a11y-base",
+			"@vaadin/button": "link:../app-dependencies/web-components/packages/button",
+			"@vaadin/checkbox": "link:../app-dependencies/web-components/packages/checkbox",
+			"@vaadin/combo-box": "link:../app-dependencies/web-components/packages/combo-box",
+			"@vaadin/component-base": "link:../app-dependencies/web-components/packages/component-base",
+			"@vaadin/context-menu": "link:../app-dependencies/web-components/packages/context-menu",
+			"@vaadin/details": "link:../app-dependencies/web-components/packages/details",
+			"@vaadin/field-base": "link:../app-dependencies/web-components/packages/field-base",
+			"@vaadin/grid": "link:../app-dependencies/web-components/packages/grid",
+			"@vaadin/input-container": "link:../app-dependencies/web-components/packages/input-container",
+			"@vaadin/item": "link:../app-dependencies/web-components/packages/item",
+			"@vaadin/list-box": "link:../app-dependencies/web-components/packages/list-box",
+			"@vaadin/multi-select-combo-box": "link:../app-dependencies/web-components/packages/multi-select-combo-box",
+			"@vaadin/overlay": "link:../app-dependencies/web-components/packages/overlay",
+			"@vaadin/polymer-legacy-adapter": "link:../app-dependencies/web-components/packages/polymer-legacy-adapter",
+			"@vaadin/progress-bar": "link:../app-dependencies/web-components/packages/progress-bar",
+			"@vaadin/select": "link:../app-dependencies/web-components/packages/select",
+			"@vaadin/text-field": "link:../app-dependencies/web-components/packages/text-field",
+			"@vaadin/upload": "link:../app-dependencies/web-components/packages/upload",
+			"@vaadin/vaadin-lumo-styles": "link:../app-dependencies/web-components/packages/vaadin-lumo-styles",
+			"@vaadin/vaadin-material-styles": "link:../app-dependencies/web-components/packages/vaadin-material-styles",
+			"@vaadin/vaadin-themable-mixin": "link:../app-dependencies/web-components/packages/vaadin-themable-mixin"
     }
   }
 }
