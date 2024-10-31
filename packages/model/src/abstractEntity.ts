@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 import { CSSResult, nothing, TemplateResult } from 'lit';
 import {
 	Model
@@ -126,7 +128,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 				}
 			})
 		}
-		// @ts-expect-error - dev stuff
+		// @ts-ignore
 		if (import.meta.hot) {
 			console.info('Entity HMR attempt')
 			// @ts-expect-error - dev stuff

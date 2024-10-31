@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import type Actor from './actor';
 
@@ -43,7 +44,7 @@ class ActorRegistry {
 }
 
 // expose the ActorRegistry  on dev
-// @ts-expect-error - does not exist with current module settings for cloud functions'
+// @ts-ignore
 if (import.meta.env.DEV) {
 	// @ts-expect-error - expose the ActorRegistry on the window object
 	window._actorRegistry = ActorRegistry;
