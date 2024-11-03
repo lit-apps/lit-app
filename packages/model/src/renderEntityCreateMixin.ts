@@ -10,12 +10,15 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 export {
 	RenderEntityCreateInterface
 }
+
 /**
  * 
  * Mixin in charge of creating new Entity data
  * 
  */
-export default function renderMixin<D extends DataI, A extends Actions>(superclass: Constructor<AbstractEntity<D,A>>) {
+export default function renderMixin<D extends DataI, A extends Actions>(
+	superclass: Constructor<AbstractEntity<D, A>>
+) {
 	class R extends superclass {
 
 		/** 
@@ -40,7 +43,7 @@ export default function renderMixin<D extends DataI, A extends Actions>(supercla
 			}
 		}
 
-		processCreateMetaData(metaData: Partial<D["metaData"]> = {}){
+		processCreateMetaData(metaData: Partial<D["metaData"]> = {}) {
 			return {
 				type: this.entityName,
 				deleted: false,
@@ -49,7 +52,7 @@ export default function renderMixin<D extends DataI, A extends Actions>(supercla
 					status: 'private'
 				},
 				...metaData,
-			} 
+			}
 		}
 
 		processCreateRef(ref: Partial<D["ref"]> = {}) {
@@ -58,7 +61,6 @@ export default function renderMixin<D extends DataI, A extends Actions>(supercla
 				...ref,
 			}
 		}
-
 
 	};
 	return R as unknown as Constructor<RenderEntityCreateInterface<D>> & typeof superclass;

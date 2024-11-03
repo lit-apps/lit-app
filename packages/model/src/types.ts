@@ -75,7 +75,7 @@ import { RenderInterface as RenderA, StaticEntityActionI } from './types/renderE
 export interface StaticEntityI<D = any, A extends Actions = Actions> {
 	// entityName: string
 	// model: Model<D>
-	icon: string
+	// icon: string
 	actions: A
 	styles: CSSResult | CSSResult[];
 	getAccess: GetAccess

@@ -120,9 +120,16 @@ export function isOnClickAction(action: Action): action is OnClickAction {
  * 	b: {name: 'b', label: 'b'},
  * } 
  * const ta1:  ActionType<typeof a1> = a1  
- * type K = keyof typeof a1 // "a" | "b"
+ * type K = keyof typeof a1 
+ * ---> K = "a" | "b"
  **/ 
 type EvaluateAction<T> = T extends Action ? T : never;
 type EvaluateType<T> = T extends infer O ? { [K in keyof O]: EvaluateAction<O[K]> } : never;
 export type ActionType<T extends Actions> = EvaluateType<{[key in keyof T]: Action }>;
-
+// export function typeActions(actions: unknown): actions is Actions {
+// 	if (typeof actions !== 'object') return false
+// 	for (const key in actions) {
+// 		if (!isAction(actions[key])) return false
+// 	}
+// 	return true
+// }

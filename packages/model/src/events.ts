@@ -99,7 +99,10 @@ export class Delete extends BaseEvent<EntityWriteDetail> {
   static readonly eventName = 'entity-delete';
   public persisted?: boolean // true when data was persisted
   readonly actionName = 'delete';
-  constructor(detail: EntityWriteDetail) {
+  constructor(
+    detail: EntityWriteDetail,
+    public override readonly action?: Action
+  ) {
     super(Delete.eventName, {
       bubbles: true,
       composed: true,

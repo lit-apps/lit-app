@@ -29,7 +29,6 @@ import { GetAccess } from './types/getAccess';
 export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Actions = Actions> {
 
 	static declare entityName: string
-	
 	static declare icon: string
 	static declare model: Model<any>
 	static declare actions: Actions
@@ -63,6 +62,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	 * the type of actions is properly inferred. 
 	 */
 	declare ['constructor']: typeof AbstractEntity;
+
 	// define a private _icon property to be used by the icon getter
 	_icon!: string
 	get icon(): string {
@@ -106,6 +106,11 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 		public listenOnAction: boolean = false
 	) {
 		
+		/** 
+		 * we add those runtime checks because there is no way to enforce static abstract `name`
+		 * See discussion in https://github.com/microsoft/TypeScript/issues/34516
+		 * 
+		 */
 		if(!this.constructor.entityName) {
 			throw new Error('entityName is required')
 		}

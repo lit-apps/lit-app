@@ -231,7 +231,6 @@ export default function renderMixin<
 				${this.shallWaitRender(data, config) ? html`Loading...` :
           [
             this.showMetaData ? this.renderMetaData(data, config) : html``,
-            // this should be renderEntityActions from renderEntityActionMixin
             super.renderContent(data, config),
             html`<form id="entityForm">
               ${config?.entityStatus.isNew ?
