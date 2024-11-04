@@ -142,7 +142,7 @@ const style:CSSResult = css`
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   margin: 0;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  /* font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"; */
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
@@ -336,7 +336,7 @@ const style:CSSResult = css`
   border-spacing: 0;
   border-collapse: collapse;
   display: block;
-  width: max-content;
+  /* width: max-content; */
   max-width: 100%;
   overflow: auto;
 }
