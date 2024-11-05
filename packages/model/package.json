@@ -44,6 +44,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@json2csv/plainjs": "^7.0.6",
     "@lit-app/cmp": "link:../cmp",
     "@lit-app/event": "link:../event",
     "@lit-app/shared": "link:../shared",

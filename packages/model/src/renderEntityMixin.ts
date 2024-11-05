@@ -29,6 +29,7 @@ import { RenderInterface } from './types/renderEntityI';
 export type { RenderInterface } from './types/renderEntityI';
 
 import { DefaultI } from './types/entity';
+import { Parser } from '@json2csv/plainjs';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 type Open = (entityName: string, id: string) => void
@@ -128,7 +129,7 @@ export default function renderMixin<
         this.open(this.entityName, context.item.$id)
       }
     }
-
+    
     renderGridColumns(config: C) {
       // console.log('renderGridColumns')
       const showSelectionColumn = config.columnsConfig?.showSelectionColumn;
@@ -336,11 +337,29 @@ export default function renderMixin<
     renderFieldUpdate(_name: string, _config: any, _data?: D): TemplateResult {
       return html``
     }
+
+    protected getCsvParser(renderConfig: C) {
+      const fields = getFieldsFromModel(this.model, renderConfig, (model) => model.csv)
+        .sort((a, b) => (a[1].csv?.index || 0) - (b[1].csv?.index || 0))
+        .map(([key, m]) => {
+          const csv = ensure(m.csv)
+          return {
+            label: csv.label || m.label || key,
+            value: csv.value || key,
+            default: csv.default,
+          }
+        })
+      return new Parser({fields});
+
+    }
   };
   return R as unknown as Constructor<RenderInterface<D, A, C>> & typeof superclass;
 }
 
-function getFieldsFromModel(model: Model<any>, renderConfig: RenderConfig,  getConfig: (m: ModelComponent) => ModelComponent['grid'] | ModelComponent['table'] | undefined): [string, ModelComponent][] {
+function getFieldsFromModel(
+  model: Model<any>, renderConfig: RenderConfig,  getConfig: (m: ModelComponent
+
+  ) => ModelComponent['grid'] | ModelComponent['csv'] | ModelComponent['table'] | undefined): [string, ModelComponent][] {
   function getFields(model: Model<any>, path: string = ''): [string, ModelComponent][] {
     const fields: [string, ModelComponent][] = [];
 

@@ -4,6 +4,7 @@ import { Collection, CollectionI } from './dataI';
 import { DefaultI, RenderConfig } from './entity';
 import { RenderInterface as RenderActionInterface } from './renderEntityActionI';
 import { ModelComponent } from './modelComponent.js';
+import { Parser } from '@json2csv/plainjs';
 
 export declare class RenderInterface<
 	D extends DefaultI = DefaultI, 
@@ -37,4 +38,5 @@ export declare class RenderInterface<
 	protected renderListItem(_data: D, _config: C): TemplateResult
 	public renderFormNew(data: D, config: C): TemplateResult
 	public renderForm(data: D, config: C): TemplateResult
+	public getCsvParser(renderConfig: C): Parser<any, any>
 }

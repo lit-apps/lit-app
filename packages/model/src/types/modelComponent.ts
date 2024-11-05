@@ -6,6 +6,7 @@ import {
 	GridColumnHeaderLitRenderer
 } from 'lit-vaadin-helpers';
 import { RenderConfig } from '../types';
+import type { FieldInfo } from '@json2csv/plainjs';
 
 type TextComponent = 'textfield' | 'textarea'
 type MdComponent = 'md'
@@ -43,12 +44,23 @@ export type GridConfig<T = any> = {
 	resizable?: boolean
 	sortable?: boolean
 	/**
-	 * condition to render the column depending on renderCofing
+	 * condition to render the column depending on renderConfig
 	 */
 	condition?: (config: RenderConfig) => boolean
 	headerRenderer?: GridColumnHeaderLitRenderer
 	bodyRenderer?: GridColumnBodyLitRenderer<T>
 }
+
+// export type CsvConfig<T = any> = {
+// 	index: number
+// 	header?:
+// 	path?: string
+// 	/**
+// 	 * condition to render the column depending on renderCofing
+// 	 */
+// 	condition?: (config: RenderConfig) => boolean
+// }
+
 interface ModelComponentBase<T = any> {
 	label?: string
 	helper?: string
@@ -60,6 +72,11 @@ interface ModelComponentBase<T = any> {
 	class?: string
 	table?: TableConfig<T>
 	grid?: GridConfig<T>
+	csv?: Partial<FieldInfo<T, string>>
+	& {
+		index?: number,
+		condition?: (config: RenderConfig) => boolean
+	}
 	// set requestUpdate to true to request an update when the value changes
 	requestUpdate?: boolean
 	// do not render component when the function returns true 
