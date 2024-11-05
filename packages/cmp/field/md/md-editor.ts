@@ -50,6 +50,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 				display: flex;
 				position: relative;
 				overflow: hidden;
+				/* flex-direction: column; */
 			}
 	
 			#container > * {
