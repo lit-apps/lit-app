@@ -14,6 +14,7 @@ import { DownloadEvent } from "../dialog-download.js";
 import downloadJSON from '../downloadJSON.js';
 import downloadCSV from '../downloadCSV.js';
 import { LappChoiceRadio } from "../../field/choice-radio.js";
+import type { Parser } from "@json2csv/plainjs";
 
 type AllowedExportFormats = 'json' | 'csv'
 
@@ -97,8 +98,13 @@ export class DialogDownload extends LitElement {
    */
   @property({ attribute: false }) formats!: AllowedExportFormats[];
 
+  /**
+   * a @json2csv/plainjs parse to format csv data
+   */
+  @property({ attribute: false }) parser: Parser<any, any> | undefined; 
+
   /** 
-  *  - api href
+   *  - api href
    */
   @property() href!: string;
 
@@ -277,9 +283,12 @@ export class DialogDownload extends LitElement {
       }
       if (this.format === 'csv') {
         // Method to convert data to CSV format
-        // TODO: make this work for nested csv
         const convertToCSV = (data: any[]): string => {
-          const headers = Object.keys(data[0]);
+          // TODO: use the async parser to liberate the main thread
+          if (this.parser ) {
+            return this.parser.parse(data)
+          }
+          const headers = Object.keys(data[0])
           const csvRows = data.map(row =>
             headers.map(header => JSON.stringify(row[header], (key, value) => value === null ? '' : value)).join(',')
           );
