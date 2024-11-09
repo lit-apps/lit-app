@@ -5,7 +5,7 @@ import "weightless/button";
 
 export default class LoginComponent extends LitElement {
 
-	static styles = [sharedStyles, css`
+	static override styles = [sharedStyles, css`
 		#container {
 			margin: 70px auto;
 			max-width: 700px;
@@ -27,7 +27,7 @@ export default class LoginComponent extends LitElement {
 	 * Renders the component.
 	 * @returns {TemplateResult}
 	 */
-	render (): TemplateResult {
+	override render (): TemplateResult {
 		return html`
 			<wl-card id="container">
 				<h2>Login to continue</h2>

@@ -149,7 +149,7 @@ describe('RouteStateController', () => {
     }
 
     override render() {
-      const isOneActive = stateActor.snapshot.can({ type: 'xstate.route.one' });
+      const isOneActive = stateActor.snapshot.can({ type: 'xstate.route.fsm.one' });
       return html`
 			<h2>xstate-route Controller component</h2>
 			<p>This component demonstrates how to use xstate-route-controller. The Controller binds <a href="https://github.com/statelyai/xstate" target="_blank">xstate  machine actors</a> with <a href="https://github.com/andreasbm/router-slot" target="_blank">router-slot router</a></p>
@@ -287,7 +287,7 @@ describe('RouteStateController', () => {
     expect(stateActor.context.id).toEqual('456');
   });
 
-  it('should honor guarded routes', async () => {
+  it('should honour guarded routes', async () => {
 
     const {
       linkOne,
@@ -295,7 +295,7 @@ describe('RouteStateController', () => {
       linkTwo456
     } = await setupTest();
 
-    let url = '/123/two';
+    const url = '/123/two';
     linkTwo123.click();
     await new Promise((resolve) => setTimeout(resolve, 30));
 

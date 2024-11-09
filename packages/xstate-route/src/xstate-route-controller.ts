@@ -91,7 +91,8 @@ class RouteStateController implements ReactiveController {
           }
           // temporarily set the next state so that we know what to navigate to
           this._nextState = xstate;
-          const can = sn.matches(xstate) || sn.can({ type: `xstate.route.${xstate}` });
+          const actorId = this.actor.logic.id;
+          const can = sn.matches(xstate) || sn.can({ type: `xstate.route.${actorId}.${xstate}` });
           console.groupEnd();
           if (can) {
             this._previousMatch = match;
@@ -125,7 +126,8 @@ class RouteStateController implements ReactiveController {
       if (this._nextState) {
         // only send the next state if the actor is not already in that state
         if (!this.actor.getSnapshot().matches(this._nextState)) {
-          this.actor.send({ type: `xstate.route.${this._nextState}` });
+          const actorId = this.actor.logic.id;
+          this.actor.send({ type: `xstate.route.${actorId}.${this._nextState}` });
         }
         this._nextState = '';
       }
@@ -197,7 +199,8 @@ class RouteStateController implements ReactiveController {
       const xstate = match?.route.data?.xstate;
       if (xstate) {
         this._preventHistoryChange = true;
-        this.actor.send({ type: `xstate.route.${xstate}` });
+        const actorId = this.actor.logic.id;
+        this.actor.send({ type: `xstate.route.${actorId}.${xstate}` });
         this._preventHistoryChange = false;
       }
     }
