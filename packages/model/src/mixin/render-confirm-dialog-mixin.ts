@@ -85,6 +85,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 							);
 							newEvent.confirmed = true;
 							newEvent.detail.id = item.$id
+							newEvent.detail.data = null;
 							this.dispatchEvent(newEvent);
 							promises.push(event.detail.promise)
 						})

@@ -34,11 +34,11 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	static declare actions: Actions
 	static declare styles: CSSResult | CSSResult[];
 	static locale?: Strings
-	static roles: Role[] = [
+	static roles = [
 		{ name: 'owner', level: 1 },
 		{ name: 'admin', level: 2 },
 		{ name: 'editor', level: 3 },
-		{ name: 'guest', level: 4 }]
+		{ name: 'guest', level: 4 }] as const
 
 	static userLoader: (search: string) => Promise<any>
 

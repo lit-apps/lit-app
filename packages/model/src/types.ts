@@ -81,7 +81,7 @@ export interface StaticEntityI<D = any, A extends Actions = Actions> {
 	getAccess: GetAccess
 	accessDataGetter: (data: any) => Promise<Access>
 	locale?: Strings
-	roles: Role[]
+	roles: Readonly<Role[]>
 	userLoader?: (search: string) => Promise<any>
 	['constructor']: typeof AbstractEntity;
 }
