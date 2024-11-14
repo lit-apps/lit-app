@@ -12,7 +12,7 @@ import {
 	AnyEvent,
 	AppActionEmail
 } from './events';
-import { Access, Role, Strings } from './types';
+import { Access, Strings } from './types';
 import {
 	Actions
 } from './types/action';

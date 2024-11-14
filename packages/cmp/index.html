@@ -34,6 +34,17 @@
         display: block;
       }
     </style>
+    <script type="module" >
+      import { Icon } from '@lit-app/cmp/icon/internal/icon'
+      Icon.getURL = function(name, noFill) {
+        return `http://localhost:5173/images/material-symbols/${name}/materialsymbolsoutlined/${name}${noFill ? '' : '_fill1'}_${Icon.opticalSize}px.svg`
+      }
+      if(import.meta.env.DEV) {
+        console.info('URL icon set to', Icon.getURL('home'));
+        console.warn('A Server must be running on port 5173 to serve the icons');
+      }
+
+    </script>
     <script type="module" src="/field/choice-star"></script>
     <!-- <script type="module" src="/field/choice-order"></script> 
     <script type="module" src="/field/choice-checkbox"></script>
@@ -45,14 +56,14 @@
     <script type="module" src="/field/record-field"></script>
     <script type="module" src="/field/checkbox-field"></script>
     <script type="module" src="/field/slider-field"></script> -->
-    <script type="module" src="/field/text-field"></script> 
-    <script type="module" src="/field/upload"></script>
-    <script type="module" src="/fab/fab"></script>
+    <!-- <script type="module" src="/field/text-field"></script>  -->
+    <!-- <script type="module" src="/field/upload"></script> -->
+    <!-- <script type="module" src="/fab/fab"></script> -->
     <!-- <script type="module" src="/fab/filled-fab.js"></script> -->
     <!-- <script type="module" src="/audio/audio"></script> -->
-    <!-- <script type="module" src="/field/md-editor"></script>
-    <script type="module" src="/field/md-droppable-editor"></script>-->
-    <script type="module" src="/icon/icon"></script>
+    <!-- <script type="module" src="/field/md-editor"></script>-->
+    <script type="module" src="/field/md-droppable-editor"></script> 
+    <!-- <script type="module" src="/icon/icon"></script> -->
     <!-- <script type="module" src="/tabs/primary-tab-closable"></script>  -->
    
   </head>
@@ -82,9 +93,11 @@
             e.target.reportValidity();
         }));  
     </script>
-    <lapp-upload label="upload" supporting-text="support text">
+        <lapp-md-droppable-editor></lapp-md-droppable-editor>
+
+    <!-- <lapp-upload label="upload" supporting-text="support text">
     </lapp-upload>
-    <lapp-text-field label="text" variant="a11y"></lapp-text-field>
+    <lapp-text-field label="text" variant="a11y"></lapp-text-field> -->
 
     <!-- <lapp-fab size="large" label="fab" variant="primary">
       <lapp-icon slot="icon">settings</lapp-icon>
