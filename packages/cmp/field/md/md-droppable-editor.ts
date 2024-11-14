@@ -6,6 +6,7 @@ import droppableStyles from './droppable-styles';
 import('@material/web/progress/linear-progress.js');
 import('@material/web/button/outlined-button.js');
 import('../../button/small-outlined-button')
+import('../../button/small-text-button')
 import('@preignition/firebase-upload/document-upload')
 
 type UploadStatusT = {
@@ -123,7 +124,9 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 			this.upload?._onAddFilesClick(e);
 		}
 		return html`&nbsp; | &nbsp;&nbsp; 
-		<lapp-small-outlined-button style="margin-top: -2px; margin-bottom: 2px;" @click=${onclickUpload}><lapp-icon slot="icon"  icon="cloud_upload"></lapp-icon>Upload Image</lapp-small-outlined-button>
+		<lapp-small-text-button @click=${onclickUpload}>
+			<lapp-icon slot="icon" no-fill icon="image"></lapp-icon>Paste, drop or click to add files
+		</lapp-small-text-button>
 			`	
 	}
 
