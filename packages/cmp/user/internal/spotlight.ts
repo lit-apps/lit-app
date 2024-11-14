@@ -29,6 +29,7 @@ export class UserSpotlight extends LitElement {
     }
 		a {
 			all:unset;
+			display: flex;
 			cursor: pointer;
 			width: 100%;
 			position: relative;
