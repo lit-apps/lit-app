@@ -233,6 +233,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         .writeLabel=${label}
         .translate=${true} 
         .readOnly=${disabled}
+        .showAccessibilityMenu=${model.showAccessibilityMenu}
         .md=${origin} 
         .mdtranslate=${origin} 
         @mdtranslate-changed=${onInputFact('mdtranslated')} 
@@ -369,6 +370,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         .maxLength=${model.maxLength}
         .minLength=${model.minLength}
         .path=${model.path}
+        .showAccessibilityMenu=${model.showAccessibilityMenu}
         ?disabled=${disabled}
         useFirestore=${model.useFirestore || nothing}
         maxFileSize=${model.maxFileSize || nothing}
@@ -481,7 +483,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         .supportingText=${model.helper}
         .required=${!!model.required}
         .value=${value || ''}
-        @change=${onInputFact('value')}
+        @input=${onInputFact('value')}
         >${(model.items || []).map(item => html`
           <md-select-option .value=${item.code} ?selected=${item.code === value}>
             <div slot="headline">${item.label}</div>

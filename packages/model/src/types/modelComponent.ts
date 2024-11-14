@@ -176,6 +176,7 @@ export interface ModelComponentMd<T = any> extends ModelComponentBase<T> {
 	storageKey?: string
 	maxLength?: number
 	minLength?: number
+	showAccessibilityMenu?: boolean
 	resize?: 'vertical' | 'horizontal' | 'auto'
 	/**
 	 * When true, tabs are hidden when the field is readonly and the preview is shown
