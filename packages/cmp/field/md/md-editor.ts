@@ -8,6 +8,9 @@ import md from '@lit-app/shared/styles/md.js';;
 import { githubMd } from '@lit-app/shared/styles'
 import { githubHighlight } from '@lit-app/shared/styles'
 
+import('@lit-app/cmp/youtube/youtube.js');
+import('@preignition/gitbook-parser/src/gitbook-hint.js');
+
 import { parse } from '@lit-app/md-parser';
 import { MdFilledTextField } from '@material/web/textfield/filled-text-field';
 import '@github/markdown-toolbar-element';
@@ -750,7 +753,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 				<md-icon-button  data-toolbar="listNumbered" aria-label="list numbered" title="list numbered / ctrl + o">
 					<lapp-icon >format_list_numbered</lapp-icon>
 				</md-icon-button>
-				<md-icon-button  data-toolbar="listCheck" aria-label="list checkbox" title="list checkbox">
+				<md-icon-button  data-toolbar="listCheck" aria-label="task list" title="task list">
 					<lapp-icon >checklist</lapp-icon>
 				</md-icon-button>
 				<span class="divider">|</span>
@@ -762,27 +765,27 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 				<!-- MenuSLot -->
 				<md-menu-item  slot="italic" data-toolbar="italic" aria-label="format italic" title="italic">
 					<lapp-icon slot="start">format_italic</lapp-icon>
-					<div  slot="headline">italic</div>
+					<div  slot="headline">Italic</div>
 				</md-menu-item>
 				<md-menu-item  slot="quote" data-toolbar="quote" aria-label="format quote" title="quote">
 					<lapp-icon slot="start">format_indent_increase</lapp-icon>
-					<div  slot="headline">quote</div>
+					<div  slot="headline">Quote</div>
 				</md-menu-item>
 				<md-menu-item  slot="link" data-toolbar="link" aria-label="link" title="link">
 					<lapp-icon slot="start">link</lapp-icon>
-					<div  slot="headline">link</div>
+					<div  slot="headline">Link</div>
 				</md-menu-item>
 				<md-menu-item  slot="list_bulleted" data-toolbar="listBulleted" aria-label="list bullet point" title="list bullet point">
 				<lapp-icon slot="start">format_list_bulleted</lapp-icon>
-					<div  slot="headline">list bullet point</div>
+					<div  slot="headline">list Bullet Point</div>
 				</md-menu-item>
 				<md-menu-item  slot="list_numbered" data-toolbar="listNumbered" aria-label="list numbered" title="list numbered">
 					<lapp-icon slot="start">format_list_numbered</lapp-icon>
-					<div  slot="headline">list numbered</div>
+					<div  slot="headline">list Numbered</div>
 				</md-menu-item>
-				<md-menu-item  slot="list_check" data-toolbar="listCheck" aria-label="list checkbox" title="list checkbox">
+				<md-menu-item  slot="list_check" data-toolbar="listCheck" aria-label="task list" title="taskl list checkbox">
 					<lapp-icon slot="start">checklist</lapp-icon>
-					<div  slot="headline">list checkbox</div>
+					<div  slot="headline">Task List</div>
 				</md-menu-item>
 				<md-divider slot="list_check"></md-divider>
 				${slotMenuContent}
@@ -877,7 +880,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 				preventDefault = true
 				this.handleAction(mdActions.quote);
 				break;
-			case 'l':
+			case 'k':
 				preventDefault = true
 				this.handleAction(mdActions.link);
 				break;
@@ -1086,13 +1089,13 @@ const colorTpl = {
 `,
 }
 const a11yTpl = {
-	menu: html`<lapp-icon slot="start" no-fill>accessibility</lapp-icon><div  slot="headline">Accessibility Menu</div>`,
-	showEr: html`<lapp-icon slot="start" no-fill>accessibility</lapp-icon><div  slot="headline">Show when Easy Read</div>`,
-	hideEr: html`<lapp-icon slot="start" no-fill>accessibility</lapp-icon><div  slot="headline">Hide when Easy Read</div>`,
-	showSl: html`<lapp-icon slot="start" no-fill>accessibility</lapp-icon><div  slot="headline">Show when Sign Language</div>`,
-	hideSl: html`<lapp-icon slot="start" no-fill>accessibility</lapp-icon><div  slot="headline">Hide when Sign Language</div>`,
-	showReadaloud: html`<lapp-icon slot="start" no-fill>accessibility</lapp-icon><div  slot="headline">Show when Read Aloud</div>`,
-	hideReadaloud: html`<lapp-icon slot="start" no-fill>accessibility</lapp-icon><div  slot="headline">Hide when Read Aloud</div>`,
-	showVoiceRecording: html`<lapp-icon slot="start" no-fill>accessibility</lapp-icon><div  slot="headline">Show when Voice Recording</div>`,
-	hideVoiceRecording: html`<lapp-icon slot="start" no-fill>accessibility</lapp-icon><div  slot="headline">Hide when Voice Recording</div>`,
+	menu: html`<lapp-icon slot="start" no-fill>settings_accessibility</lapp-icon><div  slot="headline">Accessibility Menu</div>`,
+	showEr: html`<lapp-icon slot="start" no-fill>sentiment_satisfied</lapp-icon><div  slot="headline">Show When Easy Read</div>`,
+	hideEr: html`<lapp-icon slot="start" no-fill>hide_source</lapp-icon><div  slot="headline">Hide When Easy Read</div>`,
+	showSl: html`<lapp-icon slot="start" no-fill>sign_language</lapp-icon><div  slot="headline">Show When Sign Language</div>`,
+	hideSl: html`<lapp-icon slot="start" no-fill>hide_source</lapp-icon><div  slot="headline">Hide When Sign Language</div>`,
+	showReadaloud: html`<lapp-icon slot="start" no-fill>record_voice_over</lapp-icon><div  slot="headline">Show When Read Aloud</div>`,
+	hideReadaloud: html`<lapp-icon slot="start" no-fill>hide_source</lapp-icon><div  slot="headline">Hide When Read Aloud</div>`,
+	showVoiceRecording: html`<lapp-icon slot="start" no-fill>mic</lapp-icon><div  slot="headline">Show When Voice Recording</div>`,
+	hideVoiceRecording: html`<lapp-icon slot="start" no-fill>hide_source</lapp-icon><div  slot="headline">Hide when Voice Recording</div>`,
 }

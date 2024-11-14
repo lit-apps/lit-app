@@ -36,6 +36,7 @@
     "@lit/context": "^1.1.2",
     "@material/web": "link:../../../app-dependencies/material-web",
     "@preignition/firebase-upload": "link:../../../packages/firebase-upload",
+    "@preignition/gitbook-parser": "link:../../../packages/gitbook-parser",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
