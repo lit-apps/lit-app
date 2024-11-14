@@ -257,7 +257,7 @@ export default function renderMixin<
     renderCard(data: Collection<D>, config: C) {
       const layout = config?.layout || 'horizontal'
       const gridMap = (d: D, index: number) => this.renderCardItem(d, config, index)
-      const map = (d: D, index: number) => html`<div class="flex">${gridMap(d, index)}</div>`
+      const map = (d: D, index: number) => html`<div class="flex flex-1">${gridMap(d, index)}</div>`
       return html`<div class="entity card layout ${layout} ${this.entityName} wrap">
 			${repeat(data, (d: CollectionI<D>) => d.$id, layout.indexOf('grid') > -1 ? gridMap : map)}
       
