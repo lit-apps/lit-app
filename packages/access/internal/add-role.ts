@@ -113,7 +113,7 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 		const onUserChanged = (e: HTMLEvent<UserSearch>) => {
 			this.newUid = e.target.value;
 			this.isInviting = false;
-			this.newName = e.target.selectedOptions[0]?.textContent || '';
+			this.newName = e.target.selectedOptions[0]?.displayText || '';
 		}
 		const onRoleSelected = (e: HTMLEvent<HTMLInputElement>) => {
 			this.accessRole = e.target.value as Role['name'];

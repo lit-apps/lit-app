@@ -85,7 +85,6 @@ export class UserSearch extends LitElement {
 		const onSearchInput = async (e: HTMLEvent<LappSelectInput>) => {
 
 			const searchValue = e.target.searchValue || '';
-			console.info('pwi - onInput', searchValue);
 			inputValidator.value = searchValue;
 			// if we have a loader, use it to load the items
 			if (this.loader) {
@@ -99,6 +98,7 @@ export class UserSearch extends LitElement {
 		}
 		const redispatch = (e: Event) => redispatchEvent(this, e);
 		const onChange = (e: HTMLEvent<LappSelectInput>) => {
+			console.info('pwi - onChange', e.target.value);
 			this.value = e.target.value;
 			redispatch(e)
 		}
@@ -155,17 +155,18 @@ export class UserSearch extends LitElement {
 		const name = item.email?.split('@')[0]
 		const headline = item.displayName || name || 'no name';
 
-		return html`<md-select-option
-			.value=${item.uid}
+		const _profile = {
+			photoURL: item.photoURL,
+			displayName: headline,
+		}
+
+		return html`<lapp-user-select-item
+			.displayText=${headline}
+			.uid=${item.uid}
+			value="${item.uid}"
+			._profile=${_profile}
 			?selected=${item.uid === this.value}
-			>${item.photoURL ?
-				html`<img slot="start" class="avatar" src=${item.photoURL} />` :
-				html`<lapp-icon slot="start" class="avatar">person</lapp-icon>`}
-				<div slot="headline">${headline}</div>
-				<div slot="supporting-text">${item.email || ''}</div>
-			</md-select-option>`;
-
-
+		></lapp-user-select-item>`
 	}
 }
 

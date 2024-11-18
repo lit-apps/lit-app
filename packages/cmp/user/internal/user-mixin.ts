@@ -36,7 +36,8 @@ export const UserMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     override connectedCallback() {
       super.connectedCallback();
       // we have an error when we do not have the right to read the user profile
-      this.addEventListener('error', () => {
+      this.addEventListener('error', (e: Event) => {
+        e.stopPropagation();
         this._hasError = true;
         this.setUserController();
       })

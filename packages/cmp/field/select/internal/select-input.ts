@@ -67,7 +67,7 @@ export abstract class SelectInput extends Select {
 
 	protected renderChip(option: SelectOption) {
 		return html`<md-input-chip 
-			.label=${option.displayText} 
+			.label=${option.displayText || option.innerText} 
 			remove-only
 			@remove=${this.onRemove(option)}></md-input-chip>`;
 	}
