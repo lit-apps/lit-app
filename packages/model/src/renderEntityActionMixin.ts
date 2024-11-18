@@ -255,6 +255,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 				const event = this.getEvent(
 					actionName, data, true
 				) as EntityAction | AppAction | AppActionEmail;
+				// @ts-expect-error  - we removed selected items from interface - tmp solution
 				event.detail.selectedItems = selectedItems
 
 				// const event = new EntityAction({ id: this.host.id, entityName: this.entityName }, action, actionName);
@@ -267,7 +268,7 @@ export default function renderMixin<D extends DefaultI, A extends Actions>(super
 					aria-label=${action.bulk?.tooltip || action.label || ''} 
 					.disabled=${action.bulk?.disabled?.(selectedItems) || false}
 					@click=${bulkActionHandler}>
-					<lapp-icon .icon=${action.icon}></lapp-icon>
+					<lapp-icon .icon=${action.icon!}></lapp-icon>
 				</md-filled-icon-button>
 			</pwi-tooltip>
 		`

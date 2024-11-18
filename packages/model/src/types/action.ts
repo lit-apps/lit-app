@@ -20,8 +20,8 @@ type BtnCfg = {
 }
 
 export type ButtonConfig = BtnCfg | ((data: any, entityStatus?: EntityStatus) => BtnCfg)
-type BulkT = {
-	render: (selectedItems: any[], data?:  any) => TemplateResult
+type BulkT<D = any> = {
+	render: (selectedItems: D[], data?:  D) => TemplateResult
 	index: number // index used to sort the actions
 	tooltip?: string,
 	disabled?: (data: any[]) => boolean

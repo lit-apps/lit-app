@@ -18,6 +18,8 @@ export declare class ConfirmDialogMixinInterface {
 /**
  * ConfirmDialogMixin 
  * A mixin rendering a confirm dialog for actions. 
+ * 
+ * selectedItem is a property of the main class. It is an array of selected items and is not part of event detail.
  * TODO: 
  * - add support for bulk actions 
  * - remove deprecated old bulk actions dialog 
@@ -29,14 +31,14 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 		data: any
 		selectedItems!: any[]
 
-		@state() private _activeEvent!: EntityAction | AppAction | Create | Delete   | undefined;
+		@state() private _activeEvent!: EntityAction | AppAction | Create | Delete | undefined;
 		@state() private _resolved: boolean = true;
 		@queryAsync('#confirmDialog') _confirmDialog!: MdDialog;
 
 		protected override firstUpdated(_changedProperties: PropertyValues) {
 			super.firstUpdated(_changedProperties);
 
-			const setAction = async (event: Delete | Create | EntityAction | AppAction  ) => {
+			const setAction = async (event: Delete | Create | EntityAction | AppAction) => {
 				// stop propagation if action is not confirmed and we have a templateDialog
 				if (event.shouldConfirm) {
 					event.stopPropagation();
@@ -61,8 +63,8 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 			]
 		}
 
-		private _renderConfirmDialog(event: EntityAction | AppAction | Create  | Delete  
-			 | undefined) {
+		private _renderConfirmDialog(event: EntityAction | AppAction | Create | Delete
+			| undefined) {
 			if (!event) return
 			const action = event.action
 
@@ -78,9 +80,12 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 				if ((event as EntityAction).bulkAction) {
 					const promises: (Promise<any> | undefined)[] = [];
 					try {
+						/** 
+						 * Redispatch the bulk event for each selected item
+						 */
 						this.selectedItems.forEach(item => {
 							const newEvent = Reflect.construct(
-								event.constructor, 
+								event.constructor,
 								[event.detail, action, event.actionName]
 							);
 							newEvent.confirmed = true;
@@ -95,7 +100,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 					}
 				} else {
 					const newEvent = Reflect.construct(
-						event.constructor, 
+						event.constructor,
 						[event.detail, action, event.actionName]
 					);
 					newEvent.confirmed = true;
@@ -106,7 +111,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 						// onActionClick will not be called again. 
 						if (action?.onResolved) {
 							action?.onResolved(promise, this, newEvent)
-						} 
+						}
 					} catch (e) {
 						dispatchError(e as Error)
 					}
@@ -122,25 +127,37 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 
 			const data = (event as EntityAction).detail.data || this.data;
 
+			const dialogConfig = {
+				...{
+					heading: 'Please Confirm',
+					confirmLabel: 'Confirm',
+					confirmDisabled: (_data: any) => !this._resolved,
+					render: (_data: any) => html`<p>Are you sure you want to proceed?</p>`
+				},
+				...action?.confirmDialog,
+				...((event as EntityAction).bulkAction ? action?.bulk : {})
+			};
+
+
 			return html`
 
 				<md-dialog 
 					id="confirmDialog" 
 					@close=${onClose}>
-					<div slot="headline">${action?.confirmDialog?.heading || 'Please Confirm'}</div>
+					<div slot="headline">${dialogConfig.heading}</div>
 						<form slot="content" method="dialog" id="form-confirm">
-						${(event as EntityAction).bulkAction ?
-								action?.bulk?.render.call(this, this.selectedItems, data) :
-								action?.confirmDialog?.render.call(this, data)}
-						<md-linear-progress style="margin-top: var(--space-medium);" .indeterminate=${!this._resolved}></md-linear-progress>
+							${dialogConfig.render.call(this, data, this.selectedItems)}
+						<md-linear-progress 
+							style="margin-top: var(--space-medium);" 
+							.indeterminate=${!this._resolved}></md-linear-progress>
 					</form>
 					<div slot="actions">
           <md-outlined-button
             form="form-confirm"
             value="close">Cancel</md-outlined-button>
 					<md-filled-button
-						.disabled=${action?.confirmDialog?.confirmDisabled?.call(this, data) || !this._resolved}
-            @click=${processAction}>${action?.confirmDialog?.confirmLabel || 'Confirm'}</md-filled-button>
+						.disabled=${dialogConfig.confirmDisabled?.call(this, data)}
+            @click=${processAction}>${dialogConfig?.confirmLabel}</md-filled-button>
 					</div>
 				</md-dialog>
 				`

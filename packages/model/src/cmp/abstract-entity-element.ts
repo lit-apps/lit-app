@@ -168,11 +168,4 @@ export default abstract class AbstractEntityElement extends
 	protected renderFooter(entity: entityI, config?: RenderConfig) {
 		return entity.renderFooter(this.data, config || this.renderConfig);
 	}
-
-	/**
-	 * renderBulkActions 
-	 */
-	// renderBulkActions(selectedItems: any[]) {
-	// 	return this.entity.renderBulkActions(selectedItems, this.data);
-	// }
 }

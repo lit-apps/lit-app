@@ -11,8 +11,8 @@ export interface EntityDetail {
   promise?: Promise<any>
 }
 
-export interface EntityWriteDetail extends EntityDetail {
-  data: any,
+export interface EntityWriteDetail<T = any> extends EntityDetail {
+  data: T,
 }
 export interface EntityCreateDetail<T = any> {
   entityName: string,
@@ -49,12 +49,12 @@ export class BaseEvent<T extends { promise?: Promise<any> }> extends CustomEvent
   }
 }
 
-export class Write extends BaseEvent<EntityWriteDetail> {
+export class Write<T = any> extends BaseEvent<EntityWriteDetail<T>> {
   static readonly eventName = 'entity-write';
   readonly actionName = 'write'
   public persisted?: boolean // true when data is persisted
   constructor(
-    detail: EntityWriteDetail,
+    detail: EntityWriteDetail<T>,
     public override readonly action?: Action) {
     super(Write.eventName, {
       bubbles: true,
@@ -66,12 +66,12 @@ export class Write extends BaseEvent<EntityWriteDetail> {
 }
 
 /* Update is used in realtime scenarios where the data is updated in the database 'live' */
-export class Update extends BaseEvent<EntityWriteDetail> {
+export class Update<T = any> extends BaseEvent<EntityWriteDetail<T>> {
   static readonly eventName = 'entity-update';
   readonly actionName = 'update'
   public persisted?: boolean // true when data is persisted
   constructor(
-    detail: EntityWriteDetail,
+    detail: EntityWriteDetail<T>,
     public override readonly action?: Action) {
     super(Update.eventName, {
       bubbles: true,
@@ -95,12 +95,12 @@ export class Reset extends BaseEvent<EntityDetail> {
   }
 }
 
-export class Delete extends BaseEvent<EntityWriteDetail> {
+export class Delete<T = any> extends BaseEvent<EntityWriteDetail<T>> {
   static readonly eventName = 'entity-delete';
   public persisted?: boolean // true when data was persisted
   readonly actionName = 'delete';
   constructor(
-    detail: EntityWriteDetail,
+    detail: EntityWriteDetail<T>,
     public override readonly action?: Action
   ) {
     super(Delete.eventName, {
@@ -124,7 +124,7 @@ export class Delete extends BaseEvent<EntityWriteDetail> {
 //     });
 //   }
 // } 
-export class Create extends BaseEvent<EntityCreateDetail> {
+export class Create<T = any> extends BaseEvent<EntityCreateDetail<T>> {
   static readonly eventName = 'entity-create';
   public persisted?: boolean // true when data is persisted
   readonly actionName = 'create';
@@ -189,9 +189,8 @@ export class Edit extends BaseEvent<EntityDetail> {
   }
 }
 
-class BaseAction<T> extends BaseEvent<T & { promise?: Promise<any> }> {
+class BaseAction<T> extends BaseEvent<T & { promise?: Promise<any>}> {
   public bulkAction?: boolean
-
   override get shouldConfirm() {
     return !!(!this.confirmed && (this.action?.confirmDialog || this.bulkAction));
   }
@@ -202,7 +201,10 @@ export interface ActionDetail<T = any> {
   entityName: string,
   id?: string, // id is set when action is performed on a collection ref, for one specific event 
   data?: T,
-  selectedItems?: any[],
+  /**
+   * The selected items when the action is performed aS A bulk action
+   */
+  // selectedItems?: any[],
   promise?: Promise<any>
 }
 
@@ -219,7 +221,7 @@ export class EntityAction<T extends ActionI = ActionI> extends BaseAction<Action
     public override readonly action: Action,
     public readonly actionName: T['actionName'],
     public override  confirmed?: boolean,
-    public override  bulkAction?: boolean) {
+    public override bulkAction?: boolean) {
     super(EntityAction.eventName, {
       bubbles: true,
       composed: true,
@@ -244,7 +246,7 @@ export class AppAction extends BaseAction<ActionDetail> {
     public override readonly action: Action,
     public readonly actionName: string,
     public override  confirmed?: boolean,
-    public override  bulkAction?: boolean) {
+    public override bulkAction?: boolean) {
     super(AppAction.eventName, {
       bubbles: true,
       composed: true,
@@ -311,7 +313,7 @@ export class AppActionEmail extends BaseAction<ActionEmailDetail> {
     detail: ActionEmailDetail,
     public override readonly action: Action,
     public override  confirmed?: boolean,
-    public override  bulkAction?: boolean) {
+    public override bulkAction?: boolean) {
     super(AppActionEmail.eventName, {
       bubbles: true,
       composed: true,

@@ -1,5 +1,5 @@
 import { LitElement, TemplateResult } from 'lit'
-import { entityI} from '../types'
+import { Collection, entityI} from '../types'
 
 // storing the state of an entity
 export type EntityStatus = {
@@ -39,6 +39,7 @@ export interface DefaultI {
 
 export interface EntityElement<T extends DefaultI = DefaultI> extends EntityBase<T> {
 	id: string // not sure this is needed
+	selectedItems?: Collection<T>
 	docId: string | undefined
 	entityStatus: EntityStatus
 	entityAccess: EntityAccess
