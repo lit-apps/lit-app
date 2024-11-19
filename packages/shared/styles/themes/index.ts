@@ -15,7 +15,7 @@ import _darkModeWhite from './dark-mode-white';
 
 // Note(CG): we also import theme-viewer to make it available
 import './theme-viewer';
-import type { theme as ThemeT } from './type';
+import type { ThemeT } from './types';
 export type { ThemeT };
 export { 
   _a14y_variant,

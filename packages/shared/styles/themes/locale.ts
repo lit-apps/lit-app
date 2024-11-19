@@ -37,7 +37,7 @@ type locale = {
   _darkModeWhite: l,
 
 }
-// Note(CG): we also import theme-vier to make it available
+// Note(CG): we also import theme-viewer to make it available
 const locale: locale = {
   _default: {
     name: _default.name,

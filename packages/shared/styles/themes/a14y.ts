@@ -1,5 +1,5 @@
-import {type theme} from './type'
-const th: theme = {
+import { type ThemeT } from './types';
+const th: ThemeT = {
   name: 'accessible surveys',
   index: -80,
   desc: 'accessible surveys',

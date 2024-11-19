@@ -1,18 +1,18 @@
-import _default from './default.ts';
-import _default_dark from './default_dark.ts';
-import _preignition from './preignition.ts';
-import _preignition_dark from './preignition_dark.ts';
-import _a14y from './a14y.ts';
-import _a14y_dark from './a14y_dark.ts';
-import _a14y_variant from './a14y_variant.ts';
-import _a14y_variant_dark from './a14y_variant_dark.ts';
-import _tealYellow from './teal-yellow.ts';
-import _tealYellow_dark from './teal-yellow_dark.ts';
-import _grayscale from './grayscale.ts';
-import _highContrast from './high-contrast.ts';
-import _darkModeYellow from './dark-mode-yellow.ts';
-import _darkModeWhite from './dark-mode-white.ts';
-// Note(CG): we also import theme-vier to make it available
+import _default from './default.js';
+import _default_dark from './default_dark.js';
+import _preignition from './preignition.js';
+import _preignition_dark from './preignition_dark.js';
+import _a14y from './a14y.js';
+import _a14y_dark from './a14y_dark.js';
+import _a14y_variant from './a14y_variant.js';
+import _a14y_variant_dark from './a14y_variant_dark.js';
+import _tealYellow from './teal-yellow.js';
+import _tealYellow_dark from './teal-yellow_dark.js';
+import _grayscale from './grayscale.js';
+import _highContrast from './high-contrast.js';
+import _darkModeYellow from './dark-mode-yellow.js';
+import _darkModeWhite from './dark-mode-white.js';
+// Note(CG): we also import theme-viewer to make it available
 const locale = {
     _default: {
         name: _default.name,

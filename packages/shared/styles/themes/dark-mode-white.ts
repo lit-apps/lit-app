@@ -4,8 +4,8 @@
   primary -color is yellow
 */
 
-import {type theme} from './type'
-const th: theme = {
+import { type ThemeT } from './types';
+const th: ThemeT = {
   name: 'dark mode |',
   index: 10,
   desc: 'inverted (white)',

@@ -4,8 +4,8 @@
   primary -color is b
 */
 
-import {type theme} from './type'
-const th: theme = {
+import { type ThemeT } from './types'
+const th: ThemeT = {
   name: 'high contrast',
   index: 3,
   desc: 'black text',

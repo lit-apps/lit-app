@@ -1,6 +1,5 @@
-
-import {type theme} from './type'
-const th: theme = {
+import { type ThemeT } from './types';
+const th: ThemeT = {
   name: 'default',
   index: -100,
   desc: 'default theme dark',
