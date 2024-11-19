@@ -14,7 +14,6 @@ type AccessType = 'public' | 'private' | 'protected'
 export  interface EntityResourceAccess  {
 	app: string
 	user?: UserAccess // access data - usually a copy of ref.entity.metaData.access.user
-	// entityAccess?: ResourceAccess // the data for the entity - loaded async from the entity reference when we read a channel
 	status: AccessType // access type for discussions in this channel; if the channel is public (only signed-in users), private (same entity reference) or protected (only channel members)
 	userById: {[key: string]: (keyof UserAccess)[]}
 }

@@ -8,9 +8,8 @@ import { Parser } from '@json2csv/plainjs';
 
 export declare class RenderInterface<
 	D extends DefaultI = DefaultI, 
-	A extends Actions = Actions,
 	C extends RenderConfig = RenderConfig
-> extends RenderActionInterface<D, A> {
+> {
 	showMetaData: boolean
 	itemIdPath: string
 	

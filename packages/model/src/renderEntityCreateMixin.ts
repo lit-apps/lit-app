@@ -16,8 +16,8 @@ export {
  * Mixin in charge of creating new Entity data
  * 
  */
-export default function renderMixin<D extends DataI, A extends Actions>(
-	superclass: Constructor<AbstractEntity<D, A>>
+export default function renderMixin<D extends DataI>(
+	superclass: Constructor<AbstractEntity<D>>
 ) {
 	class R extends superclass {
 
@@ -44,6 +44,9 @@ export default function renderMixin<D extends DataI, A extends Actions>(
 		}
 
 		processCreateMetaData(metaData: Partial<D["metaData"]> = {}) {
+			// if (typeof metaData !== 'object' || metaData === null) {
+			// 	throw new Error('metaData must be an object');
+			// }
 			return {
 				type: this.entityName,
 				deleted: false,

@@ -12,14 +12,16 @@ export interface ResourceAccess extends Access {
 	team: string
 }
 
-export interface ResourceMetaData<A = ResourceAccess, T = string> extends MetaData<A, T>  {
+export interface ResourceMetaData<
+	A  = ResourceAccess,
+	T = string
+> extends MetaData<A, T> {
 	access: A
 }
 
 export interface ResourceUI {
 	name: string // internal name
 	language: string
-	// slug?: string // slug from title
 	title?: string // external name
 	shortDesc?: string
 }

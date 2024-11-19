@@ -15,13 +15,12 @@ import {
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 
-import { RenderInterface, StaticEntityField } from './types/renderEntityFieldI';
+import { StaticEntityField } from './types/renderEntityFieldI';
 import { deprecated } from '@preignition/preignition-util';
 export type { RenderInterface, StaticEntityField } from './types/renderEntityFieldI';
 
 export default function renderMixin<
 	D extends DefaultI = DefaultI,
-	C extends RenderConfig = RenderConfig
 >(
 	superclass: Constructor<AbstractEntity>,
 	model: Model<D>
@@ -91,6 +90,7 @@ export default function renderMixin<
 	}
 
 	Object.assign(R, staticApply);
-	return R as unknown as Constructor<RenderInterface<D, C>> & StaticEntityField<D> &
-		typeof superclass;
+	return R 
+	// as unknown as Constructor<RenderInterface<D, C>> & StaticEntityField<D> &
+	// 	typeof superclass;
 }

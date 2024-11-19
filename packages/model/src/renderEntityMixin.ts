@@ -81,7 +81,6 @@ type Open = (entityName: string, id: string) => void
  */
 export default function renderMixin<
   D extends DefaultI, 
-  A extends Actions = Actions, 
   C extends RenderConfig = RenderConfig
 >(
   superclass: Constructor<AbstractEntity & { open: Open }>
@@ -353,7 +352,7 @@ export default function renderMixin<
 
     }
   };
-  return R as unknown as Constructor<RenderInterface<D, A, C>> & typeof superclass;
+  return R as unknown as Constructor<RenderInterface<D, C>> & typeof superclass;
 }
 
 function getFieldsFromModel(

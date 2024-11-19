@@ -7,6 +7,9 @@ import type { EntityAccess } from '../types/entity'
 // 	canDelete: ((access: T, data: D) => boolean) | boolean
 // }
 
-export type GetAccess<D = any, T extends Access = any, AA extends EntityAccess = EntityAccess> = 
-(access: T, data: D) => AA
+export type GetAccess<
+  D = any,
+  AccessT extends Access = any,
+  EntityAccessT extends EntityAccess = any
+> = (access: AccessT, data: D) => EntityAccessT
 

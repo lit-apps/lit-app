@@ -1,7 +1,6 @@
 import { TemplateResult } from 'lit';
 import {
 	DefaultI,
-	RenderConfig
 } from './entity';
 import { FieldConfig } from './modelComponent';
 import AbstractEntity from '../abstractEntity';
@@ -9,9 +8,8 @@ import AbstractEntity from '../abstractEntity';
 /**
  * Represents a render interface for rendering entity fields.
  * @template D - The type of data for the field.
- * @template C - The type of render configuration.
  */
-export declare class RenderInterface<D, C extends RenderConfig = RenderConfig> {
+export declare class RenderInterface<D> {
 	/**
 	 * renders a data-entry field, depending on the model definition
 	 */

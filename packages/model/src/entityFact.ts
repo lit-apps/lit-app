@@ -76,14 +76,14 @@ export default function abstractEntityFact<
 		action = defaultActions as unknown as A
 	}
 	class R extends
-		fieldMixin<D, C>(
-			entityMixin<D, A, C>(
+		fieldMixin<D>(
+			entityMixin<D, C>(
 				actionMixin<D, typeof action>(AbstractEntity, action)), model) {
 	}
 
 	return R as unknown as Constructor<AbstractEntity> &
-		Constructor<RenderI<D, typeof action, C>> &
-		Constructor<FieldI<D, C>> &
+		Constructor<RenderI<D, C>> &
+		Constructor<FieldI<D>> &
 		Constructor<ActionI<D, typeof action>> &
 		StaticEntityActionI<D, typeof action> &
 		StaticEntityField<D> &
