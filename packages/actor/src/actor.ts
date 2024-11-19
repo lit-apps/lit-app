@@ -98,21 +98,28 @@ export default class Actor extends State {
   declare ['constructor']: typeof Actor;
   static hostType: HostT = 'client'
   domHost: HTMLElement | undefined;
+
+  /**
+   * onError callback for the machine. Sometimes we want to handle errors at the actor level, for 
+   * example to recast somme errors as exceptions
+   */
+  onError: ((error: any) => void) | undefined;
   constructor(
     public machine: AnyStateMachine,
-    protected options: ActorOptions<AnyActorLogic> & { domHost?: DOMHostT } = {},
+    protected options: ActorOptions<AnyActorLogic>
+      & { domHost?: DOMHostT, onError?: (error: any) => void } = {},
     actorId: ActorIdT,
     protected rootPath: string = 'actor') {
     super();
     this.actorId = actorId
     this.domHost = typeof options.domHost === 'function' ? options.domHost() : options.domHost;
+    this.onError = options.onError;
     this.setupActor();
   }
 
   /**
    * Actor snapshot - requestUpdate is called whenever snapshot is updated
   */
-  // @property({ type: Object }) snapshot!: SnapshotFrom< typeof this['machine']>;
   @property({ type: Object }) snapshot!: MachineSnapshot<
     ContextFrom<this['machine']>, EventFromLogic<this['machine']>, any, any, any, any, any, any
   >;
@@ -199,8 +206,8 @@ export default class Actor extends State {
       // TODO: find a way to automatically unregister actors from registry
       Registry.register(this)
     }
-
   }
+
   /**
    * setup remote actor if need be - this need to be overridden in the child class
    * this is we would add a controller listening to the actor change in the db
@@ -209,8 +216,6 @@ export default class Actor extends State {
   }
 
   private _actor!: XstateActor<ActorLogicFrom<this['machine']>>;
-  // private _actor!: XstateActor<this['machine']>;
-  //  XstateActor<StateMachine<TContext, TEvent, any, any, any, any, any, any, any, any, any, any, any, any>>;
 
   get actor() {
     return this._actor;
@@ -227,6 +232,13 @@ export default class Actor extends State {
       this.snapshot = snapshot;
 
     });
+    if (this.onError) {
+      actor.subscribe({
+        error: (err) => {
+          this.onError!(err)
+        }
+      })
+    }
     actor.start()
   }
   protected setupActor() {
