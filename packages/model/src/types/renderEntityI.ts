@@ -20,7 +20,6 @@ export declare class RenderInterface<
 	public renderSubHeader(data: D, config: C): TemplateResult
 	
 	private renderArrayContent(data: Collection<D>, config: C): TemplateResult
-	private renderGrid(data: Collection<D>, config: C): TemplateResult
 	/* renderContent should be private, but we use it in renderEntityActionMixin */
 	protected onGridDblClick(e: CustomEvent ): void
   protected onActiveItemChanged(e: CustomEvent): void
@@ -32,6 +31,7 @@ export declare class RenderInterface<
 	protected renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]): TemplateResult
 	protected renderMetaData(_data: D, _config: C): TemplateResult
 	protected renderCard(data: Collection<D>, config: C): TemplateResult
+	protected renderGrid(data: Collection<D>, config: C): TemplateResult
 	protected renderCardItem(data: D, config: C, index?: number): TemplateResult
 	protected renderEmptyArray(_config: C): TemplateResult
 	protected renderList(_data: Collection<D>, _config: C): TemplateResult

@@ -3,7 +3,6 @@ import { customElement, property, state } from 'lit/decorators.js';
 import * as Plot from '@observablehq/plot'
 import Base from "./src/base";
 import { OptionT } from "./types";
-import { M } from "vite/dist/node/types.d-aGj9QkWt";
 import myScheme from "./src/myScheme";
 
 

@@ -396,6 +396,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         .writeLabel=${label}
         .placeholder=${placeholder}
         .helper=${model.helper}
+        .pure=${!!model.pure}
         .required=${!!model.required}
         .maxLength=${model.maxLength}
         .minLength=${model.minLength}

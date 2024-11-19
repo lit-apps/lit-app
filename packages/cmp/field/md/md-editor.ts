@@ -30,55 +30,74 @@ import('@material/web/menu/menu-item.js');
 import('@material/web/tabs/secondary-tab.js');
 import('../text-field')
 
-type MdActionT = { format: string, newLine?: boolean, defaultValue?: string };
+type MdActionT = {
+	format: string,
+	newLine?: boolean,
+	defaultValue?: string,
+	// when true, the action is only available in pure mode
+	pure?: boolean
+};
 const mdActions = {
 	h1: {
+		pure: true,
 		format: '# $1',
 		newLine: true,
 	},
 	h2: {
+		pure: true,
 		format: '## $1',
 		newLine: true,
 	},
 	h3: {
+		pure: true,
 		format: '### $1',
 		newLine: true,
 	},
 	h4: {
+		pure: true,
 		format: '#### $1',
 		newLine: true,
 	},
 	h5: {
+		pure: true,
 		format: '##### $1',
 		newLine: true,
 	},
 	h6: {
+		pure: true,
 		format: '###### $1',
 		newLine: true,
 	},
 	bold: {
+		pure: true,
 		format: '**$1**',
 	},
 	italic: {
+		pure: true,
 		format: '_$1_',
 	},
 	quote: {
+		pure: true,
 		format: '> $1',
 		newLine: true,
 	},
 	link: {
+		pure: true,
 		format: '[$2]($1)',
 		defaultValue: 'URL',
 	},
 	listBulleted: {
+		pure: true,
 		format: '- $1',
 		newLine: true,
 	},
 	listNumbered: {
+		pure: true,
 		format: '1. $1',
 		newLine: true,
 	},
 	listCheck: {
+		pure: true,
 		format: '- [ ] $1',
 		newLine: true,
 	},
@@ -94,6 +113,7 @@ const mdActions = {
 		defaultValue: 'content',
 	},
 	contentTable: {
+		pure: true,
 		format: `| Header | Header | Header |
 |--------|--------|--------|
 | Cell | Cell | Cell |
@@ -376,6 +396,10 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 
 	// TODO: we should have another property for the translation as this is a native attribute. For instance `tr`
 	@property({ type: Boolean }) override translate = false;
+	/**
+	 * When true, the editor is in pure mode. In pure mode no HTML is allowed.
+	 */
+	@property({ type: Boolean }) pure = false;
 	@property() translateIcon = 'translate';
 	@property() writeLabel = 'Write';
 	@property() previewLabel = 'Preview';
@@ -486,7 +510,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 			const menu = this.shadowRoot?.querySelector(`#${id}`) as MdMenu;
 			menu?.show();
 		}
-		
+
 		const headerMenu = html`
 			<md-icon-button @click=${onOpen('header-menu')} data-toolbar="" id="header-menu-button" aria-label="header" title="header">
 				<lapp-icon >title</lapp-icon>
@@ -529,14 +553,15 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 				<lapp-icon no-fill>add_notes</lapp-icon>
 			</md-icon-button>
 			<md-menu style="min-width: 150px;" positioning="fixed" id="add-content-menu" anchor="add-content-menu-button" quick>
+				<md-menu-item data-toolbar="contentTable">
+					${contentTpl.table}
+				</md-menu-item>
+				${this.pure ? nothing : html`
 				<md-menu-item data-toolbar="contentVideo">
 					${contentTpl.video}
 				</md-menu-item>
 				<md-menu-item data-toolbar="contentTooltip">
 					${contentTpl.tooltip}
-				</md-menu-item>
-				<md-menu-item data-toolbar="contentTable">
-					${contentTpl.table}
 				</md-menu-item>
 				<md-menu-item data-toolbar="contentIcon">
 					${contentTpl.icon}
@@ -553,10 +578,11 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 				</md-menu-item>
 				<md-menu-item data-toolbar="contentWarningHint">
 					${contentTpl.warningHint}
-				</md-menu-item>
+				</md-menu-item>`
+			}
 			</md-menu>
 		`
-		const layoutMenu = html`
+		const layoutMenu = this.pure ? nothing : html`
 			<md-icon-button @click=${onOpen('layout-menu')} data-toolbar="menu-layout" id="layout-menu-button" aria-label="layout" title="layout">
 				<lapp-icon no-fill>space_dashboard</lapp-icon>
 			</md-icon-button>
@@ -579,7 +605,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 				</md-menu-item>
 			</md-menu>
 		`
-		const colorMenu = html`
+		const colorMenu = this.pure ? nothing : html`
 			<md-icon-button @click=${onOpen('layout-color')} data-toolbar="menu-color" id="layout-color-button" aria-label="color" title="color">
 				<lapp-icon no-fill>palette</lapp-icon>
 			</md-icon-button>
@@ -619,7 +645,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 				</md-menu-item>
 			</md-menu>		
 		`
-		const accessibilityMenu = this.showAccessibilityMenu ? html`
+		const accessibilityMenu = !this.pure && this.showAccessibilityMenu ? html`
 				<span class="divider">|</span>
 				<md-icon-button @click=${onOpen('accessibility-menu')} data-toolbar="menu-accessibility" id="accessibility-menu-button" aria-label="accessibility" title="accessibility">
 					<lapp-icon no-fill>accessibility_new</lapp-icon>
@@ -659,7 +685,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 					</md-menu-item>
 				</md-menu>
 				` : nothing;
-		const slotMenuContent = html`
+		const slotMenuContent = this.pure ? nothing : html`
 			<md-menu-item slot="menu-content" data-toolbar="contentVideo">
 				${contentTpl.video}
 			</md-menu-item>
@@ -683,7 +709,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 			</md-menu-item>
 			<md-divider slot="menu-content"></md-divider>
 			`;
-		const slotMenuLayout = html`
+		const slotMenuLayout = this.pure ? nothing : html`
 			<md-menu-item slot="menu-layout" data-toolbar="layout2Col">
 				${layoutTpl.layout2Col}
 			</md-menu-item>
@@ -695,7 +721,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 			</md-menu-item>
 			<md-divider slot="menu-layout"></md-divider>
 			`;
-		const slotMenuAccessibility = html`
+		const slotMenuAccessibility = this.pure ? nothing : html`
 			<md-menu-item slot="menu-accessibility" data-toolbar="a11yShowEr">
 				${a11yTpl.showEr}
 			</md-menu-item>
@@ -709,7 +735,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 				${a11yTpl.hideSl}
 			</md-menu-item>
 			`;
-		const slotMenuColor = html`
+		const slotMenuColor = this.pure ? nothing : html`
 			<md-menu-item slot="menu-color" data-toolbar="colorPrimary">
 				${colorTpl.primary}
 			</md-menu-item>

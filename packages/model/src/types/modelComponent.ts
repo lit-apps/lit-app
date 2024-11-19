@@ -177,6 +177,10 @@ export interface ModelComponentMd<T = any> extends ModelComponentBase<T> {
 	maxLength?: number
 	minLength?: number
 	showAccessibilityMenu?: boolean
+	/** 
+	 * When true, the editor is only displaying pure markdown format (no HTML)
+	 */
+	pure?: boolean	
 	resize?: 'vertical' | 'horizontal' | 'auto'
 	/**
 	 * When true, tabs are hidden when the field is readonly and the preview is shown

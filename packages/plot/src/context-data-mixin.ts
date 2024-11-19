@@ -39,15 +39,15 @@ export const ConsumeDataMixin = <T extends Constructor<LitElement>>(superClass: 
 }
 
 /**
- * ProvideAppIdMixin a mixin that provides plotData context:
+ * ProvideDataMixin a mixin that provides plotData context:
  * - @property - plotData - true when test
  */
-export const ProvideAppIdMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const ProvideDataMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
-	class ContextProvideAppIdMixinClass extends superClass {
+	class ContextProvideDataMixinClass extends superClass {
 		@provide({ context: plotDataContext })
 		@property({ attribute: false }) data!: dataT[];
 	};
 
-	return ContextProvideAppIdMixinClass as unknown as Constructor<ContextDataMixinInterface> & T;
+	return ContextProvideDataMixinClass as unknown as Constructor<ContextDataMixinInterface> & T;
 }
