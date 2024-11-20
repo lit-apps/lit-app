@@ -3,7 +3,7 @@ import {
 	DefaultI,
 } from './entity';
 import { FieldConfig } from './modelComponent';
-import AbstractEntity from '../abstractEntity';
+import AbstractEntity from '../AbstractEntity';
 
 /**
  * Represents a render interface for rendering entity fields.

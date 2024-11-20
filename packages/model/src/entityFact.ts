@@ -1,17 +1,24 @@
-import AbstractEntity from './abstractEntity';
+/**
+ * Entity in which we replace @Lit-app/model actionMixin with a new implementation
+ */
+
+import AbstractEntity from "./AbstractEntity.js";
+
+import { type RenderInterface as CreateI } from './renderEntityCreateMixin.js';
 import fieldMixin, { RenderInterface as FieldI, StaticEntityField } from './renderEntityFieldMixin';
 import entityMixin, { RenderInterface as RenderI } from './renderEntityMixin';
-import actionMixin, { RenderInterface as ActionI, StaticEntityActionI, defaultActions } from './renderEntityActionMixin';
-import { Actions, RenderConfig, StaticEntityI } from './types';
-import { DefaultI } from './types/entity';
-import { Model } from './types/modelComponent';
+import { RenderInterface as ActionI, StaticEntityActionI } from "./types/renderActionI.js";
+
 import { CSSResult } from 'lit';
+import { defaultActions } from './defaultActions';
+import actionMixin from './renderActionMixin';
+import { RenderConfig, StaticEntityI } from './types';
+import type { ActionsT } from "./types/actionTypes";
+import { DefaultI } from "./types/entity.js";
+import type { Model } from './types/modelComponent';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
-export {
-	defaultActions
-}
 
 /**
  * # Abstract Entity Factory 
@@ -67,25 +74,36 @@ export {
  * @returns 
  */
 export default function abstractEntityFact<
-	D extends DefaultI,
-	C extends RenderConfig = RenderConfig,
-	A extends Actions = Actions
+  D extends DefaultI,
+  C extends RenderConfig = RenderConfig,
+  A extends ActionsT = ActionsT
 >(
-	model: Model<D>, action?: A) {
-	if (!action) {
-		action = defaultActions as unknown as A
-	}
-	class R extends
-		fieldMixin<D>(
-			entityMixin<D, C>(
-				actionMixin<D, typeof action>(AbstractEntity, action)), model) {
-	}
+  { model, actions }:
+    { model: Model<D>, actions?: A }
+) {
 
-	return R as unknown as Constructor<AbstractEntity> &
-		Constructor<RenderI<D, C>> &
-		Constructor<FieldI<D>> &
-		Constructor<ActionI<D, typeof action>> &
-		StaticEntityActionI<D, typeof action> &
-		StaticEntityField<D> &
-		StaticEntityI
+  // if (!actions) {
+  //   actions = defaultActions<D>() as unknown as A 
+  // }
+  class R extends
+    fieldMixin<D>(
+      entityMixin<D, C>(
+        actionMixin<A>(AbstractEntity, actions)), model) {
+    static declare entityName: string
+    static declare icon: string
+    static declare model: Model<any>
+    static declare actions: ActionsT
+    static declare styles: CSSResult | CSSResult[];
+  }
+
+  return R as unknown as 
+    Constructor<AbstractEntity<D, A>> &
+    Constructor<RenderI<D, C>> &
+    Constructor<FieldI<D>> &
+    Constructor<ActionI<A >> &
+    Constructor<CreateI<D>> &
+    StaticEntityActionI<A > &
+    StaticEntityField<D> &
+    StaticEntityI<D, A>
 }
+

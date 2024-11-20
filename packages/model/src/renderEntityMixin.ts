@@ -1,3 +1,4 @@
+import { ensure } from '@lit-app/shared/types.js';
 import { get } from '@preignition/preignition-util/src/deep';
 import { activeItemChanged } from '@preignition/preignition-util/src/grid';
 import { Grid } from '@vaadin/grid';
@@ -11,12 +12,11 @@ import {
   gridRowDetailsRenderer
 } from 'lit-vaadin-helpers';
 import { choose } from 'lit/directives/choose.js';
-import { repeat } from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { html as htmlStatic, literal } from 'lit/static-html.js';
-import AbstractEntity from './abstractEntity';
-import { Actions, Collection, CollectionI, EntityElementList, isCollection, RenderConfig } from './types';
-import { ensure } from '@lit-app/shared/types.js';
+import AbstractEntity from './AbstractEntity';
+import { Collection, CollectionI, EntityElementList, isCollection, RenderConfig } from './types';
 import {
   GridConfig,
   Model,
@@ -28,8 +28,8 @@ import {
 import { RenderInterface } from './types/renderEntityI';
 export type { RenderInterface } from './types/renderEntityI';
 
-import { DefaultI } from './types/entity';
 import { Parser } from '@json2csv/plainjs';
+import { DefaultI } from './types/entity';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 type Open = (entityName: string, id: string) => void
@@ -80,13 +80,13 @@ type Open = (entityName: string, id: string) => void
  *		`;
  */
 export default function renderMixin<
-  D extends DefaultI, 
+  D extends DefaultI,
   C extends RenderConfig = RenderConfig
 >(
   superclass: Constructor<AbstractEntity & { open: Open }>
 ) {
-  class R extends superclass {
-    // class R extends RenderActionMixin(superclass) {
+  class R extends superclass  {
+  // class R extends superclass implements RenderInterfaceImpl<D, C> {
 
     showMetaData: boolean = false
     itemIdPath: string = '$id' // collectionGroup will need to use $path
@@ -112,7 +112,7 @@ export default function renderMixin<
         class="flex entity grid ${this.entityName}"
         .itemIdPath=${this.itemIdPath}
         .items=${data}
-        ${gridRowDetailsRenderer((data:CollectionI<D>, model: any, grid: any) => this.renderGridDetail(data, config, model, grid))}
+        ${gridRowDetailsRenderer((data: CollectionI<D>, model: any, grid: any) => this.renderGridDetail(data, config, model, grid))}
         @active-item-changed=${config?.gridConfig?.preventDetails ? null : onActiveItemChanged}
         @dblclick=${config?.gridConfig?.preventDblClick ? null : this.onGridDblClick.bind(this)}
         @selected-items-changed=${onSelected}
@@ -121,14 +121,14 @@ export default function renderMixin<
       </vaadin-grid>`
     }
 
-    protected onGridDblClick(e: CustomEvent) {
+    protected onGridDblClick(e: CustomEvent): void {
       const context = (e.currentTarget as Grid).getEventContext(e);
       // by default, open the item
       if (context.item) {
         this.open(this.entityName, context.item.$id)
       }
     }
-    
+
     renderGridColumns(config: C) {
       // console.log('renderGridColumns')
       const showSelectionColumn = config.columnsConfig?.showSelectionColumn;
@@ -160,14 +160,14 @@ export default function renderMixin<
         }`
     }
 
-    renderGridDetail(data: CollectionI<D>, config: C , _model: any, _grid: any) {
+    renderGridDetail(data: CollectionI<D>, config: C, _model: any, _grid: any) {
       return html`
 			<div class="layout vertical">
 				${this.renderTable(data, config)}
 			</div>`
     }
 
-    renderTable(data: CollectionI<D>, config: C, tableFields? : [string, ModelComponent][]) {
+    renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]) {
       const model = this.model;
       // get the fields to render in table
       const fields = tableFields || getFieldsFromModel(model, config, (model) => model.table)
@@ -206,7 +206,7 @@ export default function renderMixin<
     }
 
     renderBody(data: D, config: C) {
-      if(this.shallWaitRender(data, config)) {
+      if (this.shallWaitRender(data, config)) {
         return this.renderDataLoading(config)
       }
       if (Array.isArray(data)) {
@@ -243,7 +243,7 @@ export default function renderMixin<
 			</div>`
     }
 
-    private renderArrayContent(data: Collection<D>, config: C) {
+    private renderArrayContent(data: Collection<D>, config: C): TemplateResult {
       if (config?.variant === 'card') {
         return this.renderCard(data, config)
       }
@@ -284,7 +284,7 @@ export default function renderMixin<
     }
 
     renderEmptyArray(_config?: C) {
-      return nothing
+      return html``
     }
 
     renderTitle(_data: D, config: C) {
@@ -296,8 +296,8 @@ export default function renderMixin<
 
     renderHeader(data: D | Collection<D>, config: C) {
       const title = isCollection<D>(data) ? this.renderArrayTitle(data, config) : this.renderTitle(data, config)
-      if(!title) {
-        return nothing;
+      if (!title) {
+        return html``;
       }
       const icon = this.host.icon || this.icon
       return html`${choose(config?.level,
@@ -315,12 +315,12 @@ export default function renderMixin<
     }
 
     renderSubHeader(_data: D, _config: C) {
-      return nothing
+      return html``
     }
 
 
     renderFooter(_data: D, _config: C) {
-      return nothing
+      return html``
     }
 
     renderForm(_data: D, _config: C) {
@@ -343,12 +343,12 @@ export default function renderMixin<
         .map(([key, m]) => {
           const csv = ensure(m.csv)
           return {
-            label: csv.label || m.label || key,
+            label: csv.label || m.label as string || key,
             value: csv.value || key,
             default: csv.default,
           }
         })
-      return new Parser({fields});
+      return new Parser({ fields });
 
     }
   };
@@ -356,7 +356,7 @@ export default function renderMixin<
 }
 
 function getFieldsFromModel(
-  model: Model<any>, renderConfig: RenderConfig,  getConfig: (m: ModelComponent
+  model: Model<any>, renderConfig: RenderConfig, getConfig: (m: ModelComponent
 
   ) => ModelComponent['grid'] | ModelComponent['csv'] | ModelComponent['table'] | undefined): [string, ModelComponent][] {
   function getFields(model: Model<any>, path: string = ''): [string, ModelComponent][] {

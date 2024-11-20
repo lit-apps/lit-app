@@ -1,21 +1,18 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { CSSResult, nothing, TemplateResult } from 'lit';
+import { CSSResult, html, TemplateResult } from 'lit';
 import {
 	Model
 } from './types/modelComponent';
-import { entries } from '@lit-app/shared/types.js';
+
+type Strings = {
+	[key: string]: string | Strings;
+};
 
 
 import { ToastEvent } from '@lit-app/event';
-import {
-	AnyEvent,
-	AppActionEmail
-} from './events';
-import { Access, Strings } from './types';
-import {
-	Actions
-} from './types/action';
+import { Access } from './types/dataI.js';
+import { ActionsT } from './types/actionTypes.js';
 import {
 	DefaultI,
 	EntityElement
@@ -26,12 +23,12 @@ import { GetAccess } from './types/getAccess';
  * Abstract class for entities
  */
 
-export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Actions = Actions> {
+export default class AbstractEntity<D extends DefaultI = DefaultI, A extends ActionsT = ActionsT> {
 
 	static declare entityName: string
 	static declare icon: string
 	static declare model: Model<any>
-	static declare actions: Actions
+	static declare actions: ActionsT
 	static declare styles: CSSResult | CSSResult[];
 	static locale?: Strings
 	static roles = [
@@ -64,7 +61,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	declare ['constructor']: typeof AbstractEntity;
 
 	// define a private _icon property to be used by the icon getter
-	_icon!: string
+	private _icon!: string
 	get icon(): string {
 		return this._icon || this.constructor.icon
 	}
@@ -73,7 +70,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 		this.host.requestUpdate()
 	}
 
-	_selected: number = 0
+	private _selected: number = 0
 	get selected(): number {
 		return this._selected
 	}
@@ -103,7 +100,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	constructor(
 		public host: EntityElement,
 		public realTime: boolean = false,
-		public listenOnAction: boolean = false
+		// public listenOnAction: boolean = false
 	) {
 		
 		/** 
@@ -123,16 +120,16 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 
 		host.addController(this);
 		// we only add event listeners if the element is a dataController (e.g. skip list and grids)
-		if (this.listenOnAction) {
-			entries<Actions>(this.actions).forEach(([_k, action]) => {
-				if (action.event && action.onAction) {
-					host.addEventListener(action.event.eventName, ((event: AnyEvent) => {
-						action.onAction?.call(this.host, event as AppActionEmail)
-						event.onActionProcessed = true;
-					}) as EventListener)
-				}
-			})
-		}
+		// if (this.listenOnAction) {
+		// 	entries<Actions>(this.actions).forEach(([_k, action]) => {
+		// 		if (action.event && action.onAction) {
+		// 			host.addEventListener(action.event.eventName, ((event: AnyEvent) => {
+		// 				action.onAction?.call(this.host, event as AppActionEmail)
+		// 				event.onActionProcessed = true;
+		// 			}) as EventListener)
+		// 		}
+		// 	})
+		// }
 		// @ts-ignore
 		if (import.meta.hot) {
 			console.info('Entity HMR attempt')
@@ -163,8 +160,8 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	}
 
 	/* renderContent is required by the controller interface because it participate to subclass instantiation */
-	renderContent(_data: D, _config?: any): TemplateResult | typeof nothing {
-		return nothing
+	renderContent(_data: D, _config: any): TemplateResult {
+		return html``
 	}
 	onError(error: Error) {
 		console.error(error)

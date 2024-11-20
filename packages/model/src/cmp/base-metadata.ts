@@ -1,4 +1,4 @@
-import { Action } from '../types/action';
+import { ActionT, ActionEntityI, ActionEventI } from '../types/actionTypes.js';
 import { Timestamp } from 'firebase/firestore';
 import { LitElement, css, html } from "lit";
 import { state } from 'lit/decorators.js';
@@ -7,7 +7,7 @@ type Meta = {
 	by: string;
 	timestamp: Timestamp;
 }
-type Actions = {[key: string]: Action};
+type Actions = {[key: string]:  ActionEntityI | ActionEventI};
 
 const renderMeta = (label: string, meta: Meta) => {
 	if (!meta) { return '' }

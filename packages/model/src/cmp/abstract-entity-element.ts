@@ -48,7 +48,7 @@ export default abstract class AbstractEntityElement extends
 	@property() heading!: string;
 
 	// when true, will listen to action events on the element
-	@property({ type: Boolean }) listenOnAction = false
+	// @property({ type: Boolean }) listenOnAction = false
 
 	// true to make input  fields write real-time changes
 	@property({ type: Boolean }) realTime = false
@@ -95,10 +95,10 @@ export default abstract class AbstractEntityElement extends
 		if (props.has('realTime') && this.entity) {
 			this.entity.realTime = this.realTime
 		}
-		if (props.has('listenOnAction') && this.entity) {
-			// TODO: activate listeners
-			this.entity.listenOnAction = this.listenOnAction
-		}
+		// if (props.has('listenOnAction') && this.entity) {
+		// 	// TODO: activate listeners
+		// 	this.entity.listenOnAction = this.listenOnAction
+		// }
 		super.willUpdate(props);
 	}
 		/**
@@ -120,8 +120,7 @@ export default abstract class AbstractEntityElement extends
 		}
 		
 	protected setEntity(E: EntityI) {
-		this.entity = new E(this, this.realTime, this.listenOnAction)
-
+		this.entity = new E(this, this.realTime)
 
 		/** Handle Localization */
 		if (this.Entity.locale && this.setLocale) {

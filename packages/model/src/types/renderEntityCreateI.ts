@@ -1,6 +1,7 @@
 import { DataI } from './dataI'
-export declare class RenderEntityCreateInterface<D extends DataI> {
+import { DefaultI } from './entity.js';
+export declare class RenderInterface<D extends DefaultI> {
 	public processCreateData(data: Partial<D>): Partial<D>
-	protected processCreateMetaData(metaData: any): D["metaData"]
-	protected processCreateRef(ref: Partial<D["ref"]>): Partial<D["ref"]>
+	protected processCreateMetaData(metaData: unknown): DataI["metaData"]
+	protected processCreateRef(ref: unknown): Partial<DataI["ref"]>
 }

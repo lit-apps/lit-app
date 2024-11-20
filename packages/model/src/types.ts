@@ -1,10 +1,5 @@
 import { CSSResult } from 'lit';
-import type AbstractEntity from './abstractEntity';
-import type {
-	Action,
-	Actions, ActionType,
-	DefaultActions
-} from './types/action';
+import type AbstractEntity from './AbstractEntity.js';
 import type {
 	ColumnsConfig,
 	DefaultI,
@@ -34,20 +29,20 @@ export {
 } from './mixin/context-entity-mixin';
 
 export * from './events';
-export * from './types/communication';
 export {
 	type EntityStatusMixinInterface
 } from './mixin/context-entity-status-mixin';
+export * from './types/communication';
 export * from './types/dataI';
 export { isCollection } from './types/dataI';
-export * from './types/getAccess';
-export * from './types/resource';
-export * from './types/entityResource';
-export {
-	Action, Actions, ActionType, ColumnsConfig, DefaultActions, EntityAccess, EntityElement, EntityElementList, EntityStatus, GridConfig, Lookup, Model, RenderConfig
-};
 export * from './types/entityAction';
+export * from './types/entityResource';
+export * from './types/getAccess';
 export * from './types/mixin';
+export * from './types/resource';
+export {
+	ColumnsConfig, EntityAccess, EntityElement, EntityElementList, EntityStatus, GridConfig, Lookup, Model, RenderConfig
+};
 
 // import type { ensure, entries, PartialBy } from '@lit-app/shared/types.js'
 
@@ -63,19 +58,15 @@ export type Role = {
 	locale?: boolean // true to mark this role as dependent on locale (e.g. translator)
 }
 
-// export {
-// 	ensure, entries, PartialBy
-// };
-
-import { RenderInterface as FieldI, StaticEntityField } from './types/renderEntityFieldI';
-import { RenderInterface as RenderI } from './types/renderEntityI';
-import { RenderInterface as RenderA, StaticEntityActionI } from './types/renderEntityActionI';
 
 
-export interface StaticEntityI<D = any, A extends Actions = Actions> {
-	// entityName: string
-	// model: Model<D>
-	// icon: string
+import { ActionsT } from './types/actionTypes.js';
+import { RenderInterface as ActionI, StaticEntityActionI } from './types/renderActionI.js';
+import { RenderInterface as CreateI } from './types/renderEntityCreateI.js';
+import { RenderInterface as FieldI, StaticEntityField } from './types/renderEntityFieldI.js';
+import { RenderInterface as RenderI } from './types/renderEntityI.js';
+
+export interface StaticEntityI<D = any, A extends ActionsT = ActionsT> {
 	actions: A
 	styles: CSSResult | CSSResult[];
 	getAccess: GetAccess
@@ -87,22 +78,44 @@ export interface StaticEntityI<D = any, A extends Actions = Actions> {
 }
 export interface EntityI<
 	D extends DefaultI = DefaultI, 
-	A extends Actions = Actions,
-	C extends RenderConfig = RenderConfig 
+	C extends RenderConfig = RenderConfig,
+	A extends ActionsT = ActionsT
 > extends 
-	StaticEntityActionI<D, A>,
+	StaticEntityActionI< A>,
 	StaticEntityField<D>,
 	StaticEntityI<D, A>
 	{
-		new(cmp: EntityElement, realtime?: boolean, listenOnAction?: boolean ): entityI<D, A, C>;
+		entityName: string,
+		icon: string,
+		new(cmp: EntityElement, realtime?: boolean ): entityI<D, C, A>;
 	}
 
 export interface entityI<
 	D extends DefaultI = DefaultI, 
-	A extends Actions = Actions, 
-	C extends RenderConfig = RenderConfig> extends 
-		Omit<AbstractEntity<D, A>,'actions' | 'renderContent'>,  
-		RenderI<D, A, C>,
-		FieldI<D, C>,
-		RenderA<D, A>  { }
+	C extends RenderConfig = RenderConfig,
+	A extends ActionsT = ActionsT,
+	> extends 
+		Omit<AbstractEntity<D, A>, 'actions' | 'renderContent' | 'renderFieldUpdate'>,  
+		ActionI<A>,
+		Omit<RenderI<D, C>, 'renderFieldUpdate'>,
+		FieldI<D>,
+		CreateI<D>  { }
 
+
+// NOTE: we cannot use the following because it breaks TS. However, this 
+// would be the ideal way to define the interfaces
+//import abstractEntity from './entityFact.js';
+// export interface EntityI<
+// D extends DefaultI = DefaultI,
+// C extends RenderConfig = RenderConfig,
+// A extends ActionsT = ActionsT
+// > extends ReturnType<typeof abstractEntity<D, C, A>> {
+// 	entityName: string
+// 	icon: string
+// }
+
+// export interface entityI<
+// D extends DefaultI = DefaultI,
+// C extends RenderConfig = RenderConfig,
+// A extends ActionsT = ActionsT
+// >  extends InstanceType<EntityI<D,C, A>> {}

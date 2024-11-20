@@ -5,7 +5,9 @@ import {
 	GridColumnBodyLitRenderer,
 	GridColumnHeaderLitRenderer
 } from 'lit-vaadin-helpers';
-import { RenderConfig } from '../types';
+import { RenderConfig } from './entity.js';
+
+// import { columnBodyRenderer} from '@vaadin/grid/lit.js'
 
 type TextComponent = 'textfield' | 'textarea'
 type MdComponent = 'md'
@@ -59,7 +61,7 @@ export type CsvConfig<T = any> = {
 }
 
 interface ModelComponentBase<T = any> {
-	label?: string
+	label?: string | TemplateResult
 	helper?: string
 	required?: boolean
 	disabled?: boolean
@@ -180,7 +182,7 @@ export interface ModelComponentMd<T = any> extends ModelComponentBase<T> {
 	/** 
 	 * When true, the editor is only displaying pure markdown format (no HTML)
 	 */
-	pure?: boolean	
+	pure?: boolean
 	resize?: 'vertical' | 'horizontal' | 'auto'
 	/**
 	 * When true, tabs are hidden when the field is readonly and the preview is shown

@@ -1,25 +1,16 @@
 import { TemplateResult } from 'lit';
-import { Actions } from './action';
 import { Collection, CollectionI } from './dataI';
 import { DefaultI, RenderConfig } from './entity';
-import { RenderInterface as RenderActionInterface } from './renderEntityActionI';
 import { ModelComponent } from './modelComponent.js';
 import { Parser } from '@json2csv/plainjs';
 
-export declare class RenderInterface<
+export declare abstract class RenderInterface<
 	D extends DefaultI = DefaultI, 
 	C extends RenderConfig = RenderConfig
 > {
 	showMetaData: boolean
 	itemIdPath: string
 	
-	public renderFooter(_data: D, _config: C): TemplateResult
-	public renderBody(data: D, config: C): TemplateResult
-	public renderHeader(data: D, config: C): TemplateResult
-	public renderSubHeader(data: D, config: C): TemplateResult
-	
-	private renderArrayContent(data: Collection<D>, config: C): TemplateResult
-	/* renderContent should be private, but we use it in renderEntityActionMixin */
 	protected onGridDblClick(e: CustomEvent ): void
   protected onActiveItemChanged(e: CustomEvent): void
 	protected renderDataLoading( config: C): TemplateResult
@@ -35,7 +26,20 @@ export declare class RenderInterface<
 	protected renderEmptyArray(_config: C): TemplateResult
 	protected renderList(_data: Collection<D>, _config: C): TemplateResult
 	protected renderListItem(_data: D, _config: C): TemplateResult
-	public renderFormNew(data: D, config: C): TemplateResult
-	public renderForm(data: D, config: C): TemplateResult
-	public getCsvParser(renderConfig: C): Parser<any, any>
+  protected renderArrayContent(data: Collection<D>, config: C): TemplateResult;
+	renderFooter(_data: D, _config: C): TemplateResult
+	renderBody(data: D, config: C): TemplateResult
+	renderHeader(data: D, config: C): TemplateResult
+	renderSubHeader(data: D, config: C): TemplateResult
+  renderBody(data: D, config: C): TemplateResult;
+	/* renderContent should be private, but we use it in renderEntityActionMixin */
+  renderContent(data: D, config: C): TemplateResult;
+  renderHeader(data: D | Collection<D>, config: C): TemplateResult;
+  renderSubHeader(data: D, config: C): TemplateResult;
+  renderFooter(data: D, config: C): TemplateResult;
+  renderForm(data: D, config: C): TemplateResult;
+  renderFormNew(data: D, config: C): TemplateResult;
+  renderFieldUpdate(name: string, config: any, data?: D): TemplateResult;
+  getCsvParser(renderConfig: C): Parser<any, any>;
 }
+

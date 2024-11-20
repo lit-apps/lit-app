@@ -180,14 +180,14 @@ export class EntityAccess extends
 		const bodyRole = (item: UserItemRole) => html`
 		<md-chip-set>
 			${item.roles.map(it => {
-			const onActionRevoke = (e: CustomEvent) => {
+			const onActionRevoke =  async (e: CustomEvent) => {
 				// console.log('onActionRevoke', e);
 				e.preventDefault();
-				const event = this.Entity.getEntityAction<AccessActionI>({
+				const onActionClick = this.Entity.onActionClick('removeAccess', this, {
 					uid: item.uid,
 					role: it
-				}, 'removeAccess')
-				this.dispatchEvent(event);
+				});
+				await onActionClick(e);
 			}
 			const onClick = (e: CustomEvent) => {
 				e.preventDefault();

@@ -1,6 +1,6 @@
 
 import { html } from 'lit';
-import AbstractEntity from './abstractEntity';
+import AbstractEntity from './AbstractEntity';
 import { EntityElement, RenderConfig } from './types';
 import { renderField } from './renderField';
 import {

@@ -47,7 +47,7 @@ export  {
 } from './src/mixin/context-app-id-mixin';
 
 export { entityCreateDialogEvent } from './src/cmp/entity-create-dialog';
-export { default as Entity } from './src/abstractEntity';
+export { default as Entity } from './src/AbstractEntity';
 
 export * from './src/types';
 

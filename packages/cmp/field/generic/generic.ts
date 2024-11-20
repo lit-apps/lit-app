@@ -4,13 +4,13 @@
  * 
  * 
  */
-import { TextField } from '../textfield/internal/text-field';
-import { classMap } from 'lit/directives/class-map.js';
-import { html, LitElement, TemplateResult } from 'lit';
-import { html as staticHtml, StaticValue } from 'lit/static-html.js';
-import { property, query } from 'lit/decorators.js';
-import { CompatMixin } from '../compat/compat-mixin.js';
 import { Field } from '@material/web/field/internal/field';
+import { html, TemplateResult } from 'lit';
+import { query } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { html as staticHtml } from 'lit/static-html.js';
+import { CompatMixin } from '../compat/compat-mixin.js';
+import { TextField } from '../textfield/internal/text-field';
 // import { onReportValidity } from '@material/web/labs/behaviors/on-report-validity';
 import { A11yFieldMixinInterface } from '../field/internal/a11y-field-mixin';
 

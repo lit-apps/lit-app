@@ -23,7 +23,7 @@ import type {
 // Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
 import '@polymer/polymer';
 import '@vaadin/multi-select-combo-box/theme/material/vaadin-multi-select-combo-box';
-import AbstractEntity from './abstractEntity';
+import AbstractEntity from './AbstractEntity.js';
 
 import {
   isComponentSelect,

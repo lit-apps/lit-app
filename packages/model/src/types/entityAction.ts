@@ -1,5 +1,7 @@
 /**
  * Types used for EntityAction Event
+ * 
+ * TODO: This should be moved to actionTypes and simplified
  */
 
 import { Access } from './dataI'

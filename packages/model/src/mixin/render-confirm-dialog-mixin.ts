@@ -7,7 +7,7 @@ import('@material/web/button/filled-button.js')
 
 import { LitElement, PropertyValues, html } from 'lit';
 import { queryAsync, state } from 'lit/decorators.js';
-import { AppAction, Create, Delete, EntityAction } from '../events';
+import { AppAction, Create, Delete, EntityAction, isEntityAction } from '../events';
 
 
 type Constructor<T = {}> = new (...args: any[]) => T;
@@ -24,12 +24,12 @@ export declare class ConfirmDialogMixinInterface {
  * - add support for bulk actions 
  * - remove deprecated old bulk actions dialog 
  */
-export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const ConfirmDialogMixin = <T extends Constructor<LitElement & { selectedItems: any[] }>>(superClass: T) => {
 
 	class ConfirmDialogMixinClass extends superClass {
 
 		data: any
-		selectedItems!: any[]
+		// selectedItems!: any[]
 
 		@state() private _activeEvent!: EntityAction | AppAction | Create | Delete | undefined;
 		@state() private _resolved: boolean = true;
@@ -77,7 +77,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 			const processAction = async () => {
 				if (!event) return
 				this._resolved = false;
-				if ((event as EntityAction).bulkAction) {
+				if (isEntityAction(event) && event.bulkAction) {
 					const promises: (Promise<any> | undefined)[] = [];
 					try {
 						/** 
@@ -101,16 +101,16 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 				} else {
 					const newEvent = Reflect.construct(
 						event.constructor,
-						[event.detail, action, event.actionName]
+						[event.detail, action, (event as EntityAction).actionName]
 					);
 					newEvent.confirmed = true;
 					try {
 						this.dispatchEvent(newEvent)
-						const promise = await newEvent.detail.promise;
-						// call action.onResolved if it exists. We need to do it here as 
+						await newEvent.detail.promise;
+						// call action.afterResolved if it exists. We need to do it here as 
 						// onActionClick will not be called again. 
-						if (action?.onResolved) {
-							action?.onResolved(promise, this, newEvent)
+						if (action?.afterResolved) {
+							action?.afterResolved(newEvent, this)
 						}
 					} catch (e) {
 						dispatchError(e as Error)
@@ -146,7 +146,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement>>(superClass
 					@close=${onClose}>
 					<div slot="headline">${dialogConfig.heading}</div>
 						<form slot="content" method="dialog" id="form-confirm">
-							${dialogConfig.render.call(this, data, this.selectedItems)}
+							${dialogConfig.render.call(this, {data, selectedItems: this.selectedItems})}
 						<md-linear-progress 
 							style="margin-top: var(--space-medium);" 
 							.indeterminate=${!this._resolved}></md-linear-progress>

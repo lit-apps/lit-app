@@ -1,5 +1,6 @@
 import { LitElement, TemplateResult } from 'lit'
-import { Collection, entityI} from '../types'
+import {Collection} from './dataI'
+import { entityI} from '../types'
 
 // storing the state of an entity
 export type EntityStatus = {
