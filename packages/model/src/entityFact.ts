@@ -9,10 +9,10 @@ import fieldMixin, { RenderInterface as FieldI, StaticEntityField } from './rend
 import { RenderInterface as ActionI, StaticEntityActionI } from "./types/renderActionI.js";
 import createMixin, { type RenderEntityCreateInterface as CreateI} from './renderEntityCreateMixin.js';
 
-import { DataI, RenderConfig, StaticEntityI } from './types';
+import { DataI, DefaultActions, RenderConfig, StaticEntityI } from './types';
 import type { Model } from './types/modelComponent';
 import { CSSResult } from 'lit';
-import type { ActionsT } from "./types/actionTypes";
+import type { ActionsT, DefaultActionsT } from "./types/actionTypes";
 import { defaultActions } from './defaultActions';
 import actionMixin from './renderActionMixin';
 import { DefaultI } from "./types/entity.js";
@@ -103,6 +103,7 @@ export default function abstractEntityFact<
     Constructor<RenderI<D, C>> &
     Constructor<FieldI<D>> &
     Constructor<ActionI<typeof actions>> &
+    // Constructor<ActionI<DefaultActionsT<D>> &
     Constructor<CreateI<D>> &
     StaticEntityActionI<typeof actions> &
     StaticEntityField<D> &

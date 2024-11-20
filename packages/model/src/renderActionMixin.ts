@@ -35,7 +35,7 @@ import type {
   FunctionOrButtonConfigT,
   HostElementI
 } from "./types/actionTypes.js";
-import { defaultActions } from "./defaultActions.js";
+import { defaultActions, getEntityActionEvent } from "./defaultActions.js";
 import { RenderInterface, StaticEntityActionI } from "./types/renderActionI.js";
 export { defaultActions };
 
@@ -58,7 +58,8 @@ export default function renderMixin<A extends ActionsT>(
       actionName: keyof A | keyof typeof defaultActions,
       host: HostElementI<unknown>,
       data: unknown,
-      config?: RenderConfig | FunctionOrButtonConfigT<unknown>
+      config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
+      clickHandler?: (e: CustomEvent) => void
     ): TemplateResult {
       const action = this.actions[actionName]
       const entityStatus = (config && isRenderConfig(config)) ? config.entityStatus : host.entityStatus
@@ -76,11 +77,11 @@ export default function renderMixin<A extends ActionsT>(
       const tonal = cfg?.tonal ?? false
       const text = cfg?.text ?? false
       const outlined = cfg?.outlined ?? !text
-
+      const onClick = clickHandler || this.onActionClick(actionName, host, data)
       return html`<lapp-button 
         class="${actionName} action"
         .icon=${action.icon || ''} 
-        @click=${this.onActionClick(actionName, host, data)}
+        @click=${onClick}
         .disabled=${disabled}
         .outlined=${outlined}
         .tonal=${tonal}
@@ -95,17 +96,21 @@ export default function renderMixin<A extends ActionsT>(
       data: ActionDataT<unknown>,
       isBulk: boolean = false) {
       const action = this.actions[actionName]
-      return async (e: HTMLEvent<LappButton>) => {
+      return async (e: CustomEvent) => {
         if (action.beforeDispatch?.(data) === false) {
           return
         }
-        const button = e.target
+        const button = e.target as LappButton
         button.loading = true
         try {
           if (action.kind === 'simple') {
             action.handler(data)
-          } else if (action.kind === 'event') {
-            const event = action.getEvent(this.entityName!, { data }, host, isBulk)
+          } else if (action.kind === 'event' || action.kind === 'entity') {
+            const event = action.kind === 'event'
+              ? action.getEvent(this.entityName!, { data }, host, isBulk)
+              : getEntityActionEvent(actionName as string, action)(
+                this.entityName!, { data: data as any }, host, isBulk
+              )
             host.dispatchEvent(event)
             await event.detail.promise
             if (action.afterResolved) {
@@ -270,9 +275,10 @@ export default function renderMixin<A extends ActionsT>(
     protected renderAction(
       actionName: ActionKeyT<A, unknown>,
       data: unknown,
-      config: RenderConfig
+      config?: RenderConfig,
+      clickHandler?: (e: CustomEvent) => void
     ): TemplateResult {
-      return this.constructor.renderAction(actionName, this.host, { data }, config)
+      return this.constructor.renderAction(actionName, this.host, { data }, config, clickHandler)
     }
 
     protected renderBulkAction(
@@ -309,7 +315,7 @@ export default function renderMixin<A extends ActionsT>(
       actionName: ActionKeyT<A, unknown>,
       data: unknown,
       isBulk: boolean = false
-    ): (e: HTMLEvent<LappButton>) => void {
+    ): (e: CustomEvent) => void {
       return this.constructor.onActionClick(actionName, this.host, { data }, isBulk)
     }
 
@@ -320,6 +326,7 @@ export default function renderMixin<A extends ActionsT>(
           data: this.processCreateData(data as Partial<DataI>) as CollectionI<DataI>
         }, this.host)
       this.host.dispatchEvent(event)
+      return event
     }
 
     close(id: string) {

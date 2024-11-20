@@ -17,6 +17,7 @@ export declare class RenderInterface<
 	public renderSubHeader(data: D, config: C): TemplateResult
 	
 	private renderArrayContent(data: Collection<D>, config: C): TemplateResult
+	
 	/* renderContent should be private, but we use it in renderEntityActionMixin */
 	protected onGridDblClick(e: CustomEvent ): void
   protected onActiveItemChanged(e: CustomEvent): void

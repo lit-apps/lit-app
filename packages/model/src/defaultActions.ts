@@ -138,11 +138,11 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       },
     },
     markDeleted: {
-      kind: 'event',
+      kind: 'entity',
       label: 'Delete',
       icon: 'delete',
       pushHistory: true,
-      getEvent: getEntityActionEvent('markDeleted'),
+      // getEvent: getEntityActionEvent('markDeleted'),
       meta: {
         label: 'Deleted',
         index: -7
@@ -156,48 +156,59 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       },
     },
     restore: {
-      kind: 'event',
+      kind: 'entity',
       label: 'Restore',
       icon: 'restore',
       pushHistory: true,
-      getEvent: getEntityActionEvent('restore'),
+      // getEvent: getEntityActionEvent('restore'),
       meta: {
         label: 'Restored',
         index: -8
       }
     },
     setAccess: {
-      kind: 'event',
+      kind: 'entity',
       label: 'Set Access',
       icon: 'lock',
-      getEvent: getEntityActionEvent('setAccess'),
+      // getEvent: getEntityActionEvent('setAccess'),
       
     },
     addAccess: {
-      kind: 'event',
+      kind: 'entity',
       label: 'Add Access',
       icon: 'add',
-      getEvent: getEntityActionEvent('addAccess'),
+      // getEvent: getEntityActionEvent('addAccess'),
       
     },
     removeAccess: {
-      kind: 'event',
+      kind: 'entity',
       label: 'Remove Access',
       icon: 'remove',
-      getEvent: getEntityActionEvent('removeAccess'),
+      // getEvent: getEntityActionEvent('removeAccess'),
     },
     invite: {
-      kind: 'event',
+      kind: 'entity',
       label: 'Invite',
       icon: 'person_add',
-      getEvent: getEntityActionEvent('invite'),
+      // getEvent: getEntityActionEvent('invite'),
     },
 
   }
   return actions
 }
 const actions = defaultActions();
-function getEntityActionEvent<D>(actionName: string, action?: ActionT ): GetEventT<D> {
+
+/**
+ * Generates an event for a specified entity action.
+ *
+ * @template D - The type of the data associated with the entity.
+ * @param {string} actionName - The name of the action to be performed.
+ * @param {ActionT} [action] - Optional action object. If not provided, it will be retrieved from the default actions.
+ * @returns {GetEventT<D>} A function that generates the event for the specified entity action.
+ * 
+ * @throws {Error} If the entity ID is not provided or if the action is not found.
+ */
+export function getEntityActionEvent<D>(actionName: string, action?: ActionT ): GetEventT<D> {
   return (entityName, { data }, host, isBulk?, confirmed?) => {
     const id = data.$id || host?.docId;
     if (!id) {

@@ -69,10 +69,14 @@ export type Role = {
 
 import { RenderInterface as FieldI, StaticEntityField } from './types/renderEntityFieldI';
 import { RenderInterface as RenderI } from './types/renderEntityI';
-import { RenderInterface as RenderA, StaticEntityActionI } from './types/renderEntityActionI';
+import { RenderInterface as ActionI, StaticEntityActionI } from './types/renderActionI';
+import{ type RenderEntityCreateInterface as CreateI} from './renderEntityCreateMixin.js';
+import { ActionsT } from './types/actionTypes.js';
+
+// import { ActionI } from './events';
 
 
-export interface StaticEntityI<D = any, A extends Actions = Actions> {
+export interface StaticEntityI<D = any, A extends ActionsT = ActionsT> {
 	// entityName: string
 	// model: Model<D>
 	// icon: string
@@ -87,22 +91,25 @@ export interface StaticEntityI<D = any, A extends Actions = Actions> {
 }
 export interface EntityI<
 	D extends DefaultI = DefaultI, 
-	A extends Actions = Actions,
+	A extends ActionsT = ActionsT,
 	C extends RenderConfig = RenderConfig 
 > extends 
-	StaticEntityActionI<D, A>,
+	StaticEntityActionI< A>,
 	StaticEntityField<D>,
 	StaticEntityI<D, A>
 	{
+		entityName: string,
 		new(cmp: EntityElement, realtime?: boolean, listenOnAction?: boolean ): entityI<D, A, C>;
 	}
 
 export interface entityI<
 	D extends DefaultI = DefaultI, 
-	A extends Actions = Actions, 
+	A extends ActionsT = ActionsT,
+	// A extends Actions = Actions, 
 	C extends RenderConfig = RenderConfig> extends 
-		Omit<AbstractEntity<D, A>,'actions' | 'renderContent'>,  
-		RenderI<D, A, C>,
-		FieldI<D, C>,
-		RenderA<D, A>  { }
+		Omit<AbstractEntity<D, A>, 'actions'>,  
+		RenderI<D,  C>,
+		FieldI<D>,
+		ActionI<A>,
+		CreateI<D>  { }
 

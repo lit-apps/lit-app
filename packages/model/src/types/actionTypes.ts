@@ -10,11 +10,14 @@ export interface HostElementI<D = any> extends LitElement {
   docId?: string
 }
 
-type ActionHandlerT<D> = (
+
+
+type ActionHandlerT<D> = ((
   this: any, //dbRefEntity,
-  ref: DocumentReference | CollectionReference,
+  ref: DocumentReference<D> | CollectionReference<D>,
   data: D,
   event: CustomEvent) => void
+)
 
 export type PrimitiveT = string | number | boolean
 // type FunctionOrValue<T, D> = T | ((this: AbstractEntity, data: D, entityStatus?: EntityStatus) => T)
@@ -33,7 +36,7 @@ type ButtonConfigT = {
 }
 
 export type ActionDataT<D> = {
-  data: CollectionI<D> ,
+  data: CollectionI<D>,
   // selectedItems?: Collection<D>
 }
 export type GetEventT<D, E = any> = (
@@ -63,7 +66,7 @@ type BulkDialogT<D> = ConfigDialogT<D> & {
 interface ActionBaseI<D = any> {
   label: string
   icon?: string
-  
+
   /**
    * Text to appear with the action, for instance in tooltips
    */
@@ -101,14 +104,7 @@ interface ActionBaseI<D = any> {
 }
 
 
-
-export interface ActionSimpleI<D = any> extends ActionBaseI<D> {
-  kind: 'simple'
-  handler: (data: D) => void
-}
-export interface ActionEventI<D = any> extends ActionBaseI<D> {
-  kind: 'event'
-  getEvent: GetEventT<D> 
+type ActionConfigT<D> = {
   handler?: ActionHandlerT<D>
   /**
    * push the action to the history stack when true
@@ -132,6 +128,25 @@ export interface ActionEventI<D = any> extends ActionBaseI<D> {
     index: number
   }
 }
+
+export interface ActionSimpleI<D = any> extends ActionBaseI<D> {
+  kind: 'simple'
+  handler: (data: D) => void
+}
+
+export interface ActionEventI<D = any> extends ActionBaseI<D>, ActionConfigT<D> {
+  kind: 'event'
+  getEvent: GetEventT<D>
+
+}
+export interface EntityActionEventI<D = any> extends ActionBaseI<D>, ActionConfigT<D> {
+  kind: 'entity'
+  /** when true, simply write the entityAction at the corresponding ref */
+  handleOnServer?: boolean
+  handler?: ActionHandlerT<D>
+
+}
+
 export interface ActionMixinI<D = any> extends ActionBaseI<D> {
   kind: 'mixin'
   GetEventT: GetEventT<D>
@@ -140,8 +155,13 @@ export interface ActionMixinI<D = any> extends ActionBaseI<D> {
 /**
  * 
  */
-export type ActionT<D = any> = ActionSimpleI<D> | ActionEventI<D> | ActionMixinI<D>
-export type ActionsT = Record<string, ActionT>
+export type ActionT<D = any> =
+  | ActionSimpleI<D>
+  | ActionEventI<D>
+  | ActionMixinI<D>
+  | EntityActionEventI<D>
+
+export type ActionsT<D = any> = Record<string, ActionT<D>>
 
 /**
  * util type to get the key of all actions

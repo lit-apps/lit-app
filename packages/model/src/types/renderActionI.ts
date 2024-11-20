@@ -1,8 +1,7 @@
 import { nothing, TemplateResult } from "lit"
+import { EntityCreateDetail } from "../events.js"
 import { ActionKeyT, ActionsT, FunctionOrButtonConfigT, HostElementI } from "./actionTypes.js"
 import { RenderConfig } from "./entity.js"
-import { HTMLEvent } from "@lit-app/shared/types.js"
-import type { LappButton } from "@lit-app/cmp/button/button.js"
 
 /**
  * Render Interface for renderActionMixin
@@ -52,14 +51,22 @@ export declare class RenderInterface<
 
   renderEntityActions(data: unknown, config: RenderConfig): TemplateResult | typeof nothing
 
-  renderAction(actionName: ActionKeyT<A, unknown>, data: unknown, config: RenderConfig): TemplateResult
-  onActionClick(actionName: ActionKeyT<A, unknown>, data: unknown): (e: HTMLEvent<LappButton>) => void
+  renderAction(
+    actionName: ActionKeyT<A, unknown>, 
+    data: unknown, 
+    config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
+    clickHandler?: (e: CustomEvent) => void): TemplateResult
+
+  onActionClick(
+    actionName: ActionKeyT<A, unknown>, 
+    data: unknown
+  ): (e: CustomEvent) => void
 
   // open is required as it is declared in RenterEntityMixin - this should be removed at some stage
   open: (id: string) => void
   close: (id: string) => void
   markDirty: (dirty?: boolean) => void
-  create: (data: Partial<unknown>) => void
+  create: (data: Partial<unknown>) => CustomEvent<EntityCreateDetail>
 }
 
 /**
@@ -91,7 +98,8 @@ export interface StaticEntityActionI<
     actionName: ActionKeyT<A, unknown>,
     host: HostElementI<unknown>,
     data?: unknown,
-    config?: RenderConfig | FunctionOrButtonConfigT<unknown>): TemplateResult
+    config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
+    clickHandler?: (e: CustomEvent) => void): TemplateResult
 
   /**
    * Handles the click event for an action button.
@@ -110,5 +118,5 @@ export interface StaticEntityActionI<
     host: HostElementI<unknown>,
     data: unknown,
     isBulk?: boolean
-  ): (e: HTMLEvent<LappButton>) => void
+  ): (e: CustomEvent) => void
 }
