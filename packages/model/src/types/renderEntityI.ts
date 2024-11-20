@@ -1,8 +1,6 @@
 import { TemplateResult } from 'lit';
-import { Actions } from './action';
 import { Collection, CollectionI } from './dataI';
 import { DefaultI, RenderConfig } from './entity';
-import { RenderInterface as RenderActionInterface } from './renderEntityActionI';
 import { ModelComponent } from './modelComponent.js';
 import { Parser } from '@json2csv/plainjs';
 

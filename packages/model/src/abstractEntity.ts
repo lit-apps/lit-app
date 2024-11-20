@@ -64,7 +64,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	declare ['constructor']: typeof AbstractEntity;
 
 	// define a private _icon property to be used by the icon getter
-	_icon!: string
+	private _icon!: string
 	get icon(): string {
 		return this._icon || this.constructor.icon
 	}
@@ -73,7 +73,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 		this.host.requestUpdate()
 	}
 
-	_selected: number = 0
+	private _selected: number = 0
 	get selected(): number {
 		return this._selected
 	}

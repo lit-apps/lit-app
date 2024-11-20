@@ -1,3 +1,6 @@
+/** 
+ * DEPRECATED - replaced by ./actionTypes.ts
+ */
 import type {  DocumentReference } from 'firebase/firestore'
 import type { AnyEvent, AppAction, AppActionEmail, Dirty, TypeofAnyEvent } from '../events'
 import type { LitElement, TemplateResult } from 'lit'

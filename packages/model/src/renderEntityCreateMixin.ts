@@ -4,7 +4,6 @@ import '@vaadin/grid/theme/material/vaadin-grid.js';
 import AbstractEntity from './abstractEntity';
 import type { RenderEntityCreateInterface } from './types/renderEntityCreateI';
 import { DataI } from './types/dataI';
-import { Actions } from './types';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 export {
@@ -28,12 +27,6 @@ export default function renderMixin<D extends DataI>(
 		 * @param organisationOwnerID - the organisation owning the entity (e.g. ida_secretariat)
 		 * @param appOwnerID - the group owning the entity (e.g. gds)
 		 */
-		// TODO : this should be a static method		
-		// getNewData(..._args: any[]): Partial<D> {
-		// 	// @ts-expect-error  - we are cheating
-		// 	console.warn('getNewData is deprecated', this.entityName)
-		// 	return {}
-		// }
 
 		processCreateData(data: Partial<D> = {}) {
 			return {
