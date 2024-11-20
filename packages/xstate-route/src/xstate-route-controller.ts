@@ -189,7 +189,7 @@ class RouteStateController implements ReactiveController {
     // on browser refresh
     const snap = this.actor.getSnapshot();
     const routeConfig = snap._nodes?.find((node: StateNode) => node.config?.route !== undefined)?.config?.route;
-    if (snap.status === 'active' && !routeConfig?.meta?.ignoreOnSubscribe) {
+    if (snap.status === 'done' || (snap.status === 'active' && !routeConfig?.meta?.ignoreOnSubscribe)) {
       // get the route from the actor state
       actorToURL(snap);
     } else {
