@@ -27,7 +27,7 @@
     "@lit-app/shared": "link:../shared",
     "@lit-app/testing": "link:../testing",
     "@lit/context": "^1.1.2",
-    "@material/web": "1.0.1",
+    "@material/web": "link:../../../app-dependencies/material-web",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",

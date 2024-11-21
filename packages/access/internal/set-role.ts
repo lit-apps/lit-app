@@ -1,13 +1,14 @@
-import { EntityI } from '@lit-app/model/src/types';
-import { html, css, LitElement } from "lit";
-import { when } from 'lit/directives/when.js';
-import { AccessActionI, Role } from '@lit-app/model';
-import { property, state } from 'lit/decorators.js';
-import { LappUserSearch } from '@lit-app/cmp/user/search';
-import '@lit-app/cmp/user/search';
-import '@lit-app/cmp/user/select-item';
 import '@lit-app/cmp/user/name';
+import '@lit-app/cmp/user/search';
+import { LappUserSearch } from '@lit-app/cmp/user/search';
+import '@lit-app/cmp/user/select-item';
+import { Role } from '@lit-app/model';
+import { EntityI } from '@lit-app/model/src/types';
 import { HTMLEvent } from '@lit-app/shared/types';
+import { css, html, LitElement } from "lit";
+import { property, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
+import { ConsumeUserAccessMixin } from './context-user-access-mixin';
 import('@lit-app/cmp/user/card')
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')
@@ -16,7 +17,6 @@ import('@material/web/button/filled-button')
 import('@material/web/button/filled-tonal-button')
 import('@material/web/icon/icon')
 import('@material/web/progress/circular-progress')
-import { ConsumeUserAccessMixin } from './context-user-access-mixin';
 
 /**
  *  Set the role of an entity
@@ -79,16 +79,13 @@ export class SetRole extends ConsumeUserAccessMixin(LitElement) {
 			this.isEditing = false;
 		}
 
-		const setAccess = async () => {
+		const setAccess = async (e: CustomEvent) => {
 			this.isLoading = true;
-			const event = this.Entity.getEntityAction<AccessActionI>({
+			const onActionClick = this.Entity.onActionClick('setAccess', this, {
 				uid: this.newUid,
 				role: this.accessRole as Role['name']
-
-			}, 'setAccess')
-
-			this.dispatchEvent(event);
-			await event.detail.promise;
+			});
+			await onActionClick(e);
 			this.isLoading = false;
 		}
 
@@ -136,7 +133,6 @@ export class SetRole extends ConsumeUserAccessMixin(LitElement) {
 						${this.label}
 						<lapp-icon slot="icon">person</lapp-icon>
 					</md-outlined-button>
-					
 					`
 			}
 		</div>

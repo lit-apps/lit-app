@@ -14,7 +14,7 @@ import { ToastEvent } from '@lit-app/event';
 import { ConsumeUserAccessMixin } from './context-user-access-mixin';
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')
-import('@material/web/button/outlined-button')
+import('@material/web/button/outlined-button.js')
 import('@material/web/button/filled-button')
 import('@material/web/button/filled-tonal-button')
 import('@material/web/icon/icon')
@@ -89,17 +89,17 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 		}
 
 
-		const handlerFact = (action: 'addAccess' | 'invite') => async () => {
+		const handlerFact = (action: 'addAccess' | 'invite') => async (e) => {
+			
 			this.isLoading = true;
 			try {
 				if (!this.accessRole) return;
-				const event = this.Entity.getEntityAction<AccessActionI>({
+				const onActionClick = this.Entity.onActionClick(action, this, {
 					uid: this.newUid,
 					role: this.accessRole as Role['name'],
 					language: this.languageRole
-				}, action)
-				this.dispatchEvent(event);
-				await event.detail.promise;
+				});
+				await onActionClick(e);
 				this.isLoading = false;
 				this.isEditing = false;
 				this.dispatchEvent(new ToastEvent(`Access request processed with success`));

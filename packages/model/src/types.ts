@@ -73,13 +73,7 @@ import { RenderInterface as ActionI, StaticEntityActionI } from './types/renderA
 import{ type RenderEntityCreateInterface as CreateI} from './renderEntityCreateMixin.js';
 import { ActionsT } from './types/actionTypes.js';
 
-// import { ActionI } from './events';
-
-
 export interface StaticEntityI<D = any, A extends ActionsT = ActionsT> {
-	// entityName: string
-	// model: Model<D>
-	// icon: string
 	actions: A
 	styles: CSSResult | CSSResult[];
 	getAccess: GetAccess
@@ -99,6 +93,7 @@ export interface EntityI<
 	StaticEntityI<D, A>
 	{
 		entityName: string,
+		icon: string,
 		new(cmp: EntityElement, realtime?: boolean, listenOnAction?: boolean ): entityI<D, A, C>;
 	}
 

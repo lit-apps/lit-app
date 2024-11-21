@@ -143,7 +143,6 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       label: 'Delete',
       icon: 'delete',
       pushHistory: true,
-      // getEvent: getEntityActionEvent('markDeleted'),
       meta: {
         label: 'Deleted',
         index: -7
@@ -161,7 +160,6 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       label: 'Restore',
       icon: 'restore',
       pushHistory: true,
-      // getEvent: getEntityActionEvent('restore'),
       meta: {
         label: 'Restored',
         index: -8
@@ -171,14 +169,12 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       kind: 'entity',
       label: 'Set Access',
       icon: 'lock',
-      // getEvent: getEntityActionEvent('setAccess'),
       
     },
     addAccess: {
       kind: 'entity',
       label: 'Add Access',
       icon: 'add',
-      // getEvent: getEntityActionEvent('addAccess'),
       
     },
     removeAccess: {
@@ -191,7 +187,6 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       kind: 'entity',
       label: 'Invite',
       icon: 'person_add',
-      // getEvent: getEntityActionEvent('invite'),
     },
 
   }
@@ -214,7 +209,7 @@ export function getEntityActionEvent<D>(actionName: string, action?: ActionT ): 
   return (entityName, { data }, host, isBulk?, confirmed?) => {
     const id = (data as CollectionI<D>).$id || host?.docId;
     if (!id) {
-      throw new Error(`id is required for ${actionName} action`);
+      console.warn(`No id provided for ${actionName} action`, data);
     }
     action = action || actions[actionName as keyof DefaultActionsT<D>];
     if(!action) {
