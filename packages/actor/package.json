@@ -19,7 +19,8 @@
     "@lit-app/state": "link:../state",
     "@lit/context": "^1.1.2",
     "@material/web": "link:../../../app-dependencies/material-web",
-    "lit": "^3.2.1"
+    "lit": "^3.2.1",
+    "xstate": "link:../../../app-dependencies/xstate/packages/core"
   },
   "overrides": {
     "xstate": "link:../../../app-dependencies/xstate/packages/core"
