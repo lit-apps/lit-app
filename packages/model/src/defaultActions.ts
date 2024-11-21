@@ -197,7 +197,8 @@ export function defaultActions<D>(): DefaultActionsT<D> {
   }
   return actions
 }
-const actions = defaultActions();
+
+export const actions = defaultActions();
 
 /**
  * Generates an event for a specified entity action.

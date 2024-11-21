@@ -12,13 +12,17 @@ export interface HostElementI<D = any> extends LitElement {
 
 
 
-type ActionHandlerT<D> = ((
-  this: any, //dbRefEntity,
-  ref: DocumentReference<D> | CollectionReference<D>,
-  data: D,
-  event: CustomEvent) => void
-)
-
+type ActionHandlerT<D> =
+  | ((
+    this: HTMLElement, //dbRefEntity,
+    ref: DocumentReference<D>,
+    data: D,
+    event: CustomEvent) => void)
+  | ((
+    this: HTMLElement, //dbRefEntity,
+    ref: CollectionReference<D>,
+    data: D,
+    event: CustomEvent) => void)
 export type PrimitiveT = string | number | boolean
 // type FunctionOrValue<T, D> = T | ((this: AbstractEntity, data: D, entityStatus?: EntityStatus) => T)
 type FunctionOrValue<T, D> = T | ((this: HostElementI, data: D, entityStatus?: EntityStatus) => T)
@@ -39,6 +43,7 @@ export type ActionDataT<D> = {
   data: D | CollectionI<D>,
   // selectedItems?: Collection<D>
 }
+
 export type GetEventT<D, E = any> = (
   entityName: string,
   data: ActionDataT<D>,
@@ -71,6 +76,7 @@ interface ActionBaseI<D = any> {
    * Text to appear with the action, for instance in tooltips
    */
   supportingText?: string
+
   /** 
    * If set, the action is displayed on view mode
    * The value is the index of the action in the list of actions
