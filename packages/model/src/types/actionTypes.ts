@@ -5,7 +5,7 @@ import type { LitElement, TemplateResult } from "lit";
 import type { CollectionReference, DocumentReference } from "firebase/firestore";
 
 export interface HostElementI<D = any> extends LitElement {
-  entityStatus: EntityStatus
+  entityStatus?: EntityStatus
   consumingMode?: RenderConfig['consumingMode']
   docId?: string
 }
@@ -36,7 +36,7 @@ type ButtonConfigT = {
 }
 
 export type ActionDataT<D> = {
-  data: CollectionI<D>,
+  data: D | CollectionI<D>,
   // selectedItems?: Collection<D>
 }
 export type GetEventT<D, E = any> = (

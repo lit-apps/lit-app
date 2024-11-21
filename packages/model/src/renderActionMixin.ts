@@ -23,7 +23,6 @@ import AbstractEntity from "./abstractEntity.js";
 import RenderEntityCreateMixin from "./renderEntityCreateMixin.js";
 import { RenderConfig } from "./types/entity.js";
 import { callFunctionOrValue } from "@lit-app/shared/callFunctionOrValue.js";
-import { HTMLEvent } from "@lit-app/shared/types.js";
 import '@material/web/iconbutton/filled-icon-button.js';
 import { html, nothing, TemplateResult } from "lit";
 import type {
@@ -104,18 +103,19 @@ export default function renderMixin<A extends ActionsT>(
         button.loading = true
         try {
           if (action.kind === 'simple') {
-            action.handler(data)
+            return action.handler(data)
           } else if (action.kind === 'event' || action.kind === 'entity') {
             const event = action.kind === 'event'
               ? action.getEvent(this.entityName!, { data }, host, isBulk)
               : getEntityActionEvent(actionName as string, action)(
-                this.entityName!, { data: data as any }, host, isBulk
+                this.entityName!, { data }, host, isBulk
               )
             host.dispatchEvent(event)
             await event.detail.promise
             if (action.afterResolved) {
-              action.afterResolved(event, host);
+              await action.afterResolved(event, host);
             }
+            return event
           }
         }
         catch (error) {
@@ -278,7 +278,7 @@ export default function renderMixin<A extends ActionsT>(
       config?: RenderConfig,
       clickHandler?: (e: CustomEvent) => void
     ): TemplateResult {
-      return this.constructor.renderAction(actionName, this.host, { data }, config, clickHandler)
+      return this.constructor.renderAction(actionName, this.host, data, config, clickHandler)
     }
 
     protected renderBulkAction(
@@ -315,8 +315,8 @@ export default function renderMixin<A extends ActionsT>(
       actionName: ActionKeyT<A, unknown>,
       data: unknown,
       isBulk: boolean = false
-    ): (e: CustomEvent) => void {
-      return this.constructor.onActionClick(actionName, this.host, { data }, isBulk)
+    ) {
+      return this.constructor.onActionClick(actionName, this.host, data, isBulk)
     }
 
 

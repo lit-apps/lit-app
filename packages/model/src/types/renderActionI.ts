@@ -60,7 +60,7 @@ export declare class RenderInterface<
   onActionClick(
     actionName: ActionKeyT<A, unknown>, 
     data: unknown
-  ): (e: CustomEvent) => void
+  ): (e: CustomEvent) => Promise<CustomEvent | void>
 
   // open is required as it is declared in RenterEntityMixin - this should be removed at some stage
   open: (id: string) => void
@@ -118,5 +118,5 @@ export interface StaticEntityActionI<
     host: HostElementI<unknown>,
     data: unknown,
     isBulk?: boolean
-  ): (e: CustomEvent) => void
+  ): (e: CustomEvent) => Promise<CustomEvent | void>
 }

@@ -10,6 +10,7 @@ import {
 } from "./events.js"
 import { html } from "lit";
 import { ActionT, DefaultActionsT, GetEventT } from "./types/actionTypes.js";
+import { CollectionI } from "./types/dataI.js";
 
 
 /**
@@ -18,7 +19,7 @@ import { ActionT, DefaultActionsT, GetEventT } from "./types/actionTypes.js";
  * - [x] add pushHistory
  * - [x] add meta
  * - [x] add confirmDialog
- * - [ ] handle bulk actions
+ * - [x] handle bulk actions
  * 
  * For bulk actions, we need a better way to pass selectedItems. 
  * 
@@ -45,7 +46,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       label: 'Save',
       icon: 'save',
       getEvent: (entityName, { data }, host) => {
-        const id = data.$id || host?.docId
+        const id = (data as CollectionI<D>).$id || host?.docId
         if (!id) {
           throw new Error('id is required for write action')
         }
@@ -66,7 +67,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       label: 'Cancel',
       icon: 'cancel',
       getEvent: (entityName, { data }, host) => {
-        const id = data.$id || host?.docId
+        const id = (data as CollectionI<D>).$id || host?.docId
         if (!id) {
           throw new Error('id is required for reset action')
         }
@@ -78,7 +79,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       label: 'Edit',
       icon: 'edit',
       getEvent: (entityName, { data }, host) => {
-        const id = data.$id || host?.docId
+        const id = (data as CollectionI<D>).$id || host?.docId
         if (!id) {
           throw new Error('id is required for edit action')
         }
@@ -90,7 +91,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       label: 'Open',
       icon: 'open_in_new',
       getEvent: (entityName, { data }, host) => {
-        const id = data.$id || host?.docId
+        const id = (data as CollectionI<D>).$id || host?.docId
         if (!id) {
           throw new Error('id is required for open action')
         }
@@ -102,7 +103,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       label: 'Close',
       icon: 'highlight_off',
       getEvent: (entityName, { data }, host) => {
-        const id = data.$id || host?.docId
+        const id = (data as CollectionI<D>).$id || host?.docId
         if (!id) {
           throw new Error('id is required for close action')
         }
@@ -117,7 +118,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       icon: 'delete',
       pushHistory: true,
       getEvent: (entityName, { data }, host) => {
-        const id = data.$id || host?.docId
+        const id = (data as CollectionI<D>).$id || host?.docId
         if (!id) {
           throw new Error('id is required for delete action')
         }
@@ -210,7 +211,7 @@ const actions = defaultActions();
  */
 export function getEntityActionEvent<D>(actionName: string, action?: ActionT ): GetEventT<D> {
   return (entityName, { data }, host, isBulk?, confirmed?) => {
-    const id = data.$id || host?.docId;
+    const id = (data as CollectionI<D>).$id || host?.docId;
     if (!id) {
       throw new Error(`id is required for ${actionName} action`);
     }
