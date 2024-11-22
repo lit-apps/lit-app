@@ -7,66 +7,142 @@ import { RenderConfig } from "./entity.js"
  * Render Interface for renderActionMixin
  * 
  */
-export declare class RenderInterface<
-  A extends ActionsT = ActionsT
-> {
+/**
+ * Interface for rendering actions in different modes (viewing and editing).
+ * 
+ * @template A - Type of actions, defaults to ActionsT.
+ */
+export declare class RenderInterface<A extends ActionsT = ActionsT> {
   /**
-   * Show actions: set true to show actions
+   * Show actions: set true to show actions.
    */
-  showActions: boolean
-  actions: A
-  /**
-   * The entry point for rendering actions
-   * @param data 
-   * @param config 
-   */
-  canViewActions(data: unknown, config: RenderConfig): boolean
+  showActions: boolean;
 
   /**
-   * Actions to display when in editing mode (write and cancel actions)
-   * @param data 
-   * @param config 
-   * @returns 
+   * Actions to be rendered.
    */
-  renderEditingActions(data: unknown, config: RenderConfig): TemplateResult
+  actions: A;
 
   /**
-   * Actions to display when in viewing mode (edit action)
-   * @param data 
-   * @param config 
-   * @returns 
+   * Determines if actions can be viewed.
+   * 
+   * @param data - Data to be used for rendering actions.
+   * @param config - Configuration for rendering actions.
+   * @returns True if actions can be viewed, otherwise false.
    */
-  renderViewingActions(data: unknown, config: RenderConfig): TemplateResult
+  protected canViewActions(data: unknown, config: RenderConfig): boolean;
 
   /**
-   * Render default action is Viewing mode - rendered on the right (e.g. print)
-   * was previously renderDefaultActions
+   * Renders actions to display when in editing mode (write and cancel actions).
+   * 
+   * @param data - Data to be used for rendering actions.
+   * @param config - Configuration for rendering actions.
+   * @returns TemplateResult for editing actions.
    */
-  renderOnViewing(data: unknown, config: RenderConfig): TemplateResult
+  protected renderEditingActions(data: unknown, config: RenderConfig): TemplateResult;
 
   /**
-   * Render default action is Editing mode - rendered on the right (e.g. )
+   * Renders actions to display when in viewing mode (edit action).
+   * 
+   * @param data - Data to be used for rendering actions.
+   * @param config - Configuration for rendering actions.
+   * @returns TemplateResult for viewing actions.
    */
-  renderOnEditingActions(data: unknown, config: RenderConfig): TemplateResult
+  protected renderViewingActions(data: unknown, config: RenderConfig): TemplateResult;
 
-  renderEntityActions(data: unknown, config: RenderConfig): TemplateResult | typeof nothing
+  /**
+   * Renders default action in viewing mode - rendered on the right (e.g. print).
+   * 
+   * @param data - Data to be used for rendering actions.
+   * @param config - Configuration for rendering actions.
+   * @returns TemplateResult for default viewing actions.
+   */
+  protected renderOnViewingActions(data: unknown, config: RenderConfig): TemplateResult;
 
+  /**
+   * Renders default action in editing mode - rendered on the right.
+   * 
+   * @param data - Data to be used for rendering actions.
+   * @param config - Configuration for rendering actions.
+   * @returns TemplateResult for default editing actions.
+   */
+  protected renderOnEditingActions(data: unknown, config: RenderConfig): TemplateResult;
+
+  /**
+   * Renders entity-specific actions.
+   * 
+   * @param data - Data to be used for rendering actions.
+   * @param config - Configuration for rendering actions.
+   * @returns TemplateResult or `nothing` for entity actions.
+   */
+  renderEntityActions(data: unknown, config: RenderConfig): TemplateResult | typeof nothing;
+
+  /**
+   * Renders base actions.
+   * 
+   * @param data - Data to be used for rendering actions.
+   * @param config - Configuration for rendering actions.
+   * @returns TemplateResult for base actions.
+   * @private
+   */
+  private renderBaseActions(data: unknown, config: RenderConfig): TemplateResult;
+
+  /**
+   * Renders a specific action.
+   * 
+   * @param actionName - Name of the action to be rendered.
+   * @param data - Data to be used for rendering the action.
+   * @param config - Configuration for rendering the action.
+   * @param clickHandler - Optional click handler for the action.
+   * @returns TemplateResult for the specified action.
+   */
   renderAction(
-    actionName: ActionKeyT<A, unknown>, 
-    data: unknown, 
+    actionName: ActionKeyT<A, unknown>,
+    data: unknown,
     config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
-    clickHandler?: (e: CustomEvent) => void): TemplateResult
+    clickHandler?: (e: CustomEvent) => void
+  ): TemplateResult;
 
+  /**
+   * Handles action click events.
+   * 
+   * @param actionName - Name of the action clicked.
+   * @param data - Data associated with the action.
+   * @returns A function that handles the click event and returns a promise.
+   */
   onActionClick(
-    actionName: ActionKeyT<A, unknown>, 
+    actionName: ActionKeyT<A, unknown>,
     data: unknown
-  ): (e: CustomEvent) => Promise<CustomEvent | void>
+  ): (e: CustomEvent) => Promise<CustomEvent | void>;
 
-  // open is required as it is declared in RenterEntityMixin - this should be removed at some stage
-  open: (id: string) => void
-  close: (id: string) => void
-  markDirty: (dirty?: boolean) => void
-  create: (data: Partial<unknown>) => CustomEvent<EntityCreateDetail>
+  /**
+   * Opens an entity by its ID.
+   * 
+   * @param id - ID of the entity to open.
+   */
+  open(id: string): boolean;
+
+  /**
+   * Closes an entity by its ID.
+   * 
+   * @param id - ID of the entity to close.
+   */
+  close(id: string): boolean;
+
+  /**
+   * Marks the entity as dirty or clean.
+   * 
+   * @param dirty - Boolean indicating if the entity is dirty.
+   */
+  markDirty(dirty?: boolean): boolean;
+
+  /**
+   * Creates a new entity with the provided data.
+   * 
+   * @param data - Partial data for the new entity.
+   * @returns CustomEvent with details of the created entity.
+   */
+  create: (data: Partial<unknown>) => CustomEvent<EntityCreateDetail>;
 }
 
 /**

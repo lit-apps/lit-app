@@ -9,7 +9,7 @@ import fieldMixin, { RenderInterface as FieldI, StaticEntityField } from './rend
 import { RenderInterface as ActionI, StaticEntityActionI } from "./types/renderActionI.js";
 import createMixin, { type RenderEntityCreateInterface as CreateI} from './renderEntityCreateMixin.js';
 
-import { DataI, DefaultActions, RenderConfig, StaticEntityI } from './types';
+import { DataI, RenderConfig, StaticEntityI } from './types';
 import type { Model } from './types/modelComponent';
 import { CSSResult } from 'lit';
 import type { ActionsT, DefaultActionsT } from "./types/actionTypes";
@@ -19,9 +19,6 @@ import { DefaultI } from "./types/entity.js";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
-export {
-  defaultActions
-};
 
 /**
  * # Abstract Entity Factory 
@@ -86,7 +83,7 @@ export default function abstractEntityFact<
 ) {
 
   if (!actions) {
-    actions = defaultActions as unknown as A
+    actions = defaultActions<D>() as unknown as A 
   }
   class R extends
     fieldMixin<D>(
@@ -102,10 +99,10 @@ export default function abstractEntityFact<
   return R as unknown as Constructor<AbstractEntity> &
     Constructor<RenderI<D, C>> &
     Constructor<FieldI<D>> &
-    Constructor<ActionI<typeof actions>> &
+    Constructor<ActionI<typeof actions >> &
     // Constructor<ActionI<DefaultActionsT<D>> &
     Constructor<CreateI<D>> &
-    StaticEntityActionI<typeof actions> &
+    StaticEntityActionI<typeof actions > &
     StaticEntityField<D> &
     StaticEntityI
 }

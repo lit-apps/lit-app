@@ -3,6 +3,7 @@ import type { EntityStatus, RenderConfig } from "./entity.js";
 import type { LitElement, TemplateResult } from "lit";
 // import { dbRefEntity } from "@lit-app/persistence-shell";
 import type { CollectionReference, DocumentReference } from "firebase/firestore";
+import { EntityAction } from "../events.js";
 
 export interface HostElementI<D = any> extends LitElement {
   entityStatus?: EntityStatus
@@ -11,18 +12,18 @@ export interface HostElementI<D = any> extends LitElement {
 }
 
 
-
-type ActionHandlerT<D> =
+type VoidOrEventT<E> = void | E
+type ActionHandlerT<D, E = CustomEvent> =
   | ((
     this: HTMLElement, //dbRefEntity,
     ref: DocumentReference<D>,
     data: D,
-    event: CustomEvent) => void)
+    event: E) => VoidOrEventT<E> | Promise<VoidOrEventT<E>>)
   | ((
     this: HTMLElement, //dbRefEntity,
     ref: CollectionReference<D>,
     data: D,
-    event: CustomEvent) => void)
+    event: E) => VoidOrEventT<E> | Promise<VoidOrEventT<E>>)
 export type PrimitiveT = string | number | boolean
 // type FunctionOrValue<T, D> = T | ((this: AbstractEntity, data: D, entityStatus?: EntityStatus) => T)
 type FunctionOrValue<T, D> = T | ((this: HostElementI, data: D, entityStatus?: EntityStatus) => T)
@@ -110,8 +111,8 @@ interface ActionBaseI<D = any> {
 }
 
 
-type ActionConfigT<D> = {
-  handler?: ActionHandlerT<D>
+type ActionConfigT<D, E> = {
+  handler?: ActionHandlerT<D, E>
   /**
    * push the action to the history stack when true
    */
@@ -140,16 +141,16 @@ export interface ActionSimpleI<D = any> extends ActionBaseI<D> {
   handler: (data: D) => void
 }
 
-export interface ActionEventI<D = any> extends ActionBaseI<D>, ActionConfigT<D> {
+export interface ActionEventI<D = any> extends ActionBaseI<D>, ActionConfigT<D, CustomEvent> {
   kind: 'event'
   getEvent: GetEventT<D>
 
 }
-export interface EntityActionEventI<D = any> extends ActionBaseI<D>, ActionConfigT<D> {
+export interface EntityActionEventI<D = any> extends ActionBaseI<D>, ActionConfigT<D, EntityAction> {
   kind: 'entity'
   /** when true, simply write the entityAction at the corresponding ref */
   handleOnServer?: boolean
-  handler?: ActionHandlerT<D>
+  handler?: ActionHandlerT<D, EntityAction>
 
 }
 

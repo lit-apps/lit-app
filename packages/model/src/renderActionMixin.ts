@@ -36,7 +36,6 @@ import type {
 } from "./types/actionTypes.js";
 import { defaultActions, getEntityActionEvent } from "./defaultActions.js";
 import { RenderInterface, StaticEntityActionI } from "./types/renderActionI.js";
-export { defaultActions };
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
@@ -54,7 +53,7 @@ export default function renderMixin<A extends ActionsT>(
     actions: Object.assign(actions as A || {}, defaultActions()),
 
     renderAction(
-      actionName: keyof A | keyof typeof defaultActions,
+      actionName: keyof A | keyof DefaultActionsT<unknown>,
       host: HostElementI<unknown>,
       data: unknown,
       config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
@@ -329,11 +328,11 @@ export default function renderMixin<A extends ActionsT>(
       return event
     }
 
-    close(id: string) {
-      return this.host.dispatchEvent(new Close({ entityName: this.entityName, id }))
+    close(id: string, entityName?: string) {
+      return this.host.dispatchEvent(new Close({ entityName: entityName || this.entityName, id }))
     }
-    open(id: string) {
-      return this.host.dispatchEvent(new Open({ entityName: this.entityName, id }))
+    open(id: string, entityName?: string) {
+      return this.host.dispatchEvent(new Open({ entityName: entityName || this.entityName, id }))
     }
     markDirty(dirty: boolean = true) {
       return this.host.dispatchEvent(new Dirty({ entityName: this.entityName, dirty }))
