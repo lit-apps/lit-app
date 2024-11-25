@@ -17,7 +17,8 @@ import type { GridCellClassNameGenerator, GridRowDetailsRenderer } from '@vaadin
 import {
 	columnBodyRenderer,
 	columnHeaderRenderer
-} from 'lit-vaadin-helpers';
+} from '@vaadin/grid/src/lit/column-renderer-directives.js';
+
 import '../../dom/observer';
 import '../card';
 

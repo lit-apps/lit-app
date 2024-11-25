@@ -45,7 +45,6 @@
   "dependencies": {
     "@lit/context": "^1.1.2",
     "@observablehq/plot": "^0.6.15",
-    "lit": "^3.2.1",
-    "lit-vaadin-helpers": "^0.3.1"
+    "lit": "^3.2.1"
   }
 }

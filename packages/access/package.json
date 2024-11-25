@@ -31,9 +31,9 @@
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
+    "@vaadin/grid": "^24.5.4",
     "firebase": "^10.7.1",
-    "lit": "^3.2.1",
-    "lit-vaadin-helpers": "^0.3.1"
+    "lit": "^3.2.1"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.8.2",

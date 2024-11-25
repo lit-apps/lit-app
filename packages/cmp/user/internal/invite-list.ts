@@ -16,8 +16,8 @@ import activeItemChanged from '@preignition/preignition-util/src/grid/activeItem
 import type { GridRowDetailsRenderer } from '@vaadin/grid';
 import {
 	columnBodyRenderer,
-	columnHeaderRenderer
-} from 'lit-vaadin-helpers';
+} from '@vaadin/grid/src/lit/column-renderer-directives.js';
+
 import '../../dom/observer';
 import '../card';
 

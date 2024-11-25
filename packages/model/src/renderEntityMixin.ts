@@ -9,8 +9,12 @@ import { html, nothing, TemplateResult } from 'lit';
 import {
   columnBodyRenderer,
   columnHeaderRenderer,
+} from '@vaadin/grid/src/lit/column-renderer-directives.js';
+
+import {
   gridRowDetailsRenderer
-} from 'lit-vaadin-helpers';
+} from '@vaadin/grid/src/lit/renderer-directives.js';
+
 import { choose } from 'lit/directives/choose.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';

@@ -20,7 +20,7 @@ import '@preignition/lit-firebase/store';
 import { LitElement, html } from "lit";
 import {
 	columnBodyRenderer,
-} from 'lit-vaadin-helpers';
+} from '@vaadin/grid/src/lit/column-renderer-directives.js';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { ProvideUserAccessMixin } from './context-user-access-mixin';
@@ -51,7 +51,7 @@ const getAccess: GetAccess = function (this: EntityAccess, access: Access, _data
 		canView: true,
 	}
 }
-	
+
 
 /**
  * An element that renders access utilities against an entity, 
@@ -180,7 +180,7 @@ export class EntityAccess extends
 		const bodyRole = (item: UserItemRole) => html`
 		<md-chip-set>
 			${item.roles.map(it => {
-			const onActionRevoke =  async (e: CustomEvent) => {
+			const onActionRevoke = async (e: CustomEvent) => {
 				// console.log('onActionRevoke', e);
 				e.preventDefault();
 				const onActionClick = this.Entity.onActionClick('removeAccess', this, {

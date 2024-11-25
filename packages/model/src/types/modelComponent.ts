@@ -1,13 +1,12 @@
 import { Media } from '@lit-app/cmp/field/choice/types';
 import type { LitElement } from 'lit';
 import { TemplateResult } from 'lit';
-import {
+import type {
 	GridColumnBodyLitRenderer,
 	GridColumnHeaderLitRenderer
-} from 'lit-vaadin-helpers';
+} from '@vaadin/grid/src/lit/column-renderer-directives.js';
 import { RenderConfig } from './entity.js';
 
-// import { columnBodyRenderer} from '@vaadin/grid/lit.js'
 
 type TextComponent = 'textfield' | 'textarea'
 type MdComponent = 'md'

@@ -57,7 +57,6 @@
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/multi-select-combo-box": "link:../../../app-dependencies/web-components/packages/multi-select-combo-box",
     "lit": "^3.2.1",
-    "lit-vaadin-helpers": "^0.3.1",
     "xstate": "5.17.4"
   }
 }
