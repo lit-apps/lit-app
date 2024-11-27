@@ -1,5 +1,5 @@
 {
-  "name": "@lit-app/enityt",
+  "name": "@lit-app/entity",
   "version": "1.0.0",
   "description": "collection of entity and model to be shared across application",
   "type": "module",

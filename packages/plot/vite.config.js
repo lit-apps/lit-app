@@ -33,8 +33,6 @@ export default defineConfig({
       "@material/mwc-top-app-bar",
       "@material/mwc-top-app-bar-fixed",
       "@preignition/preignition-util",
-      
-"@preignition/preignition-mixin",
       "@preignition/preignition-config",
       "@preignition/preignition-state",
     ],

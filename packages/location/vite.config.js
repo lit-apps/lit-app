@@ -30,8 +30,6 @@ export default defineConfig({
       "@material/mwc-ripple/ripple-directive.js",
       "@material/mwc-snackbar",
       "@preignition/preignition-util",
-      
-"@preignition/preignition-mixin",
       "@preignition/preignition-config",
       "@preignition/preignition-state",
     ],
