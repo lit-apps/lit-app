@@ -30,7 +30,6 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
-    "@preignition/preignition-demo": "^0.5.0",
     "chai-a11y-axe": "^1.4.0",
     "eslint": "^8.14.0",
     "firebase": "^9.22.2",
