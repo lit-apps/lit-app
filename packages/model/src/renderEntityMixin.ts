@@ -133,7 +133,7 @@ export default function renderMixin<
       }
     }
 
-    renderGridColumns(config: C) {
+    protected renderGridColumns(config: C) {
       // console.log('renderGridColumns')
       const showSelectionColumn = config.columnsConfig?.showSelectionColumn;
       const model = this.model;

@@ -4,6 +4,7 @@
 
 import type { Access, MetaData, Ref, DataI } from './dataI';
 
+
 export type ResourceRef = Ref & {
 	team: string
 };
@@ -20,8 +21,17 @@ export interface ResourceMetaData<
 }
 
 export interface ResourceUI {
+	/**
+	 * Internal name
+	 */
 	name: string // internal name
+	/**
+	 * Primary language of the resource
+	 */
 	language: string
+	/**
+	 * external name - when the resource is not localized
+	 */
 	title?: string // external name
 	shortDesc?: string
 }
