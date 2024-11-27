@@ -89,7 +89,7 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 		}
 
 
-		const handlerFact = (action: 'addAccess' | 'invite') => async (e) => {
+		const handlerFact = (action: 'addAccess' | 'invite') => async (e: CustomEvent) => {
 			
 			this.isLoading = true;
 			try {
