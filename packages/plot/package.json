@@ -25,8 +25,7 @@
     "preview": "vite preview",
     "prepublishOnly": "npm run build",
     "test": "vitest",
-    "lint": "eslint 'src/**/*.js'",
-    "format": "prettier \"src/**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write"
+    "lint": "eslint 'src/**/*.js'"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.5.7",

@@ -29,7 +29,7 @@
     "analyze-md": "node custom-elements-to-md.mjs",
     "analyze": "npm run analyze-md && npm run analyze-json && npm run copy-to-public",
     "lint": "eslint 'src/**/*.js'",
-    "format": "prettier \"src/**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
+
     "prepublishOnly": "npm run analyze",
     "_install": ""
   },

@@ -29,8 +29,7 @@
     "preview": "vite preview",
     "prepublishOnly": "npm run build",
     "test": "vitest",
-    "lint": "eslint 'lib/**/*.js'",
-    "format": "prettier \"src/**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write"
+    "lint": "eslint 'lib/**/*.js'"
   },
   "dependencies": {
     "router-slot": "link:../../../app-dependencies/router-slot",
