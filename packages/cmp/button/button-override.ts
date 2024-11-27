@@ -14,7 +14,9 @@ import isSafari  from '@lit-app/shared/isSafari';
 
 if (isSafari()) {
 
+	// @ts-expect-error - firstUpdated is a protected method
 	const firstUpdated = Button.prototype.firstUpdated;
+	// @ts-expect-error - firstUpdated is a protected method
 	Button.prototype.firstUpdated = function (props) {
 		const slot = this.renderRoot.querySelector('slot:not([name])');
 		const onSlotchange = (e) => {
