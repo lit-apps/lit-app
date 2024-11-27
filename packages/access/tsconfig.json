@@ -4,7 +4,6 @@
       "lit": [
         "./node_modules/lit"
       ]
-
     }
   },
   "extends": "../../tsconfig.json",
