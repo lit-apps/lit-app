@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    "paths": {
+      "lit": [
+        "./node_modules/lit"
+      ]
+
+    }
   },
   "extends": "../../tsconfig.json",
   "include": ["internal/**/*.ts", "*.ts"],
