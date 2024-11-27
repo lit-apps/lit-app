@@ -30,8 +30,10 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
+    "@material/web": "^2.2.0",
     "chai-a11y-axe": "^1.4.0",
     "eslint": "^8.14.0",
+    "firebase": "^11.0.2",
     "happy-dom": "^8.9.0",
     "typescript": "^5.0.2",
     "vite": "^5.4.10",
@@ -41,6 +43,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@vaadin/grid": "^24.5.4",
     "lit": "^3.2.1"
   }
 }

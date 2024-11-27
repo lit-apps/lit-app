@@ -10,7 +10,7 @@ import { UserItem, UserItemRole, UserUidRoleT } from './types';
 import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';
 import {
 	headerFilterText
-} from '@preignition/preignition-util/src/directiveRenderer';
+} from '@lit-app/shared/directiveRenderer';
 
 import activeItemChanged from '@preignition/preignition-util/src/grid/activeItemChanged';
 import type { GridCellClassNameGenerator, GridRowDetailsRenderer } from '@vaadin/grid';
