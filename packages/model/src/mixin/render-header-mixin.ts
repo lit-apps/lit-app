@@ -1,4 +1,4 @@
-import { LitElement, html, TemplateResult } from 'lit';
+import { LitElement, html, TemplateResult, nothing } from 'lit';
 import { property } from 'lit/decorators.js'
 import { choose } from 'lit/directives/choose.js';
 import { DefaultI, RenderConfig } from '../types/entity';
@@ -13,12 +13,44 @@ export declare class RenderHeaderMixinInterface {
 	 * The level at which this entity should be rendered 
 	 * 
 	 * level 1 will display a h2 title with icon, 
-   * level 2 a h3 title without icon, 
-   * level 3 a h5 secondary title, 
-   * level 4 no title.
+	 * level 2 a h3 title without icon, 
+	 * level 3 a h5 secondary title, 
+	 * level 4 no title.
 	 */
 	level: number
+
+	/**
+	 * Name of the slot to render the header. 
+	 * 
+	 * By default it is '', so the header will be rendered directly in the element. 
+	 * 
+	 * If you want to render the header in a slot, you can override this method to return the name of the slot
+	 * where the header should be rendered (for instance 'title').
+	 */
+	get slotHeaderName(): string
+	/**
+	 * Render the content of a header title.
+	 * 
+	 * Buy default it takes config.heading or this.heading as title.
+	 * 
+	 * @param data 
+	 * @param config 
+	 */
 	renderTitle(data?: DefaultI, config?: RenderConfig): TemplateResult
+	/**
+	 * Same as renderTitle but for when data is an array.
+	 * @param data 
+	 * @param config 
+	 */
+	renderArrayTitle(data?: DefaultI, config?: RenderConfig): TemplateResult
+	/**
+	 * Render the header of the element. 
+	 * 
+	 * By default it will render a h2 title with icon. 
+	 * 
+	 * @param data 
+	 * @param config 
+	 */
 	renderHeader(data?: DefaultI, config?: RenderConfig): TemplateResult
 }
 
@@ -32,7 +64,7 @@ export declare class RenderHeaderMixinInterface {
  * level 3 a h5 secondary title, 
  * level 4 no title.
  */
-export const RenderHeaderMixin = <T extends Constructor<LitElement> >(superClass: T) => {
+export const RenderHeaderMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
 	abstract class RenderHeaderMixinClass extends superClass {
 
@@ -40,25 +72,26 @@ export const RenderHeaderMixin = <T extends Constructor<LitElement> >(superClass
 		@property() icon!: string;
 		@property({ type: Number }) level: number = 1;
 
+		get slotHeaderName() { return ''; }
 
 		renderTitle(_data?: DefaultI, config?: RenderConfig) {
 			return html`${config?.heading || this.heading}`
 		}
-		
+
 		renderArrayTitle(_data?: DefaultI, config?: RenderConfig) {
 			return html`${config?.heading || this.heading}`
 		}
-	
+
 		renderHeader(data?: DefaultI, config?: RenderConfig) {
 			const title = this.renderTitle(data, config)
 			return html`${choose(this.level,
 				[
-					[2, () => html`<h3 class="layout horizontal">${title}</h3>`],
-					[3, () => html`<h5 class="secondary">${title}</h5>`],
+					[2, () => html`<h3 class="header layout horizontal">${title}</h3>`],
+					[3, () => html`<h5 class="header secondary">${title}</h5>`],
 					[4, () => html``]
 				],
 				() => html`
-				<h2 class="layout horizontal underline">
+				<h2 class="header layout horizontal underline">
 					<lapp-icon .icon=${config?.entityStatus.isEditing ? 'edit' : this.icon}></lapp-icon>
 					${title}
 				</h2>`
@@ -67,14 +100,14 @@ export const RenderHeaderMixin = <T extends Constructor<LitElement> >(superClass
 
 		override render() {
 			return html`
-				<slot name="header">
+				<slot name="header" slot=${this.slotHeaderName || nothing as unknown as string}>
 					${this.renderHeader()}
 				</slot>
 				${super.render()}
 			`;
-		
+
 		}
-	
+
 	};
 	// Cast return type to your mixin's interface intersected with the superClass type
 	return RenderHeaderMixinClass as unknown as Constructor<RenderHeaderMixinInterface> & T;
