@@ -59,6 +59,9 @@ export declare class RenderHeaderMixinInterface {
  * RenderHeaderMixin - to be mixed to page elements that can displayed titles 
  * of different levels, depending on the context. 
  * 
+ * Together with .header class and `focus-on-connected-mixin`, it allows to display focus
+ * when an element is connected to the dom.
+ * 
  * Level 1 will display a h2 title with icon, 
  * level 2 a h3 title without icon, 
  * level 3 a h5 secondary title, 
@@ -92,6 +95,7 @@ export const RenderHeaderMixin = <T extends Constructor<LitElement>>(superClass:
 				],
 				() => html`
 				<h2 class="header layout horizontal underline">
+					<md-focus-ring  style="--md-focus-ring-shape: 10px"></md-focus-ring>
 					<lapp-icon .icon=${config?.entityStatus.isEditing ? 'edit' : this.icon}></lapp-icon>
 					${title}
 				</h2>`
