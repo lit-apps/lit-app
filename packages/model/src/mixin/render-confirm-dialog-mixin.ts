@@ -24,7 +24,7 @@ export declare class ConfirmDialogMixinInterface {
  * - add support for bulk actions 
  * - remove deprecated old bulk actions dialog 
  */
-export const ConfirmDialogMixin = <T extends Constructor<LitElement & { selectedItems: any[] }>>(superClass: T) => {
+export const ConfirmDialogMixin = <T extends Constructor<LitElement & { selectedItems?: any[] }>>(superClass: T) => {
 
 	class ConfirmDialogMixinClass extends superClass {
 
