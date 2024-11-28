@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
 import { GridItemModel } from '@vaadin/grid';
 import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
-import '@preignition/pwi-date-format';
+import '@lit-app/cmp/datetime/format';
 import {
 	type GridColumnBodyLitRenderer,
 } from '@vaadin/grid/src/lit/column-renderer-directives.js';
@@ -26,6 +26,6 @@ export default function bodyDate<T = any>(
 			}
 
 		}
-		return html`<pwi-date-format .date=${date}></pwi-date-format>`;
+		return html`<lapp-datetime-format .date=${date}></lapp-datetime-format>`;
 	}
 }
