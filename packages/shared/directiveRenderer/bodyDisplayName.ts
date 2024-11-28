@@ -9,6 +9,8 @@ import {
 type value = Date | string | number;
 type getter<T> = (item: T) => value | Promise<value>;
 type T = any;
+
+// TODO: this should Either be deprecated or replaced with firestore.
 export default function bodyDisplayName<T extends {uid: string}>(valueGetter: getter<T> = item => item.uid): GridColumnBodyLitRenderer<T> {
 	return (item: T, _model: GridItemModel<T>, _column: GridColumn<T>): TemplateResult => {
 		const value = valueGetter(item);
