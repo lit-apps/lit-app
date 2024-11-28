@@ -2,6 +2,7 @@ import alignIcon from './class/alignIcon.js';
 import badge from './class/badge.js';
 import typography from './class/typography.js';
 import tooltip from './class/tooltip.js';
+import header from './class/header.js';
 import layoutGrid from './class/layout-grid.js';
 import { css, CSSResult } from 'lit';
 import { Layouts, Alignment, Factors } from './flex/index.js';
@@ -15,6 +16,7 @@ const styles: CSSResult[] = [
   Factors as unknown as CSSResult,
   Alignment as unknown  as CSSResult,
   tooltip,
+  header,
   
   css`
   
