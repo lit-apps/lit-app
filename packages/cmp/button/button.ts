@@ -6,8 +6,9 @@
 
 import { customElement, property } from 'lit/decorators.js';
 import { html, literal } from 'lit/static-html.js';
-import { LitElement, css } from 'lit';
+import { LitElement, css, nothing } from 'lit';
 import { when } from 'lit/directives/when.js';
+import { mixinDelegatesAria } from '@material/web/internal/aria/delegate.js';
 
 import ('@material/web/button/elevated-button.js');
 import ('@material/web/button/filled-button.js');
@@ -50,9 +51,15 @@ declare global {
  * A generic button to ease migration from MD2
  */
 @customElement('lapp-button')
-export class LappButton extends LitElement {
+export class LappButton extends mixinDelegatesAria(LitElement) {
 
   static override styles = [ style];
+
+  static override shadowRootOptions: ShadowRootInit = {
+    mode: 'open' as const,
+    delegatesFocus: true,
+  };
+
   /**
    * Whether or not the button is disabled.
    */
@@ -113,6 +120,7 @@ export class LappButton extends LitElement {
     return html`<${tagName}
 			.disabled=${this.disabled}
 			.href=${this.href}
+      aria-label="${this.ariaLabel || nothing}"
 			.target=${this.target}
 			.trailingIcon=${this.trailingIcon}
 			
