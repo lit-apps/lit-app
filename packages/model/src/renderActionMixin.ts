@@ -36,6 +36,7 @@ import type {
 } from "./types/actionTypes.js";
 import { RenderConfig } from "./types/entity.js";
 import { RenderInterface, StaticEntityActionI } from "./types/renderActionI.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
@@ -76,15 +77,18 @@ export default function renderMixin<A extends ActionsT>(
       const text = cfg?.text ?? false
       const outlined = cfg?.outlined ?? !text
       const onClick = clickHandler || this.onActionClick(actionName, host, data)
+      const $id = (config as RenderConfig)?.context === 'detail' ? (data as any).$id || host.docId || '' : undefined
       return html`<lapp-button 
+        focus-on-activate=${ifDefined($id)}
         class="${actionName} action"
         .icon=${action.icon || ''} 
         @click=${onClick}
         .disabled=${disabled}
         .outlined=${outlined}
+        .ariaLabel=${action.ariaLabel ? callFunction(action.ariaLabel, data) : null}
         .tonal=${tonal}
         .filled=${filled}>
-          ${action.label}
+          ${callFunction(action.label, data)}
         </lapp-button>`
     },
 
@@ -149,8 +153,10 @@ export default function renderMixin<A extends ActionsT>(
     // renderContent is called by renderEntityMixin - it is the entry point for rendering actions
     override renderContent(data: unknown, config: RenderConfig): TemplateResult  {
       if (this.canViewActions(data, config)) {
+        // when we are in a (grid) detail context, we do not want to render actions as sticky
+        const stickyClass = config.context === 'detail' ? '' : 'sticky'
         return html`
-					<div id="action" class="sticky layout horizontal center wrap">
+					<div id="action" class="${stickyClass} layout horizontal center wrap">
             ${this.renderEntityActions(data, config)}
           </div>
 				`
@@ -209,6 +215,7 @@ export default function renderMixin<A extends ActionsT>(
      */
 
     protected renderViewingActions(data: unknown, config: RenderConfig): TemplateResult {
+      // TODO: we need a way to add `focus-on-activate` here
       return html`
         ${this.renderAction('edit', data, config)}
       `

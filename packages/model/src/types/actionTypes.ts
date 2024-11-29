@@ -25,6 +25,7 @@ type FunctionOrValue<T, D> = T | ((this: HostElementI, data: D, entityStatus?: E
 export type FunctionOrPrimitiveT<T extends PrimitiveT, D> = FunctionOrValue<T, D>
 export type FunctionOrButtonConfigT<D> = FunctionOrValue<ButtonConfigT, D>
 type NumberOrFunctionT<D> = FunctionOrPrimitiveT<number, D>
+type StringOrFunctionT<D> = FunctionOrPrimitiveT<string, D>
 
 type ButtonConfigT = {
   disabled?: boolean
@@ -64,7 +65,8 @@ type BulkDialogT<D> = Omit<ConfigDialogT<D>, 'render'> & {
 };
 
 interface ActionBaseI<D = any> {
-  label: string
+  label: StringOrFunctionT<D>
+  ariaLabel?: StringOrFunctionT<D>
   icon?: string
 
   /**

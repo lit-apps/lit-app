@@ -17,6 +17,7 @@ export default class EntityHolder extends AbstractEntity {
 	 */
 	@property() variant: RenderConfig['variant'] = 'default'
 	@property() layout: RenderConfig['layout'] = 'horizontal'
+	@property() context: RenderConfig['context'] = 'default'
 	@property({type: Boolean}) isNew: boolean = false
 	@property({attribute: 'base-url'}) baseURL: string = ''
 
@@ -24,6 +25,7 @@ export default class EntityHolder extends AbstractEntity {
 	override get renderConfig(): RenderConfig {
 		return {
 			...super.renderConfig,			
+			context: this.context,
 			variant: this.variant,
 			layout: this.layout,
 			baseURL: this.baseURL, 
@@ -55,7 +57,7 @@ export default class EntityHolder extends AbstractEntity {
 		this.addEventListener(Edit.eventName, () => this.requestUpdate());
 		this.addEventListener(Write.eventName, () => this.requestUpdate());
 	}
-
+	
 	protected override renderEntity(entity: entityI, config?: RenderConfig) {
 		const isEmptyArray = Array.isArray(this.data) && this.data.length === 0
 		return html`
@@ -73,6 +75,14 @@ export default class EntityHolder extends AbstractEntity {
 			</slot>
 			<slot name="footer-${isEmptyArray ? 'no-data': 'data'}"></slot>
 		`;
+	}
+
+	// entity holder might be focused in grid details. We need a way to pass focus to the first input
+	override focus(): void {
+		const focus = this.renderRoot.querySelector('*[focus-on-activate]') as HTMLInputElement;
+      if (focus) {
+        focus.focus();
+      }
 	}
 
 

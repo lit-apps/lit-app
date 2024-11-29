@@ -80,7 +80,13 @@ export type RenderConfigOptional< O = OptionsT, T = any> = {
 	cardConfig?: { [K in keyof Partial<T>]: T[K] }
 	level?: number, // level to render the entity
 	heading?: string // heading to render
+	// TODO: variant is used as class or within class, we need to change this
 	variant?: 'card' | 'list' | 'default' 
+	/**
+	 * The context in which the entity is rendered, this is used to determine the layout of the entity
+	 * For instance, action buttons will not be fixed in a grid-detail context
+	 */
+	context?: 'default' | 'detail'
 	baseURL?: string // base url for the entity
 	//isNew?: boolean // true when the entity is new
 	layout?: 'horizontal' | 'vertical' | 'grid' // set the layout for card variant
