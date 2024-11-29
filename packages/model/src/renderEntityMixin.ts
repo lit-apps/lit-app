@@ -89,8 +89,8 @@ export default function renderMixin<
 >(
   superclass: Constructor<AbstractEntity & { open: Open }>
 ) {
-  class R extends superclass  {
-  // class R extends superclass implements RenderInterfaceImpl<D, C> {
+  class R extends superclass {
+    // class R extends superclass implements RenderInterfaceImpl<D, C> {
 
     showMetaData: boolean = false
     itemIdPath: string = '$id' // collectionGroup will need to use $path
@@ -112,11 +112,16 @@ export default function renderMixin<
         this.onActiveItemChanged(e);
       }
       return html`<vaadin-grid 
+        accessible-name="grid for ${this.entityName}"
         id="grid"
         class="flex entity grid ${this.entityName}"
         .itemIdPath=${this.itemIdPath}
         .items=${data}
-        ${gridRowDetailsRenderer((data: CollectionI<D>, model: any, grid: any) => this.renderGridDetail(data, config, model, grid))}
+        ${gridRowDetailsRenderer(
+        (data: CollectionI<D>,
+          model: any,
+          grid: any) => this.renderGridDetail(data, config, model, grid))
+        }
         @active-item-changed=${config?.gridConfig?.preventDetails ? null : onActiveItemChanged}
         @dblclick=${config?.gridConfig?.preventDblClick ? null : this.onGridDblClick.bind(this)}
         @selected-items-changed=${onSelected}
