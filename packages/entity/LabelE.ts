@@ -77,6 +77,7 @@ export default class Label extends
   EntityFact<LabelI, RenderConfig, typeof actions>({model, actions}) {
 
   static entityName = 'label'
+  static title = 'label'
   static icon = 'label';
 
   override showActions = true
