@@ -127,6 +127,7 @@ export default function renderMixin<
         @selected-items-changed=${onSelected}
         @size-changed=${onSizeChanged}>
         ${this.renderGridColumns(config)}
+        ${this.renderGridEmptyState(config)}
       </vaadin-grid>`
     }
 
@@ -176,7 +177,7 @@ export default function renderMixin<
 			</div>`
     }
 
-    renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]) {
+   renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]) {
       const model = this.model;
       // get the fields to render in table
       const fields = tableFields || getFieldsFromModel(model, config, (model) => model.table)
@@ -219,9 +220,6 @@ export default function renderMixin<
         return this.renderDataLoading(config)
       }
       if (Array.isArray(data)) {
-        if (data && data.length === 0 && (config?.variant !== 'list')) {
-          return this.renderEmptyArray(config);
-        }
         return this.renderArrayContent(data, config)
       }
       return this.renderContent(data, config)
@@ -254,9 +252,15 @@ export default function renderMixin<
 
     private renderArrayContent(data: Collection<D>, config: C): TemplateResult {
       if (config?.variant === 'card') {
+        if (data && data.length === 0) {
+          return this.renderEmptyArray(config);
+        }
         return this.renderCard(data, config)
       }
       if (config?.variant === 'list') {
+        if (data && data.length === 0) {
+          return this.renderEmptyArray(config);
+        }
         return this.renderList(data, config)
       }
       return this.renderGrid(data, config)
@@ -294,6 +298,10 @@ export default function renderMixin<
 
     renderEmptyArray(_config?: C) {
       return html``
+    }
+
+    renderGridEmptyState(config: C) {
+      return html`<div slot="empty-state">No ${config?.heading || this.entityName} found</div>`
     }
 
     renderTitle(_data: D, config: C) {
