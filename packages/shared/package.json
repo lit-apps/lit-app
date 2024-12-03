@@ -44,7 +44,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@vaadin/grid": "^24.5.4",
+    "@lit/context": "^1.1.2",
+    "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "lit": "^3.2.1"
   }
 }
