@@ -49,9 +49,9 @@
   },
   "pnpm": {
     "overrides": {
-      "firebase": "^10.14.1",
-      "lit": "^3.2.1",
-      "lit-html": "^3.2.1",
+      "firebase": "^11",
+      "lit": "^3",
+      "lit-html": "^3",
       "xstate": "link:../app-dependencies/xstate/packages/core",
       "@material/web": "link:../app-dependencies/material-web",
       "@a11y/form": "workspace:*",
