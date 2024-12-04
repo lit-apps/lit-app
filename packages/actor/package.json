@@ -13,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@lit-app/event": "*",
     "@lit-app/model": "*",
     "@lit-app/shared": "*",
     "@lit-app/state": "*",

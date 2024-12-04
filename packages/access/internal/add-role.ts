@@ -10,7 +10,7 @@ import { LitElement, css, html } from "lit";
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 // import { invite, machineStateServer } from '@lit-app/firebase-fsm'
-import { ToastEvent } from '@lit-app/event';
+import { ToastEvent } from '@lit-app/shared/event';
 import { ConsumeUserAccessMixin } from './context-user-access-mixin';
 import('@lit-app/cmp/user/search')
 import('@lit-app/cmp/user/name')

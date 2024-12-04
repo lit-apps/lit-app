@@ -25,7 +25,6 @@
     "@github/markdown-toolbar-element": "^2.2.3",
     "@json2csv/plainjs": "^7.0.6",
     "@lit-app/cmp": "link:",
-    "@lit-app/event": "link:../event",
     "@lit-app/firebase-fsm": "link:../../../app/firebase-fsm",
     "@lit-app/md-parser": "link:../../../packages/md-parser",
     "@lit-app/shared": "link:../shared",

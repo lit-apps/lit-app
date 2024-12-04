@@ -8,7 +8,7 @@ import {property, state} from 'lit/decorators.js';
 import {html, PropertyValues, render} from 'lit';
 import('@material/web/iconbutton/icon-button.js');
 import {Tab} from '@material/web/tabs/internal/tab.js';
-import {UICloseEvent} from '@lit-app/event';
+import {UICloseEvent} from '@lit-app/shared/event';
 type Constructor<T = {}> = new (...args: any[]) => T;
 export declare class ClosableMixinInterface {
 	// Define the interface for the mixin

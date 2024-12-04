@@ -1,7 +1,7 @@
 import { consume, ContextConsumer, ContextProvider, createContext } from '@lit/context';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { state, property } from 'lit/decorators.js';
-import DataHasChanged from '@lit-app/event/data-has-changed'
+import DataHasChanged from '@lit-app/shared/event/data-has-changed'
 
 export const dataContext = createContext<any>('data-context');
 

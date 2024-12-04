@@ -2,7 +2,7 @@
 import { Variant } from "@lit-app/cmp/field/field/internal/a11y-field-mixin";
 import { html, css, LitElement, nothing } from "lit";
 import { customElement, property, query } from 'lit/decorators.js';
-import ValueChangedEvent from '@lit-app/event/value-changed';
+import ValueChangedEvent from '@lit-app/shared/event/value-changed';
 import './continent';
 import './country';
 // import {

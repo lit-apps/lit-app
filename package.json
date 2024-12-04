@@ -58,7 +58,6 @@
       "@lit-app/access": "workspace:*",
       "@lit-app/actor": "workspace:*",
       "@lit-app/cmp": "workspace:*",
-      "@lit-app/event": "workspace:*",
       "@lit-app/location": "workspace:*",
       "@lit-app/model": "workspace:*",
       "@lit-app/plot": "workspace:*",

@@ -22,7 +22,6 @@
   "license": "ISC",
   "dependencies": {
     "@lit-app/cmp": "link:../cmp",
-    "@lit-app/event": "workspace:^",
     "@lit-app/model": "workspace:^",
     "@lit-app/shared": "workspace:^",
     "@lit-app/testing": "workspace:^",

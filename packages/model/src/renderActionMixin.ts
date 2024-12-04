@@ -16,7 +16,7 @@
 import "@lit-app/cmp/button/button.js";
 import type { LappButton } from "@lit-app/cmp/button/button.js";
 import "@lit-app/cmp/toolbar/toolbar.js";
-import { ToastEvent } from "@lit-app/event";
+import { ToastEvent } from "@lit-app/shared/event";
 import { callFunctionOrValue } from "@lit-app/shared/callFunctionOrValue.js";
 import '@material/web/iconbutton/filled-icon-button.js';
 import { html, TemplateResult } from "lit";

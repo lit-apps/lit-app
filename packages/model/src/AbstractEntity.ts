@@ -10,7 +10,7 @@ type Strings = {
 };
 
 
-import { ToastEvent } from '@lit-app/event';
+import { ToastEvent } from '@lit-app/shared/event';
 import { Access } from './types/dataI.js';
 import { ActionsT } from './types/actionTypes.js';
 import {

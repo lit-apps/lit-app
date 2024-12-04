@@ -4,7 +4,7 @@
 
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { PlayerI } from './types';
-import { ToastEvent } from '@lit-app/event';
+import { ToastEvent } from '@lit-app/shared/event';
 import { cancelSynth } from './speech-controller';
 
 

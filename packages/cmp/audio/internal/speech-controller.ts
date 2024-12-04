@@ -1,7 +1,7 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { PlayerI, SpeechConfigI } from './types';
 import hasTouchscreen from '@lit-app/shared/hasTouchscreen';
-import { ToastEvent } from '@lit-app/event';
+import { ToastEvent } from '@lit-app/shared/event';
 import { cancelAudio } from './audio-controller';
 
 // Note(CG): we need a different implementation for chrome and firefox as 

@@ -1,5 +1,5 @@
 import { html, css, LitElement } from "lit";
-import { ToastEvent } from '@lit-app/event';
+import { ToastEvent } from '@lit-app/shared/event';
 import { property, state, query } from 'lit/decorators.js';
 // import { RefreshToken } from '@lit-app/app-auth-event'
 import('@material/web/dialog/dialog.js')
