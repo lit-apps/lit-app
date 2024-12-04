@@ -12,7 +12,7 @@ import isSafari  from '@lit-app/shared/isSafari';
  */
 
 
-if (isSafari()) {
+if (isSafari) {
 
 	// @ts-expect-error - firstUpdated is a protected method
 	const firstUpdated = Button.prototype.firstUpdated;
