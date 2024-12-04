@@ -1,7 +1,6 @@
 import { html, css, LitElement } from "lit";
 import { ToastEvent } from '@lit-app/shared/event';
 import { property, state, query } from 'lit/decorators.js';
-// import { RefreshToken } from '@lit-app/app-auth-event'
 import('@material/web/dialog/dialog.js')
 import('@material/web/button/text-button.js')
 import('@material/web/checkbox/checkbox.js');
