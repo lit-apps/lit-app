@@ -94,12 +94,12 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 			this.isLoading = true;
 			try {
 				if (!this.accessRole) return;
-				const onActionClick = this.Entity.onActionClick(action, this, {
+				const actionHandler = this.Entity.actionHandler(action, this, {
 					uid: this.newUid,
 					role: this.accessRole as Role['name'],
 					language: this.languageRole
 				});
-				await onActionClick(e);
+				await actionHandler(e);
 				this.isLoading = false;
 				this.isEditing = false;
 				this.dispatchEvent(new ToastEvent(`Access request processed with success`));

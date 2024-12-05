@@ -81,11 +81,11 @@ export class SetRole extends ConsumeUserAccessMixin(LitElement) {
 
 		const setAccess = async (e: CustomEvent) => {
 			this.isLoading = true;
-			const onActionClick = this.Entity.onActionClick('setAccess', this, {
+			const actionHandler = this.Entity.actionHandler('setAccess', this, {
 				uid: this.newUid,
 				role: this.accessRole as Role['name']
 			});
-			await onActionClick(e);
+			await actionHandler(e);
 			this.isLoading = false;
 		}
 

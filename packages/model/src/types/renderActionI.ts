@@ -130,7 +130,7 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
    * @param data - Data associated with the action.
    * @returns A function that handles the click event and returns a promise.
    */
-  protected onActionClick(
+  actionHandler(
     actionName: ActionKeyT<A, unknown>,
     data: unknown
   ): (e: CustomEvent) => Promise<CustomEvent | void>;
@@ -213,7 +213,7 @@ export interface StaticEntityActionI<
    *
    * @throws {Error} If an error occurs during the execution of the action handler.
    */
-  onActionClick(
+  actionHandler(
     actionName: ActionKeyT<A, unknown>,
     host: HostElementI<unknown>,
     data: unknown,

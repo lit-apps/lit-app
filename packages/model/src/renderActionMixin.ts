@@ -76,7 +76,7 @@ export default function renderMixin<A extends ActionsT>(
       const tonal = cfg?.tonal ?? false
       const text = cfg?.text ?? false
       const outlined = cfg?.outlined ?? !text
-      const onClick = clickHandler || this.onActionClick(actionName, host, data)
+      const onClick = clickHandler || this.actionHandler(actionName, host, data)
       const $id = (config as RenderConfig)?.context === 'detail' ? (data as any).$id || host.docId || '' : undefined
       return html`<lapp-button 
         focus-on-activate=${ifDefined($id)}
@@ -92,7 +92,7 @@ export default function renderMixin<A extends ActionsT>(
         </lapp-button>`
     },
 
-    onActionClick(
+    actionHandler(
       actionName: ActionKeyT<A, unknown>,
       host: HostElementI,
       data: ActionDataT<unknown>,
@@ -292,7 +292,7 @@ export default function renderMixin<A extends ActionsT>(
       data: unknown,
       _config: RenderConfig): TemplateResult {
       const action = this.actions[actionName]
-      const onActionClick = this.onActionClick(actionName, data, true)
+      const actionHandler = this.actionHandler(actionName, data, true)
       const bulkConfig = action.bulk!
       
       // TODO: add tooltip once we have better tooltips (like vaadin, that do not slot action)
@@ -303,26 +303,26 @@ export default function renderMixin<A extends ActionsT>(
         aria-haspopup="true" 
         aria-label=${action.bulk?.tooltip || action.label || ''} 
         .disabled=${action.bulk?.disabled?.(this.host.selectedItems!) || false}
-        @click=${onActionClick}>
+        @click=${actionHandler}>
         <lapp-icon .icon=${bulkConfig.icon || action.icon!}></lapp-icon>
       </md-filled-icon-button>`
     }
 
 
     /**
-     * Handles the action click event by delegating to the static `onActionClick` method of the constructor.
+     * Handles the action click event by delegating to the static `actionHandler` method of the constructor.
      *
      * @template A - The type of the action.
      * @param actionName - The name of the action to be performed.
      * @param data - The data associated with the action.
      * @returns A function that handles the click event on an HTML element of type `LappButton`.
      */
-    protected onActionClick(
+    actionHandler(
       actionName: ActionKeyT<A, unknown>,
       data: unknown,
       isBulk: boolean = false
     ) {
-      return this.constructor.onActionClick(actionName, this.host, data, isBulk)
+      return this.constructor.actionHandler(actionName, this.host, data, isBulk)
     }
 
 

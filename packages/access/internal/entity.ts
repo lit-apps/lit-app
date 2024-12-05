@@ -183,11 +183,11 @@ export class EntityAccess extends
 			const onActionRevoke = async (e: CustomEvent) => {
 				// console.log('onActionRevoke', e);
 				e.preventDefault();
-				const onActionClick = this.Entity.onActionClick('removeAccess', this, {
+				const actionHandler = this.Entity.actionHandler('removeAccess', this, {
 					uid: item.uid,
 					role: it
 				});
-				await onActionClick(e);
+				await actionHandler(e);
 			}
 			const onClick = (e: CustomEvent) => {
 				e.preventDefault();
