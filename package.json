@@ -2,7 +2,7 @@
   "name": "lit-app",
   "version": "0.1.2",
   "description": "mono-repo of building components for lit-app",
-  "main": "index",
+  "main": "src/index",
   "scripts": {
     "test": "wireit",
     "init": "./init-app.sh",

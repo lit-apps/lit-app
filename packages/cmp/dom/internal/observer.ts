@@ -1,6 +1,5 @@
 import { MutationController } from '@lit-labs/observers/mutation-controller.js';
 import { LitElement } from "lit";
-// import { debounce } from '@preignition/preignition-util/src/debounce';
 
 /**
  * Listen to dom changes and dispatch content-changed event when content changes 

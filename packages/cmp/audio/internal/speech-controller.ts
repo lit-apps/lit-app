@@ -3,11 +3,11 @@ import { PlayerI, SpeechConfigI } from './types';
 import hasTouchscreen from '@lit-app/shared/hasTouchscreen';
 import { ToastEvent } from '@lit-app/shared/event';
 import { cancelAudio } from './audio-controller';
+import { wait } from '@lit-app/shared';
 
 // Note(CG): we need a different implementation for chrome and firefox as 
 // chrome stops after some time and FF do not support pause
 const isFF = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-const wait = (ms: number) => new Promise(res => setTimeout(res, ms));
 const touchscreen = hasTouchscreen();
 let synth = window.speechSynthesis;
 

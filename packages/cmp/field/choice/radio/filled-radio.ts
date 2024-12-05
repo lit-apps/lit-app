@@ -5,7 +5,7 @@ import { MdFilledTextField } from '@material/web/textfield/filled-text-field.js'
 import genericStyles from '../../generic/styles';
 import choiceStyles from '../styles';
 import sharedStyles from './internal/shared-styles';
-import { CSSResult } from 'lit'; ``
+import { CSSResult } from 'lit'; 
 declare global {
   interface HTMLElementTagNameMap {
     'lapp-filled-radio': LappFilledRadio;

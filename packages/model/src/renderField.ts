@@ -1,4 +1,5 @@
-import { throttle } from '@preignition/preignition-util/src/debounce';
+import { throttle } from '@lit-app/shared';
+
 import { get, set } from '@preignition/preignition-util/src/deep';
 import { TemplateResult, html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -54,7 +55,6 @@ type OComponentSlider = Omit<ModelComponentSlider, 'component'>;
 type OComponentUpload = Omit<ModelComponentUpload, 'component'>;
 type OComponentUploadImage = Omit<ModelComponentUploadImage, 'component'>;
 type OComponentMd = Omit<ModelComponentMd, 'component'>;
-
 
 // @ts-expect-error - not typed
 import('@preignition/firebase-upload/image-upload')
