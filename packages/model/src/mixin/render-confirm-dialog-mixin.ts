@@ -83,7 +83,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement & { selected
 						/** 
 						 * Redispatch the bulk event for each selected item
 						 */
-						this.selectedItems.forEach(item => {
+						this.selectedItems?.forEach(item => {
 							const newEvent = Reflect.construct(
 								event.constructor,
 								[event.detail, action, event.actionName]
@@ -146,7 +146,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement & { selected
 					@close=${onClose}>
 					<div slot="headline">${dialogConfig.heading}</div>
 						<form slot="content" method="dialog" id="form-confirm">
-							${dialogConfig.render.call(this, {data, selectedItems: this.selectedItems})}
+							${dialogConfig.render.call(this, {data, selectedItems: this.selectedItems!})}
 						<md-linear-progress 
 							style="margin-top: var(--space-medium);" 
 							.indeterminate=${!this._resolved}></md-linear-progress>

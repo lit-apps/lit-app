@@ -81,7 +81,7 @@ export default function abstractEntityFact<
   { model, actions }:
     { model: Model<D>, actions?: A }
 ) {
-
+  // type AA = typeof actions & ActionsT
   // if (!actions) {
   //   actions = defaultActions<D>() as unknown as A 
   // }
@@ -92,7 +92,7 @@ export default function abstractEntityFact<
     static declare entityName: string
     static declare icon: string
     static declare model: Model<any>
-    static declare actions: ActionsT
+    static declare actions: A
     static declare styles: CSSResult | CSSResult[];
   }
 
@@ -100,9 +100,9 @@ export default function abstractEntityFact<
     Constructor<AbstractEntity<D, A>> &
     Constructor<RenderI<D, C>> &
     Constructor<FieldI<D>> &
-    Constructor<ActionI<A >> &
+    Constructor<ActionI<A>> &
     Constructor<CreateI<D>> &
-    StaticEntityActionI<A > &
+    StaticEntityActionI<A> &
     StaticEntityField<D> &
     StaticEntityI<D, A>
 }
