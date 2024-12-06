@@ -1,9 +1,9 @@
-import  camelToDash  from "@lit-app/shared/camelToDash.js";
+import camelToDash from "@lit-app/shared/camelToDash.js";
 
 import { TemplateResult } from 'lit';
 import { html, LitElement, PropertyValues } from "lit";
 import { property, state } from 'lit/decorators.js';
-import {entityI, EntityI} from '../types';
+import { entityI, EntityI } from '../types';
 import { ConsumeAccessMixin } from '../mixin/context-access-mixin';
 import { ConsumeDataMixin } from '../mixin/context-data-mixin';
 import { ConsumeDocIdMixin } from '../mixin/context-doc-id-mixin';
@@ -11,6 +11,7 @@ import { ConsumeEntityMixin } from '../mixin/context-entity-mixin';
 import { ConsumeEntityStatusMixin } from '../mixin/context-entity-status-mixin';
 import { Strings } from '../types';
 import { RenderConfig, RenderConfigOptional } from '../types/entity';
+import { ConsumeAppIdMixin } from "../mixin/context-app-id-mixin.js";
 
 /**
  * This event is fired to trigger the main application hoist an element
@@ -30,13 +31,14 @@ export class entityEvent extends CustomEvent<entityI> {
 export default abstract class AbstractEntityElement extends
 	ConsumeEntityMixin(
 		ConsumeAccessMixin(
-			ConsumeDataMixin()(
-				ConsumeDocIdMixin(
-					ConsumeEntityStatusMixin(LitElement))))) {
+			ConsumeAppIdMixin(
+				ConsumeDataMixin()(
+					ConsumeDocIdMixin(
+						ConsumeEntityStatusMixin(LitElement)))))) {
 
 	// setLocale must be set to handle translations
 	declare setLocale: (entityName: string, locale: Strings) => void;
-  
+
 	@state() entity!: entityI;
 
 	/**
@@ -61,7 +63,7 @@ export default abstract class AbstractEntityElement extends
 	 */
 	@property({ type: Number }) level: number = 1;
 
-  @property({ attribute: false }) entityRenderOptions!: RenderConfigOptional;
+	@property({ attribute: false }) entityRenderOptions!: RenderConfigOptional;
 
 	/**
 	 * The render mode for the entity
@@ -90,7 +92,7 @@ export default abstract class AbstractEntityElement extends
 
 	protected override willUpdate(props: PropertyValues<this>) {
 		if (props.has('Entity') || props.has('useEntity')) {
-			this.setEntity(this.useEntity || this.Entity )
+			this.setEntity(this.useEntity || this.Entity)
 		}
 		if (props.has('realTime') && this.entity) {
 			this.entity.realTime = this.realTime
@@ -101,24 +103,24 @@ export default abstract class AbstractEntityElement extends
 		// }
 		super.willUpdate(props);
 	}
-		/**
-	 * @returns the form element for the entity (either renderForm or renderFormNew)
+	/**
+ * @returns the form element for the entity (either renderForm or renderFormNew)
+ */
+	get entityForm(): HTMLFormElement | null {
+		return this.renderRoot?.querySelector('#entityForm');
+	}
+
+	/**
+	 * whether the form containing the entity data-entry (either renderForm or renderFormNew)
+	 * is valid, without reporting the validity of the form elements
+	 * @returns boolean
 	 */
-		get entityForm(): HTMLFormElement | null{
-			return this.renderRoot?.querySelector('#entityForm');
-		}
-	
-		/**
-		 * whether the form containing the entity data-entry (either renderForm or renderFormNew)
-		 * is valid, without reporting the validity of the form elements
-		 * @returns boolean
-		 */
-		isFormValid(): boolean {
-			return [...(this.entityForm?.elements || [])].every(
-				(el) => (el as HTMLFormElement).validity?.valid !== false
-			);
-		}
-		
+	isFormValid(): boolean {
+		return [...(this.entityForm?.elements || [])].every(
+			(el) => (el as HTMLFormElement).validity?.valid !== false
+		);
+	}
+
 	protected setEntity(E: EntityI) {
 		this.entity = new E(this, this.realTime)
 
