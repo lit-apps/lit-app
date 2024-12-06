@@ -37,6 +37,7 @@ import type {
 import { RenderConfig } from "./types/entity.js";
 import { RenderInterface, StaticEntityActionI } from "./types/renderActionI.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { RecursivePartial } from "@lit-app/shared/types.js";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
@@ -329,7 +330,7 @@ export default function renderMixin<A extends ActionsT>(
     create(data: unknown) {
       const event = (this.actions.create as ActionEventI<unknown>)
         .getEvent(this.entityName, {
-          data: this.processCreateData(data as Partial<DataI>) as CollectionI<DataI>
+          data: this.processCreateData(data as RecursivePartial<DataI>) as CollectionI<DataI>
         }, this.host)
       this.host.dispatchEvent(event)
       return event

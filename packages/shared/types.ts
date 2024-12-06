@@ -91,5 +91,15 @@ export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
  */
 export type DistributeFunctionParamT<T, R> = T extends any ?( (item: T) => R ): never;
 
+/**
+ * Makes all properties in a type `T` recursively optional.
+ *
+ * @template T - The type to be made recursively optional.
+ */
+export type RecursivePartial<T> = {
+  [P in keyof T]?: T[P] extends object ? RecursivePartial<T[P]> : T[P] ;
+};
+
+
 // type F = DistributeFunctionParamT<string | string[] | number, boolean>;
 // const fn: F = (item: number) => item === 'a';

@@ -2,8 +2,10 @@ import '@vaadin/grid/theme/material/vaadin-grid-column.js';
 import '@vaadin/grid/theme/material/vaadin-grid-sort-column.js';
 import '@vaadin/grid/theme/material/vaadin-grid.js';
 import AbstractEntity from './AbstractEntity';
-import type { RenderInterface } from './types/renderEntityCreateI';
+import type { RenderInterface, StaticRenderInterface } from './types/renderEntityCreateI';
 import { DataI } from './types/dataI';
+import { HostElementI } from './types/actionTypes.js';
+import { PartialBy, RecursivePartial } from '@lit-app/shared/types.js';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 export {
@@ -18,8 +20,47 @@ export {
 export default function renderMixin<D extends DataI>(
 	superclass: Constructor<AbstractEntity<D>>
 ) {
+	const staticApply: {
+		entityName?: string,
+	} & StaticRenderInterface<D> = {
+
+		processCreateData( host: HostElementI<D>, data: RecursivePartial<D> = {}): Partial<D> {
+			return {
+				...data,
+				metaData: this.processCreateMetaData(host, data.metaData ),
+				ref: this.processCreateRef(host, data.ref)
+			} as Partial<D>;
+		},
+
+		processCreateMetaData( host: HostElementI<D>, metaData: Partial<D["metaData"]> = {})  {
+			// if (typeof metaData !== 'object' || metaData === null) {
+			// 	throw new Error('metaData must be an object');
+			// }
+			return {
+				type: this.entityName,
+				deleted: false,
+				access: {
+					app: host.appID || null,
+					status: 'private'
+				},
+				...metaData,
+			}
+		},
+
+		processCreateRef( host: HostElementI<D>, ref: Partial<D["ref"]> = {}) {
+			return {
+				app: host.appID || null,
+				...ref,
+			}
+		}
+
+	}
+
 	class R extends superclass {
 
+		// @ts-expect-error - we are cheating
+		declare ['constructor']: typeof staticApply
+		
 		/** 
 		 * returns data to be stored in the database when creating a new entity
 		 * @param userID - the user owning the entity - it can be a different user than the one logged in
@@ -29,35 +70,18 @@ export default function renderMixin<D extends DataI>(
 		 */
 
 		processCreateData(data: Partial<D> = {}) {
-			return {
-				...data,
-				metaData: this.processCreateMetaData(data.metaData),
-				ref: this.processCreateRef(data.ref)
-			}
+			return this.constructor.processCreateData(this.host, data);
 		}
 
-		processCreateMetaData(metaData: Partial<D["metaData"]> = {}) {
-			// if (typeof metaData !== 'object' || metaData === null) {
-			// 	throw new Error('metaData must be an object');
-			// }
-			return {
-				type: this.entityName,
-				deleted: false,
-				access: {
-					app: this.host.appID || null,
-					status: 'private'
-				},
-				...metaData,
-			}
+		private processCreateMetaData(metaData: Partial<D["metaData"]> = {}) {
+			return this.constructor.processCreateMetaData(this.host, metaData);
 		}
 
-		processCreateRef(ref: Partial<D["ref"]> = {}) {
-			return {
-				app: this.host.appID || null,
-				...ref,
-			}
+		private processCreateRef(ref: Partial<D["ref"]> = {}) {
+			return this.constructor.processCreateRef(this.host, ref);
 		}
 
 	};
-	return R as unknown as Constructor<RenderInterface<D>> & typeof superclass;
+	Object.assign(R, staticApply);
+	return R as unknown as Constructor<RenderInterface<D>> & typeof superclass & StaticRenderInterface<Partial<D>>;
 }

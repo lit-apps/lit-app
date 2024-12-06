@@ -8,7 +8,8 @@ import { EntityAction } from "../events.js";
 export interface HostElementI<D = any> extends LitElement {
   entityStatus?: EntityStatus
   consumingMode?: RenderConfig['consumingMode']
-  docId?: string
+  docId?: string,
+  appID?: string,
 }
 
 
