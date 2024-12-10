@@ -33,7 +33,8 @@ import('../text-field')
 type MdActionT = {
 	format: string,
 	newLine?: boolean,
-	defaultValue?: string,
+	$1?: string,
+	$2?: string,
 	// when true, the action is only available in pure mode
 	pure?: boolean
 };
@@ -71,20 +72,24 @@ const mdActions = {
 	bold: {
 		pure: true,
 		format: '**$1**',
+		$1: 'bold',
 	},
 	italic: {
 		pure: true,
 		format: '_$1_',
+		$1: 'italic',
 	},
 	quote: {
 		pure: true,
 		format: '> $1',
 		newLine: true,
+		$1: 'quote text',
 	},
 	link: {
 		pure: true,
 		format: '[$2]($1)',
-		defaultValue: 'URL',
+		$1: 'URL',
+		$2: 'Link text'
 	},
 	listBulleted: {
 		pure: true,
@@ -99,18 +104,20 @@ const mdActions = {
 	listCheck: {
 		pure: true,
 		format: '- [ ] $1',
+		$1: 'task 1',
 		newLine: true,
 	},
 	contentVideo: {
 		format: '<lapp-youtube videoid="$1"></lapp-youtube>',
-		defaultValue: 'youtubeVideoId',
+		$1: 'youtubeVideoId',
 	},
 	contentIcon: {
 		format: '<lapp-icon no-fill>add_reaction</lapp-icon>',
 	},
 	contentTooltip: {
-		format: '<pwi-tooltip message="tooltip text">$1</pwi-tooltip>',
-		defaultValue: 'content',
+		format: '<pwi-tooltip message="$2">$1</pwi-tooltip>',
+		$1: 'label',
+		$2: 'tooltip message',
 	},
 	contentTable: {
 		pure: true,
@@ -127,21 +134,21 @@ const mdActions = {
   Something small enough to escape casual notice.
 </details>
 `,
-		defaultValue: 'Details',
+		$1: 'Details',
 	},
 	contentInfoHint: {
 		format: `<gitbook-hint type="info">$1</gitbook-hint>`,
-		defaultValue: 'Info hint',
+		$1: 'Info hint',
 		newLine: true,
 	},
 	contentSuccessHint: {
 		format: `<gitbook-hint type="success">$1</gitbook-hint>`,
-		defaultValue: 'Success hint',
+		$1: 'Success hint',
 		newLine: true,
 	},
 	contentWarningHint: {
 		format: `<gitbook-hint type="warning">$1</gitbook-hint>`,
-		defaultValue: 'Warning hint',
+		$1: 'Warning hint',
 		newLine: true,
 	},
 	layout2Col: {
@@ -154,7 +161,7 @@ Second Column
 </div>
 </div>`,
 		newLine: true,
-		defaultValue: 'First column',
+		$1: 'First Column',
 	},
 	layout3Col: {
 		format: `<div class="layout flex horizontal wrap">
@@ -169,7 +176,7 @@ Third Column
 </div>
 </div>`,
 		newLine: true,
-		defaultValue: 'First column',
+		$1: 'First Column',
 	},
 	layout2colFixed: {
 		format: `<div class="layout flex horizontal wrap">
@@ -181,109 +188,111 @@ Second Column
 </div>
 </div>`,
 		newLine: true,
-		defaultValue: 'First column',
+		$1: 'First Column',
 	},
 
 	layoutSpacingMedium: {
 		format: `<div style="padding: var(--space-medium, 16px);">$1</div>`,
 		newLine: true,
+		$1: 'Content',
 	},
 	layoutSpacingLarge: {
 		format: `<div style="padding: var(--space-xxx-large, 48px);">$1</div>`,
 		newLine: true,
+		$1: 'Content',
 	},
 	colorPrimary: {
 		format: `<div style="background-color: var(--color-primary); color: var(--color-on-primary);">$1</div>`,
-		defaultValue: 'Content',
+		$1: 'Content',
 		newLine: true,
 	},
 	colorSecondary: {
 		format: `<div style="background-color: var(--color-secondary); color: var(--color-on-secondary);">$1</div>`,
-		defaultValue: 'Content',
+		$1: 'Content',
 		newLine: true,
 	},
 	colorTertiary: {
 		format: `<div style="background-color: var(--color-tertiary); color: var(--color-on-tertiary);">$1</div>`,
-		defaultValue: 'Content',
+		$1: 'Content',
 		newLine: true,
 	},
 	colorSuccess: {
 		format: `<div style="background-color: var(--color-success); color: var(--color-on-success);">$1</div>`,
-		defaultValue: 'Content',
+		$1: 'Success',
 		newLine: true,
 	},
-	colorError: {
+	colorWarning: {
 		format: `<div style="background-color: var(--color-warning); color: var(--color-on-warning);">$1</div>`,
-		defaultValue: 'Content',
+		$1: 'Warning',
 		newLine: true,
 	},
 	colorContainerPrimary: {
 		format: `<div style="background-color: var(--color-primary-container); color: var(--color-on-primary-container);">$1</div>`,
-		defaultValue: 'Content',
+		$1: 'Content',
 		newLine: true,
 	},
 	colorContainerSecondary: {
 		format: `<div style="background-color: var(--color-secondary-container); color: var(--color-on-secondary-container);">$1</div>`,
-		defaultValue: 'Content',
+		$1: 'Content',
 		newLine: true,
 	},
 	colorContainerTertiary: {
 		format: `<div style="background-color: var(--color-tertiary-container); color: var(--color-on-tertiary-container);">$1</div>`,
-		defaultValue: 'Content',
+		$1: 'Content',
 		newLine: true,
 	},
 	colorContainerSuccess: {
 		format: `<div style="background-color: var(--color-success-container); color: var(--color-on-success-container);">$1</div>`,
-		defaultValue: 'Content',
+		$1: 'Success',
 		newLine: true,
 	},
 	colorContainerWarning: {
 		format: `<div style="background-color: var(--color-warning-container); color: var(--color-on-warning-container);">$1</div>`,
-		defaultValue: 'Content',
+		$1: 'Warning',
 		newLine: true,
 	},
 	a11yMenu: {
-		format: `<lapp-a11y-menu></lapp-a11y-menu>`,
+		format: `<a11y-menu context="survey"></a11y-menu>`,
 		newLine: true,
 	},
 	a11yShowEr: {
-		format: `<div show="show-when-easyread">$1</div>`,
-		defaultValue: 'Content to Show When Easy read is activated',
+		format: `<div class="show-when-easyread">$1</div>`,
+		$1: 'Content to Show When Easy read is activated',
 		newLine: true,
 	},
 	a11yHideEr: {
-		format: `<div show="hide-when-easyread">$1</div>`,
-		defaultValue: 'Content to Hide When Easy read is activated',
+		format: `<div class="hide-when-easyread">$1</div>`,
+		$1: 'Content to Hide When Easy read is activated',
 		newLine: true,
 	},
 	a11yShowSl: {
-		format: `<div show="show-when-signlanguage">$1</div>`,
-		defaultValue: 'Content to Show When Sign Language is activated',
+		format: `<div class="show-when-signlanguage">$1</div>`,
+		$1: 'Content to Show When Sign Language is activated',
 		newLine: true,
 	},
 	a11yHideSl: {
-		format: `<div show="hide-when-signlanguage">$1</div>`,
-		defaultValue: 'Content to Hide When Sign Language is activated',
+		format: `<div class="hide-when-signlanguage">$1</div>`,
+		$1: 'Content to Hide When Sign Language is activated',
 		newLine: true,
 	},
 	a11yShowReadaloud: {
-		format: `<div show="show-when-readaloud">$1</div>`,
-		defaultValue: 'Content to Show When Read Aloud is activated',
+		format: `<div class="show-when-readaloud">$1</div>`,
+		$1: 'Content to Show When Read Aloud is activated',
 		newLine: true,
 	},
 	a11yHideReadaloud: {
-		format: `<div show="hide-when-readaloud">$1</div>`,
-		defaultValue: 'Content to Hide When Read Aloud is activated',
+		format: `<div class="hide-when-readaloud">$1</div>`,
+		$1: 'Content to Hide When Read Aloud is activated',
 		newLine: true,
 	},
 	a11yShowVoiceRecording: {
-		format: `<div show="show-when-voicerecording">$1</div>`,
-		defaultValue: 'Content to Show When Voice Recording is activated',
+		format: `<div class="show-when-voicerecording">$1</div>`,
+		$1: 'Content to Show When Voice Recording is activated',
 		newLine: true,
 	},
 	a11yHideVoiceRecording: {
-		format: `<div show="hide-when-voicerecording">$1</div>`,
-		defaultValue: 'Content to hide when Voice Recording is activated',
+		format: `<div class="hide-when-voicerecording">$1</div>`,
+		$1: 'Content to hide when Voice Recording is activated',
 		newLine: true,
 	},
 
@@ -748,7 +757,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 			<md-menu-item slot="menu-color" data-toolbar="colorSuccess">
 				${colorTpl.success}
 			</md-menu-item>
-			<md-menu-item slot="menu-color" data-toolbar="colorError">
+			<md-menu-item slot="menu-color" data-toolbar="colorWarning">
 				${colorTpl.warning}
 			</md-menu-item>
 			${this.showAccessibilityMenu ? html`
@@ -968,8 +977,8 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	};
 
 	private handleAction(action: MdActionT) {
-		const { format, newLine, defaultValue } = action;
-		this.insertFormatAtCaret(format, newLine, defaultValue);
+		const { format, newLine, $1, $2 } = action;
+		this.insertFormatAtCaret(format, newLine, $1, $2);
 		return;
 	}
 
@@ -981,7 +990,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 		this.inputOrTextarea?.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
 	}
 
-	private insertFormatAtCaret(format: string, newLine?: boolean, defaultText?: string) {
+	private insertFormatAtCaret(format: string, newLine?: boolean, defaultText?: string, defaultText2?: string) {
 		let { selectionStart, selectionEnd } = this.inputOrTextarea!;
 		const { value } = this.inputOrTextarea!;
 		if (!selectionStart) {
@@ -1014,7 +1023,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 		this._input.value = front + newText + back;
 		this._input.setSelectionRange(selectionStart, selectionStart + newText.length);
 		if (format.includes('$2')) {
-			const newTextWithoutPlaceholder = newText.replace('$2', '');
+			const newTextWithoutPlaceholder = newText.replace('$2', defaultText2 ||'');
 			this._input.value = front + newTextWithoutPlaceholder + back;
 			const caretPos = front.length + newText.indexOf('$2');
 			this._input.setSelectionRange(caretPos, caretPos);
