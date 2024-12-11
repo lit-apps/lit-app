@@ -21,7 +21,6 @@ export default class EntityHolder extends AbstractEntity {
 	@property({type: Boolean}) isNew: boolean = false
 	@property({attribute: 'base-url'}) baseURL: string = ''
 
-
 	override get renderConfig(): RenderConfig {
 		return {
 			...super.renderConfig,			
@@ -29,7 +28,6 @@ export default class EntityHolder extends AbstractEntity {
 			variant: this.variant,
 			layout: this.layout,
 			baseURL: this.baseURL, 
-			
 		}
 	}
 
@@ -84,6 +82,4 @@ export default class EntityHolder extends AbstractEntity {
         focus.focus();
       }
 	}
-
-
 }

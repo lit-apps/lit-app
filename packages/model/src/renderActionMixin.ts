@@ -108,8 +108,8 @@ export default function renderMixin<A extends ActionsT>(
         try {
           if (action.kind === 'simple') {
             return await action.handler.call(host, data)
-          } else if (action.kind === 'event' || action.kind === 'entity') {
-            const event = action.kind === 'event'
+          } else if (action.kind === 'event' || action.kind === 'entity' || action.kind === 'mixin') {
+            const event =( action.kind === 'event' || action.kind === 'mixin')
               ? await action.getEvent(this.entityName!, { data }, host, isBulk)
               : getEntityActionEvent(actionName as string, action)(
                 this.entityName!, { data }, host, isBulk

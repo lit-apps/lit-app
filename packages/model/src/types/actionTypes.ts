@@ -163,7 +163,7 @@ export interface ActionEntityI<D = any> extends ActionBaseI<D>, ActionConfigT<D,
 
 export interface ActionMixinI<D = any> extends ActionBaseI<D> {
   kind: 'mixin'
-  GetEventT: GetEventT<D>
+  getEvent: GetEventT<D>
 }
 
 /**
