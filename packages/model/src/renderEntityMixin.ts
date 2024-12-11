@@ -135,7 +135,7 @@ export default function renderMixin<
       const context = (e.currentTarget as Grid).getEventContext(e);
       // by default, open the item
       if (context.item) {
-        this.open(this.entityName, context.item.$id)
+        this.open(context.item.$id,this.entityName)
       }
     }
 
