@@ -35,8 +35,10 @@ export default class lappLocationCountry extends assetTranslate(Base, locale as 
 
     // if continent is set, filter countries by continent
     if (this.continent) {
-      items = countryContinent.filter((item: any) => item[1] === this.continent);
+      items = countryContinent
+        .filter((item: any) => item[1] === this.continent && (!this.filter || this.filter(item[0])))
     }
+
     const value = this.value;
 
     return html`${items.map((item: any) => html`

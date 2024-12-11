@@ -1,7 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-   "resolveJsonModule": true
+   "resolveJsonModule": true,
+   "paths": {
+    "lit": [
+      "./node_modules/lit"
+    ]
+  }
   },
   "include": ["./**/*.ts", "*.ts"],
   "exclude": []

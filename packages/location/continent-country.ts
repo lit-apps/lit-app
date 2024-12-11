@@ -46,6 +46,7 @@ export default class lappLocationContinentCountry extends LitElement {
   @property({attribute: 'continent-supporting-text'}) continentSupportingText!: string;
   @property({attribute: 'country-supporting-text'}) countrySupportingText!: string;
   @property({attribute: false}) continentFilter!: FilterT;
+  @property({attribute: false}) countryFilter!: FilterT;
 
   @property({ type: Boolean }) required: boolean = false;
   @property({ type: Boolean }) disabled: boolean = false;
@@ -88,6 +89,7 @@ export default class lappLocationContinentCountry extends LitElement {
       ${(this.continent || this.showCountryOnEmptyContinent) && !this.hideCountry? html`
         <lapp-location-country 
           class="field" 
+          .filter=${this.countryFilter}
           .label=${this.countryLabel}
           .supportingText=${this.countrySupportingText}
           .showFlag=${this.showFlag} 
