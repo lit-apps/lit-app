@@ -100,6 +100,8 @@ export type RecursivePartial<T> = {
   [P in keyof T]?: T[P] extends object ? RecursivePartial<T[P]> : T[P] ;
 };
 
+export type ProtoT<T, P> = T & { __proto__: P };
+export type ProtoOfT<T extends { __proto__: any }> = T['__proto__'] extends infer P ? P : never;
 
 // type F = DistributeFunctionParamT<string | string[] | number, boolean>;
 // const fn: F = (item: number) => item === 'a';

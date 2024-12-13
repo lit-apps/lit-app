@@ -34,17 +34,17 @@ export declare class AdvancedModeMixinInterface {
   advancedMode: boolean
 }
 
-export declare class ContextConsumeAdvancedModeMixinInterface extends AdvancedModeMixinInterface {
+export declare class ConsumeAdvancedModeMixinInterface extends AdvancedModeMixinInterface {
   setAdvancedMode: (value: boolean) => void
 }
 
 /**
- * ContextConsumeAdvancedModeMixin a mixin to add advanced mode to a component 
+ * ConsumeAdvancedModeMixin a mixin to add advanced mode to a component 
  */
-export const ContextConsumeAdvancedModeMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const ConsumeAdvancedModeMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
 
-  class ContextConsumeAdvancedModeMixinClass extends superClass {
+  class ConsumeAdvancedModeMixinClass extends superClass {
 
     @consume({ context: advancedModeContext, subscribe: true })
     @property() advancedMode!: boolean;
@@ -54,17 +54,17 @@ export const ContextConsumeAdvancedModeMixin = <T extends Constructor<LitElement
     }
 
   };
-  return ContextConsumeAdvancedModeMixinClass as unknown as Constructor<ContextConsumeAdvancedModeMixinInterface> & T;
+  return ConsumeAdvancedModeMixinClass as unknown as Constructor<ConsumeAdvancedModeMixinInterface> & T;
 }
 
 
 /**
- * ContextProvideAdvancedModeMixin a mixin to provide advanced mode context
+ * ProvideAdvancedModeMixin a mixin to provide advanced mode context
  */
-export const ContextProvideAdvancedModeMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const ProvideAdvancedModeMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
 
-  class ContextProvideAdvancedModeMixinClass extends superClass {
+  class ProvideAdvancedModeMixinClass extends superClass {
 
     @provide({ context: advancedModeContext })
     @property() advancedMode: boolean = false
@@ -77,6 +77,6 @@ export const ContextProvideAdvancedModeMixin = <T extends Constructor<LitElement
     }
 
   };
-  return ContextProvideAdvancedModeMixinClass as unknown as Constructor<AdvancedModeMixinInterface> & T;
+  return ProvideAdvancedModeMixinClass as unknown as Constructor<AdvancedModeMixinInterface> & T;
 }
 

@@ -19,7 +19,7 @@
 import { html, css, LitElement } from "lit";
 import { customElement, property } from 'lit/decorators.js';
 import { MdSwitch } from '@material/web/switch/switch'
-import { AdvancedModeEvent, ContextConsumeAdvancedModeMixin } from '@lit-app/shared/context/advanced-mode-mixin.js';
+import { AdvancedModeEvent, ConsumeAdvancedModeMixin } from '@lit-app/shared/context/advanced-mode-mixin.js';
 import('@material/web/switch/switch.js')
 import('@material/web/elevation/elevation.js')
 import isNarrowController from '@lit-app/shared/isNarrowController.js'
@@ -29,7 +29,7 @@ import isNarrowController from '@lit-app/shared/isNarrowController.js'
  * 
  */
 @customElement('lapp-advanced-switch')
-export default class AdvancedModeSwitch extends ContextConsumeAdvancedModeMixin(LitElement) {
+export default class AdvancedModeSwitch extends ConsumeAdvancedModeMixin(LitElement) {
   private isNarrow = new isNarrowController(this);
 
   static override styles = css`
