@@ -1,6 +1,8 @@
-import { consume, createContext, provide } from '@lit/context';
+import { createContext } from '@lit/context';
 import { LitElement, PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js'
+import { MixinBase, MixinReturn } from '../types.js';
+import { ContextMixinFactory } from './context-mixin-factory.js';
+
 
 /**
  * This event is fired to inform advanced-mode value has changed
@@ -27,12 +29,16 @@ declare global {
     [AdvancedModeEvent.eventName]: AdvancedModeEvent;
   }
 }
-export const advancedModeContext = createContext<boolean>('advanced-mode-context');
-
-type Constructor<T = {}> = new (...args: any[]) => T;
 export declare class AdvancedModeMixinInterface {
   advancedMode: boolean
 }
+export const advancedModeContext = createContext<boolean>('advanced-mode-context');
+
+const {
+  ConsumeMixin,
+  ProvideMixin
+} = ContextMixinFactory<AdvancedModeMixinInterface>(advancedModeContext, 'advancedMode', false);
+
 
 export declare class ConsumeAdvancedModeMixinInterface extends AdvancedModeMixinInterface {
   setAdvancedMode: (value: boolean) => void
@@ -41,33 +47,28 @@ export declare class ConsumeAdvancedModeMixinInterface extends AdvancedModeMixin
 /**
  * ConsumeAdvancedModeMixin a mixin to add advanced mode to a component 
  */
-export const ConsumeAdvancedModeMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const ConsumeAdvancedModeMixin = <T extends MixinBase<LitElement>>(
+  superClass: T
+): MixinReturn<T, ConsumeAdvancedModeMixinInterface> => {
 
-
-  class ConsumeAdvancedModeMixinClass extends superClass {
-
-    @consume({ context: advancedModeContext, subscribe: true })
-    @property() advancedMode!: boolean;
+  abstract class ConsumeAdvancedModeMixinClass extends ConsumeMixin(superClass) {
 
     setAdvancedMode(value: boolean) {
       this.dispatchEvent(new AdvancedModeEvent(value));
     }
 
   };
-  return ConsumeAdvancedModeMixinClass as unknown as Constructor<ConsumeAdvancedModeMixinInterface> & T;
+  return ConsumeAdvancedModeMixinClass;
 }
-
 
 /**
  * ProvideAdvancedModeMixin a mixin to provide advanced mode context
  */
-export const ProvideAdvancedModeMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const ProvideAdvancedModeMixin = <T extends MixinBase<LitElement>>(
+  superClass: T
+): MixinReturn<T, AdvancedModeMixinInterface> => {
 
-
-  class ProvideAdvancedModeMixinClass extends superClass {
-
-    @provide({ context: advancedModeContext })
-    @property() advancedMode: boolean = false
+  abstract class ProvideAdvancedModeMixinClass extends ProvideMixin(superClass) {
 
     override firstUpdated(props: PropertyValues<this>) {
       super.firstUpdated(props);
@@ -77,6 +78,6 @@ export const ProvideAdvancedModeMixin = <T extends Constructor<LitElement>>(supe
     }
 
   };
-  return ProvideAdvancedModeMixinClass as unknown as Constructor<AdvancedModeMixinInterface> & T;
+  return ProvideAdvancedModeMixinClass;
 }
 

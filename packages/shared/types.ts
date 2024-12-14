@@ -89,7 +89,7 @@ export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
  * @template T - The type to be distributed.
  * @template R - The return type of the function.
  */
-export type DistributeFunctionParamT<T, R> = T extends any ?( (item: T) => R ): never;
+export type DistributeFunctionParamT<T, R> = T extends any ? ((item: T) => R) : never;
 
 /**
  * Makes all properties in a type `T` recursively optional.
@@ -97,11 +97,14 @@ export type DistributeFunctionParamT<T, R> = T extends any ?( (item: T) => R ): 
  * @template T - The type to be made recursively optional.
  */
 export type RecursivePartial<T> = {
-  [P in keyof T]?: T[P] extends object ? RecursivePartial<T[P]> : T[P] ;
+  [P in keyof T]?: T[P] extends object ? RecursivePartial<T[P]> : T[P];
 };
 
 export type ProtoT<T, P> = T & { __proto__: P };
 export type ProtoOfT<T extends { __proto__: any }> = T['__proto__'] extends infer P ? P : never;
+
+
+export type { MixinBase, MixinReturn } from './mixin/types.js';
 
 // type F = DistributeFunctionParamT<string | string[] | number, boolean>;
 // const fn: F = (item: number) => item === 'a';
