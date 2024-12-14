@@ -43,7 +43,6 @@ export  {
 	ConsumeAppIdMixin, 
 	ProvideAppIdMixin, 
 	appIdContext,
-	type ContextAppIdMixinInterface 
 } from './src/mixin/context-app-id-mixin';
 
 export { entityCreateDialogEvent } from './src/cmp/entity-create-dialog';

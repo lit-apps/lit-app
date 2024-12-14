@@ -38,7 +38,6 @@ export { isCollection } from './types/dataI';
 export * from './types/entityAction';
 export * from './types/entityResource';
 export * from './types/getAccess';
-export * from './types/mixin';
 export * from './types/resource';
 export {
 	ColumnsConfig, EntityAccess, EntityElement, EntityElementList, EntityStatus, GridConfig, Lookup, Model, RenderConfig

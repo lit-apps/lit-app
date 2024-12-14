@@ -2,10 +2,10 @@ import { consume, ContextConsumer, ContextProvider, createContext } from '@lit/c
 import { PropertyValues, ReactiveElement } from 'lit';
 import { state, property } from 'lit/decorators.js';
 import DataHasChanged from '@lit-app/shared/event/data-has-changed'
+import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 
 export const dataContext = createContext<any>('data-context');
 
-type Constructor<T = {}> = abstract new (...args: any[]) => T;
 
 /**
  * ConsumeDataMixin a mixin that consumes data context
@@ -32,7 +32,7 @@ export declare class DataMixinConsumeInterface<D = any> extends DataMixinInterfa
  * @returns A class that extends the provided superclass with data consumption capabilities.
  * 
  * @property {D} data - The data consumed from the context.
- * @property {boolean} preventConsume - A flag to prevent data consumption.
+ * @property {boolean} preventConsume - A flag to prevent data consumption.This is useful for new entities not yet saved to the database.
  * 
  * @event DataHasChanged - Dispatched to check if the data has changed.
  * 
@@ -43,8 +43,9 @@ export declare class DataMixinConsumeInterface<D = any> extends DataMixinInterfa
  * }
  * ```
  */
-export const ConsumeDataMixin = <D = any>() =>
-	<T extends Constructor<ReactiveElement>>(superClass: T) => {
+export const ConsumeDataMixin = <D = any>() =><T extends MixinBase<ReactiveElement>>(
+	superClass: T
+): MixinReturn<T, DataMixinConsumeInterface<D>> => {
 
 		abstract class ContextConsumeDataMixinClass extends superClass {
 
@@ -86,13 +87,9 @@ export const ConsumeDataMixin = <D = any>() =>
 
 
 		};
-		return ContextConsumeDataMixinClass as unknown as Constructor<DataMixinConsumeInterface<D>> & T;
+		return ContextConsumeDataMixinClass ;
 	}
 
-/**
- * ProvideDataMixin a mixin that provides data context
- 
- */
 /**
  * A mixin function that provides context data to a LitElement component.
  * 
@@ -112,8 +109,9 @@ export const ConsumeDataMixin = <D = any>() =>
  * }
  * ```
  */
-export const ProvideDataMixin = <D = any>() =>
-	<T extends Constructor<ReactiveElement>>(superClass: T) => {
+export const ProvideDataMixin = <D = any>() =><T extends MixinBase<ReactiveElement>>(
+	superClass: T
+ ): MixinReturn<T, DataMixinInterface<D>>  => {
 
 		abstract class ContextProvideDataMixinClass extends superClass {
 
@@ -148,5 +146,5 @@ export const ProvideDataMixin = <D = any>() =>
 
 		};
 
-		return ContextProvideDataMixinClass as unknown as Constructor<DataMixinInterface<D>> & T;
+		return ContextProvideDataMixinClass;
 	}
