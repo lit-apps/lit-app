@@ -4,6 +4,7 @@ import type { LitElement, TemplateResult } from "lit";
 // import { dbRefEntity } from "@lit-app/persistence-shell";
 import type { CollectionReference, DocumentReference } from "firebase/firestore";
 import { EntityAction } from "../events.js";
+import { Entity } from "../../index.js";
 
 export interface HostElementI<D = any> extends LitElement {
   entityStatus?: EntityStatus
@@ -15,7 +16,7 @@ export interface HostElementI<D = any> extends LitElement {
 
 type VoidOrEventT<E> = void | E
 export type ActionHandlerT<D, E extends CustomEvent = CustomEvent> = (
-  this: HTMLElement, //dbRefEntity,
+  this: HTMLElement & {Entity: Entity, data: any}, //dbRefEntity,
   ref: DocumentReference<D> | CollectionReference<D>,
   data: D,
   event: E) => VoidOrEventT<E> | Promise<VoidOrEventT<E>>

@@ -96,9 +96,9 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
    * @param clickHandler - Optional click handler for the action.
    * @returns TemplateResult for the specified action.
    */
-  renderAction(
+  renderAction<D = unknown>(
     actionName: ActionKeyT<A, unknown>,
-    data: unknown,
+    data: D,
     config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
     clickHandler?: (e: CustomEvent) => void
   ): TemplateResult;
@@ -172,11 +172,6 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
 /**
  * Render Interface for renderActionMixin prototype
  * 
- * TODO:  
- * 
- * - [x]  add bulk actions
- * - [ ]  make this the default renderActionMixin !
- * 
  */
 export interface StaticEntityActionI<
   A extends ActionsT
@@ -194,10 +189,10 @@ export interface StaticEntityActionI<
    * 
    * @returns {TemplateResult} The rendered action button as a TemplateResult.
    */
-  renderAction(
+  renderAction<D = unknown>(
     actionName: ActionKeyT<A, unknown>,
     host: HostElementI<unknown>,
-    data?: unknown,
+    data?: D,
     config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
     clickHandler?: (e: CustomEvent) => void): TemplateResult
 

@@ -41,8 +41,6 @@ import { RecursivePartial } from "@lit-app/shared/types.js";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
-
-
 export default function renderMixin<A extends ActionsT>(
   superclass: Constructor<AbstractEntity>,
   actions?: A

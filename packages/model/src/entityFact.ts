@@ -91,6 +91,7 @@ export default function abstractEntityFact<
       entityMixin<D, C>(
         actionMixin<A>(AbstractEntity, actions)), model) {
     static declare entityName: string
+    static declare title: string
     static declare icon: string
     static declare model: Model<any>
     static declare actions: A

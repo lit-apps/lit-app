@@ -1,6 +1,6 @@
-import '@vaadin/grid/theme/material/vaadin-grid-column.js';
-import '@vaadin/grid/theme/material/vaadin-grid-sort-column.js';
-import '@vaadin/grid/theme/material/vaadin-grid.js';
+// import '@vaadin/grid/theme/material/vaadin-grid-column.js';
+// import '@vaadin/grid/theme/material/vaadin-grid-sort-column.js';
+// import '@vaadin/grid/theme/material/vaadin-grid.js';
 import AbstractEntity from './AbstractEntity';
 import type { RenderInterface, StaticRenderInterface } from './types/renderEntityCreateI';
 import { DataI } from './types/dataI';

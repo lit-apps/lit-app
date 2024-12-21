@@ -35,7 +35,7 @@ export declare abstract class RenderInterface<
 	renderSubHeader(data: D, config: C): TemplateResult
   renderBody(data: D, config: C): TemplateResult;
 	/* renderContent should be private, but we use it in renderEntityActionMixin */
-  renderContent(data: D, config: C): TemplateResult;
+  renderContent(data: D, config: C): TemplateResult ;
   renderHeader(data: D | Collection<D>, config: C): TemplateResult;
   renderSubHeader(data: D, config: C): TemplateResult;
   renderFooter(data: D, config: C): TemplateResult;
