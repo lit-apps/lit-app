@@ -28,5 +28,5 @@ export { default as sticky } from './class/sticky.js';
 export { default as tooltip } from './class/tooltip.js';
 export { default as topCard } from './class/top-card.js';
 export { default as typography } from './class/typography.js';
-
+export { default as gridTreeHierarchy } from './grid/tree-hierarchy.js';
 

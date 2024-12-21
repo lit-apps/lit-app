@@ -1,6 +1,6 @@
 import '@vaadin/combo-box/theme/material/vaadin-combo-box';
 import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
-import '@vaadin/grid/theme/material/vaadin-grid-filter-column.js';
+// import '@vaadin/grid/theme/material/vaadin-grid-filter-column.js';
 import { html, TemplateResult, LitElement } from 'lit';
 import {
 	type GridColumnHeaderLitRenderer
