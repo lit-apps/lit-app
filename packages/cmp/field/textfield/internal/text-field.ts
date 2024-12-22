@@ -37,11 +37,11 @@ class RealClass extends T {
 
 // @ts-expect-error - TS complains about renderField and field being private in Base class
 export class TextField extends
-	ConsumeFormMixin(
+	// ConsumeFormMixin(
 		NoAutoValidateMixin(
 			CompatMixin(
 				LocalStoragePersist(
-					RealClass)))) {
+					RealClass))) {
 	/**
 	 * The variant to use for rendering the field
 	 */

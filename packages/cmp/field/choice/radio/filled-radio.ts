@@ -5,7 +5,6 @@ import { MdFilledTextField } from '@material/web/textfield/filled-text-field.js'
 import genericStyles from '../../generic/styles';
 import choiceStyles from '../styles';
 import sharedStyles from './internal/shared-styles';
-import { CSSResult } from 'lit'; 
 declare global {
   interface HTMLElementTagNameMap {
     'lapp-filled-radio': LappFilledRadio;
@@ -18,7 +17,7 @@ declare global {
  */
 @customElement('lapp-filled-radio')
 export class LappFilledRadio extends FilledRadio {
-  static styles: CSSResult[] = [
+  static override styles = [
     ...MdFilledTextField.styles,
     sharedStyles,
     filledStyles,

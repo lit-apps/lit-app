@@ -15,7 +15,7 @@ import { SingleValidator } from './singleValidator';
 let counter = 0;
 
 type Constructor<T = {}> = abstract new (...args: any[]) => T;
-export declare abstract class MultiChoiceMixinInterface {
+export declare abstract class SingleChoiceMixinInterface {
 	// Define the interface for the mixin
 	isMulti: boolean
 	selected: string

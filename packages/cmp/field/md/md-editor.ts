@@ -298,7 +298,7 @@ Second Column
 
 
 
-} as const satisfies Record<string, MdActionT>;
+} as const satisfies Record<string, MdActionT>
 
 function isMdAction(action: string): action is keyof typeof mdActions {
 	return action in mdActions;

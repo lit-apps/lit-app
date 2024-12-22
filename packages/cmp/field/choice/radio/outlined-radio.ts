@@ -7,7 +7,6 @@ import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field
 import genericStyles from '../../generic/styles';
 import choiceStyles from '../styles';
 import sharedStyles from './internal/shared-styles';
-import { CSSResult } from 'lit';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -21,7 +20,7 @@ declare global {
  */
 @customElement('lapp-outlined-radio')
 export class LappOutlinedRadio extends OutlinedRadio {
-  static override styles: CSSResult[] = [
+  static override styles = [
     ...MdOutlinedTextField.styles, 
     outlinedStyles, 
     sharedStyles,
