@@ -1,4 +1,4 @@
-// sourcehttps://en.wikipedia.org/wiki/List_of_language_names
+// source https://en.wikipedia.org/wiki/List_of_language_names
 
 export const native = {
   ar: 'العربية',
