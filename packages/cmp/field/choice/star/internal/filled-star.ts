@@ -8,5 +8,5 @@ import {Star} from './star';
  * An filled text field component
  */
 export class FilledStar extends Star {
-  protected readonly fieldTag = literal`lapp-filled-field`;
+  protected  override readonly fieldTag = literal`lapp-filled-field`;
 }

@@ -37,3 +37,4 @@ export const native = {
 } as const
 
 export default native;
+export type LanguageNativeT = keyof typeof native;

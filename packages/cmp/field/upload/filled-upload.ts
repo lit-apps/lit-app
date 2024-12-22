@@ -4,7 +4,6 @@ import filledStyles from './filledStyles.js';
 import sharedStyles from './sharedStyles.js';
 import { MdFilledTextField } from '@material/web/textfield/filled-text-field.js'
 import genericStyles from '../generic/styles.js';
-import { CSSResult } from 'lit'; ``
 declare global {
   interface HTMLElementTagNameMap {
     'lapp-filled-upload-field': LappFilledUpload;
@@ -17,7 +16,7 @@ declare global {
  */
 @customElement('lapp-filled-upload-field')
 export class LappFilledUpload extends FilledUpload {
-  static styles: CSSResult[] = [
+  static override styles = [
     ...MdFilledTextField.styles,
     filledStyles,
     genericStyles, 

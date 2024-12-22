@@ -8,5 +8,5 @@ import {Radio} from './radio';
  * An filled text field component
  */
 export class FilledRadio extends Radio {
-  protected readonly fieldTag = literal`lapp-filled-field`;
+  protected override readonly fieldTag = literal`lapp-filled-field`;
 }

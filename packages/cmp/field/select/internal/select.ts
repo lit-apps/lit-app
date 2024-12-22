@@ -4,6 +4,7 @@ import { property} from 'lit/decorators.js';
 import { nothing, PropertyValues } from 'lit';
 import { html } from 'lit';
 import { StaticValue, html as staticHtml } from 'lit/static-html.js';
+// @ts-expect-error - locale is not typed
 import locale  from '../../choice/readaloud-locale.mjs';
 import translate  from '@preignition/preignition-util/translate-mixin.js';
 import NoAutoValidateMixin from '../../mixin/noAutoValidateMixin.js';
@@ -50,7 +51,7 @@ export class Select extends
    * propagate variant and labelAbove to field as they are not part of the template
    * @param changedProperties 
    */
-  private propagateToField(changedProperties: PropertyValues) {
+  private propagateToField(changedProperties: PropertyValues<this>) {
     if (this.field) {
       if (changedProperties.has('labelAbove')) {
         // temp fix for setting label above.

@@ -30,7 +30,6 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
-    "@material/web": "^2.2.0",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "chai-a11y-axe": "^1.4.0",
     "eslint": "^8.14.0",
@@ -45,6 +44,7 @@
   },
   "dependencies": {
     "@lit/context": "^1.1.2",
+    "@material/web": "link:../../../app-dependencies/material-web",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "lit": "^3.2.1"
   }

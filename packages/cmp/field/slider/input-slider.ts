@@ -1,5 +1,5 @@
 
-import { PropertyValues, html, css, CSSResult } from 'lit';
+import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 // import styles from './Slider-styles';
@@ -22,7 +22,7 @@ declare global {
  */
 @customElement('lapp-slider')
 export class LappInputSlider extends InputSlider {
-	static override styles: CSSResult[] = [
+	static override styles = [
 		...InputSlider.styles, 
 		css`
 		label {

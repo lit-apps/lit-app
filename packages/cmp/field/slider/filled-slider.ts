@@ -4,7 +4,6 @@ import filledStyles from './filledStyles';
 import sharedStyles from './sharedStyles';
 import { MdFilledTextField } from '@material/web/textfield/filled-text-field.js'
 import genericStyles from '../generic/styles';
-import { CSSResult } from 'lit'; ``
 declare global {
   interface HTMLElementTagNameMap {
     'lapp-filled-slider-field': LappFilledSlider;
@@ -17,7 +16,7 @@ declare global {
  */
 @customElement('lapp-filled-slider-field')
 export class LappFilledSlider extends FilledSlider {
-  static styles: CSSResult[] = [
+  static override styles = [
     ...MdFilledTextField.styles,
     filledStyles,
     genericStyles, 

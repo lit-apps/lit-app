@@ -25,7 +25,7 @@ declare global {
  */
 @customElement('lapp-filled-checkbox')
 export class LappFilledCheckbox extends FilledCheckbox {
-  static styles = [
+  static override styles = [
     ...MdFilledTextField.styles, 
     filledStyles,
     sharedStyles,
