@@ -15,10 +15,10 @@ export interface HostElementI<D = any> extends LitElement {
 
 
 type VoidOrEventT<E> = void | E
-export type ActionHandlerT<D, E extends CustomEvent = CustomEvent> = (
+export type ActionHandlerT<D, TData = D, E extends CustomEvent = CustomEvent> = (
   this: HTMLElement & {Entity: Entity, data: any}, //dbRefEntity,
   ref: DocumentReference<D> | CollectionReference<D>,
-  data: D,
+  data: TData,
   event: E) => VoidOrEventT<E> | Promise<VoidOrEventT<E>>
 
 export type PrimitiveT = string | number | boolean
@@ -108,8 +108,8 @@ interface ActionBaseI<D = any> {
   confirmDialog?: ConfigDialogT<D>
 }
 
-type ActionConfigT<D, E extends CustomEvent> = {
-  handler?: ActionHandlerT<D, E>
+type ActionConfigT<D, TData = D, E extends CustomEvent = CustomEvent> = {
+  handler?: ActionHandlerT<D, TData, E>
   /**
    * push the action to the history stack when true
    */
@@ -154,11 +154,11 @@ export interface ActionEventI<D = any> extends ActionBaseI<D>, ActionConfigT<D, 
  * Entity actions are actions that require an entityAction to be dispatched. There is no need to define a getEvent function
  * The handler is either called on entity-action-handler or directly on the server when handleOnServer is true
  */
-export interface ActionEntityI<D = any> extends ActionBaseI<D>, ActionConfigT<D, EntityAction> {
+export interface ActionEntityI<D = any, TData = any> extends ActionBaseI<D>, ActionConfigT<D, TData, EntityAction> {
   kind: 'entity'
   /** when true, simply write the entityAction at the corresponding ref */
   handleOnServer?: boolean
-  handler?: ActionHandlerT<D, EntityAction>
+  handler?: ActionHandlerT<D, TData, EntityAction>
 
 }
 

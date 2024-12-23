@@ -96,9 +96,13 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
    * @param clickHandler - Optional click handler for the action.
    * @returns TemplateResult for the specified action.
    */
-  renderAction<D = unknown>(
-    actionName: ActionKeyT<A, unknown>,
-    data: D,
+  renderAction<
+    N extends ActionKeyT<A, unknown>,
+    // @ts-expect-error - but this is working
+    D extends Parameters<this['actions'][N]['handler'] >[1] 
+  >(
+    actionName: N,
+    data: D, // we should derive D from actionName handler signature
     config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
     clickHandler?: (e: CustomEvent) => void
   ): TemplateResult;
@@ -189,8 +193,12 @@ export interface StaticEntityActionI<
    * 
    * @returns {TemplateResult} The rendered action button as a TemplateResult.
    */
-  renderAction<D = unknown>(
-    actionName: ActionKeyT<A, unknown>,
+  renderAction<
+  N extends ActionKeyT<A, unknown>,
+  // @ts-expect-error - but this is working
+  D extends Parameters<this['actions'][N]['handler']>[1]
+  >(
+    actionName: N,
     host: HostElementI<unknown>,
     data?: D,
     config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
