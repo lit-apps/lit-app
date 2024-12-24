@@ -24,9 +24,10 @@ export interface EntityCreateDetail<T = any> {
   promise?: Promise<any>
 }
 export interface EntityDirtyDetail {
-  entityName: string,
+  entityName: string
   promise?: Promise<any>
   dirty: boolean
+  id: string
 }
 
 export interface EntityActionDetail {

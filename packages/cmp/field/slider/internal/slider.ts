@@ -131,7 +131,7 @@ export abstract class Slider extends Generic {
   @property({ type: Boolean }) range = false;
 
 
-  override renderInputOrTextarea(): TemplateResult {
+  override renderInputOrTextarea() {
 
     return html`
     <label>
@@ -190,7 +190,7 @@ export abstract class Slider extends Generic {
     // }
   }
 	
-  [createValidator](): Validator<unknown> {
+  override [createValidator](): Validator<unknown> {
 		return new SliderValidator(() => this.inputOrTextarea as unknown as InputSlider || { 
       required: !!this.required, 
       range: this.range,
