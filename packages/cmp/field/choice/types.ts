@@ -35,13 +35,13 @@ type OptionBase = {
 	 */
 	innerTextLabel?: string
 }
-type OptionLabel = OptionBase &  {
+export type OptionLabelT = OptionBase & {
 	label: string
 }
-type OptionMd = OptionBase &  {
+export type OptionMdT = OptionBase & {
 	md: string
 }
-export type Option = OptionLabel | OptionMd
+export type Option = OptionLabelT | OptionMdT
 
 export type OptionMulti = Option & {
 	exclusive?: boolean 

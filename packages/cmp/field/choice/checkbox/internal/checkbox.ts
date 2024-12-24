@@ -13,7 +13,7 @@ import IllustrationMixin from '../../illustrationMixin';
 import MultiChoiceMixin from '../../multiMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
 import { nothing } from 'lit';
-import type { Option } from '../../types';
+import type { Option, OptionLabelT, OptionMdT } from '../../types';
 import { HTMLEvent } from '@lit-app/shared/types';
 
 /**
@@ -43,7 +43,7 @@ import { HTMLEvent } from '@lit-app/shared/types';
             >
             ${this.renderOptionIllustration(option)}
             ${this.renderCheckbox(option, index)}
-            <div slot="headline">${option.md || option.label}</div>
+            <div slot="headline">${(option as OptionMdT).md || (option as OptionLabelT).label}</div>
             ${when(option.supportingText, () => html`<div slot="supporting-text">${option.supportingText}</div>`)}
           </lapp-choice-list-item>
         `

@@ -1,28 +1,25 @@
-import { property, state, query, queryAssignedElements } from 'lit/decorators.js';
-import { Generic } from '../generic/generic';
-import { html, LitElement, nothing } from 'lit';
-import type { PropertyValues, TemplateResult } from 'lit';
-import { AriaList, Option } from './types';
+import getInnerText from '@lit-app/shared/getInnerText.js';
 import { HTMLEvent } from '@lit-app/shared/types';
-import { GenericI } from '../generic/generic'
-import { List as MdList } from '@material/web/list/internal/list'
-import '../../list/list'
-import '../../list/list-item'
-import type { LappListItem } from '../../list/list-item';
-import { Checkbox } from './checkbox/internal/checkbox';
+import { NavigableKeys } from '@material/web/list/internal/list-controller.js';
+import translate from '@preignition/preignition-util/translate-mixin.js';
+import type { PropertyValues, TemplateResult } from 'lit';
+import { html, LitElement, nothing } from 'lit';
+import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import './list'
 import { when } from 'lit/directives/when.js';
-import  getInnerText  from '@lit-app/shared/getInnerText.js';
-import translate  from '@preignition/preignition-util/translate-mixin.js';
-import {ListController, NavigableKeys} from '@material/web/list/internal/list-controller.js';
-import {ListItem } from '@material/web/list/internal/list-navigation-helpers.js';
+import '../../list/list';
+import '../../list/list-item';
+import type { LappListItem } from '../../list/list-item';
+import { Generic, GenericI } from '../generic/generic';
+import { Checkbox } from './checkbox/internal/checkbox';
+import './list';
+import { AriaList, Option, OptionLabelT } from './types';
 
 const NAVIGABLE_KEY_SET = new Set<string>(Object.values(NavigableKeys));
 const isNavigableKey = (key: string) => NAVIGABLE_KEY_SET.has(key);
 
 // @ts-expect-error - not types
-import locale  from './readaloud-locale.mjs';
+import locale from './readaloud-locale.mjs';
 
 /**
  * Generic Base abstract class for all choice fields
@@ -126,12 +123,12 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	override willUpdate(props: PropertyValues<this>) {
 		if(props.has('options')) {
 		for (const option of this.options) {
-			option.innerTextLabel = getInnerText(option.label);
+			option.innerTextLabel = getInnerText((option as OptionLabelT).label);
 		}}
 		super.willUpdate(props);
 	}
 
-	override renderInputOrTextarea(): TemplateResult {
+	override renderInputOrTextarea() {
 		
 		// we add an input field so that SR can announce 
 		// the status of the field

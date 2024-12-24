@@ -40,7 +40,7 @@ export abstract class Checkbox extends Generic {
    */
   @property() checkboxlabel!: string
   
-  override renderInputOrTextarea(): TemplateResult {
+  override renderInputOrTextarea() {
 
     return html`
     <label>
