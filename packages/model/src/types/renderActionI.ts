@@ -162,7 +162,7 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
    * 
    * @param dirty - Boolean indicating if the entity is dirty.
    */
-  markDirty(dirty?: boolean): boolean;
+  markDirty(dirty: boolean, id: string): boolean;
 
   /**
    * Creates a new entity with the provided data.

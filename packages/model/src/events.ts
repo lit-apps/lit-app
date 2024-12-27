@@ -27,7 +27,7 @@ export interface EntityDirtyDetail {
   entityName: string
   promise?: Promise<any>
   dirty: boolean
-  id: string
+  id: string 
 }
 
 export interface EntityActionDetail {

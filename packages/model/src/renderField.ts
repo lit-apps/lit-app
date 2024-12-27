@@ -19,7 +19,8 @@ import type {
   ModelComponentSlider,
   ModelComponentUpload,
   ModelComponentUploadImage,
-  ModelComponentMd
+  ModelComponentMd,
+  ModelComponentMdDroppable
 } from './types/modelComponent';
 // Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
 import '@polymer/polymer';
@@ -110,7 +111,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
     return html`<i class="field" style="color:var(--color-warning);">Missing model for "${name}" in "${entity.entityName}"</i>`
   }
   if (config) {
-    model = { ...model, ...config }
+    model = { ...model, ...config } as ModelComponent
   }
 
   if (!model) {
@@ -140,7 +141,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   }
 
   const id = this.docId ? this.docId : this.id;
-  const dirtyEvent = new Dirty({ entityName: entity.entityName, dirty: true });
+  const dirtyEvent = new Dirty({ entityName: entity.entityName, dirty: true, id });
 
 
   const label = model.label ?? (key || '');
@@ -354,7 +355,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       ></lapp-text-field>`;
   }
 
-  function renderMdDroppable(model: OComponentMd) {
+  function renderMdDroppable(model: ModelComponentMdDroppable) {
     return html`
       <lapp-md-droppable-editor
         class=${cls}

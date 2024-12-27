@@ -107,7 +107,7 @@ export default function renderMixin<A extends ActionsT>(
           if (action.kind === 'simple') {
             return await action.handler.call(host, data)
           } else if (action.kind === 'event' || action.kind === 'entity' || action.kind === 'mixin') {
-            const event =( action.kind === 'event' || action.kind === 'mixin')
+            const event = (action.kind === 'event' || action.kind === 'mixin')
               ? await action.getEvent(this.entityName!, { data }, host, isBulk)
               : getEntityActionEvent(actionName as string, action)(
                 this.entityName!, { data }, host, isBulk
@@ -150,7 +150,7 @@ export default function renderMixin<A extends ActionsT>(
     }
 
     // renderContent is called by renderEntityMixin - it is the entry point for rendering actions
-    override renderContent(data: unknown, config: RenderConfig): TemplateResult  {
+    override renderContent(data: unknown, config: RenderConfig): TemplateResult {
       if (this.canViewActions(data, config)) {
         // when we are in a (grid) detail context, we do not want to render actions as sticky
         const stickyClass = config.context === 'detail' ? '' : 'sticky'
@@ -293,7 +293,7 @@ export default function renderMixin<A extends ActionsT>(
       const action = this.actions[actionName]
       const actionHandler = this.actionHandler(actionName, data, true)
       const bulkConfig = action.bulk!
-      
+
       // TODO: add tooltip once we have better tooltips (like vaadin, that do not slot action)
       return html`
       <md-filled-icon-button 
@@ -340,8 +340,8 @@ export default function renderMixin<A extends ActionsT>(
     open(id: string, entityName?: string) {
       return this.host.dispatchEvent(new Open({ entityName: entityName || this.entityName, id }))
     }
-    markDirty(dirty: boolean = true) {
-      return this.host.dispatchEvent(new Dirty({ entityName: this.entityName, dirty }))
+    markDirty(dirty: boolean = true, id: string) {
+      return this.host.dispatchEvent(new Dirty({ entityName: this.entityName, dirty, id }))
     }
   }
 
