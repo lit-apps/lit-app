@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "paths": {
+      "lit": ["./node_modules/lit"],
+    }
   },
   "extends": "../../tsconfig.json",
   "include": ["src/**/*.ts", "index.ts"],

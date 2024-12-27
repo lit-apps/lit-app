@@ -1,4 +1,5 @@
 
+type ActionT= (obj: unknown, id: string ) => unknown;
 
 /**
  * Applies a deep action on an object based on a given path.
@@ -8,14 +9,14 @@
  * @param keys - The path to the property in the object.
  * @returns The result of applying the action on the object.
  */
-const deep = (action, obj, keys, id, key) => {
-  keys = keys.split('.');
+const deep = (action: ActionT, obj: unknown, keys: string | string[], id?: string[], key?: string) => {
+  keys = (keys as string).split('.');
   id = keys.splice(-1, 1);
-  for (key in keys) obj = obj[keys[key]] = obj[keys[key]] || {};
-  return action(obj, id);
+  for (key in keys) obj = (obj as any)[keys[key]] = (obj as any)[keys[key]] || {};
+  return action(obj, id );
 };
-const get = (obj, prop) => obj[prop];
-const deepget = (obj, path) => deep(get, obj, path);
+const get = (obj: any, prop: string ) => obj[prop];
+const deepget = (obj: any, path: string) => deep(get, obj, path);
 
 export {
   deep,
