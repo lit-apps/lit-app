@@ -1,11 +1,11 @@
+import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import { LitElement, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js'
 
-type Constructor<T = {}> = new (...args: any[]) => T;
 type F = {
 	reportValidity: () => void
-	// field: any
 }
+type BaseT = LitElement & F
 export declare class NoAutoValidateMixinInterface {
 	/**
 		* Prevent automatic check validity on blur
@@ -16,16 +16,18 @@ export declare class NoAutoValidateMixinInterface {
  * NoAutoValidateMixin - a mixin that report validity on blur, 
  * except when `noAutoValidate` is set to true
  */
-export const NoAutoValidateMixin = <T extends Constructor<LitElement & F>>(superClass: T) => {
+export const NoAutoValidateMixin = <T extends MixinBase<BaseT>>(
+	superClass: T
+): MixinReturn<T, NoAutoValidateMixinInterface> => {
 
-	class NoAutoValidateMixinClass extends superClass {
+	abstract class NoAutoValidateMixinClass extends superClass {
 
 		/**
 		 * Prevent automatic check validity on blur
 		 */
 		@property({ type: Boolean }) noAutoValidate: boolean = false;
 
-		override willUpdate(changedProperties: PropertyValues) {
+		override willUpdate(changedProperties: PropertyValues<this>) {
 			if (changedProperties.has('noAutoValidate')) {
 				if (!this.noAutoValidate) {
 					this.addEventListener('blur', this.reportValidity)
@@ -37,8 +39,7 @@ export const NoAutoValidateMixin = <T extends Constructor<LitElement & F>>(super
 		}
 
 	};
-	// Cast return type to your mixin's interface intersected with the superClass type
-	return NoAutoValidateMixinClass as unknown as Constructor<NoAutoValidateMixinInterface> & T;
+	return NoAutoValidateMixinClass;
 }
 
 export default NoAutoValidateMixin;

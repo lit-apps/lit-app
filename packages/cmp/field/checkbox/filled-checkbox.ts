@@ -4,7 +4,6 @@ import filledStyles from './filledStyles';
 import sharedStyles from './sharedStyles';
 import { MdFilledTextField } from '@material/web/textfield/filled-text-field.js'
 import genericStyles from '../generic/styles';
-import { CSSResult } from 'lit'; ``
 declare global {
   interface HTMLElementTagNameMap {
     'lapp-filled-checkbox-field': LappFilledCheckbox;
@@ -17,7 +16,7 @@ declare global {
  */
 @customElement('lapp-filled-checkbox-field')
 export class LappFilledCheckbox extends FilledCheckbox {
-  static styles: CSSResult[] = [
+  static override styles = [
     ...MdFilledTextField.styles,
     filledStyles,
     genericStyles, 

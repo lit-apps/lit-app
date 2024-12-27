@@ -47,6 +47,13 @@ export type OptionMulti = Option & {
 	exclusive?: boolean 
 }
 
+export function isOptionMdT(option: Option): option is OptionMdT {
+	return (option as OptionMdT).md !== undefined
+}
+
+export function isOptionLabelT(option: Option): option is OptionLabelT {
+	return (option as OptionLabelT).label !== undefined
+}
 
 export type AriaList = 'group' | 'listbox' | 'radiogroup'
 

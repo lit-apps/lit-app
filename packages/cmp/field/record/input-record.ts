@@ -2,7 +2,6 @@
 import { customElement } from 'lit/decorators.js';
 
 import styles from './record-styles';
-import { CSSResult } from 'lit';
 import { InputRecord } from './internal/input-record';
 
 declare global {
@@ -21,7 +20,7 @@ declare global {
  */
 @customElement('lapp-input-record')
 export class LappInputRecord extends InputRecord {
-	static override styles: CSSResult[] = [
+	static override styles = [
 		styles
 
 	];

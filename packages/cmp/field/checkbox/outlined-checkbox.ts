@@ -6,7 +6,6 @@ import outlinedStyles from './outlinedStyles';
 import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js'
 import genericStyles from '../generic/styles';
 import sharedStyles from './sharedStyles';
-import { CSSResult } from 'lit';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -20,7 +19,7 @@ declare global {
  */
 @customElement('lapp-outlined-checkbox-field')
 export class LappOutlinedCheckbox extends OutlinedCheckbox {
-  static styles: CSSResult[] = [
+  static override styles = [
     ...MdOutlinedTextField.styles, 
     outlinedStyles, 
     genericStyles,

@@ -15,6 +15,8 @@ import { TextField } from '../textfield/internal/text-field';
 import { A11yFieldMixinInterface } from '../field/internal/a11y-field-mixin';
 
 
+
+
 // @ts-expect-error - field is not the same type
 export interface GenericI extends TextField {
   hasError: boolean
@@ -53,12 +55,14 @@ export interface GenericI extends TextField {
  * - input query getting the input element
  */
 // @ts-expect-error - private fields in TextField are public in GenericI
-export abstract class Generic extends CompatMixin(TextField) implements GenericI {
+export abstract class Generic extends CompatMixin(TextField)
+  implements GenericI {
   protected abstract readonly fieldName: string
+  // Name: string
 
   @query('.input') protected readonly input!: HTMLInputElement | null;
   @query('.input') override readonly inputOrTextarea!: HTMLInputElement | null;
-  
+
   protected override renderField() {
     const t = this as unknown as GenericI
     return staticHtml`<${this.fieldTag}
@@ -117,8 +121,8 @@ export abstract class Generic extends CompatMixin(TextField) implements GenericI
   }
 
   // protected override getInputOrTextarea() {
-	// 	return this.input
-	// }
+  // 	return this.input
+  // }
 
   // we override onREportValidity to prevent the default behavior
   // // focusing on the element

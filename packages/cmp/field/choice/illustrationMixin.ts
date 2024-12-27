@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js'
 import { choose } from 'lit/directives/choose.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Choice } from './choice';
-import { MediaImage, MediaYoutube, Option } from './types';
+import { MediaIcon, MediaImage, MediaYoutube, Option } from './types';
 
 declare global {
 	interface HTMLElementEventMap {
@@ -13,7 +13,7 @@ declare global {
 
 type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class IllustrationMixinInterface {
-	
+
 	renderOptionIllustration: (option: Option) => TemplateResult
 }
 /**
@@ -41,11 +41,12 @@ export const IllustrationMixin = <T extends Constructor<Choice>>(superClass: T) 
 						<lapp-youtube data-variant="illustration" slot="${slot}" class="video" videoid="${m.videoId}" playlabel=${ifDefined(m.playLabel)} params=${params}></lapp-youtube>`
 				}],
 				['icon', () => {
-					const icon = media.icon ||''
+					const m = media as MediaIcon
+					const icon = m?.icon || ''
 					return html`<lapp-icon slot="${slot}" icon="${icon}"></lapp-icon>`
 				}]
 			],
-				() => nothing
+				() => nothing as unknown as TemplateResult
 			)}`
 
 		}

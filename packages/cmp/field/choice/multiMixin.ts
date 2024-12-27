@@ -54,8 +54,8 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 			return value && value.indexOf(code + '') > -1;
 		}
 
-		private readonly listController = new ListController<ListItem>({
-			isItem: (item: HTMLElement): item is ListItem =>
+		private readonly listController = new ListController<ListItem & {type: string} >({
+			isItem: (item: HTMLElement ): item is (ListItem & {type: string} ) =>
 				item.hasAttribute('data-role'),
 			getPossibleItems: () => [...this._queryItems(this.choiceInputSelector) as NodeListOf<MdCheckbox>],
 			isRtl: () => getComputedStyle(this).direction === 'rtl',
@@ -101,7 +101,7 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 			return values;
 		}
 
-		syncSelected(value: string[]) {
+		override syncSelected(value: string[]) {
 			const exclusive = this.exclusiveCode;
 			if (exclusive) {
 				const exclusiveIsSelected = value.indexOf(exclusive) > -1;
@@ -133,7 +133,7 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 
 		}
 
-		[createValidator](): Validator<unknown> {
+		override [createValidator](): Validator<unknown> {
 			return new MultiValidator(() => this);
 		}
 

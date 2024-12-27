@@ -1,5 +1,5 @@
 
-import { PropertyValues, html, css, CSSResult } from 'lit';
+import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 // import styles from './Checkbox-styles';
@@ -22,7 +22,7 @@ declare global {
  */
 @customElement('lapp-checkbox')
 export class LappInputCheckbox extends InputCheckbox {
-	static override styles: CSSResult[] = [
+	static override styles = [
 		...InputCheckbox.styles, 
 		css`
 		label {

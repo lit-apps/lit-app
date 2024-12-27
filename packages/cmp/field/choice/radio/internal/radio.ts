@@ -9,11 +9,11 @@ import { Choice } from '../../choice';
 import IllustrationMixin from '../../illustrationMixin';
 import SingleMixin from '../../singleMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
-import type {  Option } from '../../types';
+import { isOptionMdT, type Option } from '../../types';
 import { HTMLEvent } from '@lit-app/shared/types';
 import '../../list-item'
 import lappChoiceListItem from '../../list-item';
-import {nothing} from 'lit';
+import { nothing } from 'lit';
 
 /**
  * Radio group field
@@ -25,9 +25,9 @@ export abstract class Radio extends
       Choice)) {
 
   protected fieldName = 'radio';
-  
+
   protected override renderChoiceOptions(options: Option[]) {
-    if(options.length === 0) {
+    if (options.length === 0) {
       return this.renderEmptyOption()
     }
     return html`
@@ -41,7 +41,7 @@ export abstract class Radio extends
           >
           ${this.renderOptionIllustration(option)}
           ${this.renderRadio(option, index)}
-          <div slot="headline">${option.md || option.label}</div>
+          <div slot="headline">${isOptionMdT(option) ? option.md : option.label}</div>
           ${when(option.supportingText, () => html`<div slot="supportingText">${option.supportingText}</div>`)}
         </lapp-choice-list-item>`
     )}`
@@ -50,7 +50,7 @@ export abstract class Radio extends
   renderRadio(option: Option, index: number) {
     const isChecked = this._value == option.code
     const name = option.name || this.name
-   
+
     return html`
     ${when(option.specify === true && isChecked, () => this.renderSpecify(option, index))}
     <lapp-radio 

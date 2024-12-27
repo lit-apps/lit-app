@@ -2,7 +2,6 @@
 import { customElement } from 'lit/decorators.js';
 
 import styles from './record-styles';
-import { CSSResult } from 'lit';
 import { Record } from './internal/record';
 
 declare global {
@@ -12,7 +11,7 @@ declare global {
 }
 
 /**
- * # record 
+ * # record  
  * 
  * @summary
  * Record is a component that display allow to register a record and store it locally.
@@ -21,7 +20,7 @@ declare global {
  */
 @customElement('lapp-record')
 export class LappRecord extends Record {
-  static override styles: CSSResult[] = [
+  static override styles = [
     styles, 
   ];
 }

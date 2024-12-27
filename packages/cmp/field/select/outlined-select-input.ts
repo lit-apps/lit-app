@@ -4,7 +4,6 @@ import outlinedStyles from './outlinedStyles';
 import { MdOutlinedSelect } from '@material/web/select/outlined-select.js'
 import genericStyles from '../generic/styles';
 import SelectInputStyles from './internal/selectInputStyles.js';
-import { CSSResult } from 'lit'; 
 declare global {
   interface HTMLElementTagNameMap {
     'lapp-outlined-select-input': LappOutlinedSelectInput;
@@ -17,7 +16,7 @@ declare global {
  */
 @customElement('lapp-outlined-select-input')
 export class LappOutlinedSelectInput extends OutlinedSelectInput {
-  static override styles: CSSResult[] = [
+  static override styles = [
     ...MdOutlinedSelect.styles,
     outlinedStyles,
     genericStyles, 

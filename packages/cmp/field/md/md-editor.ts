@@ -868,7 +868,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	}
 	/** aimed at being overridden to display specific actions */
 	protected renderSupportingAction() {
-		return nothing;
+		return html``;
 	}
 
 	override focus() {

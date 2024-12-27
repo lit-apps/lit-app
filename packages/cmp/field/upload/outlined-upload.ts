@@ -6,7 +6,6 @@ import outlinedStyles from './outlinedStyles.js';
 import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js'
 import genericStyles from '../generic/styles.js';
 import sharedStyles from './sharedStyles.js';
-import { CSSResult } from 'lit';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -20,7 +19,7 @@ declare global {
  */
 @customElement('lapp-outlined-upload-field')
 export class LappOutlinedUpload extends OutlinedUpload {
-  static styles: CSSResult[] = [
+  static override  styles  = [
     ...MdOutlinedTextField.styles, 
     outlinedStyles, 
     genericStyles,

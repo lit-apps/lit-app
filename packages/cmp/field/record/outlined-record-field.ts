@@ -5,7 +5,6 @@ import { OutlinedRecordField } from './internal/outlined-record-field.js';
 import outlinedStyles from './outlinedStyles';
 import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js'
 import genericStyles from '../generic/styles';
-import { CSSResult } from 'lit';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -19,7 +18,7 @@ declare global {
  */
 @customElement('lapp-outlined-record-field')
 export class LappOutlinedRecordField extends OutlinedRecordField {
-  static styles: CSSResult[] = [
+  static override styles  = [
     ...MdOutlinedTextField.styles, 
     outlinedStyles, 
     genericStyles

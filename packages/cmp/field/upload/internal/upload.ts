@@ -1,11 +1,10 @@
 
-import '@preignition/firebase-upload/document-upload';
-import type { TemplateResult } from 'lit';
-import { html } from 'lit';
-import { property, query } from 'lit/decorators.js';
-import { Generic } from '../../generic/generic';
 import { createValidator } from '@material/web/labs/behaviors/constraint-validation';
 import { Validator } from '@material/web/labs/behaviors/validators/validator';
+import '@preignition/firebase-upload/document-upload';
+import { html } from 'lit';
+import { property, query } from 'lit/decorators.js';
+import { Generic, GenericI } from '../../generic/generic';
 import { UploadValidator } from './uploadValidator';
 
 // import type {FirebaseDocumentUpload} '@preignition/firebase-upload/document-upload';
@@ -128,12 +127,12 @@ export abstract class Upload extends Generic {
 
   constructor() {
     super()
-
-    this.addEventListener('focusin', () => this.focused = true);
-    this.addEventListener('focusout', () => this.focused = false);
+    const t = this as unknown as GenericI
+    this.addEventListener('focusin', () => t.focused = true);
+    this.addEventListener('focusout', () => t.focused = false);
   }
 
-  override renderInputOrTextarea(): TemplateResult {
+  override renderInputOrTextarea() {
     
     return html`
     <firebase-document-upload
@@ -169,7 +168,7 @@ export abstract class Upload extends Generic {
   //   redispatchEvent(this, event)
   // }
 
-  [createValidator](): Validator<unknown> {
+  override [createValidator](): Validator<unknown> {
   	return new UploadValidator(() => this.inputOrTextarea as unknown as HTMLInputElement || { 
       required: this.required, 
       value: this.value});

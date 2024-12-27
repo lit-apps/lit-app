@@ -53,10 +53,11 @@ export default class lappChoiceListItem extends LappListItem {
 	@property() selector!: string;
 	@property({ type: Boolean }) isMulti: boolean = false;
 
-	  /**
+	/**
    * Sets the behavior of the list item, defaults to "text". Change to "link" or
    * "button" for interactive items.
    */
+	// @ts-expect-error - we are cheating with ListItemType
   @property() override type: A11yListItemType = 'a11y';
 
 	get inputElement() {
@@ -115,11 +116,13 @@ export default class lappChoiceListItem extends LappListItem {
     // TODO(b/265339866): announce "button"/"link" inside of a list item. Until
     // then all are "listitem" roles for correct announcement.
     const target = isAnchor && !!this.target ? this.target : nothing;
+		// @ts-expect-error - isDisabled is private
+		const isDisabled = this.isDisabled ;
     return staticHtml`
       <${tag}
         id="item"
-        tabindex="${this.isDisabled || !isInteractive ? -1 : 0}"
-        ?disabled=${this.isDisabled}
+        tabindex="${isDisabled || !isInteractive ? -1 : 0}"
+        ?disabled=${isDisabled}
         aria-selected=${(this as ARIAMixinStrict).ariaSelected || nothing}
         aria-checked=${(this as ARIAMixinStrict).ariaChecked || nothing}
         aria-expanded=${(this as ARIAMixinStrict).ariaExpanded || nothing}

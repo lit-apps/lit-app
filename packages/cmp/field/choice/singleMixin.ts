@@ -87,7 +87,7 @@ export const SingleChoiceMixin = <T extends Constructor<Choice>>(superClass: T) 
 
 		}
 
-		[createValidator](): Validator<unknown> {
+		override [createValidator](): Validator<unknown> {
 			return new SingleValidator(() => this);
 		}
 

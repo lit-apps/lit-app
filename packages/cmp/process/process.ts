@@ -2,7 +2,6 @@
 import { customElement } from 'lit/decorators.js';
 
 import styles from './styles';
-import { CSSResult } from 'lit';
 import { Process } from './internal/process';
 
 declare global {
@@ -20,7 +19,7 @@ declare global {
  */
 @customElement('lapp-process')
 export class LappProcess extends Process {
-  static override styles: CSSResult[] = [
+  static override styles = [
     styles, 
   ];
 }

@@ -11,7 +11,7 @@ import('@preignition/firebase-upload/document-upload')
 
 type UploadStatusT = {
 	status: 'start' | 'finish' | 'progress' | 'success' | 'error'
-	file: File
+	file: File & {url: string}
 	error?: string
 }
 const imageLoading = '{{loading image ...}}';
@@ -185,7 +185,7 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 		}
 	}
 	_isOnTextarea(e: CustomEvent) {
-		return e.composedPath()[0].localName === 'textarea';
+		return (e.composedPath()[0] as HTMLElement).localName === 'textarea';
 	}
 
 	canDrag(e: CustomEvent) {
@@ -198,7 +198,7 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 
 	uploadingStarted() {
 		this.insertAtCaret(`\n${imageLoading}`);
-		this.md = this._input.inputOrTextarea?.value 
+		this.md = (this._input as any).inputOrTextarea?.value || ''; 
 	}
 
 	formatURL(url: string) {

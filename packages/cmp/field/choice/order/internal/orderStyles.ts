@@ -56,7 +56,7 @@ const printStyles = css`
  * Styles to be applied both to filled and outlined choice fields.
  * 
  */
-const styles: CSSResult[] = [
+const styles  = [
 	// ...MdFilledTextField.styles,
 	choiceStyles,
 	genericStyles,
