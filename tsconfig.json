@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "es2020",
-    "lib": ["es2020", "DOM", "DOM.Iterable"],
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
