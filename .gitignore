@@ -5,7 +5,7 @@ npm-debug.log*
 pnpm-debug.log*
 firebase-debug.log*
 firebase-debug.*.log*
-
+initializeFirebase.js
 
 # Firebase cache
 .firebase/
