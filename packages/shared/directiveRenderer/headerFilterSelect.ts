@@ -1,4 +1,6 @@
-import '@vaadin/combo-box/theme/material/vaadin-combo-box';
+// import '@vaadin/combo-box/theme/material/vaadin-combo-box';
+import '@vaadin/combo-box/vaadin-lit-combo-box';
+import '@vaadin/select/vaadin-lit-select';
 import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
 // import '@vaadin/grid/theme/material/vaadin-grid-filter-column.js';
 import { html, TemplateResult, LitElement } from 'lit';
@@ -61,19 +63,20 @@ export default function headerFilterText(
 		filter.dispatchEvent(new CustomEvent('filter-changed', { bubbles: true }));
 	}
 	
-	const items = (lookup as { items: lookupItem[] }).items || lookup;
+	const items = ((lookup as { items: lookupItem[] }).items || lookup).map((item: lookupItem) => ({value: item.code, label: item.label}));
+	items.unshift({ value: '__', label: 'All ' + label });
+
 	const template = function (column: GridColumn) {
 
 			return html`
 			<div id="proxy-filter" style="flex: 1; width:100%;" .path=${path}>
-			 <vaadin-combo-box 
+			 <vaadin-select 
+			  aria-label="filter ${label}"
 				style="max-width: 100%; --vaadin-combo-box-overlay-width: 16em;"
 				placeholder="${label}" 
-				@selected-item-changed=${onChange(column)} 
-				.itemLabelPath=${'label'}
-				.itemValuePath=${'code'}
+				@change=${onChange(column)} 
 				.items=${items} 
-				></vaadin-combo-box>
+				></vaadin-select>
 			</div>
 			`
 	}
