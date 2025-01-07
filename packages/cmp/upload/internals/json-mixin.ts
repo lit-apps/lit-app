@@ -2,13 +2,12 @@ import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';
 import { property } from 'lit/decorators.js';
 import { UploadFinishedEvent, FirebaseUploadFile } from './storage-mixin.js';
-
+import { normalizeFile } from './normalizeFile.js';
 
 export declare class JSONMixinInterface {
   validateJSON: (data: unknown) => boolean
   uploadFinished(e: UploadFinishedEvent): void
   clearFile(file: FirebaseUploadFile): void
-  // uploadFinished: (e: UploadFinishedEvent) => void;
   appName: string | undefined
   /**
    * The path to the storage bucket - if not provided, will use the path
@@ -70,7 +69,7 @@ export const JSONMixin = <T extends MixinBase<BaseT>>(
     async uploadFinished(e: UploadFinishedEvent) {
       console.log('upload finished - need override', e.detail);
       // await e.detail.promise;
-      this.clearFile(e.detail.file);
+      this.clearFile(e.detail.file as FirebaseUploadFile);
     }
 
     get uploading() {
@@ -125,9 +124,8 @@ export const JSONMixin = <T extends MixinBase<BaseT>>(
               // file.dbPath = this.path;
               file.status = '';
               this._renderFileList();
-              file = this.normalizeFile(file)
-              const event = new UploadFinishedEvent(file, false, data);
-              if(this.dispatchEvent(event)) {
+              const event = new UploadFinishedEvent(normalizeFile(file), false, data);
+              if (this.dispatchEvent(event)) {
                 this.uploadFinished(event);
               };
               return event.detail.promise;
@@ -148,15 +146,7 @@ export const JSONMixin = <T extends MixinBase<BaseT>>(
         this._renderFileList();
       }, 6000);
     }
-    protected getTimestamp() {
-      return new Date().toISOString();
-    }
-    private normalizeFile(file: FirebaseUploadFile): FirebaseUploadFile {
-      return {
-        ...file,
-        timestamp: this.getTimestamp(),
-      }
-    }
+
 
   };
 

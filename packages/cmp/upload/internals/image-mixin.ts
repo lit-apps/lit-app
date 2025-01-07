@@ -371,7 +371,11 @@ export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles?: any }>(
               <slot name="drop-label-icon"></slot>
               <slot name="drop-label"></slot>
             </div>
-            </div>` : ''}
+            </div>` : 
+          html`<div hidden>
+            <slot name="drop-label-icon"></slot>
+            <slot name="drop-label"></slot>
+          </div>`}
 				</slot>
 				<div part="upload-wrapper" id="wrapper">
           <slot name="add-button"></slot>
@@ -398,6 +402,7 @@ export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles?: any }>(
 
     override uploadFinished(e: UploadFinishedEvent) {
       // Note(cg): reset files list so that we can change again.
+      console.log('image upload finished', e.detail);
       super.uploadFinished(e);
       this.i18n = {...this.i18n};
       this._hideWrapper = this.hideWrapper;

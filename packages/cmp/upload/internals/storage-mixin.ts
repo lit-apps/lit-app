@@ -11,9 +11,10 @@ import { property, state } from 'lit/decorators.js';
 import { ToastEvent } from '@lit-app/shared/event/index.js';
 import { getDownloadURL, getStorage, ref, StorageReference, uploadBytesResumable, UploadTask } from 'firebase/storage';
 import watch from '@lit-app/shared/decorator/watch.js';
+import { normalizeFile } from './normalizeFile.js';
 
 export interface uploadFinishedDetail {
-  file: FirebaseUploadFile;
+  file: FirebaseUploadFile | UploadFile;
   isMultiple: boolean;
   data?: any;
   promise?: Promise<any>;
@@ -24,7 +25,7 @@ export interface uploadFinishedDetail {
  */
 export class UploadFinishedEvent extends CustomEvent<uploadFinishedDetail> {
   static readonly eventName = 'upload-finished';
-  constructor(file: FirebaseUploadFile, isMultiple: boolean, data?: any) {
+  constructor(file: FirebaseUploadFile | UploadFile, isMultiple: boolean, data?: any) {
     super(UploadFinishedEvent.eventName, {
       cancelable: true,
       detail: { file, isMultiple, data }
@@ -99,7 +100,6 @@ export type FirebaseUploadFile = UploadFile & {
 }
 
 // TODO: aria-described by for button
-// TODO: add meta-data-changed event
 
 /**
  * Storage - a mixin to handle file upload to firebase storage
@@ -317,8 +317,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
                 file.complete = true;
                 file.status = '';
                 this._renderFileList();
-                file = this.normalizeFile(file)
-                const event = new UploadFinishedEvent(file, isMulti);
+                const event = new UploadFinishedEvent(normalizeFile(file), isMulti);
                 if(this.dispatchEvent(event)) {
                   this.uploadFinished(event);
                 };
@@ -348,12 +347,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
     protected getTimestamp() {
       return new Date().toISOString();
     }
-    private normalizeFile(file: FirebaseUploadFile): FirebaseUploadFile {
-      return {
-        ...file,
-        timestamp: this.getTimestamp(),
-      }
-    }
+
 
   };
   return StorageClass;
