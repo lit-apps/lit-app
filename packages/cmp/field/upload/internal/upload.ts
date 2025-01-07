@@ -106,7 +106,7 @@ export abstract class Upload extends Generic {
    * `buttonText` text on upload button
    @property() * example: {one: 'upload image ...', many; 'upload images ...'}
    */
-  @property({ type: Object }) buttonText!: any
+  @property() buttonLabel!: any
 
   /*
    * `dropText` text on dop button
@@ -147,10 +147,11 @@ export abstract class Upload extends Generic {
       .readonly=${this.readonly}
       .hideExisting=${this.hideExisting}
       .preventRead=${this.preventRead}
-      .buttonText=${this.buttonText}
       .dropText=${this.dropText}
       .noFileExtension=${this.noFileExtension}
-      ></lapp-upload-document-firebase>
+      >
+      ${this.buttonLabel ? html`<vaadin-button slot="add-button">${this.buttonLabel}</vaadin-button>` : ''}
+      </lapp-upload-document-firebase>
       `
     const uploadFirestore = html`
         <lapp-upload-document
@@ -166,10 +167,11 @@ export abstract class Upload extends Generic {
       .readonly=${this.readonly}
       .hideExisting=${this.hideExisting}
       .preventRead=${this.preventRead}
-      .buttonText=${this.buttonText}
       .dropText=${this.dropText}
       .noFileExtension=${this.noFileExtension}
-      ></lapp-upload-document>
+      >
+      ${this.buttonLabel ? html`<vaadin-button slot="add-button">${this.buttonLabel}</vaadin-button>` : ''}
+      </lapp-upload-document>
       `
     return this.useFirestore ? uploadFirestore : uploadFirebase;
   }

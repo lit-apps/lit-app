@@ -111,7 +111,7 @@ export interface ModelComponentUpload<T = any> extends ModelComponentBase<T> {
 	fieldPath?: string
 	fileName?: string
 	dropText?: { one: string, many: string }
-	buttonText?: { one: string, many: string }
+	buttonLabel?: string
 }
 export interface ModelComponentUploadImage<T = any> extends ModelComponentBase<T> {
 	component: UploadComponentImage
@@ -124,7 +124,7 @@ export interface ModelComponentUploadImage<T = any> extends ModelComponentBase<T
 	fieldPath?: string
 	fileName?: string
 	dropText?: { one: string, many: string }
-	buttonText?: { one: string, many: string }
+	buttonLabel?: string
 
 }
 

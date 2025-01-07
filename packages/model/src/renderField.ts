@@ -55,7 +55,6 @@ type OComponentUpload = Omit<ModelComponentUpload, 'component'>;
 type OComponentUploadImage = Omit<ModelComponentUploadImage, 'component'>;
 type OComponentMd = Omit<ModelComponentMd, 'component'>;
 
-// @ts-expect-error - not typed
 import('@preignition/pwi-input/src/pwi-input-translation')
 import('@preignition/pwi-input/src/pwi-input-translation-textarea')
 import('@material/web/checkbox/checkbox.js')
@@ -443,7 +442,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .accept=${model.accept}
       .maxFileSize=${model.maxFileSize}
       .fieldPath=${model.fieldPath || name}
-      .buttonText=${model.buttonText || nothing}
+      .buttonLabel=${model.buttonLabel || nothing}
       ></lapp-upload-image>`
 
     const imageFirebase = html`<lapp-upload-image-firebase
@@ -459,7 +458,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .accept=${model.accept}
       .maxFileSize=${model.maxFileSize}
       .fieldPath=${model.fieldPath || name}
-      .buttonText=${model.buttonText || nothing}
+      .buttonLabel=${model.buttonLabel || nothing}
      ></lapp-upload-image-firebase>`
     return model.useFirestore ? image : imageFirebase;
   }
