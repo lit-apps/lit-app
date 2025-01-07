@@ -1,19 +1,15 @@
 import { ensure } from '@lit-app/shared/types.js';
 import { get } from '@preignition/preignition-util/src/deep';
 import { activeItemChanged } from '@preignition/preignition-util/src/grid';
-import { Grid } from '@vaadin/grid';
-// import '@vaadin/grid/theme/material/vaadin-grid-column.js';
-// import '@vaadin/grid/theme/material/vaadin-grid-sort-column.js';
-// import '@vaadin/grid/theme/material/vaadin-grid.js';
+import type { Grid } from '@vaadin/grid/vaadin-lit-grid.js';
+import '@vaadin/grid/lit-all-imports.js'
 import { html, nothing, TemplateResult } from 'lit';
 import {
   columnBodyRenderer,
   columnHeaderRenderer,
-} from '@vaadin/grid/src/lit/column-renderer-directives.js';
-
-import {
   gridRowDetailsRenderer
-} from '@vaadin/grid/src/lit/renderer-directives.js';
+} from '@vaadin/grid/lit';
+
 
 import { choose } from 'lit/directives/choose.js';
 import { ifDefined } from 'lit/directives/if-defined.js';

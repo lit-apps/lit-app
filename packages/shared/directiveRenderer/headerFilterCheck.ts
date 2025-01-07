@@ -1,9 +1,9 @@
 import type { MdCheckbox } from '@material/web/checkbox/checkbox';
-import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
+import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
 import { html } from 'lit';
 import {
 	type GridColumnHeaderLitRenderer
-} from '@vaadin/grid/src/lit/column-renderer-directives.js';
+} from '@vaadin/grid/lit';
 import('@material/web/checkbox/checkbox.js');
 
 

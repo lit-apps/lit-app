@@ -1,5 +1,5 @@
 import { Upload } from "@vaadin/upload/src/vaadin-lit-upload.js";
-import '@vaadin/upload/theme/lumo/vaadin-lit-upload.js'
+import '@vaadin/upload/vaadin-lit-upload.js'
 import { customElement } from 'lit/decorators.js';
 import { UploadJSONDatabaseMixin } from './internals/json-database-mixin.js';
 import { JSONMixin } from './internals/json-mixin.js';

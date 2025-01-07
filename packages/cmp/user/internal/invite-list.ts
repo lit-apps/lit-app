@@ -1,10 +1,7 @@
-// import '@vaadin/grid/theme/material/vaadin-grid-filter-column.js';
-// import '@vaadin/grid/theme/material/vaadin-grid-selection-column.js';
-// import '@vaadin/grid/theme/material/vaadin-grid-sort-column.js';
-// import '@vaadin/grid/theme/material/vaadin-grid-tree-column.js';
-// import '@vaadin/grid/theme/material/vaadin-grid.js';
+
 import { css, html, LitElement } from "lit";
 import { property } from 'lit/decorators.js';
+import '@vaadin/grid/lit-all-imports.js'
 import { UserItem, UserItemRole, UserUidRoleT } from './types';
 
 import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';
@@ -16,7 +13,7 @@ import activeItemChanged from '@preignition/preignition-util/src/grid/activeItem
 import type { GridRowDetailsRenderer } from '@vaadin/grid';
 import {
 	columnBodyRenderer,
-} from '@vaadin/grid/src/lit/column-renderer-directives.js';
+} from '@vaadin/grid/lit';
 
 import '../../dom/observer';
 import '../card';

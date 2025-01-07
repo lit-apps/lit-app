@@ -1,6 +1,6 @@
 // import PwiTooltip from "@preignition/pwi-tooltip/src/pwi-tooltip.js";
 import { customElement } from 'lit/decorators.js';
-import '@vaadin/tooltip/theme/lumo/vaadin-lit-tooltip.js';
+import '@vaadin/tooltip/vaadin-lit-tooltip.js';
 import {Tooltip} from '@vaadin/tooltip/src/vaadin-lit-tooltip.js';
 
 import { css, registerStyles } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';

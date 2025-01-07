@@ -22,9 +22,7 @@ import type {
   ModelComponentMd,
   ModelComponentMdDroppable
 } from './types/modelComponent';
-// Note(CG): need to import polymer here, to avoid https://github.com/vitejs/vite/issues/5142
-// import '@polymer/polymer';
-// import '@vaadin/multi-select-combo-box/theme/lumo/vaadin-multi-select-combo-box';
+import '@vaadin/multi-select-combo-box/vaadin-lit-multi-select-combo-box';
 import AbstractEntity from './AbstractEntity.js';
 
 import {

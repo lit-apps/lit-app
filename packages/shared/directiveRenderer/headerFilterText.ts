@@ -1,10 +1,9 @@
 import { html } from 'lit';
 import {
  type	GridColumnHeaderLitRenderer
-} from '@vaadin/grid/src/lit/column-renderer-directives.js';
-import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
-// import '@vaadin/grid/theme/material/vaadin-grid-filter-column.js';
-// import '@vaadin/grid/theme/material/vaadin-grid-sort-column.js';
+} from '@vaadin/grid/lit';
+import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
+import '@vaadin/text-field/vaadin-lit-text-field.js';
 
 
 type direction = 'asc' | 'desc' | null;

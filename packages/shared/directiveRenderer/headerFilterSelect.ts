@@ -1,12 +1,10 @@
-// import '@vaadin/combo-box/theme/material/vaadin-combo-box';
 import '@vaadin/combo-box/vaadin-lit-combo-box';
 import '@vaadin/select/vaadin-lit-select';
-import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
-// import '@vaadin/grid/theme/material/vaadin-grid-filter-column.js';
+import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
 import { html, TemplateResult, LitElement } from 'lit';
 import {
 	type GridColumnHeaderLitRenderer
-} from '@vaadin/grid/src/lit/column-renderer-directives.js';
+} from '@vaadin/grid/lit';
 
 
 type direction = 'asc' | 'desc' | null;

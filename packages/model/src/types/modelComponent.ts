@@ -4,7 +4,7 @@ import { TemplateResult } from 'lit';
 import type {
 	GridColumnBodyLitRenderer,
 	GridColumnHeaderLitRenderer
-} from '@vaadin/grid/src/lit/column-renderer-directives.js';
+} from '@vaadin/grid/lit';
 import { RenderConfig } from './entity.js';
 
 

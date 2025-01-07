@@ -1,10 +1,10 @@
 import { html, TemplateResult } from 'lit';
-import { GridItemModel } from '@vaadin/grid';
-import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
+import {  GridItemModel } from '@vaadin/grid/vaadin-lit-grid.js';
+import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
 import '@lit-app/cmp/datetime/format';
 import {
 	type GridColumnBodyLitRenderer,
-} from '@vaadin/grid/src/lit/column-renderer-directives.js';
+} from '@vaadin/grid/lit';
 
 import type { Timestamp } from 'firebase/firestore';
 

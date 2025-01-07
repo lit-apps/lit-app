@@ -20,7 +20,7 @@ import '@preignition/lit-firebase/store';
 import { LitElement, html } from "lit";
 import {
 	columnBodyRenderer,
-} from '@vaadin/grid/src/lit/column-renderer-directives.js';
+} from '@vaadin/grid/lit';
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { ProvideUserAccessMixin } from './context-user-access-mixin';

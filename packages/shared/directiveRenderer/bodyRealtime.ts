@@ -1,11 +1,11 @@
 import { html, TemplateResult } from 'lit';
-import { GridItemModel } from '@vaadin/grid';
-import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
+import {  GridItemModel } from '@vaadin/grid/vaadin-lit-grid.js';
+import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
 import '@preignition/lit-firebase/span';
 
 import {
 	type GridColumnBodyLitRenderer,
-} from '@vaadin/grid/src/lit/column-renderer-directives.js';
+} from '@vaadin/grid/lit';
 
 type value = Date | string | number;
 type getter = (item: any) => value | Promise<value>;
