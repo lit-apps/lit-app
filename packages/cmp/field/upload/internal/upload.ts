@@ -1,13 +1,13 @@
 
 import { createValidator } from '@material/web/labs/behaviors/constraint-validation';
 import { Validator } from '@material/web/labs/behaviors/validators/validator';
-import '@preignition/firebase-upload/document-upload';
 import { html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { Generic, GenericI } from '../../generic/generic';
 import { UploadValidator } from './uploadValidator';
+import '../../../upload/document-firebase';
+import '../../../upload/document';
 
-// import type {FirebaseDocumentUpload} '@preignition/firebase-upload/document-upload';
 
 /**
  * A field component for uploading files to firebase storage.
@@ -33,8 +33,8 @@ export abstract class Upload extends Generic {
 
   // override variant: string = 'a11y'
 
-  @query('firebase-document-upload') override readonly input!: HTMLInputElement;
-  @query('firebase-document-upload') override readonly inputOrTextarea!: HTMLInputElement;
+  @query('lapp-upload-document-firebase,lapp-upload-document') override readonly input!: HTMLInputElement;
+  @query('lapp-upload-document-firebase,lapp-upload-document') override readonly inputOrTextarea!: HTMLInputElement;
 
 
   /**
@@ -134,11 +134,28 @@ export abstract class Upload extends Generic {
 
   override renderInputOrTextarea() {
     
-    return html`
-    <firebase-document-upload
+    const uploadFirebase = html`
+    <lapp-upload-document-firebase
       ?inert=${this.disabled || this.readonly}
       .label=${this.label}
-      .useFirestore=${this.useFirestore}
+      .path=${this.path}
+      .appName=${this.appName}
+      .metaData=${this.metaData}
+      .store=${this.store}
+      .fileName=${this.fileName}
+      .maxFiles=${this.maxFiles}
+      .readonly=${this.readonly}
+      .hideExisting=${this.hideExisting}
+      .preventRead=${this.preventRead}
+      .buttonText=${this.buttonText}
+      .dropText=${this.dropText}
+      .noFileExtension=${this.noFileExtension}
+      ></lapp-upload-document-firebase>
+      `
+    const uploadFirestore = html`
+        <lapp-upload-document
+      ?inert=${this.disabled || this.readonly}
+      .label=${this.label}
       .fieldPath=${this.fieldPath}
       .path=${this.path}
       .appName=${this.appName}
@@ -151,11 +168,10 @@ export abstract class Upload extends Generic {
       .preventRead=${this.preventRead}
       .buttonText=${this.buttonText}
       .dropText=${this.dropText}
-      .uploading=${this.uploading}
       .noFileExtension=${this.noFileExtension}
-      ></firebase-document-upload>
-    
-		`
+      ></lapp-upload-document>
+      `
+    return this.useFirestore ? uploadFirestore : uploadFirebase;
   }
 
 

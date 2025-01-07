@@ -96,19 +96,10 @@ export type FirebaseUploadFile = UploadFile & {
   url: string | undefined,
   timestamp: string,
   indeterminate: boolean | undefined,
-  // ref: StorageReference,
-  // path: string,
-  // store: string | undefined,
-  // dbPath: string | undefined
-  // useFirestore: boolean | undefined
-  // fieldPath: string | undefined
-
 }
 
-
-//TODO: handle drag and drop 
-//TODO: handle observe metadata
-//TODO: aria-described by for button
+// TODO: aria-described by for button
+// TODO: add meta-data-changed event
 
 /**
  * Storage - a mixin to handle file upload to firebase storage
@@ -150,6 +141,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
         files = [metaData];
       }
       this.uploadFiles(files);
+      this.dispatchEvent(new CustomEvent('meta-data-changed', { detail: metaData , bubbles: true, composed: true }));
     }
 
     @watch('readonly') readonlyChanged(readonly: boolean, oldReadonly: boolean) {
@@ -164,7 +156,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
 
     constructor(...args: any[]) {
       super(...args);
-      this.addEventListener(UploadFinishedEvent.eventName, this.uploadFinished.bind(this));
+      // this.addEventListener(UploadFinishedEvent.eventName, this.uploadFinished.bind(this));
     }
 
     override willUpdate(props: PropertyValues) {
@@ -176,7 +168,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
 
     uploadFinished(e: UploadFinishedEvent) {
       console.log('upload finished - need override', e.detail);
-      e.detail.promise = Promise.resolve(null);
+      // e.detail.promise = Promise.resolve(null);
     }
 
     subscribeMetaData(_path: string, _fieldPath?: string) {
@@ -327,7 +319,9 @@ export const Storage = <T extends MixinBase<BaseT>>(
                 this._renderFileList();
                 file = this.normalizeFile(file)
                 const event = new UploadFinishedEvent(file, isMulti);
-                this.dispatchEvent(event);
+                if(this.dispatchEvent(event)) {
+                  this.uploadFinished(event);
+                };
                 return event.detail.promise;
               })
               .then(() => {

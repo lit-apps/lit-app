@@ -2,7 +2,8 @@ import { css } from 'lit';
 const styles = css`
  
  /** we need to reset styles because field does a all:unset on .content ::slotted(*) . */ 
- firebase-document-upload {
+ lapp-upload-document-firebase,
+ lapp-upload-document {
 		background-color: var(--color-on-primary);
     overflow: hidden;
     border: 1px dashed var(--color-divider);
@@ -16,7 +17,8 @@ const styles = css`
 	}
 
   /** smaller margin top for a11y variant */
-  .field[variant="a11y"] firebase-document-upload {
+  .field[variant="a11y"] lapp-upload-document-firebase,
+  .field[variant="a11y"] lapp-upload-document {
     margin-top: calc( var(--_with-label-top-space) + var(--_label-text-populated-line-height));
   }
 

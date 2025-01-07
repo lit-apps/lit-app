@@ -1,5 +1,4 @@
 import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
-// import { FirebaseUploadFile } from '@preignition/firebase-upload/src/upload-mixin.js';
 import { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';
 import { property } from 'lit/decorators.js';
 import { UploadFinishedEvent, FirebaseUploadFile } from './storage-mixin.js';
@@ -8,6 +7,7 @@ import { UploadFinishedEvent, FirebaseUploadFile } from './storage-mixin.js';
 export declare class JSONMixinInterface {
   validateJSON: (data: unknown) => boolean
   uploadFinished(e: UploadFinishedEvent): void
+  clearFile(file: FirebaseUploadFile): void
   // uploadFinished: (e: UploadFinishedEvent) => void;
   appName: string | undefined
   /**
@@ -64,12 +64,13 @@ export const JSONMixin = <T extends MixinBase<BaseT>>(
       super(_args);
       this.maxFiles = 1;
       this.accept = 'application/json';
-      this.addEventListener(UploadFinishedEvent.eventName, this.uploadFinished.bind(this));
+      // this.addEventListener(UploadFinishedEvent.eventName, this.uploadFinished.bind(this));
     }
 
-    uploadFinished(e: UploadFinishedEvent) {
+    async uploadFinished(e: UploadFinishedEvent) {
       console.log('upload finished - need override', e.detail);
-      e.detail.promise = Promise.resolve(null);
+      // await e.detail.promise;
+      this.clearFile(e.detail.file);
     }
 
     get uploading() {
@@ -126,7 +127,9 @@ export const JSONMixin = <T extends MixinBase<BaseT>>(
               this._renderFileList();
               file = this.normalizeFile(file)
               const event = new UploadFinishedEvent(file, false, data);
-              this.dispatchEvent(event);
+              if(this.dispatchEvent(event)) {
+                this.uploadFinished(event);
+              };
               return event.detail.promise;
             }
           } catch (error) {
@@ -137,13 +140,14 @@ export const JSONMixin = <T extends MixinBase<BaseT>>(
       }
 
     }
-    // private clearFile(file: FirebaseUploadFile) {
-    //   // Note(cg): remove file from list after a delay.
-    //   setTimeout(() => {
-    //     this._removeFile(file);
-    //     this._renderFileList();
-    //   }, 6000);
-    // }
+
+    clearFile(file: FirebaseUploadFile) {
+      // Note(cg): remove file from list after a delay.
+      setTimeout(() => {
+        this._removeFile(file);
+        this._renderFileList();
+      }, 6000);
+    }
     protected getTimestamp() {
       return new Date().toISOString();
     }

@@ -23,9 +23,10 @@ export const UploadJSONDatabaseMixin = <T extends MixinBase<BaseT>>(
   abstract class UploadJSONDatabaseMixinClass extends superClass {
 
     override uploadFinished(e: UploadFinishedEvent) {
-      console.log('upload finished', e.detail);
+      // console.log('upload finished', e.detail);
       const db = getDatabase(getApp(this.appName));
       e.detail.promise = set(ref(db, this.path), { ...e.detail.data });
+      super.uploadFinished(e);
     }
 
 

@@ -30,7 +30,7 @@ const style = css`
 	}
 
 	:host([dragover-valid]) [droppable]::before {
-		transform: translate(-50%, -50%) scale(10);
+		transform: translate(-50%, -50%) scale(20);
 		opacity: 0.1;
 		transition-duration: 2s, 0.1s;
 		transition-delay: 0s, 0s;

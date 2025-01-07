@@ -21,7 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "@a11y/form": "workspace:^",
-    "@floating-ui/dom": "^1.6.12",
+    "@floating-ui/dom": "^1.6.13",
     "@github/markdown-toolbar-element": "^2.2.3",
     "@json2csv/plainjs": "^7.0.6",
     "@lit-app/cmp": "link:",
@@ -36,7 +36,6 @@
     "@material/web": "link:../../../app-dependencies/material-web",
     "@open-wc/dedupe-mixin": "^1.4.0",
     "@polymer/polymer": "^3.5.1",
-    "@preignition/firebase-upload": "link:../../../packages/firebase-upload",
     "@preignition/gitbook-parser": "link:../../../packages/gitbook-parser",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
@@ -66,7 +65,7 @@
     "@vitest/utils": "^2.1.8",
     "eslint": "^8.40.0",
     "typescript": "^5.0.4",
-    "vite": "^5.4.11",
+    "vite": "^6.0.7",
     "vitest": "^2.1.8",
     "webdriverio": "^8.10.7",
     "wireit": "^0.14.7"

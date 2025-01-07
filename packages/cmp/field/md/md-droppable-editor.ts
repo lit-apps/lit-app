@@ -1,17 +1,30 @@
 import lappMdEditor from './md-editor';
 
 import { html, css, PropertyValues, nothing } from "lit";
-import { customElement, property, query, state } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 import droppableStyles from './droppable-styles';
 import('@material/web/progress/linear-progress.js');
 import('@material/web/button/outlined-button.js');
 import('../../button/small-outlined-button')
 import('../../button/small-text-button')
-import('@preignition/firebase-upload/document-upload')
+import '../../upload/document-firebase';
+import '../../upload/document';
+import lappUploadDocument from '../../upload/document';
+
+interface UploadDocumentI extends lappUploadDocument {
+	_onAddFilesClick(e: CustomEvent): void
+	_uploadFile(file: File): void
+	_dragover: boolean
+	_dragoverValid: boolean
+	_onDragover(e: Event): void
+	_onDragleave(e: Event): void
+	_onDrop(e: Event): void
+}
+// import { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';
 
 type UploadStatusT = {
 	status: 'start' | 'finish' | 'progress' | 'success' | 'error'
-	file: File & {url: string}
+	file: File & { url: string }
 	error?: string
 }
 const imageLoading = '{{loading image ...}}';
@@ -26,12 +39,15 @@ const imageLoading = '{{loading image ...}}';
 
 export default class lappMdDroppableEditor extends lappMdEditor {
 
+	private _listeners: Record<string, EventListener> | undefined;
+
 	static override styles = [
 		...lappMdEditor.styles,
 		droppableStyles,
 		css`
 			
-			firebase-document-upload  {
+			lapp-upload-document-firebase, 
+			lapp-upload-document {
         display: none;
       }
 
@@ -50,7 +66,7 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 	 * prevent drop when true
 	 */
 	@property({ type: Boolean, reflect: true }) nodrop: boolean = false;
-	
+
 	/**
 	 * Specifies the types of files that the server accepts.
 	 * Syntax: a comma-separated list of MIME type patterns (wildcards are
@@ -79,8 +95,14 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 		reflect: true,
 		type: Boolean
 	}) dragoverValid!: boolean
-
-
+	/*
+	 * `dragoverValid` true when we drag-over and the drag is valid.
+	 */
+	@property({
+		attribute: 'dragover',
+		reflect: true,
+		type: Boolean
+	}) dragover!: boolean
 	/*
 	 * true to use firestore
 	 */
@@ -89,33 +111,52 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 	@state() _uploadStatus!: UploadStatusT
 	@state() loading: boolean = false
 
-	@query('firebase-document-upload') upload!: any;
+	@query('lapp-upload-document-firebase, lapp-upload-document') upload!: UploadDocumentI;
 
 	override render() {
-		return html`
-		 <firebase-document-upload 
-        prevent-read
+
+		const uploadFirebase = html`
+    <lapp-upload-document-firebase
+				prevent-read
         .nodrop=${this.nodrop}
         .accept=${this.accept}
         .maxFileSize=${this.maxFileSize}
         .path=${this.path}
         .dropTarget=${this}
-        .useFirestore=${this.useFirestore}
         @upload-start=${this.onUploadStart} 
         @upload-success=${this.onUploadSuccess} 
         @upload-error=${this.onUploadError} 
         @upload-progress=${this.onUploadProgress}  
         @upload-finished=${this.onUploadFinished}  
         @file-reject=${this.onFileReject}
-      ></firebase-document-upload>
-			
+      ></lapp-upload-document-firebase>
+      `
+		const uploadFirestore = html`
+        <lapp-upload-document
+        prevent-read
+        .nodrop=${this.nodrop}
+        .accept=${this.accept}
+        .maxFileSize=${this.maxFileSize}
+        .path=${this.path}
+        .dropTarget=${this}
+        @upload-start=${this.onUploadStart} 
+        @upload-success=${this.onUploadSuccess} 
+        @upload-error=${this.onUploadError} 
+        @upload-progress=${this.onUploadProgress}  
+        @upload-finished=${this.onUploadFinished}  
+        @file-reject=${this.onFileReject}
+      ></lapp-upload-document>
+      `
+		return html`
+
+			${this.useFirestore ? uploadFirestore : uploadFirebase}
 			${super.render()}
 		`;
 	}
 
 	protected override renderEditor() {
 		return html`
-		${this.loading ? html `<md-linear-progress indeterminate aria-label="uploading image"></md-linear-progress> ` : nothing} 
+		${this.loading ? html`<md-linear-progress indeterminate aria-label="uploading image"></md-linear-progress> ` : nothing} 
 		${super.renderEditor()}
 		`
 	}
@@ -127,15 +168,61 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 		<lapp-small-text-button @click=${onclickUpload}>
 			<lapp-icon slot="icon" no-fill icon="image"></lapp-icon>Paste, drop or click to add files
 		</lapp-small-text-button>
-			`	
+			`
 	}
 
 	override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
 		this.addEventListener('paste', this.onPaste);
-
+		this.addListeners();
 	}
 
+	private addListeners() {
+		const input = this._input as any;
+		const upload = this.upload;
+
+		if (!upload || !input || this._listeners) {
+			return;
+		}
+
+		const relayToUpload = (name: '_onDragover' | '_onDragleave' | '_onDrop') => (e: Event) => {
+			upload[name](e);
+			this.dragover = upload._dragover;
+			this.dragoverValid = upload._dragoverValid;
+		}
+
+		this._listeners = {
+			onDragover: relayToUpload('_onDragover'),
+			onDragleave: relayToUpload('_onDragleave'),
+			onDrop: relayToUpload('_onDrop')
+		}
+
+		input.addEventListener('dragover', this._listeners.onDragover);
+		input.addEventListener('dragleave', this._listeners.onDragleave);
+		input.addEventListener('drop', this._listeners.onDrop);
+		this.addEventListener('paste', this.onPaste);
+	}
+
+	private removeListeners() {
+		const input = this._input as any;
+		if (!this._listeners || !input) {
+			return;
+		}
+		input.removeEventListener('dragover', this._listeners.onDragover);
+		input.removeEventListener('dragleave', this._listeners.onDragleave);
+		input.removeEventListener('drop', this._listeners.onDrop);
+		this.removeEventListener('paste', this.onPaste);
+		this._listeners = undefined;
+	}
+
+	override connectedCallback() {
+		super.connectedCallback();
+		this.addListeners();
+	}
+	override disconnectedCallback() {
+		this.removeListeners();
+		super.disconnectedCallback();
+	}
 	override update(props: PropertyValues) {
 		if (props.has('_uploadStatus')) {
 			this.processStatus();
@@ -177,28 +264,17 @@ export default class lappMdDroppableEditor extends lappMdEditor {
 			for (let i = 0; i < items.length; i++) {
 				if (items[i].type.indexOf('image') !== -1) {
 					// We need to represent the image as a file
-					this.upload?._uploadFirebaseFile(items[i].getAsFile());
+					this.upload?._uploadFile(items[i].getAsFile() as File);
 					// Prevent the image (or URL) from being pasted into the contenteditable element
 					e.preventDefault();
 				}
 			}
 		}
 	}
-	_isOnTextarea(e: CustomEvent) {
-		return (e.composedPath()[0] as HTMLElement).localName === 'textarea';
-	}
-
-	canDrag(e: CustomEvent) {
-		return this._isOnTextarea(e);
-	}
-
-	canDrop(e: CustomEvent) {
-		return this._isOnTextarea(e);
-	}
 
 	uploadingStarted() {
 		this.insertAtCaret(`\n${imageLoading}`);
-		this.md = (this._input as any).inputOrTextarea?.value || ''; 
+		this.md = (this._input as any).inputOrTextarea?.value || '';
 	}
 
 	formatURL(url: string) {

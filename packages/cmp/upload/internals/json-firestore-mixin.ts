@@ -23,10 +23,11 @@ export const UploadJSONFirestoreMixin = <T extends MixinBase<BaseT>>(
   abstract class UploadJSONFirestoreMixinClass extends superClass {
 
     override uploadFinished(e: UploadFinishedEvent) {
-      console.log('upload finished', e.detail);
+      // console.log('upload finished', e.detail);
       const isMultiple = e.detail.isMultiple;
       const fieldPath = (this.fieldPath || 'upload') + (isMultiple ? '.' + this.fileName.split('.')[0] : '');
       e.detail.promise = updateDoc(doc(getFirestore(getApp(this.appName)), this.path), { [fieldPath]: { ...e.detail.data } });
+      super.uploadFinished(e);
     }
 
   };

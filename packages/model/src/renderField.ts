@@ -56,7 +56,6 @@ type OComponentUploadImage = Omit<ModelComponentUploadImage, 'component'>;
 type OComponentMd = Omit<ModelComponentMd, 'component'>;
 
 // @ts-expect-error - not typed
-import('@preignition/firebase-upload/image-upload')
 import('@preignition/pwi-input/src/pwi-input-translation')
 import('@preignition/pwi-input/src/pwi-input-translation-textarea')
 import('@material/web/checkbox/checkbox.js')
@@ -66,6 +65,8 @@ import('../../cmp/field/choice-checkbox')
 import('../../cmp/field/choice-radio')
 import('../../cmp/field/choice-star')
 import('../../cmp/field/upload')
+import('../../cmp/upload/image-firebase.js')
+import('../../cmp/upload/image.js')
 import('../../cmp/field/text-field')
 import('../../cmp/field/md-editor')
 import('../../cmp/field/md-droppable-editor')
@@ -422,15 +423,14 @@ export function renderField<D extends DefaultI>(this: EntityElement,
         .maxFiles=${model.maxFiles}
         .accept=${model.accept}
         .maxFileSize=${model.maxFileSize}
-        .useFirestore=${model.useFirestore}
+        .useFirestore=${!!model.useFirestore}
         .fieldPath=${model.fieldPath || name}
       ></lapp-upload>
       `;
   }
 
   function renderUploadImage(model: OComponentUploadImage) {
-    return html`
-    <firebase-image-upload
+    const image = html`<lapp-upload-image
       class=${cls}
       .name=${name}
       style=${ifDefined(model.style)}
@@ -442,11 +442,26 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       .path=${model.path}
       .accept=${model.accept}
       .maxFileSize=${model.maxFileSize}
-      .useFirestore=${model.useFirestore}
       .fieldPath=${model.fieldPath || name}
       .buttonText=${model.buttonText || nothing}
-    ></firebase-image-upload>
-    `;
+      ></lapp-upload-image>`
+
+    const imageFirebase = html`<lapp-upload-image-firebase
+      class=${cls}
+      .name=${name}
+      style=${ifDefined(model.style)}
+      .readonly=${disabled}
+      .writeLabel=${label}
+      .helper=${model.helper}
+      .required=${!!model.required}
+      .store=${model.store}
+      .path=${model.path}
+      .accept=${model.accept}
+      .maxFileSize=${model.maxFileSize}
+      .fieldPath=${model.fieldPath || name}
+      .buttonText=${model.buttonText || nothing}
+     ></lapp-upload-image-firebase>`
+    return model.useFirestore ? image : imageFirebase;
   }
 
   function renderRadioSlider(model: OComponentSlider) {
