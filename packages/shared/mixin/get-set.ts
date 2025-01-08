@@ -37,7 +37,8 @@ export const GetSetMixin = <T extends Constructor<LitElement>>(superClass: T) =>
     /**
      * onInput defautl handler. To be used like `
      * <lapp-text-field
-     *     @input=${this.onInput('data.title')}></lapp-text-field>`
+     *     @input=${this.onInput('data.title')}>
+     * </lapp-text-field>`
      * Main difference with onData is e.target[path] instead of e.detail[path]
      * @param  {String} path  path to write to
      * @param  {String} valPath='value'

@@ -12,7 +12,11 @@ interface YTClass extends Constructor<HTMLElement & {
 	getParams(): URLSearchParams
 	connectedCallback(): void
 	needsYTApi: boolean
-}> {}
+}> {
+	videoid: string
+	playLabel: string
+	params: string
+}
 
 // get class from 'lite-youtube' customElements
 const LiteYoutubeClass: YTClass = customElements.get('lite-youtube') as YTClass;
@@ -29,7 +33,8 @@ const LiteYoutubeClass: YTClass = customElements.get('lite-youtube') as YTClass;
  */
 
 @customElement('lapp-youtube')
-export default class lappYoutube  extends LiteYoutubeClass {
+export default class lappYoutube  extends LiteYoutubeClass  {
+
 	override connectedCallback() {
 		super.connectedCallback();
 		// We need to load the youtube API to autoplay and stop autoplay on blur or page change

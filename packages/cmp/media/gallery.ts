@@ -14,7 +14,7 @@ import('@material/web/dialog/dialog.js');
 
 type ItemT = {
   src: string;
-  thumbnail: string;
+  thumbnail?: string;
 }
 
 @customElement('lapp-media-gallery')
