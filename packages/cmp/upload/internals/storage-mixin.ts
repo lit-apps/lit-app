@@ -141,7 +141,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
         files = [metaData];
       }
       this.uploadFiles(files);
-      this.dispatchEvent(new CustomEvent('meta-data-changed', { detail: metaData , bubbles: true, composed: true }));
+      this.dispatchEvent(new CustomEvent('meta-data-changed', { detail: {value: metaData} , bubbles: true, composed: true }));
     }
 
     @watch('readonly') readonlyChanged(readonly: boolean, oldReadonly: boolean) {
