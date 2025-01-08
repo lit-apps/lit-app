@@ -29,7 +29,6 @@ export default defineConfig({
       "@material/mwc-ripple",
       "@material/mwc-ripple/ripple-directive.js",
       "@material/mwc-snackbar",
-      "@polymer/polymer",
       "@material/mwc-top-app-bar",
       "@material/mwc-top-app-bar-fixed",
       "@preignition/preignition-util",
