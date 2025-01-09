@@ -6,7 +6,7 @@ import { Select } from './select.js';
 
 import { html, nothing } from 'lit';
 
-import { SelectOption } from '@material/web/select/internal/shared.js';
+import type { SelectOption } from '@material/web/select/internal/selectoption/select-option.js';
 import { property, query, state } from 'lit/decorators.js';
 
 // @ts-expect-error  - we are cheating
@@ -44,6 +44,7 @@ export abstract class SelectInput extends Select {
 			this._searchHasFocus = true;
 			this.search?.focus();
 		}
+		// @ts-expect-error - handleFocus is private
 		super.handleFocus();
   }
 
@@ -58,6 +59,7 @@ export abstract class SelectInput extends Select {
 	}
 
 	private renderChips() {
+		// @ts-expect-error - getSelectedOptions is private
 		const selectedOptions = this.getSelectedOptions();
 		if (!selectedOptions) {
 			return nothing;
@@ -72,12 +74,13 @@ export abstract class SelectInput extends Select {
 			@remove=${this.onRemove(option)}></md-input-chip>`;
 	}
 
-	private onRemove(option) {
+	private onRemove(option: SelectOption) {
 		return async (e: Event) => {
 			// we need to preventDefault to prevent the chip from being removed by the chip-set
 			e.preventDefault();
 			option.selected = false;
 			await this.updateComplete;
+			// @ts-expect-error - dispatchInteractionEvents is private
 			this.dispatchInteractionEvents()
 		}
 	}
@@ -102,6 +105,7 @@ export abstract class SelectInput extends Select {
 		if (this.search) {
 			this.search.value = ''
 		}
+		// @ts-expect-error - updateValueAndDisplayText is private
 		return super.updateValueAndDisplayText();
 		
 	}
@@ -113,6 +117,7 @@ export abstract class SelectInput extends Select {
  */
 	override selectItem(item: SelectOption) {
 		// TODO: handle multiSelect
+		// @ts-expect-error
 		return super.selectItem(item);
 	}
 
