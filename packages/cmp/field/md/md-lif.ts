@@ -6,6 +6,8 @@ import { classMap } from 'lit/directives/class-map.js';
 import { LifSpan } from '@preignition/lit-firebase/span';
 import { MdConfigT } from './types';
 import FirebaseDocumentController from "@preignition/lit-firebase/src/firebase-document-controller";
+import { HTMLEvent } from "@lit-app/shared/types.js";
+import { LappMdEditor } from "../md-editor.js";
 
 /**
  * An element to render markdown content straight from firebase.
@@ -37,7 +39,7 @@ export default class lappMdLif extends ConsumeAccessibilityMixin(LifSpan) {
   }
 
   renderEdit() {
-		const onInput = (e) => {
+		const onInput = (e: HTMLEvent<LappMdEditor>) => {
 			console.info('onInput', e.target.md);
 			(this.valueController as FirebaseDocumentController).set(e.target.md);
 		}
@@ -51,7 +53,7 @@ export default class lappMdLif extends ConsumeAccessibilityMixin(LifSpan) {
 
 	override renderValue(value: string) {
 		// we make md field tabbable if we detect accessible device
-		const tabindex = this.accessibility?.accessibleDevice ? 0 : nothing;
+		const tabindex = this.accessibility?.accessibleDevice ? 0 : nothing as any;
 		return html`<div tabindex=${tabindex} class="markdown ${classMap(this.accessibilityClasses)}">${parse(this.format(value), this.mdConfig)}</div>`;
 	}
 }

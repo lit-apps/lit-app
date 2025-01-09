@@ -8,5 +8,5 @@ export function normalizeFile(file: UploadFile): UploadFile & { timestamp: strin
     size: file.size || 0,
     type: file.type || '',
     timestamp: new Date().toISOString()
-  };
+  } as UploadFile & { timestamp: string } 
 }

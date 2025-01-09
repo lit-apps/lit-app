@@ -125,6 +125,7 @@ export class EntityAccess extends
 		return {
 			entityAccess: this.entityAccess,
 			entityStatus: this.entityStatus,
+			consumingMode: 'view',
 			level: this.level
 		}
 	}

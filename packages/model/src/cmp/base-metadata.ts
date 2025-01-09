@@ -1,4 +1,4 @@
-import { ActionT, ActionEntityI, ActionEventI } from '../types/actionTypes.js';
+import { ActionT, ActionEntityI, ActionEventI, ActionServerEntityI } from '../types/actionTypes.js';
 import { Timestamp } from 'firebase/firestore';
 import { LitElement, css, html } from "lit";
 import { state } from 'lit/decorators.js';
@@ -7,7 +7,8 @@ type Meta = {
 	by: string;
 	timestamp: Timestamp;
 }
-type Actions = {[key: string]:  ActionEntityI | ActionEventI};
+// type Actions = {[key: string]:  ActionEntityI | ActionEventI | ActionServerEntityI};
+type Actions = {[key: string]:  ActionT};
 
 const renderMeta = (label: string, meta: Meta) => {
 	if (!meta) { return '' }
@@ -49,7 +50,7 @@ export default class BaseMetadata extends LitElement {
 	}
 
 	private get metaActions() {
-		return Object.entries(this.actions)
+		return Object.entries(this.actions as Record<string,ActionEntityI>)
 		.filter(([_key, action]) => action.meta)
 		.sort(([_key1, action1], [_key2, action2]) => (action1.meta?.index ?? 0) - (action2.meta?.index ?? 0));
 		;

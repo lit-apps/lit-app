@@ -2,6 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
    "module": "esnext",
+   "paths": {
+    "firebase": ["./node_modules/firebase"]
+   }
   },
   "include": ["./**/*.ts"],
   "exclude": []

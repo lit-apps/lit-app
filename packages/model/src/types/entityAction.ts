@@ -51,20 +51,6 @@ export function isNameAction(data: AllActionI): data is NameActionI {
 	return actionName === 'setName'
 }
 
-type InviteAction = 'invite'
-type InviteDetail = Detail & {
-	role: string
-}
-export interface InviteActionI extends BaseActionI {
-	actionName: InviteAction
-	detail: InviteDetail
-}
-
-export function isInviteAction(data: AllActionI): data is InviteActionI {
-	const actionName = data.actionName
-	return actionName === 'invite'
-}
-
 type AccessAction = 'setAccess' | 'addAccess' | 'removeAccess'
 type Role = keyof Access['user']
 type AccessDetail = Detail & {
@@ -88,7 +74,6 @@ export type AllActionI =
 	
 PrivateActionI |
 	AccessActionI |
-	InviteActionI |
 	NameActionI |
 	DefaultActionI
 export type AllAction = AllActionI['actionName'] 

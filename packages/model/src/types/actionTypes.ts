@@ -16,7 +16,7 @@ export interface HostElementI<D = any> extends LitElement {
 
 type VoidOrEventT<E> = void | E
 export type ActionHandlerT<D, TData = D, E extends CustomEvent = CustomEvent> = (
-  this: HTMLElement & {Entity: EntityI, data: any}, //dbRefEntity,
+  this: HTMLElement & {Entity: EntityI, data: any}, //dbRefEntity
   ref: DocumentReference<D> | CollectionReference<D>,
   data: TData,
   event: E) => VoidOrEventT<E> | Promise<VoidOrEventT<E>>
@@ -119,10 +119,6 @@ type ActionConfigT<D, TData = D, E extends CustomEvent = CustomEvent> = {
    * TODO: replace by pushEvent and do not write by default to event
    */
   preventWriteEvent?: boolean
-  /**
-   * handle the action on the server (via userAction trigger)
-   */
-  handleOnServer?: boolean
   /** 
    * if to to display with metaData
    */
@@ -152,14 +148,20 @@ export interface ActionEventI<D = any> extends ActionBaseI<D>, ActionConfigT<D, 
 
 /**
  * Entity actions are actions that require an entityAction to be dispatched. There is no need to define a getEvent function
- * The handler is either called on entity-action-handler or directly on the server when handleOnServer is true
+ * The handler is called on entity-action-handler 
  */
 export interface ActionEntityI<D = any, TData = any> extends ActionBaseI<D>, ActionConfigT<D, TData, EntityAction> {
   kind: 'entity'
-  /** when true, simply write the entityAction at the corresponding ref */
-  handleOnServer?: boolean
-  handler?: ActionHandlerT<D, TData, EntityAction>
+  handler: ActionHandlerT<D, TData, EntityAction>
 
+}
+
+/**
+ * Entity actions are actions that require an entityAction to be dispatched. There is no need to define a getEvent function
+ * The handler if it exists is either called on entity-action-handler, the action is run on the server
+ */
+export interface ActionServerEntityI<D = any, TData = any> extends ActionBaseI<D>, ActionConfigT<D, TData, EntityAction> {
+  kind: 'server'
 }
 
 export interface ActionMixinI<D = any> extends ActionBaseI<D> {
@@ -175,6 +177,7 @@ export type ActionT<D = any> =
   | ActionEventI<D>
   | ActionMixinI<D>
   | ActionEntityI<D>
+  | ActionServerEntityI<D>
 
 export type ActionsT<D = any> = Record<string, ActionT<D>>
 

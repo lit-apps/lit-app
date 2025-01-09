@@ -1,12 +1,18 @@
 
 import { LitElement, PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js'
-
 import { UserProfileT } from './types.js';
 import { FirestoreDocumentController } from '@preignition/lit-firebase';
 import { doc, getFirestore } from 'firebase/firestore';
+import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 
-type Constructor<T = {}> = new (...args: any[]) => T;
+
+declare global {
+  interface HTMLElementEventMap {
+
+  }
+}
+
 export declare class UserMixinInterface {
   /** the user id */
   uid: string
@@ -17,13 +23,17 @@ export declare class UserMixinInterface {
   get displayName(): UserProfileT['displayName'];
   get isLoading(): boolean;
 }
-/**
- * UserMixin - a mixin that provides user profile, email, photoURL, email and displayName
- * If the user does not have the right to read the user profile, it will only hold displayName
- */
-export const UserMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
-  class UserMixinClass extends superClass {
+type BaseT = LitElement & {}
+/**
+ * UserMixin  
+ */
+export const UserMixin = <T extends MixinBase<BaseT>>(
+  superClass: T
+): MixinReturn<T, UserMixinInterface> => {
+
+
+  abstract class UserMixinClass extends superClass {
 
     @property() uid!: string;
     @state() _profile!: UserProfileT;
@@ -82,10 +92,10 @@ export const UserMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     }
     get isLoading() {
       return this.userController?.loading || false;
-    } 
+    }
+
   };
-  // Cast return type to your mixin's interface intersected with the superClass type
-  return UserMixinClass as unknown as Constructor<UserMixinInterface> & T;
+  return UserMixinClass;
 }
 
 export default UserMixin;

@@ -6,7 +6,9 @@ import('@material/web/select/select-option.js');
  *  A card widget to display user information
  */
 
-export class UserSelectItem extends userItemMixin(MdSelectOption) {
+export class UserSelectItem extends userItemMixin(MdSelectOption ) {
+
+
 
 
 }

@@ -9,7 +9,7 @@ import {
   EntityAction,
 } from "./events.js"
 import { html } from "lit";
-import { ActionEntityI, DefaultActionsT, GetEventT } from "./types/actionTypes.js";
+import { ActionEntityI, ActionServerEntityI, DefaultActionsT, GetEventT } from "./types/actionTypes.js";
 import { CollectionI } from "./types/dataI.js";
 
 
@@ -32,6 +32,9 @@ export function defaultActions<D>(): DefaultActionsT<D> {
     create: {
       label: 'Create',
       kind: 'event',
+      handler: (ref, data) => {
+        console.log('create', data);
+      },
       getEvent: (entityName, { data }) => {
         return new Create<Partial<D>>({ data, entityName }, actions.create);
       },
@@ -139,7 +142,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       },
     },
     markDeleted: {
-      kind: 'entity',
+      kind: 'server',
       label: 'Delete',
       icon: 'delete',
       pushHistory: true,
@@ -156,7 +159,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       },
     },
     restore: {
-      kind: 'entity',
+      kind: 'server',
       label: 'Restore',
       icon: 'restore',
       pushHistory: true,
@@ -166,19 +169,19 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       }
     },
     setAccess: {
-      kind: 'entity',
+      kind: 'server',
       label: 'Set Access',
       icon: 'lock',
 
     },
     addAccess: {
-      kind: 'entity',
+      kind: 'server',
       label: 'Add Access',
       icon: 'add',
 
     },
     removeAccess: {
-      kind: 'entity',
+      kind: 'server',
       label: 'Remove Access',
       icon: 'remove',
       // getEvent: getEntityActionEvent('removeAccess'),
@@ -205,7 +208,7 @@ const actions = defaultActions();
  * 
  * @throws {Error} If the entity ID is not provided or if the action is not found.
  */
-export function getEntityActionEvent<D>(actionName: string, action?: ActionEntityI): GetEventT<D> {
+export function getEntityActionEvent<D>(actionName: string, action?: ActionEntityI | ActionServerEntityI): GetEventT<D> {
   return (entityName, { data }, host, isBulk?, confirmed?) => {
     action = action || (actions[actionName as keyof DefaultActionsT<D>] as ActionEntityI);
     if(isBulk) {

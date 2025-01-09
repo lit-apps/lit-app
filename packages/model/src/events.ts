@@ -1,6 +1,6 @@
 import { CollectionReference, WriteBatch } from 'firebase/firestore'
 import { Collection } from './types.js'
-import { ActionEntityI, ActionT } from './types/actionTypes.js'
+import { ActionEntityI, ActionServerEntityI, ActionT } from './types/actionTypes.js'
 
 /**
  * Interface for global entity events
@@ -219,7 +219,7 @@ export class EntityAction<T extends ActionI = ActionI> extends BaseAction<Action
 
   constructor(
     detail: ActionDetail<T['detail']>,
-    public override readonly action: ActionEntityI<T['detail']>,
+    public override readonly action: ActionEntityI<T['detail']> | ActionServerEntityI<T['detail']>,
     public readonly actionName: T['actionName'],
     public override  confirmed?: boolean,
     public override bulkAction?: boolean) {

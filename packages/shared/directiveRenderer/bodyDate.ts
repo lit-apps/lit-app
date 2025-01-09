@@ -8,7 +8,7 @@ import {
 
 import type { Timestamp } from 'firebase/firestore';
 
-type value = Date | string | number | Timestamp;
+type value = Date | string | number | Timestamp ;
 type getter<T> = (item: T) => value | Promise<value>;
 
 export default function bodyDate<T = any>(

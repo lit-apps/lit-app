@@ -1,6 +1,6 @@
 import { nothing, TemplateResult } from "lit"
 import { EntityCreateDetail } from "../events.js"
-import { ActionKeyT, ActionsT, FunctionOrButtonConfigT, HostElementI } from "./actionTypes.js"
+import { ActionEntityI, ActionKeyT, ActionSimpleI, ActionsT, FunctionOrButtonConfigT, HostElementI } from "./actionTypes.js"
 import { RenderConfig } from "./entity.js"
 
 /**
@@ -98,8 +98,10 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
    */
   renderAction<
     N extends ActionKeyT<A, unknown>,
-    // @ts-expect-error - but this is working
-    D extends Parameters<this['actions'][N]['handler'] >[1] 
+    // @-ts-expect-error - but this is working
+    // D extends Parameters<this['actions'][N]['handler']>[1] 
+    D extends this['actions'][N] extends ActionEntityI | ActionSimpleI ?
+     Parameters<this['actions'][N]['handler'] >[1] : any 
   >(
     actionName: N,
     data: D, // we should derive D from actionName handler signature
@@ -195,8 +197,8 @@ export interface StaticEntityActionI<
    */
   renderAction<
   N extends ActionKeyT<A, unknown>,
-  // @ts-expect-error - but this is working
-  D extends Parameters<this['actions'][N]['handler']>[1]
+  D extends this['actions'][N] extends ActionEntityI | ActionSimpleI ?
+    Parameters<this['actions'][N]['handler'] >[1] : any 
   >(
     actionName: N,
     host: HostElementI<unknown>,
