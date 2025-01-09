@@ -4,7 +4,7 @@ import type { LitElement, TemplateResult } from "lit";
 // import { dbRefEntity } from "@lit-app/persistence-shell";
 import type { CollectionReference, DocumentReference } from "firebase/firestore";
 import { EntityAction } from "../events.js";
-import { Entity, EntityI } from "../../index.js";
+import { EntityI } from "../../index.js";
 
 export interface HostElementI<D = any> extends LitElement {
   entityStatus?: EntityStatus
