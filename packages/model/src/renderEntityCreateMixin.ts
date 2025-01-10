@@ -1,7 +1,7 @@
 
 import AbstractEntity from './AbstractEntity';
 import '@vaadin/grid/lit-all-imports.js'
-import type { RenderInterface, StaticRenderInterface } from './types/renderEntityCreateI';
+import type { MetaDataFromD, RefFromD, RenderInterface, StaticRenderInterface } from './types/renderEntityCreateI';
 import { DataI } from './types/dataI';
 import { HostElementI } from './types/actionTypes.js';
 import { PartialBy, RecursivePartial } from '@lit-app/shared/types.js';
@@ -31,7 +31,7 @@ export default function renderMixin<D extends DataI>(
 			} as Partial<D>;
 		},
 
-		processCreateMetaData( host: HostElementI<D>, metaData: Partial<D["metaData"]> = {})  {
+		processCreateMetaData( host: HostElementI<D>, metaData: Partial<D["metaData"]> = {}): MetaDataFromD<D> { 
 			// if (typeof metaData !== 'object' || metaData === null) {
 			// 	throw new Error('metaData must be an object');
 			// }
@@ -43,14 +43,14 @@ export default function renderMixin<D extends DataI>(
 					status: 'private'
 				},
 				...metaData,
-			}
+			} as MetaDataFromD<D>;
 		},
 
-		processCreateRef( host: HostElementI<D>, ref: Partial<D["ref"]> = {}) {
+		processCreateRef( host: HostElementI<D>, ref: Partial<D["ref"]> = {}): RefFromD<D> {
 			return {
 				app: host.appID || null,
 				...ref,
-			}
+			} as RefFromD<D>;
 		}
 
 	}

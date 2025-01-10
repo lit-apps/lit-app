@@ -1,22 +1,21 @@
 
-import { html } from 'lit';
 import AbstractEntity from './AbstractEntity';
-import { EntityElement, RenderConfig } from './types';
 import { renderField } from './renderField';
+import { EntityElement } from './types';
 import {
 	DefaultI,
-
 } from './types/entity';
 import {
-	Model,
-	FieldConfig
+	FieldConfig,
+	Model
 } from './types/modelComponent';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 
-import { StaticEntityField } from './types/renderEntityFieldI';
 import { deprecated } from '@preignition/preignition-util';
+import type { RenderInterface } from './types/renderEntityFieldI';
+import { StaticEntityField } from './types/renderEntityFieldI';
 export type { RenderInterface, StaticEntityField } from './types/renderEntityFieldI';
 
 export default function renderMixin<
@@ -90,7 +89,6 @@ export default function renderMixin<
 	}
 
 	Object.assign(R, staticApply);
-	return R 
-	// as unknown as Constructor<RenderInterface<D, C>> & StaticEntityField<D> &
-	// 	typeof superclass;
+	return R as unknown as Constructor<RenderInterface<D>> & StaticEntityField<D> &
+	 	typeof superclass;
 }
