@@ -9,16 +9,29 @@ type ActionT= (obj: unknown, id: string ) => unknown;
  * @param keys - The path to the property in the object.
  * @returns The result of applying the action on the object.
  */
-const deep = (action: ActionT, obj: unknown, keys: string | string[], id?: string[], key?: string) => {
+export const deep = (action: ActionT, obj: unknown, keys: string | string[], id?: string[], key?: string) => {
   keys = (keys as string).split('.');
   id = keys.splice(-1, 1);
   for (key in keys) obj = (obj as any)[keys[key]] = (obj as any)[keys[key]] || {};
-  return action(obj, id );
+  return action(obj, id[0] );
 };
-const get = (obj: any, prop: string ) => obj[prop];
-const deepget = (obj: any, path: string) => deep(get, obj, path);
 
-export {
-  deep,
-  deepget
-}
+const _get = (obj: any, prop: string) => obj[prop];
+const _set = (n: any) => (obj: any, prop: string) => (obj[prop] = n);
+
+/**
+ * get a deep nested property
+ * @param path the deep path to the property
+ * @param obj the object to get the property from
+ * @returns the value of the property at the given path
+ */
+export const get = (path: string, obj: any = {}) => deep(_get, obj, path);
+
+/**
+ * set a deep nested property
+ * @param path the deep path to the property
+ * @param value the value to set
+ * @param obj the object to get the property from
+ * @returns 
+ */
+export const set = (path: string, value: any, obj: any ) => deep(_set(value), obj, path);

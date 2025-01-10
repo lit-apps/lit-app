@@ -1,7 +1,7 @@
 
 
 
-import { deepget } from './deep';
+import { get } from './deep';
 import normalizeEmptyValue from './normalizeEmptyValue';
 
 export type FilterT = {
@@ -15,7 +15,7 @@ export default function filter(items: any[] | undefined | null, filters: FilterT
   }
   return items.filter((item) => {
     return filters.filter(filter => {
-      const value = normalizeEmptyValue(deepget(item, filter.path));
+      const value = normalizeEmptyValue(get(item, filter.path));
       const filterValueLowercase = normalizeEmptyValue(filter.value).toString().toLowerCase();
       return value.toString().toLowerCase().indexOf(filterValueLowercase) === -1;
     }).length === 0;
