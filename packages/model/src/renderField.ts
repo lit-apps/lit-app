@@ -150,7 +150,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   const canEdit = (consumingMode === 'offline') || ((
     this.entityStatus?.isEditing ||
     this.entityStatus?.isNew ||
-    (entity.realTime && this.entityAccess.canEdit)
+    (entity.realTime && this.authorization.canEdit)
   ) && !(config?.disabled === true)
     && consumingMode !== 'view');
   let disabled = !canEdit;

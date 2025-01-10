@@ -4,7 +4,7 @@
  * TODO: This should be moved to actionTypes and simplified
  */
 
-import { Access } from './dataI'
+import type { AccessT } from './access'
 type Detail = {
 }
 
@@ -52,12 +52,12 @@ export function isNameAction(data: AllActionI): data is NameActionI {
 }
 
 type AccessAction = 'setAccess' | 'addAccess' | 'removeAccess'
-type Role = keyof Access['user']
+type Role = keyof AccessT['user']
 type AccessDetail = Detail & {
 	uid: string
 	role: Role
 	language?: string
-	type?: keyof Access
+	type?: keyof AccessT
 }
 
 export interface AccessActionI extends BaseActionI {

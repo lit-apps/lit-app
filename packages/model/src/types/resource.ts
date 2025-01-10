@@ -2,19 +2,21 @@
  * Base types for resource
  */
 
-import type { Access, MetaData, Ref, DataI } from './dataI';
+import type { MetaData, Ref, DataI } from './dataI';
+import type { AccessT } from './access.js';
+
 
 
 export type ResourceRef = Ref & {
 	team: string
 };
 
-export interface ResourceAccess extends Access {
+export interface ResourceAccess extends AccessT {
 	team: string
 }
 
 export interface ResourceMetaData<
-	A  = ResourceAccess,
+	A = ResourceAccess,
 	T = string
 > extends MetaData<A, T> {
 	access: A

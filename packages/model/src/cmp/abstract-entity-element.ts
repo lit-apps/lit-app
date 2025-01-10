@@ -80,7 +80,7 @@ export default abstract class AbstractEntityElement extends
 
 	get renderConfig(): RenderConfig {
 		return {
-			entityAccess: this.entityAccess,
+			authorization: this.authorization,
 			entityStatus: this.entityStatus,
 			heading: this.heading,
 			level: this.level,

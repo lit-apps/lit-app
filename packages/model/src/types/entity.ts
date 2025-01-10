@@ -1,6 +1,7 @@
 import { LitElement, TemplateResult } from 'lit'
 import {Collection} from './dataI'
 import { entityI} from '../types'
+import { AuthorizationT } from './access.js'
 
 // storing the state of an entity
 export type EntityStatus = {
@@ -10,14 +11,6 @@ export type EntityStatus = {
 	isLoading: boolean // true when the entity is loading data
 	isDeleting: boolean
 	isNew: boolean // true when the entity is new
-}
-
-// storing the access information for an entity
-export type EntityAccess = {
-	isOwner: boolean
-	canEdit: boolean
-	canView: boolean
-	canDelete: boolean
 }
 
 interface EntityBase<T extends DefaultI = DefaultI> extends LitElement {
@@ -43,7 +36,7 @@ export interface EntityElement<T extends DefaultI = DefaultI> extends EntityBase
 	selectedItems?: Collection<T>
 	docId: string | undefined
 	entityStatus: EntityStatus
-	entityAccess: EntityAccess
+	authorization: AuthorizationT
 	isFormValid: () => boolean
 	consumingMode: RenderConfig['consumingMode']
 	get canEdit(): boolean
@@ -52,7 +45,7 @@ export interface EntityElement<T extends DefaultI = DefaultI> extends EntityBase
 // interface for list
 export interface EntityElementList<T extends DefaultI = DefaultI> extends EntityBase<T> {
 	entityStatus?: EntityStatus
-	entityAccess?: EntityAccess
+	authorization?: AuthorizationT
 	size?: number
 	selectedItems?: T[]
 	// showGridSelectColumn?: boolean
@@ -93,8 +86,8 @@ export type RenderConfigOptional< O = OptionsT, T = any> = {
 	options?: O
 }
 
-export type RenderConfig<O = OptionsT, A = EntityAccess,  T = any> = RenderConfigOptional<O, T> & {
-	entityAccess: A
+export type RenderConfig<O = OptionsT, A = AuthorizationT,  T = any> = RenderConfigOptional<O, T> & {
+	authorization: A
 	entityStatus: EntityStatus
 	/**
 	 * The mode in which the entity going to be consumed

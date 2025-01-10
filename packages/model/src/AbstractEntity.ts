@@ -11,13 +11,12 @@ type Strings = {
 
 
 import { ToastEvent } from '@lit-app/shared/event';
-import { Access } from './types/dataI.js';
+import type { AccessT,GetAccessT  } from './types/access.js';
 import { ActionsT } from './types/actionTypes.js';
 import {
 	DefaultI,
 	EntityElement
 } from './types/entity';
-import { GetAccess } from './types/getAccess';
 
 /**
  * Abstract class for entities
@@ -53,8 +52,8 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	 *   canDelete: (_access: Access, _data: any) => true
 	 * }
 	 */
-	static declare getAccess: GetAccess
-	static declare accessDataGetter: (data: any) => Promise<Access>
+	static declare getAccess: GetAccessT
+	static declare accessDataGetter: (data: any) => Promise<AccessT>
 	/**
 	 * inspired from https://github.com/Microsoft/TypeScript/issues/3841#issuecomment-1488919713
 	 * We will need to set the type of constructor on all subclasses so that

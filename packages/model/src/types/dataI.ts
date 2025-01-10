@@ -1,3 +1,5 @@
+import type {AccessT} from './access.js'
+
 /**
  * Checks if the provided data is a collection.
  * @param data The data to check.
@@ -10,19 +12,11 @@ export function isCollection<T>(data: any): data is Collection<T> {
 
 
 type uid = string
-export type GroupName = 'admin' | 'editor' | 'viewer' |  'guest' | 'superAdmin'
+export type GroupName = 'admin' | 'editor' |  'guest' | 'superAdmin'
 
-export type UserAccess = {
-	owner: uid 
-	admin?: uid[] // can set editor and viewer
-	editor?: uid[] // can edit
-	viewer?: uid[] // can view DEPRECATED
-	guest?: uid[] // can view
-	reviewer?: uid[] // can review entity
-	
-}
 // Group is a collection of users with a name 
 // when a user is added as a member, their tokens are modified to include the group group[${teamId}_${groupName}] = timestamp
+// @deprecated 
 export type Group = {
 	name: GroupName
 	team: string // id of the team for which the group applies
@@ -32,22 +26,13 @@ export type Group = {
 	reviewer: uid[] // can review entity 
 }
 
-export type Status = 'public' | 'private'
-
-export type Access = {
-	app: string
-	user: UserAccess
-	userById: {[key: string]: (keyof UserAccess)[]}
-	status: Status
-}
-
 // ref refers to external, not entered by users
 export type Ref = {
 	user: string
 	app: string,
 }
 
-export interface MetaData<A = Access, T = string> {
+export interface MetaData<A = AccessT, T = string> {
 	access: A
 	/**
 	 * timestamp is the time the data was created

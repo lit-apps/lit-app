@@ -3,13 +3,25 @@ import type AbstractEntity from './AbstractEntity.js';
 import type {
 	ColumnsConfig,
 	DefaultI,
-	EntityAccess,
 	EntityElement,
 	EntityElementList,
 	EntityStatus,
-	RenderConfig
+	RenderConfig, 
 } from './types/entity';
-import { GetAccess } from './types/getAccess';
+import type { 
+	GetAccessT,
+	AccessT,
+	AuthorizationT,
+	UserAccessT,
+	StatusT
+} from './types/access';
+export {
+	GetAccessT,
+	AccessT,
+	AuthorizationT,
+	UserAccessT,
+	StatusT
+ }
 import type {
 	GridConfig,
 	Lookup,
@@ -37,10 +49,9 @@ export * from './types/dataI';
 export { isCollection } from './types/dataI';
 export * from './types/entityAction';
 export * from './types/entityResource';
-export * from './types/getAccess';
 export * from './types/resource';
 export {
-	ColumnsConfig, EntityAccess, EntityElement, EntityElementList, EntityStatus, GridConfig, Lookup, Model, RenderConfig
+	ColumnsConfig,  EntityElement, EntityElementList, EntityStatus, GridConfig, Lookup, Model, RenderConfig
 };
 
 // import type { ensure, entries, PartialBy } from '@lit-app/shared/types.js'
@@ -50,9 +61,8 @@ export type Strings = {
 	[key: string]: string | Strings;
 };
 
-import { Access } from './types/dataI';
 export type Role = {
-	name: keyof Access['user'] // | 'superAdmin' 
+	name: keyof AccessT['user'] // | 'superAdmin' 
 	level: number // 1: owner, 2: admin, 3: editor, 3: viewer - role level; only higher level can edit lower level can assign lower level	
 	locale?: boolean // true to mark this role as dependent on locale (e.g. translator)
 }
@@ -68,8 +78,8 @@ import { RenderInterface as RenderI } from './types/renderEntityI.js';
 export interface StaticEntityI<D = any, A extends ActionsT = ActionsT> {
 	actions: A
 	styles: CSSResult | CSSResult[];
-	getAccess: GetAccess
-	accessDataGetter: (data: any) => Promise<Access>
+	getAccess: GetAccessT
+	accessDataGetter: (data: any) => Promise<AccessT>
 	locale?: Strings
 	roles: Readonly<Role[]>
 	userLoader?: (search: string) => Promise<any>

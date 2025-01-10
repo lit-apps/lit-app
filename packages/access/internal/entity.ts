@@ -1,12 +1,12 @@
 import type { UserItemRole } from '@lit-app/cmp/user/internal/types';
 import {
-	Access,
+	AccessT,
 	AccessActionI,
 	ConsumeDataMixin,
 	ConsumeEntityMixin,
 	ConsumeEntityStatusMixin,
 	ConsumeUidMixin,
-	GetAccess,
+	GetAccessT,
 	ProvideAccessMixin,
 	RenderConfig,
 	RenderHeaderMixin,
@@ -41,7 +41,7 @@ import closest from '@lit-app/shared/closest';
 
 type User = PartialBy<UserItemRole, 'provider' | 'created'>;
 
-const getAccess: GetAccess = function (this: EntityAccess, access: Access, _data: any) {
+const getAccess: GetAccessT = function (this: EntityAccess, access: AccessT, _data: any) {
 	return {
 		isOwner: hasUserRole('owner', access, this.uid),
 		canEdit: hasUserRole('owner', access, this.uid) ||
@@ -101,7 +101,7 @@ export class EntityAccess extends
 		const prev = this._users;
 		// loop through all metaData roles and return users
 		const users: User[] = [];
-		entries<Access['user']>(this.metaData?.access?.user || {})
+		entries<AccessT['user']>(this.metaData?.access?.user || {})
 			.filter(([_role, value]) => value !== undefined && value !== null)
 			.forEach(([role, value]) => {
 				const v = Array.isArray(value) ? value : [value];
@@ -123,7 +123,7 @@ export class EntityAccess extends
 
 	get renderConfig(): RenderConfig {
 		return {
-			entityAccess: this.entityAccess,
+			authorization: this.authorization,
 			entityStatus: this.entityStatus,
 			consumingMode: 'view',
 			level: this.level
@@ -212,7 +212,7 @@ export class EntityAccess extends
 		const inviteListTpl = html`<lapp-invite-list
 			.items=${this.invite}
 			></lapp-invite-list>`
-		const canSetOwnership = renderConfig.entityAccess?.isOwner || !hasOwner || this.superAdmin;
+		const canSetOwnership = renderConfig.authorization?.isOwner || !hasOwner || this.superAdmin;
 		const onChange = (e: HTMLEvent<MdTabs>) => {
 			this.selected = e.target.activeTabIndex
 		}
@@ -227,12 +227,12 @@ export class EntityAccess extends
 				.Entity=${this.Entity}
 			></lapp-access-set-role>
 		</section>
-		${when(renderConfig.entityAccess?.canEdit, () => html`
+		${when(renderConfig.authorization?.canEdit, () => html`
 		<section class="content">
 			<h5 class="secondary">Membership</h5>
 			<lapp-access-add-role
 				.label=${'Add Members'}
-				.canEdit=${renderConfig.entityAccess.canEdit}
+				.canEdit=${renderConfig.authorization.canEdit}
 				.Entity=${this.Entity}
 			></lapp-access-add-role>
 		</section>`)}

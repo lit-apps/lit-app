@@ -7,8 +7,6 @@ import { LabelI } from './LabelM';
 import getAdjustedColor from '@lit-app/shared/getAdjustedColor';
 import '@material/web/chips/chip-set';
 import '@material/web/chips/suggestion-chip';
-// import { getSimpleAccess } from '../getAccess';
-// import getGdsDataAccess from './getGdsDataAccess';
 const model: Model<LabelI> = {
   title: {
     component: 'textfield',
@@ -82,13 +80,9 @@ export default class Label extends
 
   override showActions = true
 
-  // static override getAccess: GetAccess = getSimpleAccess
-  // static override accessDataGetter = getGdsDataAccess
-
-
   override renderArrayTitle(data: Collection<LabelI>, config: RenderConfig) {
     const onCreate = () => this.create({ title: 'new label' })
-    const createAction = config.entityAccess?.canEdit ? html`<md-outlined-button @click=${onCreate}>Create new Label</md-outlined-button>` : nothing
+    const createAction = config.authorization?.canEdit ? html`<md-outlined-button @click=${onCreate}>Create new Label</md-outlined-button>` : nothing
     return html`<span class="flex">List of Labels <span style="position:relative;"><md-badge .value=${String(data.length || 0)}></md-badge></span></span>${createAction}`
   }
 

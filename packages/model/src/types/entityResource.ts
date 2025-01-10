@@ -2,7 +2,9 @@
  * Base types for resource
  */
 import type { DocumentReference } from 'firebase/firestore';
-import type { DataI, Ref, UserAccess } from './dataI';
+import type { DataI, Ref } from './dataI';
+import type { UserAccessT } from './access.js';
+
 import type { ResourceUI, ResourceMetaData } from './resource';
 export interface EntityResourceRef extends Ref {
 	customer: string
@@ -11,19 +13,19 @@ export interface EntityResourceRef extends Ref {
 };
 type AccessType = 'public' | 'private' | 'protected'
 
-export  interface EntityResourceAccess  {
+export interface EntityResourceAccess {
 	app: string
-	user?: UserAccess // access data - usually a copy of ref.entity.metaData.access.user
+	user?: UserAccessT // access data - usually a copy of ref.entity.metaData.access.user
 	status: AccessType // access type for discussions in this channel; if the channel is public (only signed-in users), private (same entity reference) or protected (only channel members)
-	userById: {[key: string]: (keyof UserAccess)[]}
+	userById: { [key: string]: (keyof UserAccessT)[] }
 }
 
-export interface EntityResourceMetaData<A = EntityResourceAccess, T = string> extends ResourceMetaData<A, T>  {
+export interface EntityResourceMetaData<A = EntityResourceAccess, T = string> extends ResourceMetaData<A, T> {
 	entityType: any // the type of entity this channel is associated with
 	// allowedElement?: string[] // the allowed elements for this resourceEntity
 }
 
-export interface EntityResourceI<M = EntityResourceMetaData, R = EntityResourceRef> 
+export interface EntityResourceI<M = EntityResourceMetaData, R = EntityResourceRef>
 	extends ResourceUI, DataI<M, R> { }
 
 

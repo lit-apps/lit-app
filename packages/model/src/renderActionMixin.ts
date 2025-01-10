@@ -168,9 +168,9 @@ export default function renderMixin<A extends ActionsT>(
      */
     protected canViewActions(_data: unknown, config: RenderConfig): boolean {
       const consumingMode = this.host.consumingMode ?? 'edit';
-      const entityAccess = config.entityAccess || this.host.entityAccess;
+      const authorization = config.authorization || this.host.authorization;
       return this.showActions &&
-        entityAccess?.canEdit &&
+        authorization?.canEdit &&
         consumingMode !== 'print' && consumingMode !== 'offline'
     }
 

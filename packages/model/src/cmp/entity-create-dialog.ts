@@ -4,7 +4,7 @@ import { query, state } from 'lit/decorators.js';
 import {entityI, RenderConfig} from '../types';
 import { ConsumeAppIdMixin } from '../mixin/context-app-id-mixin';
 import { ConsumeEntityMixin } from '../mixin/context-entity-mixin';
-import { EntityAccess, EntityElement, EntityStatus } from '../types';
+import { AuthorizationT, EntityElement, EntityStatus } from '../types';
 import('@material/web/dialog/dialog.js');
 
 export interface entityCreateDialogDetail {
@@ -76,7 +76,7 @@ export default class entityCreateDialog extends
 			isNew: true,
 		}
 	}
-	get entityAccess(): EntityAccess {
+	get authorization(): AuthorizationT {
 		return {
 			isOwner: true,
 			canEdit: true,

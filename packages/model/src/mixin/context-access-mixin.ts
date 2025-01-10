@@ -2,20 +2,19 @@ import { consume, createContext, provide } from '@lit/context';
 import { ReactiveElement, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import {
-	EntityAccess
 } from '../types/entity';
 
 
-import type { Access } from '../types/dataI';
-import type { GetAccess } from '../types/getAccess';
-import type {EntityI} from '../types';
+// import type { Access } from '../types/dataI';
+import type { GetAccessT, AuthorizationT, AccessT } from '../types/access';
+import type { EntityI } from '../types';
 import { EntityMixinInterface } from './context-entity-mixin';
 
-export const entityAccessContext = createContext<EntityAccess>('entity-access-context');
+export const entityAccessContext = createContext<AuthorizationT>('entity-access-context');
 
 type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class AccessMixinInterface {
-	entityAccess: EntityAccess; // context storing document access rules
+	authorization: AuthorizationT; // context storing document access rules
 	// data: any; // entity data - to be evaluated for access
 	get isOwner(): boolean;
 	get canEdit(): boolean;
@@ -26,32 +25,32 @@ export declare class AccessMixinInterface {
 /**
  * ApplyGetterMixin applies access getters to an element.
  */
-export const ApplyGetterMixin = <T extends Constructor<ReactiveElement >>(superClass: T) => {
+export const ApplyGetterMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
 
 	abstract class ApplyGetterMixinClass extends superClass {
 
-		entityAccess!: EntityAccess
+		authorization!: AuthorizationT
 		get isOwner() {
-			return this.entityAccess?.isOwner;
+			return this.authorization?.isOwner;
 		}
 		get canEdit() {
-			return this.entityAccess?.canEdit;
+			return this.authorization?.canEdit;
 		}
 		get canView() {
-			return this.entityAccess?.canView;
+			return this.authorization?.canView;
 		}
 		get canDelete() {
-			return this.entityAccess?.canDelete;
+			return this.authorization?.canDelete;
 		}
 
 	};
 	return ApplyGetterMixinClass as unknown as Constructor<AccessMixinInterface> & T;
 }
 
-export declare class ProvideAccessMixinInterface<A extends EntityAccess = EntityAccess> extends AccessMixinInterface {
-	accessDataGetter: (data: any) => Access
+export declare class ProvideAccessMixinInterface<A extends AuthorizationT = AuthorizationT> extends AccessMixinInterface {
+	accessDataGetter: (data: any) => AccessT
 	updateAccess: (data: any) => void;
-	entityAccess: A;
+	authorization: A;
 }
 
 // const defaultAccessFalse = (_access: Access, _data: any) => {
@@ -62,69 +61,69 @@ export declare class ProvideAccessMixinInterface<A extends EntityAccess = Entity
 // 	return true
 // }
 function getAccessDefault(
-	this: EntityMixinInterface, 
-	_access: Access, 
-	_data: any): EntityAccess {
-	console.warn(`No access function provided for ${this.Entity?.entityName || 'No Entity' }`);
+	this: EntityMixinInterface,
+	_access: AccessT,
+	_data: any): AuthorizationT {
+	console.warn(`No access function provided for ${this.Entity?.entityName || 'No Entity'}`);
 	return {
 		isOwner: false,
 		canEdit: false,
 		canView: true,
 		canDelete: false,
 	}
-}  ;
+};
 
 /**
  * ## ProvideAccessMixin 
  * 
- * A mixin to be applied to entities at root level. It set entityAccess for the entity: 
+ * A mixin to be applied to entities at root level. It set authorization for the entity: 
  * Entity Access stores access information about the entity, like `isOwner`, `canEdit`, `canView`, `canDelete`
  * 
  * if getAccessFn is not provided, it uses Entity.getAccess or getAccessDefault
  */
-export const ProvideAccessMixin = <A extends EntityAccess = EntityAccess>(getAccessFn?: GetAccess) => 
-	<T extends Constructor<ReactiveElement & {Entity?: EntityI, data: any}> >(superClass: T) => {
+export const ProvideAccessMixin = <A extends AuthorizationT = AuthorizationT, G extends GetAccessT = GetAccessT>(getAccessFn?: G) =>
+	<T extends Constructor<ReactiveElement & { Entity?: EntityI, data: any }>>(superClass: T) => {
 
-	class ProvideAccessMixinClass extends ApplyGetterMixin(superClass) {
+		class ProvideAccessMixinClass extends ApplyGetterMixin(superClass) {
 
-		/** context storing document access  */
-		@provide({ context: entityAccessContext })
-		@property({attribute: false}) override entityAccess!: EntityAccess;
+			/** context storing document access  */
+			@provide({ context: entityAccessContext })
+			@property({ attribute: false }) override authorization!: AuthorizationT;
 
-		@property({attribute: false}) accessDataGetter: (data: any) => Access = (data: any) => {
-			// console.info('AccessDataGetter', data?.metaData?.access)
-			return data?.metaData?.access;
-		};
+			@property({ attribute: false }) accessDataGetter: (data: any) => AccessT = (data: any) => {
+				// console.info('AccessDataGetter', data?.metaData?.access)
+				return data?.metaData?.access;
+			};
 
-		override willUpdate(changedProperties: PropertyValues<this>) {
-			super.willUpdate(changedProperties);
-			if (changedProperties.has('data') || changedProperties.has('accessDataGetter')) {
-				this.updateAccess(this.data)
-			}
-		}
-		/**
-		 * @param data entity data - to be evaluated for access
-		 * @returns void
-		 */
-		async updateAccess(data: any) {
-			const accessDataGetter = this.Entity?.accessDataGetter || this.accessDataGetter ;
-			const accessData =  await accessDataGetter(data);
-			if (!accessData) {
-				this.entityAccess = {
-					isOwner: false,
-					canEdit: false,
-					canView: false,
-					canDelete: false,
+			override willUpdate(changedProperties: PropertyValues<this>) {
+				super.willUpdate(changedProperties);
+				if (changedProperties.has('data') || changedProperties.has('accessDataGetter')) {
+					this.updateAccess(this.data)
 				}
-				return;
 			}
-			const getAccess = getAccessFn || this.Entity?.getAccess || getAccessDefault;
-			this.entityAccess = await getAccess.call(this as EntityMixinInterface, accessData, data);
-		}
-	};
-	// Cast return type to your mixin's interface intersected with the superClass type
-	return ProvideAccessMixinClass as unknown as Constructor<ProvideAccessMixinInterface<A>> & T;
-}
+			/**
+			 * @param data entity data - to be evaluated for access
+			 * @returns void
+			 */
+			async updateAccess(data: any) {
+				const accessDataGetter = this.Entity?.accessDataGetter || this.accessDataGetter;
+				const accessData = await accessDataGetter(data);
+				if (!accessData) {
+					this.authorization = {
+						isOwner: false,
+						canEdit: false,
+						canView: false,
+						canDelete: false,
+					}
+					return;
+				}
+				const getAccess = getAccessFn || this.Entity?.getAccess || getAccessDefault;
+				this.authorization = await getAccess.call(this as EntityMixinInterface, accessData, data);
+			}
+		};
+		// Cast return type to your mixin's interface intersected with the superClass type
+		return ProvideAccessMixinClass as unknown as Constructor<ProvideAccessMixinInterface<A>> & T;
+	}
 
 /**
  * ConsumeAccessMixin consumes entityAccessContext for an entity.
@@ -136,7 +135,7 @@ export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(super
 
 		/** context storing document access  */
 		@consume({ context: entityAccessContext, subscribe: true })
-		@property() override entityAccess!: EntityAccess;
+		@property() override authorization!: AuthorizationT;
 
 	};
 	return ContextConsumeAccessMixinClass as unknown as Constructor<AccessMixinInterface> & T;
