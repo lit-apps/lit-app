@@ -1,6 +1,4 @@
-import { throttle } from '@lit-app/shared';
-
-import { get, set } from '@preignition/preignition-util/src/deep';
+import { throttle, get, set } from '@lit-app/shared';
 import { TemplateResult, html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Dirty, EntityWriteDetail, Update } from './events';
@@ -93,7 +91,8 @@ const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetai
  * @returns {TemplateResult | typeof nothing} - The rendered field as a TemplateResult or `nothing` if the field should not be rendered.
  * @throws {Error} - Throws an error if no model is found for the specified field name.
  */
-export function renderField<D extends DefaultI>(this: EntityElement,
+export function renderField<D extends DefaultI>(
+  this: EntityElement,
   name: string,
   data: D = {} as D,
   update: boolean,
@@ -102,7 +101,7 @@ export function renderField<D extends DefaultI>(this: EntityElement,
   config?: FieldConfig<D>,
   consumingMode: RenderConfig['consumingMode'] = 'edit',
   path?: string
-): TemplateResult | typeof nothing {
+): TemplateResult  {
   let model: ModelComponent<any> = get(path || name, m);
   if (!model && import.meta.env.DEV) {
     console.warn(`No model found for ${name}`);
@@ -131,11 +130,11 @@ export function renderField<D extends DefaultI>(this: EntityElement,
       return html`<div class="${cls}"></div>`;
     }
     if (hide === true) {
-      return nothing;
+      return nothing as any;
     }
   }
   if (model.show && !model.show(data)) {
-    return nothing;
+    return nothing as any;
   }
 
   const id = this.docId ? this.docId : this.id;

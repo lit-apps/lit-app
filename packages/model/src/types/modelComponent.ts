@@ -29,7 +29,7 @@ type TableConfig<T = any> = {
 	 */
 	optional?: boolean
 	/**
-	 * condition to render the column depending on renderCofing
+	 * condition to render the column depending on renderConfig
 	 */
 	condition?: (config: RenderConfig) => boolean
 	renderer?: (data: T) => TemplateResult | string

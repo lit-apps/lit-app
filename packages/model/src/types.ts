@@ -6,9 +6,9 @@ import type {
 	EntityElement,
 	EntityElementList,
 	EntityStatus,
-	RenderConfig, 
+	RenderConfig,
 } from './types/entity';
-import type { 
+import type {
 	GetAccessT,
 	AccessT,
 	AuthorizationT,
@@ -21,9 +21,10 @@ export {
 	AuthorizationT,
 	UserAccessT,
 	StatusT
- }
+}
 import type {
 	GridConfig,
+	FieldConfig,
 	Lookup,
 	Model
 } from './types/modelComponent';
@@ -51,7 +52,15 @@ export * from './types/entityAction';
 export * from './types/entityResource';
 export * from './types/resource';
 export {
-	ColumnsConfig,  EntityElement, EntityElementList, EntityStatus, GridConfig, Lookup, Model, RenderConfig
+	ColumnsConfig,
+	EntityElement,
+	EntityElementList,
+	EntityStatus,
+	GridConfig,
+	FieldConfig,
+	Lookup,
+	Model,
+	RenderConfig
 };
 
 // import type { ensure, entries, PartialBy } from '@lit-app/shared/types.js'
@@ -86,29 +95,28 @@ export interface StaticEntityI<D = any, A extends ActionsT = ActionsT> {
 	['constructor']: typeof AbstractEntity;
 }
 export interface EntityI<
-	D extends DefaultI = DefaultI, 
+	D extends DefaultI = DefaultI,
 	C extends RenderConfig = RenderConfig,
 	A extends ActionsT = ActionsT
-> extends 
-	StaticEntityActionI< A>,
+> extends
+	StaticEntityActionI<A>,
 	StaticEntityField<D>,
-	StaticEntityI<D, A>
-	{
-		entityName: string,
-		icon: string,
-		new(cmp: EntityElement, realtime?: boolean ): entityI<D, C, A>;
-	}
+	StaticEntityI<D, A> {
+	entityName: string,
+	icon: string,
+	new(cmp: EntityElement, realtime?: boolean): entityI<D, C, A>;
+}
 
 export interface entityI<
-	D extends DefaultI = DefaultI, 
+	D extends DefaultI = DefaultI,
 	C extends RenderConfig = RenderConfig,
 	A extends ActionsT = ActionsT,
-	> extends 
-		Omit<AbstractEntity<D, A>, 'actions' | 'renderContent' | 'renderFieldUpdate'>,  
-		ActionI<A>,
-		Omit<RenderI<D, C>, 'renderFieldUpdate'>,
-		FieldI<D>,
-		CreateI<D>  { }
+> extends
+	Omit<AbstractEntity<D, A>, 'actions' | 'renderContent' | 'renderFieldUpdate'>,
+	ActionI<A>,
+	Omit<RenderI<D, C>, 'renderFieldUpdate'>,
+	FieldI<D>,
+	CreateI<D> { }
 
 
 // NOTE: we cannot use the following because it breaks TS. However, this 

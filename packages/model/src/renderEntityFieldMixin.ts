@@ -28,7 +28,7 @@ export default function renderMixin<
 		/**
 		 * renders a data-entry field, depending on the model definition
 		 */
-		renderField(name: string, config?: FieldConfig, data?: D) {
+		renderField(path: string, config?: FieldConfig, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
@@ -36,7 +36,7 @@ export default function renderMixin<
 			const consumingMode = (this.host as EntityElement<D>).consumingMode ?? 'edit';
 			return renderField.call(
 				this.host as EntityElement<D>,
-				name,
+				path,
 				(data ?? this.host.data ?? {}) as D,
 				false,
 				this.model,
@@ -51,14 +51,14 @@ export default function renderMixin<
 		 * renders a data-entry field, depending on the model definition
 		 * and updates the data object on input
 		 */
-		renderFieldUpdate(name: string, config?: FieldConfig, data?: D) {
+		renderFieldUpdate(path: string, config?: FieldConfig, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
 			const consumingMode = (this.host as EntityElement<D>).consumingMode ?? 'edit';
 			return renderField.call(
 				this.host as EntityElement<D>,
-				name,
+				path,
 				data ?? this.host.data as D,
 				true,
 				this.model,
