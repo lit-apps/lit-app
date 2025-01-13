@@ -14,12 +14,13 @@ const throttle = (callback: UnknownFunction, limit: number, callAtTheEnd: boolea
   let waiting = false;                      // Initially, we're not waiting
   let wasCalled = false;
   let _args: any[]
-  return function (this: any, ...args: any[]) {                      // We return a throttled function
+  // We return a throttled function
+  return function (this: any, ...args: any[]) {                      
     wasCalled = true;
     _args = args;
     if (!waiting) {                      // If we're not waiting
       if (!callAtTheEnd) {
-        callback.apply(this, _args);       // Execute users function
+        callback.apply(this, _args);     // Execute users function
       }
       waiting = true;                    // Prevent future invocations
       setTimeout(() => {                 // After a period of time
