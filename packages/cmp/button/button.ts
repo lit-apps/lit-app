@@ -63,7 +63,8 @@ export class LappButton extends mixinDelegatesAria(LitElement) {
   /**
    * Whether or not the button is disabled.
    */
-  @property({ type: Boolean, reflect: true }) disabled = false;
+  @property({ type: Boolean }) disabled = false;
+  @property({ type: Boolean }) softDisabled = false;
 
   /**
    * The URL that the link button points to.
@@ -119,6 +120,7 @@ export class LappButton extends mixinDelegatesAria(LitElement) {
     // TODO: add aria-support for when loading button
     return html`<${tagName}
 			.disabled=${this.disabled}
+      .softDisabled=${this.softDisabled}
 			.href=${this.href}
       aria-label="${this.ariaLabel || nothing}"
 			.target=${this.target}

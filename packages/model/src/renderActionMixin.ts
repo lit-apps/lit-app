@@ -64,6 +64,7 @@ export default function renderMixin<A extends ActionsT>(
       const callFunction = callFunctionOrValue.bind(host);
 
       const getConfig = (config: RenderConfig | FunctionOrButtonConfigT<unknown>) => {
+        // do not take config into account if it is a renderConfig
         if (isRenderConfig(config)) {
           return {}
         }
@@ -71,23 +72,27 @@ export default function renderMixin<A extends ActionsT>(
       }
       const cfg = { ...{}, ...getConfig(action.config || {}), ...getConfig(config || {}) }
       const disabled = cfg?.disabled === true
+      const softDisabled = cfg?.softDisabled === true
       const filled = cfg?.filled ?? false
       const tonal = cfg?.tonal ?? false
       const text = cfg?.text ?? false
       const outlined = cfg?.outlined ?? !text
+      const icon = cfg?.icon || action.icon || ''
+      const label = cfg?.label || action.label || ''
       const onClick = clickHandler || this.actionHandler(actionName, host, data)
       const $id = (config as RenderConfig)?.context === 'detail' ? (data as any).$id || host.docId || '' : undefined
       return html`<lapp-button 
         focus-on-activate=${ifDefined($id)}
         class="${actionName} action"
-        .icon=${action.icon || ''} 
+        .icon=${icon} 
         @click=${onClick}
         .disabled=${disabled}
+        .softDisabled=${softDisabled}
         .outlined=${outlined}
         .ariaLabel=${action.ariaLabel ? callFunction(action.ariaLabel, data) : null}
         .tonal=${tonal}
         .filled=${filled}>
-          ${callFunction(action.label, data)}
+          ${callFunction(label, data)}
         </lapp-button>`
     },
 

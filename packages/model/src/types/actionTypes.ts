@@ -31,11 +31,13 @@ type StringOrFunctionT<D> = FunctionOrPrimitiveT<string, D>
 
 type ButtonConfigT = {
   disabled?: boolean
+  softDisabled?: boolean
   outlined?: boolean
   filled?: boolean
   tonal?: boolean
   text?: boolean // true to render a text button
   label?: string | TemplateResult
+  icon?: string
 }
 
 export type ActionDataT<D> = {
