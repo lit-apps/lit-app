@@ -46,6 +46,9 @@ const style: CSSResult = css`
 	.m.xx-large{
 		--_m: var(--space-xx-large)
 	}
+	.m.xxx-large{
+		--_m: var(--space-xxx-large)
+	}
 	.m.top {
 		margin-top: var(--_m);	
 	}

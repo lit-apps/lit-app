@@ -46,6 +46,9 @@ const style: CSSResult = css`
 	.p.xx-large{
 		--_p: var(--space-xx-large)
 	}
+	.p.xxx-large{
+		--_p: var(--space-xxx-large)
+	}
 	.padding {
 		padding: var(--_p);	
 	}
