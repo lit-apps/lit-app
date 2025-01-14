@@ -39,6 +39,16 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 		{ name: 'guest', level: 4 }] as const
 
 	static userLoader: (search: string) => Promise<any>
+		
+	/** 
+	 * true when the data is ready, we do not render before this is true
+	 */
+	static isDataReady: (data: any) => boolean = (data: any) => {
+		return data !== undefined
+	}
+	isDataReady(data: any): boolean {
+		return this.constructor.isDataReady(data)
+	}
 
 	/**
 	 * The access control for this entity - this needs to be overridden in subclasses

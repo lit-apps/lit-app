@@ -142,9 +142,9 @@ export default abstract class AbstractEntityElement extends
 			return html`getting entity...`;
 		}
 
-		// if (this.data === undefined && this.consumingMode !== 'print' && this.consumingMode !== 'offline') {
-		// 	return html`getting data...`;
-		// }
+		if (!this.entity.isDataReady(this.data) && this.consumingMode !== 'print' && this.consumingMode !== 'offline') {
+			return html``;
+		}
 
 		return [
 			super.render(),
