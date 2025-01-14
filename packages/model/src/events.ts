@@ -82,6 +82,23 @@ export class Update<T = any> extends BaseEvent<EntityWriteDetail<T>> {
     });
   }
 }
+
+/* Dispatch data-changed when data has changed on a view and needs to be updated on a server */
+export class DataChanged<T = any> extends BaseEvent<EntityWriteDetail<T>> {
+  static readonly eventName = 'entity-data-changed';
+  readonly actionName = 'data-changed';
+  public persisted?: boolean // true when data is persisted 
+  constructor(
+    detail: EntityWriteDetail<T>
+    ) {
+    super(DataChanged.eventName, {
+      bubbles: true,
+      composed: true,
+      detail
+    });
+  }
+}
+
 export class Reset extends BaseEvent<EntityDetail> {
   static readonly eventName = 'entity-reset';
   public persisted?: boolean // true when data is persisted
@@ -367,5 +384,6 @@ declare global {
     'entity-action': EntityAction, // perform an action on an entity (for instance, mark public or private). 
     'app-action': AppAction, // perform an action on action on app level 
     'app-email-action': AppActionEmail, // send message - we need a distinct event for this as some components might add content to the message sent
+    'entity-data-changed': DataChanged, // dispatch data-changed when data has changed on a view and needs to be updated on a server
   }
 }

@@ -1,7 +1,7 @@
-import { throttle, get, set } from '@lit-app/shared';
+import { get, set } from '@lit-app/shared';
 import { TemplateResult, html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Dirty, EntityWriteDetail, Update } from './events';
+import { DataChanged, Dirty } from './events';
 import { DefaultI, EntityElement, RenderConfig } from './types/entity';
 import type {
   Model,
@@ -70,10 +70,17 @@ import('../../cmp/field/md-droppable-editor')
 import('../../cmp/field/slider-field.js')
 import('../../cmp/field/select.js')
 
-const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetail) => {
-  console.log('debounceWrite', detail.data.detail)
-  element.dispatchEvent(new Update(detail));
-}, 2000, true)
+/**
+ * We need to change the way we handle data transations: 
+ * - any data change will be dispatched as a  change event, so that we can track changes in db-ref
+ * - real-time will be moved to db-ref or the entity so that we either write real time (throttling the write) or not
+ * - dirty event will always be dispatched. For real-time scenario, we know data is not dirty when the read succeeds.
+ */
+
+// const debounceWrite = throttle((element: EntityElement, detail: EntityWriteDetail) => {
+//   console.log('debounceWrite', detail.data.detail)
+//   element.dispatchEvent(new Update(detail));
+// }, 2000, true)
 
 
 /**
@@ -101,7 +108,7 @@ export function renderField<D extends DefaultI>(
   config?: FieldConfig<D>,
   consumingMode: RenderConfig['consumingMode'] = 'edit',
   path?: string
-): TemplateResult  {
+): TemplateResult {
   let model: ModelComponent<any> = get(path || name, m);
   if (!model && import.meta.env.DEV) {
     console.warn(`No model found for ${name}`);
@@ -138,28 +145,29 @@ export function renderField<D extends DefaultI>(
   }
 
   const id = this.docId ? this.docId : this.id;
-  const dirtyEvent = new Dirty({ entityName: entity.entityName, dirty: true, id });
 
 
-  const label = model.label ?? (key || '');
+  // Note: model.label can be a template result
+  const label = (model.label ?? (key || '')) as string;
 
   // Handle specific attributes that have different behavior depending on the consumingMode (placeholder, disabled)
   const placeholder = consumingMode === 'edit' || consumingMode === 'translate' ?
     ((model as ModelComponentText).placeholder || '') : '';
-  const canEdit = (consumingMode === 'offline') || ((
-    this.entityStatus?.isEditing ||
-    this.entityStatus?.isNew ||
-    (entity.realTime && this.authorization.canEdit)
-  ) && !(config?.disabled === true)
-    && consumingMode !== 'view');
-  let disabled = !canEdit;
+  const canEdit = (
+    consumingMode === 'offline') || ((
+      this.entityStatus?.isEditing ||
+      this.entityStatus?.isNew ||
+      (entity.realTime && this.authorization.canEdit)
+    ) && !(config?.disabled === true)
+      && consumingMode !== 'view');
 
+  let disabled = !canEdit;
 
   // input handler
   const value = get(name, data);
   const onInputFact = (property: string) => {
     return async (e: CustomEvent) => {
-      if (consumingMode === 'offline' 
+      if (consumingMode === 'offline'
         || consumingMode === 'view'
         || consumingMode === 'print'
       ) {
@@ -168,14 +176,19 @@ export function renderField<D extends DefaultI>(
       // @ts-expect-error - not typed
       const v = e.target?.[property];
       if (v !== value) {
-        this.dispatchEvent(dirtyEvent);
+        this.dispatchEvent(
+          new Dirty({ entityName: entity.entityName, dirty: true, id })
+        );
         await this.updateComplete
       }
       set(name, v, data);
-      if (v !== value) {
-        if (entity.realTime) {
-          debounceWrite(this, { entityName: entity.entityName, id: id, data: data });
-        }
+      if (v !== value && entity.realTime) {
+        this.dispatchEvent(
+          new DataChanged({ entityName: entity.entityName, id, data })
+        );
+        // if (entity.realTime) {
+        //   debounceWrite(this, { entityName: entity.entityName, id: id, data: data });
+        // }
       }
       if (model.onInput) {
         model.onInput(data, v, this);
@@ -199,7 +212,7 @@ export function renderField<D extends DefaultI>(
         .label=${label}
         .value=${origin}
         .translated=${value || ''}
-        .maxLength=${model.maxLength}
+        .maxLength=${model.maxLength!}
         .minLength=${model.minLength}
         .charCounter=${!!model.maxLength}
         @translated-changed=${onInputFact('translated')} 
@@ -216,7 +229,7 @@ export function renderField<D extends DefaultI>(
         .label=${label}
         .value=${origin}
         .translated=${value || ''}
-        .maxLength=${model.maxLength}
+        .maxLength=${model.maxLength!}
         .charCounter=${!!model.maxLength}
         @translated-changed=${onInputFact('translated')} 
       ></pwi-input-translation-textarea>`
@@ -231,11 +244,11 @@ export function renderField<D extends DefaultI>(
         .writeLabel=${label}
         .translate=${true} 
         .readOnly=${disabled}
-        .showAccessibilityMenu=${model.showAccessibilityMenu}
+        .showAccessibilityMenu=${model.showAccessibilityMenu!}
         .md=${origin} 
         .mdtranslate=${origin} 
         @mdtranslate-changed=${onInputFact('mdtranslated')} 
-        .maxLength=${model.maxLength}
+        .maxLength=${model.maxLength!}
         .charCounter=${!!model.maxLength}></lapp-md-editor>
       `
     }
@@ -325,8 +338,8 @@ export function renderField<D extends DefaultI>(
         .label=${label}
         .supportingText=${model.helper}
         .required=${!!model.required}
-        .maxLength=${model.maxLength}
-        .minLength=${model.minLength}
+        .maxLength=${model.maxLength!}
+        .minLength=${model.minLength!}
         .value=${value || ''}
         @input=${onInputFact('value')}
       ></lapp-filled-text-field>
@@ -345,8 +358,8 @@ export function renderField<D extends DefaultI>(
         .label=${label}
         .supportingText=${model.helper}
         .required=${!!model.required}
-        .maxLength=${model.maxLength}
-        .minLength=${model.minLength}
+        .maxLength=${model.maxLength!}
+        .minLength=${model.minLength!}
         .value=${value || ''}
         @input=${onInputFact('value')}
       ></lapp-text-field>`;
@@ -363,16 +376,16 @@ export function renderField<D extends DefaultI>(
         .readOnly=${disabled}
         .writeLabel=${label}
         .placeholder=${placeholder}
-        .helper=${model.helper}
+        .helper=${model.helper!}
         .required=${!!model.required}
-        .maxLength=${model.maxLength}
-        .minLength=${model.minLength}
+        .maxLength=${model.maxLength!}
+        .minLength=${model.minLength!}
         .path=${model.path}
-        .showAccessibilityMenu=${model.showAccessibilityMenu}
+        .showAccessibilityMenu=${model.showAccessibilityMenu!}
         ?disabled=${disabled}
-        useFirestore=${model.useFirestore || nothing}
-        maxFileSize=${model.maxFileSize || nothing}
-        rows=${model.rows || nothing}
+        ?useFirestore=${model.useFirestore }
+        .maxFileSize=${model.maxFileSize!}
+        rows=${model.rows || nothing as any}
         resize=${model.resize || nothing}
         .md=${value || ''}
         @input=${onInputFact('md')}
@@ -393,12 +406,12 @@ export function renderField<D extends DefaultI>(
         .readOnly=${disabled}
         .writeLabel=${label}
         .placeholder=${placeholder}
-        .helper=${model.helper}
+        .helper=${model.helper!}
         .pure=${!!model.pure}
         .required=${!!model.required}
-        .maxLength=${model.maxLength}
-        .minLength=${model.minLength}
-        rows=${ifDefined(model.rows) || undefined}
+        .maxLength=${model.maxLength!}
+        .minLength=${model.minLength!}
+        rows=${ifDefined(model.rows) || nothing as any}
         resize=${ifDefined(model.resize) || undefined}
         .md=${md}
         @input=${onInputFact('md')}
@@ -416,9 +429,9 @@ export function renderField<D extends DefaultI>(
         .writeLabel=${label}
         .supportingText=${model.helper}
         .required=${!!model.required}
-        .store=${model.store}
-        .path=${model.path}
-        .maxFiles=${model.maxFiles}
+        .store=${model.store!}
+        .path=${model.path!}
+        .maxFiles=${model.maxFiles!}
         .accept=${model.accept}
         .maxFileSize=${model.maxFileSize}
         .useFirestore=${!!model.useFirestore}
@@ -436,12 +449,12 @@ export function renderField<D extends DefaultI>(
       .writeLabel=${label}
       .helper=${model.helper}
       .required=${!!model.required}
-      .store=${model.store}
-      .path=${model.path}
-      .accept=${model.accept}
-      .maxFileSize=${model.maxFileSize}
+      .store=${model.store!}
+      .path=${model.path!}
+      .accept=${model.accept!}
+      .maxFileSize=${model.maxFileSize!}
       .fieldPath=${model.fieldPath || name}
-      .buttonLabel=${model.buttonLabel || nothing}
+      .buttonLabel=${model.buttonLabel || nothing as any}
       ></lapp-upload-image>`
 
     const imageFirebase = html`<lapp-upload-image-firebase
@@ -452,12 +465,12 @@ export function renderField<D extends DefaultI>(
       .writeLabel=${label}
       .helper=${model.helper}
       .required=${!!model.required}
-      .store=${model.store}
-      .path=${model.path}
-      .accept=${model.accept}
-      .maxFileSize=${model.maxFileSize}
+      .store=${model.store!}
+      .path=${model.path!}
+      .accept=${model.accept!}
+      .maxFileSize=${model.maxFileSize!}
       .fieldPath=${model.fieldPath || name}
-      .buttonLabel=${model.buttonLabel || nothing}
+      .buttonLabel=${model.buttonLabel || nothing as any}
      ></lapp-upload-image-firebase>`
     return model.useFirestore ? image : imageFirebase;
   }
@@ -470,8 +483,8 @@ export function renderField<D extends DefaultI>(
           style=${ifDefined(model.style)}
           ?disabled=${disabled}
           .label=${label}
-          .ticks=${model.ticks}
-          .labeled=${model.labeled}
+          .ticks=${model.ticks!}
+          .labeled=${model.labeled!}
           .supportingText=${model.helper}
           .required=${!!model.required}
           .value=${value || ''}
@@ -493,7 +506,7 @@ export function renderField<D extends DefaultI>(
         .icon=${model.icon}
         .readOnly=${disabled}
         .label=${label}
-        .supportingText=${model.helper}
+        .supportingText=${model.helper!}
         .required=${!!model.required}
         .value=${value || ''}
         @input=${onInputFact('value')}
