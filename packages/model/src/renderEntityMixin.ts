@@ -107,9 +107,11 @@ export default function renderMixin<
       const onActiveItemChanged = (e: CustomEvent) => {
         this.onActiveItemChanged(e);
       }
+      const doc = this.constructor.documentationKeys?.grid
       return html`<vaadin-grid 
         accessible-name="grid for ${this.entityName}"
         id="grid"
+        data-documentation="${doc ? (typeof doc === 'string' ? doc : 'grid') : nothing}"
         class="flex entity grid ${this.entityName}"
         .itemIdPath=${this.itemIdPath}
         .items=${data}

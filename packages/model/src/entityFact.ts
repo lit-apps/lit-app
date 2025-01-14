@@ -2,7 +2,7 @@
  * Entity in which we replace @Lit-app/model actionMixin with a new implementation
  */
 
-import AbstractEntity from "./AbstractEntity.js";
+import AbstractEntity, { DocumentationKeysT } from "./AbstractEntity.js";
 
 import { type RenderInterface as CreateI } from './renderEntityCreateMixin.js';
 import fieldMixin, { RenderInterface as FieldI, StaticEntityField } from './renderEntityFieldMixin';
@@ -95,7 +95,9 @@ export default function abstractEntityFact<
     static declare icon: string
     static declare model: Model<any>
     static declare actions: A
-    static declare styles: CSSResult | CSSResult[];
+    static declare styles: CSSResult | CSSResult[]
+    static declare documentationKeys: DocumentationKeysT
+    
   }
 
   return R as unknown as 

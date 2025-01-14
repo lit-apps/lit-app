@@ -19,8 +19,8 @@ import "@lit-app/cmp/toolbar/toolbar.js";
 import { ToastEvent } from "@lit-app/shared/event";
 import { callFunctionOrValue } from "@lit-app/shared/callFunctionOrValue.js";
 import '@material/web/iconbutton/filled-icon-button.js';
-import { html, TemplateResult } from "lit";
-import AbstractEntity from "./AbstractEntity.js";
+import { html, nothing, TemplateResult } from "lit";
+import AbstractEntity, { DocumentationKeysT } from "./AbstractEntity.js";
 import { defaultActions, getEntityActionEvent } from "./defaultActions.js";
 import { Close, Dirty, Open } from "./events.js";
 import RenderEntityCreateMixin from "./renderEntityCreateMixin.js";
@@ -49,7 +49,9 @@ export default function renderMixin<A extends ActionsT>(
   const staticApply: {
     entityName?: string
     actions: A & DefaultActionsT<unknown>
-  } & StaticEntityActionI<A> = {
+  } &
+    StaticEntityActionI<A> &
+  { documentationKeys?: DocumentationKeysT } = {
     actions: Object.assign({}, defaultActions(), actions as A || {}),
 
     renderAction(
@@ -157,10 +159,13 @@ export default function renderMixin<A extends ActionsT>(
     // renderContent is called by renderEntityMixin - it is the entry point for rendering actions
     override renderContent(data: unknown, config: RenderConfig): TemplateResult {
       if (this.canViewActions(data, config)) {
+        const doc = this.constructor.documentationKeys?.actions
         // when we are in a (grid) detail context, we do not want to render actions as sticky
         const stickyClass = config.context === 'detail' ? '' : 'sticky'
         return html`
-					<div id="action" class="${stickyClass} layout horizontal center wrap">
+					<div id="action" 
+            class="${stickyClass} layout horizontal center wrap" 
+            data-documentation="${doc ? (typeof doc === 'string' ? doc : 'actions') : nothing}">
             ${this.renderEntityActions(data, config)}
           </div>
 				`

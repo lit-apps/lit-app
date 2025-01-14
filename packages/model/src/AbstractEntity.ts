@@ -8,6 +8,10 @@ import {
 type Strings = {
 	[key: string]: string | Strings;
 };
+export type DocumentationKeysT = {
+	grid: boolean | string
+	actions: boolean | string
+}
 
 
 import { ToastEvent } from '@lit-app/shared/event';
@@ -39,7 +43,12 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 		{ name: 'guest', level: 4 }] as const
 
 	static userLoader: (search: string) => Promise<any>
-		
+	
+	static documentationKeys: DocumentationKeysT = {
+		grid: false,
+		actions: false
+	}
+
 	/** 
 	 * true when the data is ready, we do not render before this is true
 	 */

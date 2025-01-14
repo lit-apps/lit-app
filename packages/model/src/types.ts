@@ -83,6 +83,7 @@ import { RenderInterface as ActionI, StaticEntityActionI } from './types/renderA
 import { RenderInterface as CreateI } from './types/renderEntityCreateI.js';
 import { RenderInterface as FieldI, StaticEntityField } from './types/renderEntityFieldI.js';
 import { RenderInterface as RenderI } from './types/renderEntityI.js';
+import { DocumentationKeysT } from './AbstractEntity.js';
 
 export interface StaticEntityI<D = any, A extends ActionsT = ActionsT> {
 	actions: A
@@ -92,6 +93,7 @@ export interface StaticEntityI<D = any, A extends ActionsT = ActionsT> {
 	locale?: Strings
 	roles: Readonly<Role[]>
 	userLoader?: (search: string) => Promise<any>
+	documentationKeys: DocumentationKeysT
 	['constructor']: typeof AbstractEntity;
 }
 export interface EntityI<
@@ -102,6 +104,7 @@ export interface EntityI<
 	StaticEntityActionI<A>,
 	StaticEntityField<D>,
 	StaticEntityI<D, A> {
+	documentationKeys: DocumentationKeysT
 	entityName: string,
 	icon: string,
 	new(cmp: EntityElement, realtime?: boolean): entityI<D, C, A>;
