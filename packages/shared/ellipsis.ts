@@ -1,10 +1,11 @@
 /**
- * Truncates a string and adds an ellipsis ('...') if it exceeds the specified length.
- * @param str - The string to truncate.
- * @param maxLength - The maximum length of the string including the ellipsis.
- * @returns The truncated string with an ellipsis if it exceeds the maxLength.
+ * Truncates a string and adds an ellipsis ('...') if it exceeds the specified maximum length.
+ *
+ * @param str - The string to be truncated.
+ * @param maxLength - The maximum length of the string including the ellipsis. Defaults to 40.
+ * @returns The truncated string with an ellipsis if it exceeds the maximum length.
  */
-export default function ellipsis(str: string, maxLength: number = 40): string {
+export function ellipsis(str: string, maxLength: number = 40): string {
   if (str.length <= maxLength) {
     return str;
   }
