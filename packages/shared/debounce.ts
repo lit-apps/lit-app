@@ -26,7 +26,7 @@ const debounce = (func: UnknownFunction, delay: number, immediate?: boolean): Un
     const calleeFunc = immediate ? () => {
       timerId = undefined;
     } : boundFunc;
-    timerId = setTimeout(calleeFunc, delay);
+    timerId = window.setTimeout(calleeFunc, delay);
   };
 };
 
