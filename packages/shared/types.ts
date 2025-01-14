@@ -1,5 +1,9 @@
 /** Types utils used in other part of the app */
 
+import type { Stripe } from 'stripe';
+
+
+// import type {FirebaseFirestore} from 'firebase/firestore';
 
 /**
  * Represents a custom HTML event with specific target and currentTarget types.
@@ -105,6 +109,27 @@ export type ProtoOfT<T extends { __proto__: any }> = T['__proto__'] extends infe
 
 
 export type { MixinBase, MixinReturn } from './mixin/types.js';
+
+
+/**
+ * A utility type that makes all properties of a given type `T` writable, incl nested objects.
+ * We remove any document references from the type to avoid circular references.
+ * 
+ * https://stackoverflow.com/questions/58434389/typescript-deep-keyof-of-a-nested-object
+ */
+type DotPrefix<T extends string> = T extends "" ? "" : `.${T}`
+type DocumentReference = {
+  firestore: any
+  path: string
+  id: string
+  parent: any
+}
+type ExcludedTypesT = Date | Function | Array<any> |
+ DocumentReference | Stripe.Invoice  | File
+export type NestedKeys<T> = (
+  T extends  ExcludedTypesT ? "": T extends object ?
+    { [K in Exclude<keyof T, symbol>]: `${K}${DotPrefix<NestedKeys<T[K]>>}` }[Exclude<keyof T, symbol>]
+    : "") extends infer D ? Extract<D, string> : never;
 
 // type F = DistributeFunctionParamT<string | string[] | number, boolean>;
 // const fn: F = (item: number) => item === 'a';
