@@ -28,7 +28,7 @@ import('@material/web/elevation/elevation');
  * @cssprop --lapp-widget-container-min-height - The minimum height of the container.
  * @cssprop --lapp-widget-container-padding - The padding of the container.
  * @cssprop --lapp-widget-container-elevation-level - The elevation level of the container.
- * @cssprop --pwi-widget-container-header-padding - The padding of the header.
+ * @cssprop --lapp-widget-container-header-padding - The padding of the header.
  * @cssprop --space-small - The small space size.
  * @cssprop --space-x-small - The extra small space size.
  * @cssprop --space-xx-small - The double extra small space size.
@@ -117,7 +117,7 @@ export default class lappWidgetContainer extends LitElement {
       display: flex;
       align-items: center;
       min-height: 16px;
-      padding-bottom: var(--pwi-widget-container-header-padding, var(--space-x-small));
+      padding-bottom: var(--lapp-widget-container-header-padding, var(--space-x-small));
     }
 
     .container {
