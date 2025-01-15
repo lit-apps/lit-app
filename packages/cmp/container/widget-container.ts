@@ -45,10 +45,10 @@ export default class lappWidgetContainer extends LitElement {
 
   static override styles = css`
     :host {
-      _icon-color: var(--lapp-widget-container-icon-color, var(--color-secondary-text));
-      _icon-size: var(--lapp-widget-container-icon-size, 1rem);
-      --_color: var(--lapp-widget-container-color, var(--md-sys-color-on-primary-container, #fff));
-      --_container-color: var(--lapp-widget-container-container-color, var(--md-sys-color-primary-container,#007cb1));
+      --_icon-color: var(--lapp-widget-container-icon-color, var(--color-secondary-text));
+      --_icon-size: var(--lapp-widget-container-icon-size, 1.5rem);
+      --_color: var(--lapp-widget-container-color, var(--color-on-surface, #1C1B1F));
+      --_container-color: var(--lapp-widget-container-container-color, var(--md-sys-color-surface-container-lowe,#f7f2fa));
 
       display: flex;
       flex-direction: column;
@@ -91,13 +91,16 @@ export default class lappWidgetContainer extends LitElement {
       gap: var(--space-small);
     }
 
-
+    ::slotted([slot=icon]) {
+      margin-right: var(--space-x-small);
+    }
     .title {
       flex: 1;
       white-space: nowrap;
       overflow: hidden;
       width: 0; /* need this for ellipsis work*/
       text-overflow: ellipsis;
+      
     }
     .title::first-letter {
       text-transform: uppercase;
@@ -114,6 +117,7 @@ export default class lappWidgetContainer extends LitElement {
     .header {
       color: #4a4a4a;
       letter-spacing: 0;
+      font-weight: var(--font-weight-semi-bold);
       display: flex;
       align-items: center;
       min-height: 16px;
@@ -157,17 +161,17 @@ export default class lappWidgetContainer extends LitElement {
    * include `_blank` to open in a new tab.
    */
   @property() target: '_blank' | '_parent' | '_self' | '_top' | '' = '';
-  
+
   /**
    * set true to disable the transform effect on hover
-   */ 
+   */
   @property({ type: Boolean, reflect: true }) noTransform!: boolean
 
   /**
    * The accessible name for the container
    */
   @property() accessibleName!: string
-  
+
 
   override render() {
     const container = this.href ? literal`a` : literal`div`;
