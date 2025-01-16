@@ -1,15 +1,15 @@
 
+import { RecursivePartial } from '@lit-app/shared/types.js';
+import '@vaadin/grid/lit-all-imports.js';
 import AbstractEntity from './AbstractEntity';
-import '@vaadin/grid/lit-all-imports.js'
-import type { MetaDataFromD, RefFromD, RenderInterface, StaticRenderInterface } from './types/renderEntityCreateI';
-import { DataI } from './types/dataI';
 import { HostElementI } from './types/actionTypes.js';
-import { PartialBy, RecursivePartial } from '@lit-app/shared/types.js';
+import { DataI } from './types/dataI';
+import type { MetaDataFromD, RefFromD, RenderInterface, StaticRenderInterface } from './types/renderEntityCreateI';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 export {
 	RenderInterface
-}
+};
 
 /**
  * 
@@ -23,15 +23,15 @@ export default function renderMixin<D extends DataI>(
 		entityName?: string,
 	} & StaticRenderInterface<D> = {
 
-		processCreateData( host: HostElementI<D>, data: RecursivePartial<D> = {}): Partial<D> {
+		processCreateData(host: HostElementI<D>, data: RecursivePartial<D> = {}): Partial<D> {
 			return {
 				...data,
-				metaData: this.processCreateMetaData(host, data.metaData ),
+				metaData: this.processCreateMetaData(host, data.metaData),
 				ref: this.processCreateRef(host, data.ref)
 			} as Partial<D>;
 		},
 
-		processCreateMetaData( host: HostElementI<D>, metaData: Partial<D["metaData"]> = {}): MetaDataFromD<D> { 
+		processCreateMetaData(host: HostElementI<D>, metaData: Partial<D["metaData"]> = {}): MetaDataFromD<D> {
 			// if (typeof metaData !== 'object' || metaData === null) {
 			// 	throw new Error('metaData must be an object');
 			// }
@@ -46,7 +46,7 @@ export default function renderMixin<D extends DataI>(
 			} as MetaDataFromD<D>;
 		},
 
-		processCreateRef( host: HostElementI<D>, ref: Partial<D["ref"]> = {}): RefFromD<D> {
+		processCreateRef(host: HostElementI<D>, ref: Partial<D["ref"]> = {}): RefFromD<D> {
 			return {
 				app: host.appID || null,
 				...ref,
@@ -59,7 +59,7 @@ export default function renderMixin<D extends DataI>(
 
 		// @ts-expect-error - we are cheating
 		declare ['constructor']: typeof staticApply
-		
+
 		/** 
 		 * returns data to be stored in the database when creating a new entity
 		 * @param userID - the user owning the entity - it can be a different user than the one logged in

@@ -1,5 +1,5 @@
-import { html, css, LitElement, PropertyValues } from "lit";
-import { customElement, property, state } from 'lit/decorators.js';
+import { LitElement } from "lit";
+import { customElement } from 'lit/decorators.js';
 
 /**
  * A proxy list to use with choice
@@ -9,7 +9,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 
 @customElement('ul-choice')
 export default class ulChoice extends LitElement {
-	
+
 	override createRenderRoot() {
 		return this;
 	}
