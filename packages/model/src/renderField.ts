@@ -1,43 +1,43 @@
 import { get, set } from '@lit-app/shared';
 import { TemplateResult, html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import AbstractEntity from './AbstractEntity.js';
 import { DataChanged, Dirty } from './events';
 import { DefaultI, EntityElement, RenderConfig } from './types/entity';
 import type {
+  FieldConfig,
   Model,
   ModelComponent,
-  FieldConfig,
-  ModelComponentText,
-  ModelComponentCheckboxGroup,
-  ModelComponentTextArea,
-  ModelComponentStar,
-  ModelComponentRadioGroup,
   ModelComponentBoolean,
+  ModelComponentCheckboxGroup,
+  ModelComponentMd,
+  ModelComponentMdDroppable,
+  ModelComponentRadioGroup,
   ModelComponentSelect,
   ModelComponentSlider,
+  ModelComponentStar,
+  ModelComponentText,
+  ModelComponentTextArea,
   ModelComponentUpload,
-  ModelComponentUploadImage,
-  ModelComponentMd,
-  ModelComponentMdDroppable
+  ModelComponentUploadImage
 } from './types/modelComponent';
-import '@vaadin/multi-select-combo-box/vaadin-lit-multi-select-combo-box';
-import AbstractEntity from './AbstractEntity.js';
+import('@vaadin/multi-select-combo-box/vaadin-lit-multi-select-combo-box');
 
 import {
-  isComponentSelect,
-  isComponentMultiSelect,
-  isComponentRadioGroup,
+  isComponentCheckbox,
   isComponentCheckboxGroup,
-  isComponentText,
-  isComponentTextArea,
   isComponentMd,
   isComponentMdDroppable,
-  isComponentCheckbox,
-  isComponentSwitch,
+  isComponentMultiSelect,
+  isComponentRadioGroup,
+  isComponentSelect,
   isComponentSlider,
+  isComponentStar,
+  isComponentSwitch,
+  isComponentText,
+  isComponentTextArea,
   isComponentUpload,
   isComponentUploadImage,
-  isComponentStar,
 } from './types/modelComponent';
 
 
@@ -383,7 +383,7 @@ export function renderField<D extends DefaultI>(
         .path=${model.path}
         .showAccessibilityMenu=${model.showAccessibilityMenu!}
         ?disabled=${disabled}
-        ?useFirestore=${model.useFirestore }
+        ?useFirestore=${model.useFirestore}
         .maxFileSize=${model.maxFileSize!}
         rows=${model.rows || nothing as any}
         resize=${model.resize || nothing}

@@ -1,6 +1,5 @@
 
 import { RecursivePartial } from '@lit-app/shared/types.js';
-import '@vaadin/grid/lit-all-imports.js';
 import AbstractEntity from './AbstractEntity';
 import { HostElementI } from './types/actionTypes.js';
 import { DataI } from './types/dataI';

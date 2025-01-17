@@ -1,15 +1,15 @@
 import { ensure } from '@lit-app/shared/types.js';
 import { get } from '@preignition/preignition-util/src/deep';
 import { activeItemChanged } from '@preignition/preignition-util/src/grid';
-import type { Grid } from '@vaadin/grid/vaadin-lit-grid.js';
-import '@vaadin/grid/lit-all-imports.js'
-import { html, nothing, TemplateResult } from 'lit';
 import {
   columnBodyRenderer,
   columnHeaderRenderer,
   gridRowDetailsRenderer
 } from '@vaadin/grid/lit';
+import type { Grid } from '@vaadin/grid/vaadin-lit-grid.js';
+import { html, nothing, TemplateResult } from 'lit';
 
+import('@vaadin/grid/lit-all-imports.js');
 
 import { choose } from 'lit/directives/choose.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -133,7 +133,7 @@ export default function renderMixin<
       const context = (e.currentTarget as Grid).getEventContext(e);
       // by default, open the item
       if (context.item) {
-        this.open(context.item.$id,this.entityName)
+        this.open(context.item.$id, this.entityName)
       }
     }
 
@@ -175,7 +175,7 @@ export default function renderMixin<
 			</div>`
     }
 
-   renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]) {
+    renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]) {
       const model = this.model;
       // get the fields to render in table
       const fields = tableFields || getFieldsFromModel(model, config, (model) => model.table)
