@@ -1,6 +1,8 @@
-export { wait } from './wait';
 export { debounce } from './debounce';
-export { throttle } from './throttle';
-export { interceptMethod } from './support/method-interception';
-export { get, set, deep } from './deep';
+export { deep, get, set } from './deep';
+export { scrollInto } from './domUtils/scrollInto.js';
 export { ellipsis } from './ellipsis';
+export { interceptMethod } from './support/method-interception';
+export { throttle } from './throttle';
+export { wait } from './wait';
+
