@@ -1,5 +1,4 @@
-import { LitElement, PropertyValues, TemplateResult, html, nothing } from 'lit';
-import { property } from 'lit/decorators.js'
+import { TemplateResult, html, nothing } from 'lit';
 import { choose } from 'lit/directives/choose.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Choice } from './choice';

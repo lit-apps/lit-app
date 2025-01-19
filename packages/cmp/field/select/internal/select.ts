@@ -1,15 +1,14 @@
-import { Select as S } from '@material/web/select/internal/select';
-import { A11yFieldMixinInterface, type Variant } from '../../field/internal/a11y-field-mixin';
-import { property } from 'lit/decorators.js';
-import { nothing, PropertyValues, TemplateResult } from 'lit';
-import { html } from 'lit';
-import { StaticValue, html as staticHtml } from 'lit/static-html.js';
-// @ts-expect-error - locale is not typed
-import locale from '../../choice/readaloud-locale.mjs';
-import translate from '@preignition/preignition-util/translate-mixin.js';
-import NoAutoValidateMixin from '../../mixin/noAutoValidateMixin.js';
 import { Field } from '@material/web/field/internal/field.js';
 import { ARIAMixinStrict } from '@material/web/internal/aria/aria.js';
+import { Select as S } from '@material/web/select/internal/select';
+import translate from '@preignition/preignition-util/translate-mixin.js';
+import { html, nothing, PropertyValues, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { html as staticHtml, StaticValue } from 'lit/static-html.js';
+import { A11yFieldMixinInterface, type Variant } from '../../field/internal/a11y-field-mixin';
+// @ts-expect-error - locale is not typed
+import locale from '../../choice/readaloud-locale.mjs';
+import NoAutoValidateMixin from '../../mixin/noAutoValidateMixin.js';
 
 // @ts-expect-error - field is not the same type
 export interface SelectI extends S {
@@ -37,9 +36,9 @@ export abstract class Select extends
   NoAutoValidateMixin(
     translate(S, locale, 'readaloud'))
   implements SelectI {
-//  {
-    declare field : Field & A11yFieldMixinInterface
-    // protected override readonly field: Field & A11yFieldMixinInterface
+  //  {
+  declare field: Field & A11yFieldMixinInterface
+  // protected override readonly field: Field & A11yFieldMixinInterface
   /**
    * The variant to use for rendering the field
    */
@@ -136,7 +135,7 @@ export abstract class Select extends
 
   // TODO: check if we can apply a11y-field mixin on select and if we need this
   getTextLabel() {
-    let label =  this.field?.getTextLabel?.() || this.label
+    let label = this.field?.getTextLabel?.() || this.label
     return label
   }
 
@@ -165,7 +164,7 @@ export abstract class Select extends
     // @ts-expect-error - handleKeyDown is private
     return super.handleKeydown(event);
   }
-  
+
   private override handleClick() {
     if (this.readOnly) {
       return;

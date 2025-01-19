@@ -1,7 +1,7 @@
-import { html, css, LitElement, nothing } from "lit";
-import { customElement, property, state } from 'lit/decorators.js';
-import { literal, html as staticHtml } from 'lit/static-html.js';
 import { parseInline } from '@lit-app/md-parser';
+import { css, LitElement, nothing } from "lit";
+import { customElement, property } from 'lit/decorators.js';
+import { literal, html as staticHtml } from 'lit/static-html.js';
 import('@material/web/elevation/elevation');
 
 

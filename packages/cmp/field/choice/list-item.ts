@@ -1,12 +1,12 @@
-import { html, css, LitElement, nothing, CSSResult } from "lit";
-import { customElement, property, state } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
 import { MdRadio } from '@material/web/radio/radio';
+import { css, CSSResult, nothing } from "lit";
+import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
-import  { LappListItem } from '../../list/list-item';
-import {html as staticHtml, literal, StaticValue} from 'lit/static-html.js';
-import type {ListItemType} from '@material/web/list/internal/listitem/list-item' 
-import {ARIAMixinStrict} from '@material/web/internal/aria/aria.js';
+import { ARIAMixinStrict } from '@material/web/internal/aria/aria.js';
+import type { ListItemType } from '@material/web/list/internal/listitem/list-item';
+import { literal, html as staticHtml, StaticValue } from 'lit/static-html.js';
+import { LappListItem } from '../../list/list-item';
 
 /**
  * Supported behaviors for a list item.
@@ -54,11 +54,11 @@ export default class lappChoiceListItem extends LappListItem {
 	@property({ type: Boolean }) isMulti: boolean = false;
 
 	/**
-   * Sets the behavior of the list item, defaults to "text". Change to "link" or
-   * "button" for interactive items.
-   */
+	 * Sets the behavior of the list item, defaults to "text". Change to "link" or
+	 * "button" for interactive items.
+	 */
 	// @ts-expect-error - we are cheating with ListItemType
-  @property() override type: A11yListItemType = 'a11y';
+	@property() override type: A11yListItemType = 'a11y';
 
 	get inputElement() {
 		return this.querySelector(this.selector) as MdRadio;
@@ -87,38 +87,38 @@ export default class lappChoiceListItem extends LappListItem {
 	}
 
 	/**
-   * Renders the root list item.
+	 * Renders the root list item.
 	 * We need an additional type to make the list item interactive but not focusable
-   *
-   * @param content the child content of the list item.
-   */
-  protected override renderListItem(content: unknown) {
-    const isAnchor = this.type === 'link';
-    let tag: StaticValue;
-    switch (this.type) {
-      case 'link':
-        tag = literal`a`;
-        break;
-      case 'button':
-        tag = literal`button`;
-        break;
-      default:
-      case 'text':
+	 *
+	 * @param content the child content of the list item.
+	 */
+	protected override renderListItem(content: unknown) {
+		const isAnchor = this.type === 'link';
+		let tag: StaticValue;
+		switch (this.type) {
+			case 'link':
+				tag = literal`a`;
+				break;
+			case 'button':
+				tag = literal`button`;
+				break;
+			default:
+			case 'text':
 				tag = literal`li`;
-        break;
-      case 'a11y':
-        tag = literal`div`;
-        break;
-				
-    }
+				break;
+			case 'a11y':
+				tag = literal`div`;
+				break;
 
-    const isInteractive = this.type !== 'text' && this.type !== 'a11y';
-    // TODO(b/265339866): announce "button"/"link" inside of a list item. Until
-    // then all are "listitem" roles for correct announcement.
-    const target = isAnchor && !!this.target ? this.target : nothing;
+		}
+
+		const isInteractive = this.type !== 'text' && this.type !== 'a11y';
+		// TODO(b/265339866): announce "button"/"link" inside of a list item. Until
+		// then all are "listitem" roles for correct announcement.
+		const target = isAnchor && !!this.target ? this.target : nothing;
 		// @ts-expect-error - isDisabled is private
-		const isDisabled = this.isDisabled ;
-    return staticHtml`
+		const isDisabled = this.isDisabled;
+		return staticHtml`
       <${tag}
         id="item"
         tabindex="${isDisabled || !isInteractive ? -1 : 0}"
@@ -133,7 +133,7 @@ export default class lappChoiceListItem extends LappListItem {
         @focus=${this.onFocus}
       >${content}</${tag}>
     `;
-  }
+	}
 
 	// override onFocus() {
 	// 	setTimeout(() => {

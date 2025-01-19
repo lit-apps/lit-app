@@ -1,19 +1,17 @@
-import '../../../radio/radio';
+import { HTMLEvent } from '@lit-app/shared/types';
+import '@material/web/icon/icon';
+import { html, nothing } from 'lit';
+import { when } from 'lit/directives/when.js';
 import '../../../../list/list';
 import '../../../../list/list-item';
-import '@material/web/icon/icon';
-import { html } from 'lit';
-import { when } from 'lit/directives/when.js';
+import '../../../radio/radio';
 import '../../../text-field';
 import { Choice } from '../../choice';
 import IllustrationMixin from '../../illustrationMixin';
+import '../../list-item';
 import SingleMixin from '../../singleMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
 import { isOptionMdT, type Option } from '../../types';
-import { HTMLEvent } from '@lit-app/shared/types';
-import '../../list-item'
-import lappChoiceListItem from '../../list-item';
-import { nothing } from 'lit';
 
 /**
  * Radio group field

@@ -1,16 +1,14 @@
-import { LitElement, PropertyValues } from "lit";
-import { property, state, query } from 'lit/decorators.js';
+import { html, PropertyValues } from "lit";
+import { property, query } from 'lit/decorators.js';
 import { Generic } from '../../generic/generic';
-import { html, nothing } from 'lit';
-import type { TemplateResult } from 'lit';
 import type { InputSlider } from './input-slider';
 // import '@material/web/slider/slider.js';
-import '../input-slider'
+import '../input-slider';
 
 import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';
-import { MdSlider } from '@material/web/slider/slider';
 import { createValidator } from '@material/web/labs/behaviors/constraint-validation';
 import { Validator } from '@material/web/labs/behaviors/validators/validator';
+import { MdSlider } from '@material/web/slider/slider';
 import { SliderValidator } from './sliderValidator';
 
 /**
@@ -23,8 +21,8 @@ export abstract class Slider extends Generic {
   protected fieldName = 'slider';
   @query('lapp-slider') override readonly input!: HTMLInputElement;
   @query('lapp-slider') override readonly inputOrTextarea!: HTMLInputElement;
-	
-	@property({attribute: false}) 
+
+  @property({ attribute: false })
   // @ts-expect-error -
   override get value() {
     const input = this.input as unknown as MdSlider;
@@ -32,9 +30,9 @@ export abstract class Slider extends Generic {
       return this._value;
     }
     return input.range ? [input.valueStart, input.valueEnd] : input.value;
-		
-	}
-	override set value(value) {
+
+  }
+  override set value(value) {
     const input = this.input as unknown as MdSlider;
     const isArray = Array.isArray(value);
     if (isArray && !this.range) {
@@ -57,7 +55,7 @@ export abstract class Slider extends Generic {
       this.valueStart = value[0];
       this.valueEnd = value[1];
     }
-	}
+  }
 
   // temp holding value
   private _value: any
@@ -88,13 +86,13 @@ export abstract class Slider extends Generic {
    * An optional label for the slider's start value displayed when
    * range is true; if not set, the label is the valueStart itself.
    */
-  @property({ attribute: 'value-label-start' }) valueLabelStart: string ='';
+  @property({ attribute: 'value-label-start' }) valueLabelStart: string = '';
 
   /**
    * An optional label for the slider's end value displayed when
    * range is true; if not set, the label is the valueEnd itself.
    */
-  @property({ attribute: 'value-label-end' }) valueLabelEnd: string =' ';
+  @property({ attribute: 'value-label-end' }) valueLabelEnd: string = ' ';
 
   /**
    * Aria label for the slider's start value displayed when
@@ -174,12 +172,12 @@ export abstract class Slider extends Generic {
   // we need to override updated in order to avoid infinite loop on value setter
   // this is because there is a check this.value !== value which will always reschedule an update
   protected override updated(changedProperties: PropertyValues) {
-       
+
   }
 
   handleChange(e: Event) {
     const event = new CustomEvent('input', {
-      detail: {value: this.value},
+      detail: { value: this.value },
       bubbles: true,
       composed: true
     })
@@ -189,17 +187,18 @@ export abstract class Slider extends Generic {
     //   this.valueStart = this.value[0];
     // }
   }
-	
-  override [createValidator](): Validator<unknown> {
-		return new SliderValidator(() => this.inputOrTextarea as unknown as InputSlider || { 
-      required: !!this.required, 
+
+  override[createValidator](): Validator<unknown> {
+    return new SliderValidator(() => this.inputOrTextarea as unknown as InputSlider || {
+      required: !!this.required,
       range: this.range,
       max: this.max || 100,
       min: this.min || 0,
       valueEnd: this.valueEnd,
-      valueStart: this.valueStart,  
-      value: this.value});
-	}
+      valueStart: this.valueStart,
+      value: this.value
+    });
+  }
 
 }
 

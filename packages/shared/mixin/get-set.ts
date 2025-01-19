@@ -1,5 +1,4 @@
-import { LitElement, PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js'
+import { LitElement } from 'lit';
 
 import { deep, type action } from '../deep.js';
 

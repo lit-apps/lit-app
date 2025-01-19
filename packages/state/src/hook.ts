@@ -1,18 +1,18 @@
 import { State } from './state.js';
 const DONOTUSE: string = 'DONOTUSE'
 
-type Values = {[key:string]: unknown}
+type Values = { [key: string]: unknown }
 
 /**
  * A base class for building state hooks
  */
 export class Hook {
 	static hookName: string = DONOTUSE
-	
+
 	unsubscribe: () => void
-	
+
 	constructor(public state: State) {
-		if(!(this.constructor as typeof Hook).hookName || (this.constructor as typeof Hook).hookName === DONOTUSE) {
+		if (!(this.constructor as typeof Hook).hookName || (this.constructor as typeof Hook).hookName === DONOTUSE) {
 			throw new Error('hook subclass must have their own hookName')
 		}
 		this.unsubscribe = this.subscribe()
@@ -25,8 +25,8 @@ export class Hook {
 
 	get hookedProps() {
 		const stateProto = Object.getPrototypeOf(this.state)
-		if(!stateProto.propertyMap) {stateProto.initPropertyMap()}
-		return [...stateProto.propertyMap].filter(([, definition]) => definition?.hook 
+		if (!stateProto.propertyMap) { stateProto.initPropertyMap() }
+		return [...stateProto.propertyMap].filter(([, definition]) => definition?.hook
 			&& definition?.hook[(this.constructor as typeof Hook).hookName])
 	}
 
@@ -43,16 +43,16 @@ export class Hook {
 		return this.state.propertyMap.get(key)
 	}
 
-	toState(values : Values) {
+	toState(values: Values) {
 		Object.entries(values)
-		.filter(([key]) => this.isHookedProp(key))
-		.forEach(([key, value]) =>  (this.state as {} as { [key: string]: unknown })[key as string] = value) 
+			.filter(([key]) => this.isHookedProp(key))
+			.forEach(([key, value]) => (this.state as {} as { [key: string]: unknown })[key as string] = value)
 	}
-	
+
 	fromState(key: string, value: unknown, state: State) {
 		throw ('fromState must be implemented in subclasses')
 	}
-	
+
 	reset() {
 		throw ('reset hook must be implemented in subclasses')
 	}

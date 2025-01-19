@@ -1,16 +1,15 @@
 import { TextField as T } from '@material/web/textfield/internal/text-field';
-import { Variant } from '../../field/internal/a11y-field-mixin';
+import { PropertyValues } from 'lit';
 import { property, query } from 'lit/decorators.js';
+import LocalStoragePersist from '../../../mixin/local-storage-persist-mixin.js';
+import { Variant } from '../../field/internal/a11y-field-mixin';
 import type { FilledField } from '../../field/internal/filled-field';
 import type { OutlinedField } from '../../field/internal/outlined-field';
-import { PropertyValues } from 'lit';
 import NoAutoValidateMixin from '../../mixin/noAutoValidateMixin';
-import LocalStoragePersist from '../../../mixin/local-storage-persist-mixin.js';
 
 import { StaticValue, html as staticHtml } from 'lit/static-html.js';
-import { GenericI } from '../../generic/generic';
 import CompatMixin from '../../compat/compat-mixin';
-import { ConsumeFormMixin } from '@a11y/form';
+import { GenericI } from '../../generic/generic';
 /**
  * We add real class to avoid TS error
  */
@@ -38,10 +37,10 @@ class RealClass extends T {
 // @ts-expect-error - TS complains about renderField and field being private in Base class
 export class TextField extends
 	// ConsumeFormMixin(
-		NoAutoValidateMixin(
-			CompatMixin(
-				LocalStoragePersist(
-					RealClass))) {
+	NoAutoValidateMixin(
+		CompatMixin(
+			LocalStoragePersist(
+				RealClass))) {
 	/**
 	 * The variant to use for rendering the field
 	 */

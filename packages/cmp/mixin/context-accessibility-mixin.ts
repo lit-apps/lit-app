@@ -1,8 +1,8 @@
-import { LitElement, adoptStyles } from 'lit';
-import { property } from 'lit/decorators.js'
-import { consume, provide, createContext, ContextProvider } from '@lit/context';
 import { showWhenAccessibility } from '@lit-app/shared/styles';
-import { State, StateController } from '../../state/src';
+import { ContextProvider, consume, createContext } from '@lit/context';
+import { LitElement, adoptStyles } from 'lit';
+import { property } from 'lit/decorators.js';
+import { StateController } from '../../state/src';
 import { AccessibilityStateI } from '../../state/src/types';
 
 
