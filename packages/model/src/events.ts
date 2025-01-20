@@ -27,7 +27,7 @@ export interface EntityDirtyDetail {
   entityName: string
   promise?: Promise<any>
   dirty: boolean
-  id: string 
+  id: string
 }
 
 export interface EntityActionDetail {
@@ -44,7 +44,6 @@ export class BaseEvent<T extends { promise?: Promise<any> }> extends CustomEvent
   }
   get canProcess() {
     return !this.shouldConfirm && !this.processed;
-    // return this.confirmed || !this.action.confirmDialog;
   }
   get shouldConfirm() {
     return !!(!this.confirmed && this.action?.confirmDialog);
@@ -90,7 +89,7 @@ export class DataChanged<T = any> extends BaseEvent<EntityWriteDetail<T>> {
   public persisted?: boolean // true when data is persisted 
   constructor(
     detail: EntityWriteDetail<T>
-    ) {
+  ) {
     super(DataChanged.eventName, {
       bubbles: true,
       composed: true,
@@ -207,7 +206,7 @@ export class Edit extends BaseEvent<EntityDetail> {
   }
 }
 
-class BaseAction<T> extends BaseEvent<T & { promise?: Promise<any>}> {
+class BaseAction<T> extends BaseEvent<T & { promise?: Promise<any> }> {
   public bulkAction?: boolean
   override get shouldConfirm() {
     return !!(!this.confirmed && (this.action?.confirmDialog || this.bulkAction));
@@ -226,7 +225,7 @@ export interface ActionDetail<T = any> {
   promise?: Promise<any>
 }
 
-export interface ActionI<T= any> {
+export interface ActionI<T = any> {
   actionName: string
   detail: T
   entityName?: string // the entityName is not required for all actions
@@ -252,7 +251,7 @@ export class EntityAction<T extends ActionI = ActionI> extends BaseAction<Action
  * @param  {EntityAction} action
  * @param  {string} id
  */
-export function setEntityActionId (action: EntityAction, id: string) {
+export function setEntityActionId(action: EntityAction, id: string) {
   action.detail.id = id
 }
 export function isEntityAction(event: CustomEvent): event is EntityAction {
@@ -337,7 +336,7 @@ type ActionEmailDetail = ActionDetailTemplates | ActionDetailTemplate
 export function isActionDetailTemplates(detail: ActionEmailDetail): detail is ActionDetailTemplates {
   return !!(detail as ActionDetailTemplates).templates
 }
-export function isActionDetailTemplate (detail: ActionEmailDetail): detail is ActionDetailTemplate {
+export function isActionDetailTemplate(detail: ActionEmailDetail): detail is ActionDetailTemplate {
   return !!(detail as ActionDetailTemplate).template
 }
 export class AppActionEmail extends BaseAction<ActionEmailDetail> {
@@ -360,11 +359,11 @@ export class AppActionEmail extends BaseAction<ActionEmailDetail> {
 }
 
 
-type AnyEntityEvent =  Write | Update | Reset | Delete  | Create | Dirty | Close | Open | Edit  
-type AnyAppEvent =  EntityAction | AppAction | AppActionEmail
+type AnyEntityEvent = Write | Update | Reset | Delete | Create | Dirty | Close | Open | Edit
+type AnyAppEvent = EntityAction | AppAction | AppActionEmail
 // type AccessEvent = AddAccess | RemoveAccess | SetAccess | AccessInvite | AccessInviteRevoke;
-export type AnyEvent =  AnyEntityEvent | AnyAppEvent 
-export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset | typeof Delete  |  typeof Create | typeof Dirty | typeof Close | typeof Open | typeof Edit | typeof EntityAction<any> | typeof AppAction | typeof AppActionEmail ; 
+export type AnyEvent = AnyEntityEvent | AnyAppEvent
+export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset | typeof Delete | typeof Create | typeof Dirty | typeof Close | typeof Open | typeof Edit | typeof EntityAction<any> | typeof AppAction | typeof AppActionEmail;
 // export type TypeofAnyEvent = {new(detail: any, action: Action, confirmed?: boolean, bulkAction?: boolean): AnyEntityEvent} | 
 //   {new(detail: any, action: Action, actionName: string, confirmed?: boolean, bulkAction?: boolean): AnyAppEvent} |
 //   {new(detail: EntityAccessDetail | EntityAccessInviteRevokeDetail, action: Action): AccessEvent} 

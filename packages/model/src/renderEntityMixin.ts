@@ -16,7 +16,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { html as htmlStatic, literal } from 'lit/static-html.js';
 import AbstractEntity from './AbstractEntity';
-import { Collection, CollectionI, EntityElementList, isCollection, RenderConfig } from './types';
+import { Collection, CollectionI, EntityElementList, RenderConfig } from './types';
 import {
   GridConfig,
   Model,
@@ -209,6 +209,7 @@ export default function renderMixin<
       const consumingMode = this.host.consumingMode || 'edit';
       return consumingMode !== 'print' && consumingMode !== 'offline' && data === undefined;
     }
+
     renderMetaData(_data: D, _config: C) {
       return html`<meta-data></meta-data>`
     }
@@ -223,7 +224,7 @@ export default function renderMixin<
       return this.renderContent(data, config)
     }
 
-    renderDataLoading(config: C) {
+    renderDataLoading(_config: C) {
       return html`Loading...`
     }
 
@@ -233,17 +234,13 @@ export default function renderMixin<
       }
       return html`
 			<div class="layout vertical">							
-				${this.shallWaitRender(data, config) ? html`Loading...` :
-          [
-            this.showMetaData ? this.renderMetaData(data, config) : html``,
-            super.renderContent(data, config),
-            html`<form id="entityForm">
+				${this.showMetaData ? this.renderMetaData(data, config) : html``,
+        super.renderContent(data, config),
+        html`<form id="entityForm">
               ${config?.entityStatus.isNew ?
-                this.renderFormNew(data, config) :
-                this.renderForm(data, config)}
+            this.renderFormNew(data, config) :
+            this.renderForm(data, config)}
             </form>`
-
-          ]
         }
 			</div>`
     }
@@ -305,12 +302,17 @@ export default function renderMixin<
     renderTitle(_data: D, config: C) {
       return html`${config.heading || this.entityName}`
     }
+    renderNoDataTitle(config: C) {
+      return html`No Data`
+    }
     renderArrayTitle(_data: Collection<D>, config: C) {
       return html`${config.heading || this.entityName}`
     }
 
     renderHeader(data: D | Collection<D>, config: C) {
-      const title = isCollection<D>(data) ? this.renderArrayTitle(data, config) : this.renderTitle(data, config)
+      const title = config.dataIsArray ?
+        this.renderArrayTitle(data as Collection<D>, config) :
+        this.renderTitle(data as D, config)
       if (!title) {
         return html``;
       }

@@ -104,6 +104,10 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement & { selected
 						[event.detail, action, (event as EntityAction).actionName]
 					);
 					newEvent.confirmed = true;
+					// we assign id to the new event if it is not already set, this is useful for email messages in grid
+					// if (!newEvent.detail.id && event.detail.data.id) {
+					// 	newEvent.detail.id = event.detail.data.id
+					// }
 					try {
 						this.dispatchEvent(newEvent)
 						await newEvent.detail.promise;
@@ -146,7 +150,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement & { selected
 					@close=${onClose}>
 					<div slot="headline">${dialogConfig.heading}</div>
 						<form slot="content" method="dialog" id="form-confirm">
-							${dialogConfig.render.call(this, {data, selectedItems: this.selectedItems!})}
+							${dialogConfig.render.call(this, { data, selectedItems: this.selectedItems! })}
 						<md-linear-progress 
 							style="margin-top: var(--space-medium);" 
 							.indeterminate=${!this._resolved}></md-linear-progress>

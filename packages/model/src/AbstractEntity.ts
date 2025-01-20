@@ -15,7 +15,7 @@ export type DocumentationKeysT = {
 
 
 import { ToastEvent } from '@lit-app/shared/event';
-import type { AccessT,GetAccessT  } from './types/access.js';
+import type { AccessT, GetAccessT } from './types/access.js';
 import { ActionsT } from './types/actionTypes.js';
 import {
 	DefaultI,
@@ -43,7 +43,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 		{ name: 'guest', level: 4 }] as const
 
 	static userLoader: (search: string) => Promise<any>
-	
+
 	static documentationKeys: DocumentationKeysT = {
 		grid: false,
 		actions: false
@@ -52,12 +52,12 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	/** 
 	 * true when the data is ready, we do not render before this is true
 	 */
-	static isDataReady: (data: any) => boolean = (data: any) => {
-		return data !== undefined
-	}
-	isDataReady(data: any): boolean {
-		return this.constructor.isDataReady(data)
-	}
+	// static isDataReady: (data: any) => boolean = (data: any) => {
+	// 	return data !== undefined
+	// }
+	// isDataReady(data: any): boolean {
+	// 	return this.constructor.isDataReady(data)
+	// }
 
 	/**
 	 * The access control for this entity - this needs to be overridden in subclasses
@@ -119,25 +119,25 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	 * @param realTime when true, will dispatch update events on data-input 
 	 *         this also changes the rendering of renderEntityActions
 	 * @param listenOnAction when true, will listen to action events on the element
- 	 */
+		 */
 	constructor(
 		public host: EntityElement,
 		public realTime: boolean = false,
 		// public listenOnAction: boolean = false
 	) {
-		
+
 		/** 
 		 * we add those runtime checks because there is no way to enforce static abstract `name`
 		 * See discussion in https://github.com/microsoft/TypeScript/issues/34516
 		 * 
 		 */
-		if(!this.constructor.entityName) {
+		if (!this.constructor.entityName) {
 			throw new Error('entityName is required')
 		}
-		if(!this.constructor.model) {
+		if (!this.constructor.model) {
 			throw new Error(`model is required for  ${this.entityName}`)
 		}
-		if(!this.constructor.actions) {
+		if (!this.constructor.actions) {
 			throw new Error(`actions is required for  ${this.entityName}`)
 		}
 

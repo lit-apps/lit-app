@@ -1,17 +1,15 @@
 import camelToDash from "@lit-app/shared/camelToDash.js";
 
-import { TemplateResult } from 'lit';
-import { html, LitElement, PropertyValues } from "lit";
+import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { entityI, EntityI } from '../types';
 import { ConsumeAccessMixin } from '../mixin/context-access-mixin';
+import { ConsumeAppIdMixin } from "../mixin/context-app-id-mixin.js";
 import { ConsumeDataMixin } from '../mixin/context-data-mixin';
 import { ConsumeDocIdMixin } from '../mixin/context-doc-id-mixin';
 import { ConsumeEntityMixin } from '../mixin/context-entity-mixin';
 import { ConsumeEntityStatusMixin } from '../mixin/context-entity-status-mixin';
-import { Strings } from '../types';
+import { entityI, EntityI, Strings } from '../types';
 import { RenderConfig, RenderConfigOptional } from '../types/entity';
-import { ConsumeAppIdMixin } from "../mixin/context-app-id-mixin.js";
 
 /**
  * This event is fired to trigger the main application hoist an element
@@ -86,6 +84,7 @@ export default abstract class AbstractEntityElement extends
 			level: this.level,
 			consumingMode: this.consumingMode,
 			$id: this.docId,
+			dataIsArray: this.dataIsArray,
 			...this.entityRenderOptions,
 		}
 	}
@@ -142,9 +141,12 @@ export default abstract class AbstractEntityElement extends
 			return html`getting entity...`;
 		}
 
-		if (!this.entity.isDataReady(this.data) && this.consumingMode !== 'print' && this.consumingMode !== 'offline') {
-			return html``;
-		}
+		// if (this.shallWaitRender(data, config)) {
+		//   return this.renderDataLoading(config)
+		// }
+		// if (!this.entity.isDataReady(this.data) && this.consumingMode !== 'print' && this.consumingMode !== 'offline') {
+		// 	return html``;
+		// }
 
 		return [
 			super.render(),

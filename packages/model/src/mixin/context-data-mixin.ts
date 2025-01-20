@@ -1,10 +1,11 @@
-import { consume, ContextConsumer, ContextProvider, createContext } from '@lit/context';
-import { PropertyValues, ReactiveElement } from 'lit';
-import { state, property } from 'lit/decorators.js';
-import DataHasChanged from '@lit-app/shared/event/data-has-changed'
+import DataHasChanged from '@lit-app/shared/event/data-has-changed';
 import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
+import { consume, ContextConsumer, ContextProvider, createContext, provide } from '@lit/context';
+import { PropertyValues, ReactiveElement } from 'lit';
+import { property, state } from 'lit/decorators.js';
 
 export const dataContext = createContext<any>('data-context');
+export const dataIsArrayContext = createContext<boolean>('data-is-array-context');
 
 
 /**
@@ -12,6 +13,7 @@ export const dataContext = createContext<any>('data-context');
  */
 export declare class DataMixinInterface<D = any> {
 	data: D;
+	dataIsArray: boolean;
 }
 export declare class DataMixinConsumeInterface<D = any> extends DataMixinInterface<D> {
 	preventConsume: boolean;
@@ -51,6 +53,9 @@ export const ConsumeDataMixin = <D = any>() => <T extends MixinBase<ReactiveElem
 
 		@state() data!: D;
 		@property({ type: Boolean, attribute: 'prevent-consume' }) preventConsume = false;
+
+		@consume({ context: dataIsArrayContext, subscribe: true })
+		@state() dataIsArray!: boolean;
 
 		/**
 		 * whether the data has changed for a given entity and path
@@ -119,6 +124,9 @@ export const ProvideDataMixin = <D = any>() => <T extends MixinBase<ReactiveElem
 		@state() parentData!: any;
 
 		@state() data!: D;
+
+		@provide({ context: dataIsArrayContext })
+		@state() dataIsArray!: boolean;
 
 		/**
 		 * Whether to relay changes in the parent data to the child data.

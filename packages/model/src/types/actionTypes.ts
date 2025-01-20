@@ -1,10 +1,10 @@
-import type { CollectionI, Collection } from "./dataI.js";
-import type { EntityStatus, RenderConfig } from "./entity.js";
 import type { LitElement, TemplateResult } from "lit";
+import type { Collection, CollectionI } from "./dataI.js";
+import type { EntityStatus, RenderConfig } from "./entity.js";
 // import { dbRefEntity } from "@lit-app/persistence-shell";
 import type { CollectionReference, DocumentReference } from "firebase/firestore";
-import { EntityAction } from "../events.js";
 import { EntityI } from "../../index.js";
+import { EntityAction } from "../events.js";
 
 export interface HostElementI<D = any> extends LitElement {
   entityStatus?: EntityStatus
@@ -16,13 +16,12 @@ export interface HostElementI<D = any> extends LitElement {
 
 type VoidOrEventT<E> = void | E
 export type ActionHandlerT<D, TData = D, E extends CustomEvent = CustomEvent> = (
-  this: HTMLElement & {Entity: EntityI, data: any}, //dbRefEntity
+  this: HTMLElement & { Entity: EntityI, data: any }, //dbRefEntity
   ref: DocumentReference<D> | CollectionReference<D>,
   data: TData,
   event: E) => VoidOrEventT<E> | Promise<VoidOrEventT<E>>
 
 export type PrimitiveT = string | number | boolean
-// type FunctionOrValue<T, D> = T | ((this: AbstractEntity, data: D, entityStatus?: EntityStatus) => T)
 type FunctionOrValue<T, D> = T | ((this: HostElementI, data: D, entityStatus?: EntityStatus) => T)
 export type FunctionOrPrimitiveT<T extends PrimitiveT, D> = FunctionOrValue<T, D>
 export type FunctionOrButtonConfigT<D> = FunctionOrValue<ButtonConfigT, D>
@@ -68,7 +67,7 @@ type BulkDialogT<D> = Omit<ConfigDialogT<D>, 'render'> & {
   render: ((d: { data: D, selectedItems: Collection<D> }) => TemplateResult);
 };
 
-interface ActionBaseI<D = any> {
+interface ActionBaseI<D = any, ConfirmT = any> {
   label: StringOrFunctionT<D>
   ariaLabel?: StringOrFunctionT<D>
   icon?: string
@@ -107,7 +106,7 @@ interface ActionBaseI<D = any> {
   /**
    * display a dialog to confirm the action when present
    */
-  confirmDialog?: ConfigDialogT<D>
+  confirmDialog?: ConfigDialogT<ConfirmT extends never ? D : ConfirmT>
 }
 
 type ActionConfigT<D, TData = D, E extends CustomEvent = CustomEvent> = {
@@ -152,7 +151,7 @@ export interface ActionEventI<D = any> extends ActionBaseI<D>, ActionConfigT<D, 
  * Entity actions are actions that require an entityAction to be dispatched. There is no need to define a getEvent function
  * The handler is called on entity-action-handler 
  */
-export interface ActionEntityI<D = any, TData = any> extends ActionBaseI<D>, ActionConfigT<D, TData, EntityAction> {
+export interface ActionEntityI<D = any, TData = any> extends ActionBaseI<D, TData>, ActionConfigT<D, TData, EntityAction> {
   kind: 'entity'
   handler: ActionHandlerT<D, TData, EntityAction>
 
@@ -162,7 +161,7 @@ export interface ActionEntityI<D = any, TData = any> extends ActionBaseI<D>, Act
  * Entity actions are actions that require an entityAction to be dispatched. There is no need to define a getEvent function
  * The handler if it exists is either called on entity-action-handler, the action is run on the server
  */
-export interface ActionServerEntityI<D = any, TData = any> extends ActionBaseI<D>, ActionConfigT<D, TData, EntityAction> {
+export interface ActionServerEntityI<D = any, TData = any> extends ActionBaseI<D, TData>, ActionConfigT<D, TData, EntityAction> {
   kind: 'server'
 }
 

@@ -1,7 +1,7 @@
 import { LitElement, TemplateResult } from 'lit'
-import {Collection} from './dataI'
-import { entityI} from '../types'
+import { entityI } from '../types'
 import { AuthorizationT } from './access.js'
+import { Collection } from './dataI'
 
 // storing the state of an entity
 export type EntityStatus = {
@@ -67,14 +67,14 @@ export type GridConfig = {
 type OptionsT = {
 	[key: string]: any
 }
-export type RenderConfigOptional< O = OptionsT, T = any> = {
+export type RenderConfigOptional<O = OptionsT, T = any> = {
 	columnsConfig?: ColumnsConfig,
 	gridConfig?: GridConfig,
 	cardConfig?: { [K in keyof Partial<T>]: T[K] }
 	level?: number, // level to render the entity
 	heading?: string // heading to render
 	// TODO: variant is used as class or within class, we need to change this
-	variant?: 'card' | 'list' | 'default' 
+	variant?: 'card' | 'list' | 'default'
 	/**
 	 * The context in which the entity is rendered, this is used to determine the layout of the entity
 	 * For instance, action buttons will not be fixed in a grid-detail context
@@ -86,7 +86,7 @@ export type RenderConfigOptional< O = OptionsT, T = any> = {
 	options?: O
 }
 
-export type RenderConfig<O = OptionsT, A = AuthorizationT,  T = any> = RenderConfigOptional<O, T> & {
+export type RenderConfig<O = OptionsT, A = AuthorizationT, T = any> = RenderConfigOptional<O, T> & {
 	authorization: A
 	entityStatus: EntityStatus
 	/**
@@ -103,5 +103,6 @@ export type RenderConfig<O = OptionsT, A = AuthorizationT,  T = any> = RenderCon
 	 * The id of the entity (docId)
 	 */
 	$id?: string | undefined
+	dataIsArray?: boolean
 }
 
