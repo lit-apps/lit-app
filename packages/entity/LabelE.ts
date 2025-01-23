@@ -1,12 +1,12 @@
 import type { Model } from '@lit-app/model';
 import EntityFact from '@lit-app/model/src/entityFact';
 import type { Collection, CollectionI, RenderConfig } from '@lit-app/model/src/types';
-import '@material/web/labs/badge/badge';
-import { html, nothing } from 'lit';
-import { LabelI } from './LabelM';
 import getAdjustedColor from '@lit-app/shared/getAdjustedColor';
 import '@material/web/chips/chip-set';
 import '@material/web/chips/suggestion-chip';
+import '@material/web/labs/badge/badge';
+import { html, nothing } from 'lit';
+import { LabelI } from './LabelM';
 const model: Model<LabelI> = {
   title: {
     component: 'textfield',
@@ -72,7 +72,7 @@ const actions = {
 }
 
 export default class Label extends
-  EntityFact<LabelI, RenderConfig, typeof actions>({model, actions}) {
+  EntityFact<LabelI, RenderConfig, typeof actions>({ model, actions }) {
 
   static entityName = 'label'
   static title = 'label'
@@ -83,7 +83,7 @@ export default class Label extends
   override renderArrayTitle(data: Collection<LabelI>, config: RenderConfig) {
     const onCreate = () => this.create({ title: 'new label' })
     const createAction = config.authorization?.canEdit ? html`<md-outlined-button @click=${onCreate}>Create new Label</md-outlined-button>` : nothing
-    return html`<span class="flex">List of Labels <span style="position:relative;"><md-badge .value=${String(data.length || 0)}></md-badge></span></span>${createAction}`
+    return html`<span class="flex">List of Labels <span style="position:relative;"><md-badge .value=${String(data?.length || 0)}></md-badge></span></span>${createAction}`
   }
 
   override renderGridColumns(config: RenderConfig) {
