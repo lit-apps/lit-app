@@ -1,11 +1,12 @@
+import { css, CSSResult } from 'lit';
 import alignIcon from './class/alignIcon.js';
 import badge from './class/badge.js';
-import typography from './class/typography.js';
-import tooltip from './class/tooltip.js';
 import header from './class/header.js';
 import layoutGrid from './class/layout-grid.js';
-import { css, CSSResult } from 'lit';
-import { Layouts, Alignment, Factors } from './flex/index.js';
+import tooltip from './class/tooltip.js';
+import typography from './class/typography.js';
+import { Alignment, Factors, Layouts } from './flex/index.js';
+import { gap, margin, padding } from './index.js';
 
 const styles: CSSResult[] = [
   typography,
@@ -13,11 +14,12 @@ const styles: CSSResult[] = [
   badge,
   Layouts as unknown as CSSResult,
   layoutGrid,
+  gap, margin, padding,
   Factors as unknown as CSSResult,
-  Alignment as unknown  as CSSResult,
+  Alignment as unknown as CSSResult,
   tooltip,
   header,
-  
+
   css`
   
   .content {
