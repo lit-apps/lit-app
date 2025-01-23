@@ -16,10 +16,12 @@
 import "@lit-app/cmp/button/button.js";
 import type { LappButton } from "@lit-app/cmp/button/button.js";
 import "@lit-app/cmp/toolbar/toolbar.js";
-import { ToastEvent } from "@lit-app/shared/event";
 import { callFunctionOrValue } from "@lit-app/shared/callFunctionOrValue.js";
+import { ToastEvent } from "@lit-app/shared/event";
+import { RecursivePartial } from "@lit-app/shared/types.js";
 import '@material/web/iconbutton/filled-icon-button.js';
 import { html, nothing, TemplateResult } from "lit";
+import { ifDefined } from "lit/directives/if-defined.js";
 import AbstractEntity, { DocumentationKeysT } from "./AbstractEntity.js";
 import { defaultActions, getEntityActionEvent } from "./defaultActions.js";
 import { Close, Dirty, Open } from "./events.js";
@@ -36,8 +38,6 @@ import type {
 } from "./types/actionTypes.js";
 import { RenderConfig } from "./types/entity.js";
 import { RenderInterface, StaticEntityActionI } from "./types/renderActionI.js";
-import { ifDefined } from "lit/directives/if-defined.js";
-import { RecursivePartial } from "@lit-app/shared/types.js";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
@@ -113,7 +113,11 @@ export default function renderMixin<A extends ActionsT>(
         try {
           if (action.kind === 'simple') {
             return await action.handler.call(host, data)
-          } else if (action.kind === 'event' || action.kind === 'entity' || action.kind === 'mixin') {
+          } else if (action.kind === 'event' ||
+            action.kind === 'entity' ||
+            action.kind === 'server' ||
+            action.kind === 'mixin'
+          ) {
             const event = (action.kind === 'event' || action.kind === 'mixin')
               ? await action.getEvent(this.entityName!, { data }, host, isBulk)
               : getEntityActionEvent(actionName as string, action)(
@@ -125,6 +129,8 @@ export default function renderMixin<A extends ActionsT>(
               await action.afterResolved(event, host);
             }
             return event
+          } else {
+            throw new Error('action kind not supported')
           }
         }
         catch (error) {
@@ -179,6 +185,7 @@ export default function renderMixin<A extends ActionsT>(
     protected canViewActions(_data: unknown, config: RenderConfig): boolean {
       const consumingMode = this.host.consumingMode ?? 'edit';
       const authorization = config.authorization || this.host.authorization;
+      console.log('canViewActions', consumingMode, authorization?.canEdit)
       return this.showActions &&
         authorization?.canEdit &&
         consumingMode !== 'print' && consumingMode !== 'offline'

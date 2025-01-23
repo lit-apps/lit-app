@@ -234,14 +234,14 @@ export default function renderMixin<
       }
       return html`
 			<div class="layout vertical">							
-				${this.showMetaData ? this.renderMetaData(data, config) : html``,
+				${[this.showMetaData ? this.renderMetaData(data, config) : html``,
         super.renderContent(data, config),
         html`<form id="entityForm">
               ${config?.entityStatus.isNew ?
             this.renderFormNew(data, config) :
             this.renderForm(data, config)}
             </form>`
-        }
+        ]}
 			</div>`
     }
 

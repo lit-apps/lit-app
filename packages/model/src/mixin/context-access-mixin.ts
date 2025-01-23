@@ -1,13 +1,12 @@
 import { consume, createContext, provide } from '@lit/context';
-import { ReactiveElement, PropertyValues } from 'lit';
+import { PropertyValues, ReactiveElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import {
-} from '../types/entity';
+import { } from '../types/entity';
 
 
 // import type { Access } from '../types/dataI';
-import type { GetAccessT, AuthorizationT, AccessT } from '../types/access';
 import type { EntityI } from '../types';
+import type { AccessT, AuthorizationT, GetAccessT } from '../types/access';
 import { EntityMixinInterface } from './context-entity-mixin';
 
 export const entityAccessContext = createContext<AuthorizationT>('entity-access-context');
@@ -108,6 +107,7 @@ export const ProvideAccessMixin = <A extends AuthorizationT = AuthorizationT, G 
 			async updateAccess(data: any) {
 				const accessDataGetter = this.Entity?.accessDataGetter || this.accessDataGetter;
 				const accessData = await accessDataGetter(data);
+				console.info('AccessData', accessData)
 				if (!accessData) {
 					this.authorization = {
 						isOwner: false,
