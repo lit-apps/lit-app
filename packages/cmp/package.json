@@ -43,6 +43,7 @@
     "@preignition/pwi-tooltip": "link:../../../packages/pwi-tooltip",
     "@vaadin/a11y-base": "link:../../../app-dependencies/web-components/packages/a11y-base",
     "@vaadin/button": "link:../../../app-dependencies/web-components/packages/button",
+    "@vaadin/card": "link:../../../app-dependencies/web-components/packages/card",
     "@vaadin/component-base": "link:../../../app-dependencies/web-components/packages/component-base",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/overlay": "link:../../../app-dependencies/web-components/packages/overlay",

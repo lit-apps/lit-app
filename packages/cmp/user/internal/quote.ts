@@ -28,7 +28,7 @@ export class UserQuote extends LitElement {
     :host {
       display: flex;
 			flex-direction: row;
-			
+			height: 100%;
 			--_lapp-user-quote-img-size: var(--lapp-user-quote-img-size, 64px);
 			--_lapp-user-quote-color: var(--lapp-user-quote-color, var(--color-outline));
 			--_lapp-user-quote-gap: var(--lapp-user-quote-gap, var(--space-medium));
