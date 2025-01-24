@@ -205,9 +205,9 @@ export default function renderMixin<
      `
     }
 
-    protected shallWaitRender(data: D, config: C) {
+    protected canRender(data: D, config: C) {
       const consumingMode = this.host.consumingMode || 'edit';
-      return consumingMode !== 'print' && consumingMode !== 'offline' && data === undefined;
+      return consumingMode === 'print' || consumingMode === 'offline' || data !== undefined;
     }
 
     renderMetaData(_data: D, _config: C) {
@@ -215,7 +215,7 @@ export default function renderMixin<
     }
 
     renderBody(data: D, config: C) {
-      if (this.shallWaitRender(data, config)) {
+      if (!this.canRender(data, config)) {
         return this.renderDataLoading(config)
       }
       if (Array.isArray(data)) {

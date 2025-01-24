@@ -141,7 +141,7 @@ export default abstract class AbstractEntityElement extends
 			return html`getting entity...`;
 		}
 
-		// if (this.shallWaitRender(data, config)) {
+		// if (this.canRender(data, config)) {
 		//   return this.renderDataLoading(config)
 		// }
 		// if (!this.entity.isDataReady(this.data) && this.consumingMode !== 'print' && this.consumingMode !== 'offline') {

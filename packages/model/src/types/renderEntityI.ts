@@ -29,7 +29,7 @@ export declare abstract class RenderInterface<
 	protected renderList(_data: Collection<D>, _config: C): TemplateResult
 	protected renderListItem(_data: D, _config: C): TemplateResult
 	protected renderArrayContent(data: Collection<D>, config: C): TemplateResult;
-	shallWaitRender(data: D, config: C): boolean
+	canRender(data: D, config: C): boolean
 	renderFooter(_data: D, _config: C): TemplateResult
 	renderBody(data: D, config: C): TemplateResult
 	renderHeader(data: D, config: C): TemplateResult
