@@ -1,7 +1,16 @@
-import { nothing, TemplateResult } from "lit"
-import { EntityCreateDetail } from "../events.js"
-import { ActionEntityI, ActionKeyT, ActionSimpleI, ActionsT, FunctionOrButtonConfigT, HostElementI } from "./actionTypes.js"
-import { RenderConfig } from "./entity.js"
+import { nothing, TemplateResult } from "lit";
+import { EntityAction, EntityCreateDetail } from "../events.js";
+import {
+  ActionEntityI,
+  ActionKeyT,
+  ActionSimpleI,
+  ActionsT,
+  FilterActionKeyT,
+  FunctionOrButtonConfigT,
+  HostElementI,
+  MenuConfigT
+} from "./actionTypes.js";
+import { RenderConfig } from "./entity.js";
 
 /**
  * Render Interface for renderActionMixin
@@ -101,7 +110,7 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
     // @-ts-expect-error - but this is working
     // D extends Parameters<this['actions'][N]['handler']>[1] 
     D extends this['actions'][N] extends ActionEntityI | ActionSimpleI ?
-     Parameters<this['actions'][N]['handler'] >[1] : any 
+    Parameters<this['actions'][N]['handler']>[1] : any
   >(
     actionName: N,
     data: D, // we should derive D from actionName handler signature
@@ -117,6 +126,7 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
    */
   renderBulkActions(data: unknown, config: RenderConfig): TemplateResult
 
+  filterActions(key: FilterActionKeyT, data: unknown): ([string, number | MenuConfigT<any>])[]
   /**
    * Renders bulk actions.
    * 
@@ -196,15 +206,23 @@ export interface StaticEntityActionI<
    * @returns {TemplateResult} The rendered action button as a TemplateResult.
    */
   renderAction<
-  N extends ActionKeyT<A, unknown>,
-  D extends this['actions'][N] extends ActionEntityI | ActionSimpleI ?
-    Parameters<this['actions'][N]['handler'] >[1] : any 
+    N extends ActionKeyT<A, unknown>,
+    D extends this['actions'][N] extends ActionEntityI | ActionSimpleI ?
+    Parameters<this['actions'][N]['handler']>[1] : any
   >(
     actionName: N,
     host: HostElementI<unknown>,
     data?: D,
     config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
     clickHandler?: (e: CustomEvent) => void): TemplateResult
+
+
+  getActionEvent(
+    actionName: ActionKeyT<A, unknown>,
+    host: HostElementI<unknown>,
+    data: unknown,
+    isBulk?: boolean
+  ): Promise<EntityAction | void>;
 
   /**
    * Handles the click event for an action button.
@@ -224,4 +242,16 @@ export interface StaticEntityActionI<
     data: unknown,
     isBulk?: boolean
   ): (e: CustomEvent) => Promise<CustomEvent | void>
+
+  /**
+   * Filter actions based on the provided key.
+   * 
+   * @param {FilterActionKeyT} key - The key to filter actions by.
+   * @param {HostElementI} host - The host element that the actions are associated with.
+   * @param data - The data associated with the host element.
+   */
+  filterActions(
+    key: FilterActionKeyT,
+    host: HTMLElement,
+    data: unknown): ([string, number | MenuConfigT<any>])[]
 }

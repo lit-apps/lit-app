@@ -26,15 +26,17 @@ import AbstractEntity, { DocumentationKeysT } from "./AbstractEntity.js";
 import { defaultActions, getEntityActionEvent } from "./defaultActions.js";
 import { Close, Dirty, Open } from "./events.js";
 import RenderEntityCreateMixin from "./renderEntityCreateMixin.js";
-import type { CollectionI, DataI } from "./types.js";
+import type { CollectionI, DataI, EntityAction } from "./types.js";
 import type {
   ActionDataT,
   ActionEventI,
   ActionKeyT,
   ActionsT,
   DefaultActionsT,
+  FilterActionKeyT,
   FunctionOrButtonConfigT,
-  HostElementI
+  HostElementI,
+  MenuConfigT
 } from "./types/actionTypes.js";
 import { RenderConfig } from "./types/entity.js";
 import { RenderInterface, StaticEntityActionI } from "./types/renderActionI.js";
@@ -98,6 +100,32 @@ export default function renderMixin<A extends ActionsT>(
         </lapp-button>`
     },
 
+    async getActionEvent(
+      actionName: ActionKeyT<A, unknown>,
+      host: HostElementI,
+      data: ActionDataT<unknown>,
+      isBulk: boolean = false
+    ): Promise<EntityAction | void> {
+      const action = this.actions[actionName]
+      if (action.kind === 'simple') {
+        await action.handler.call(host, data)
+        return
+      } else if (action.kind === 'event' ||
+        action.kind === 'entity' ||
+        action.kind === 'server' ||
+        action.kind === 'mixin'
+      ) {
+        const event = (action.kind === 'event' || action.kind === 'mixin')
+          ? await action.getEvent(this.entityName!, { data }, host, isBulk)
+          : getEntityActionEvent(actionName as string, action)(
+            this.entityName!, { data }, host, isBulk
+          )
+        return event as EntityAction
+      } else {
+        throw new Error('action kind not supported')
+      }
+    },
+
     actionHandler(
       actionName: ActionKeyT<A, unknown>,
       host: HostElementI,
@@ -111,27 +139,18 @@ export default function renderMixin<A extends ActionsT>(
         const button = e.target as LappButton
         button.loading = true
         try {
-          if (action.kind === 'simple') {
-            return await action.handler.call(host, data)
-          } else if (action.kind === 'event' ||
-            action.kind === 'entity' ||
-            action.kind === 'server' ||
-            action.kind === 'mixin'
-          ) {
-            const event = (action.kind === 'event' || action.kind === 'mixin')
-              ? await action.getEvent(this.entityName!, { data }, host, isBulk)
-              : getEntityActionEvent(actionName as string, action)(
-                this.entityName!, { data }, host, isBulk
-              )
-            host.dispatchEvent(event)
-            await event.detail.promise
-            if (action.afterResolved) {
-              await action.afterResolved(event, host);
-            }
-            return event
-          } else {
-            throw new Error('action kind not supported')
+          const event = await this.getActionEvent(actionName, host, data, isBulk)
+          if (!event) {
+            // return early for simple events
+            return
           }
+          host.dispatchEvent(event)
+          await event.detail.promise
+          if (action.afterResolved) {
+            await action.afterResolved(event, host);
+          }
+          return event
+
         }
         catch (error) {
           console.error(error)
@@ -143,7 +162,27 @@ export default function renderMixin<A extends ActionsT>(
           button.loading = false
         }
       }
+    },
+
+    filterActions(
+      key: FilterActionKeyT,
+      host: HTMLElement,
+      data: unknown): ([string, number | MenuConfigT<any>])[] {
+      const callFunction = callFunctionOrValue.bind(host);
+      return Object.entries(this.actions)
+        .filter(([_, action]) => action[key] !== undefined)
+        .map(([_, action]) => [_, callFunction(action[key]!, data)] as [string, number | MenuConfigT<any>])
+        .filter(([_, numberOrConfig]) => {
+          if (typeof numberOrConfig === 'number') return numberOrConfig > -1
+          return numberOrConfig?.index > -1
+        })
+        .sort(([, numberOrConfigA], [, numberOrConfigB]) => {
+          const a = typeof numberOrConfigA === 'number' ? numberOrConfigA : numberOrConfigA.index
+          const b = typeof numberOrConfigB === 'number' ? numberOrConfigB : numberOrConfigB.index
+          return (a as number ?? 0) - (b as number ?? 0);
+        })
     }
+
   }
 
   class R extends RenderEntityCreateMixin(superclass) implements RenderInterface<A> {
@@ -269,19 +308,21 @@ export default function renderMixin<A extends ActionsT>(
       <lapp-toolbar style="gap: var(--space-x-small, 8px);">${actions}</lapp-toolbar>`;
     }
 
+    filterActions(key: FilterActionKeyT, data: unknown): ([string, number | MenuConfigT<any>])[] {
+      return this.constructor.filterActions(key, this.host, data)
+    }
+
     /**
      * Utility method to render a group of actions based on a specified key
      */
-    protected renderActions(data: unknown, config: RenderConfig, key: 'showOnViewing' | 'showOnEditing'): TemplateResult {
-      const callFunction = callFunctionOrValue.bind(this.host);
-      const actions = Object.entries(this.actions)
-        .filter(([_, action]) => action[key] !== undefined)
-        .map(([_, action]) => ([_, callFunction(action[key]!, data)]))
-        .filter(([_, show]) => ((show as number) > -1))
-        .sort(([, a], [, b]) => {
-          return (a as number ?? 0) - (b as number ?? 0);
-        })
-        .map(([name]) => this.renderAction(name as string, data, config));
+    protected renderActions(data: unknown, config: RenderConfig, key: FilterActionKeyT): TemplateResult {
+      const actions = this.filterActions(key, data)
+        .map(([name, numberOrConfig]) => {
+          if (typeof numberOrConfig === 'object') {
+            return this.renderAction(name as string, data, { ...config, ...numberOrConfig });
+          }
+          return this.renderAction(name as string, data, config)
+        });
 
       return html`${actions}`;
     }

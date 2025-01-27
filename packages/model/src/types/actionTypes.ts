@@ -5,6 +5,7 @@ import type { EntityStatus, RenderConfig } from "./entity.js";
 import type { CollectionReference, DocumentReference } from "firebase/firestore";
 import { EntityI } from "../../index.js";
 import { EntityAction } from "../events.js";
+export type FilterActionKeyT = 'showOnViewing' | 'showOnEditing' | 'showInContextMenu'
 
 export interface HostElementI<D = any> extends LitElement {
   entityStatus?: EntityStatus
@@ -25,6 +26,7 @@ export type PrimitiveT = string | number | boolean
 type FunctionOrValue<T, D> = T | ((this: HostElementI, data: D, entityStatus?: EntityStatus) => T)
 export type FunctionOrPrimitiveT<T extends PrimitiveT, D> = FunctionOrValue<T, D>
 export type FunctionOrButtonConfigT<D> = FunctionOrValue<ButtonConfigT, D>
+type ConfigOrIndexOrFunctionOrContext<D> = FunctionOrValue<number | MenuConfigT<D>, D>
 type NumberOrFunctionT<D> = FunctionOrPrimitiveT<number, D>
 type StringOrFunctionT<D> = FunctionOrPrimitiveT<string, D>
 
@@ -66,6 +68,17 @@ type BulkDialogT<D> = Omit<ConfigDialogT<D>, 'render'> & {
   disabled?: (selectedItems: Collection<D>) => boolean
   render: ((d: { data: D, selectedItems: Collection<D> }) => TemplateResult);
 };
+/**
+ * used to group actions in the context menu
+ */
+export const actionGroupType = ['addContent', 'moveContent', 'deleteContent', 'default'] as const
+export type MenuConfigT<D> = {
+  index: number
+  group: typeof actionGroupType[number]
+  icon?: string
+  label: StringOrFunctionT<D>
+  // handler: (data: D) => void
+}
 
 interface ActionBaseI<D = any, ConfirmT = any> {
   label: StringOrFunctionT<D>
@@ -77,16 +90,6 @@ interface ActionBaseI<D = any, ConfirmT = any> {
    */
   supportingText?: string
 
-  /** 
-   * If set, the action is displayed on view mode
-   * The value is the index of the action in the list of actions
-   */
-  showOnViewing?: NumberOrFunctionT<D>
-  /** 
-   * If set, the action is displayed on edit mode
-   * The value is the index of the action in the list of actions
-   */
-  showOnEditing?: NumberOrFunctionT<D>
   config?: FunctionOrButtonConfigT<D>
   /**
    * Called before handling the action or dispatching the event.
@@ -107,6 +110,21 @@ interface ActionBaseI<D = any, ConfirmT = any> {
    * display a dialog to confirm the action when present
    */
   confirmDialog?: ConfigDialogT<ConfirmT extends never ? D : ConfirmT>
+
+  showInContextMenu?: ConfigOrIndexOrFunctionOrContext<D>
+
+  /** 
+   * If set, the action is displayed on view mode
+   * The value is the index of the action in the list of actions
+   */
+  showOnViewing?: ConfigOrIndexOrFunctionOrContext<D>
+
+  /** 
+   * If set, the action is displayed on edit mode
+   * The value is the index of the action in the list of actions
+   */
+  showOnEditing?: ConfigOrIndexOrFunctionOrContext<D>
+
 }
 
 type ActionConfigT<D, TData = D, E extends CustomEvent = CustomEvent> = {

@@ -14,7 +14,7 @@ export declare abstract class RenderInterface<
 	protected onGridDblClick(e: CustomEvent): void
 	protected onActiveItemChanged(e: CustomEvent): void
 	protected renderDataLoading(config: C): TemplateResult
-	protected renderTitle(data: D, config: C): TemplateResult | string
+	// protected renderTitle(data: D, config: C): TemplateResult | string
 	protected renderArrayTitle(data: Collection<D>, config: C): TemplateResult | string
 	protected renderGridColumns(config: C): TemplateResult
 	protected renderGridEmptyState(config: C): TemplateResult
@@ -44,5 +44,6 @@ export declare abstract class RenderInterface<
 	renderFormNew(data: D, config: C): TemplateResult;
 	renderFieldUpdate(name: string, config: any, data?: D): TemplateResult;
 	getCsvParser(renderConfig: C): Parser<any, any>;
+	renderTitle(data: D, config: C): TemplateResult | string;
 }
 
