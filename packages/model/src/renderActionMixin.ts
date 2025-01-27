@@ -75,8 +75,9 @@ export default function renderMixin<A extends ActionsT>(
         return callFunction(config, data, entityStatus)
       }
       const cfg = { ...{}, ...getConfig(action.config || {}), ...getConfig(config || {}) }
-      const disabled = cfg?.disabled === true
-      const softDisabled = cfg?.softDisabled === true
+      // const disabled =  cfg?.disabled === true
+      const softDisabled = action.disabled !== undefined ? action.disabled(data) : false
+      // cfg?.softDisabled === true
       const filled = cfg?.filled ?? false
       const tonal = cfg?.tonal ?? false
       const text = cfg?.text ?? false
@@ -90,7 +91,6 @@ export default function renderMixin<A extends ActionsT>(
         class="${actionName} action"
         .icon=${icon} 
         @click=${onClick}
-        .disabled=${disabled}
         .softDisabled=${softDisabled}
         .outlined=${outlined}
         .ariaLabel=${action.ariaLabel ? callFunction(action.ariaLabel, data) : null}

@@ -3,8 +3,8 @@ import type { Collection, CollectionI } from "./dataI.js";
 import type { EntityStatus, RenderConfig } from "./entity.js";
 // import { dbRefEntity } from "@lit-app/persistence-shell";
 import type { CollectionReference, DocumentReference } from "firebase/firestore";
-import { EntityI } from "../../index.js";
 import { EntityAction } from "../events.js";
+import { EntityI } from "../types.js";
 export type FilterActionKeyT = 'showOnViewing' | 'showOnEditing' | 'showInContextMenu'
 
 export interface HostElementI<D = any> extends LitElement {
@@ -17,21 +17,22 @@ export interface HostElementI<D = any> extends LitElement {
 
 type VoidOrEventT<E> = void | E
 export type ActionHandlerT<D, TData = D, E extends CustomEvent = CustomEvent> = (
-  this: HTMLElement & { Entity: EntityI, data: any }, //dbRefEntity
+  this: HTMLElement & { data: any }, //dbRefEntity
   ref: DocumentReference<D> | CollectionReference<D>,
   data: TData,
-  event: E) => VoidOrEventT<E> | Promise<VoidOrEventT<E>>
+  event: E,
+  Entity: EntityI<any>
+) => VoidOrEventT<E> | Promise<VoidOrEventT<E>>
 
 export type PrimitiveT = string | number | boolean
 type FunctionOrValue<T, D> = T | ((this: HostElementI, data: D, entityStatus?: EntityStatus) => T)
 export type FunctionOrPrimitiveT<T extends PrimitiveT, D> = FunctionOrValue<T, D>
 export type FunctionOrButtonConfigT<D> = FunctionOrValue<ButtonConfigT, D>
 type ConfigOrIndexOrFunctionOrContext<D> = FunctionOrValue<number | MenuConfigT<D>, D>
-type NumberOrFunctionT<D> = FunctionOrPrimitiveT<number, D>
 type StringOrFunctionT<D> = FunctionOrPrimitiveT<string, D>
 
 type ButtonConfigT = {
-  disabled?: boolean
+  // disabled?: boolean
   softDisabled?: boolean
   outlined?: boolean
   filled?: boolean
@@ -89,6 +90,8 @@ interface ActionBaseI<D = any, ConfirmT = any> {
    * Text to appear with the action, for instance in tooltips
    */
   supportingText?: string
+
+  disabled?: (data: D) => boolean
 
   config?: FunctionOrButtonConfigT<D>
   /**
