@@ -1,16 +1,16 @@
+import { form, label, sticky } from '@lit-app/shared/styles';
+import page from '@lit-app/shared/styles/page.js';
+import alignMwc from '@lit-app/shared/styles/patch/alignMwc.js';
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import page from '@lit-app/shared/styles/page.js';
-import { form, label, padding, margin, gap, sticky } from '@lit-app/shared/styles';
-import alignMwc from '@lit-app/shared/styles/patch/alignMwc.js';
 import EntityHolder from './src/cmp/entity-holder';
 
 
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'lapp-entity-holder': LappEntityHolder;
-  }
+	interface HTMLElementTagNameMap {
+		'lapp-entity-holder': LappEntityHolder;
+	}
 }
 
 /**
@@ -28,10 +28,7 @@ export class LappEntityHolder extends EntityHolder {
 	static override styles = [
 		...page,
 		alignMwc,
-		form, 
-		padding,
-		margin,
-		gap,
+		form,
 		label,
 		sticky,
 		css`
@@ -40,5 +37,5 @@ export class LappEntityHolder extends EntityHolder {
 			}
 		`
 	]
-  
+
 }

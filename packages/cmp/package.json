@@ -53,7 +53,7 @@
     "@vaadin/vaadin-lumo-styles": "link:../../../app-dependencies/web-components/packages/vaadin-lumo-styles",
     "@vaadin/vaadin-themable-mixin": "link:../../../app-dependencies/web-components/packages/vaadin-themable-mixin",
     "effect": "^2.4.0",
-    "firebase": "^10.13.2",
+    "firebase": "^11.2.0",
     "lit": "^3.2.1",
     "lite-youtube-embed": "^0.3.0",
     "xstate": "link:../../../app-dependencies/xstate/packages/core"

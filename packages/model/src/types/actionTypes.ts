@@ -1,4 +1,4 @@
-import type { LitElement, TemplateResult } from "lit";
+import type { TemplateResult } from "lit";
 import type { Collection, CollectionI } from "./dataI.js";
 import type { EntityStatus, RenderConfig } from "./entity.js";
 // import { dbRefEntity } from "@lit-app/persistence-shell";
@@ -7,7 +7,7 @@ import { EntityAction } from "../events.js";
 import { EntityI } from "../types.js";
 export type FilterActionKeyT = 'showOnViewing' | 'showOnEditing' | 'showInContextMenu'
 
-export interface HostElementI<D = any> extends LitElement {
+export interface HostElementI<D = any> extends HTMLElement {
   entityStatus?: EntityStatus
   consumingMode?: RenderConfig['consumingMode']
   docId?: string,

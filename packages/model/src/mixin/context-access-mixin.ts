@@ -29,6 +29,7 @@ export const ApplyGetterMixin = <T extends Constructor<ReactiveElement>>(superCl
 	abstract class ApplyGetterMixinClass extends superClass {
 
 		authorization!: AuthorizationT
+
 		get isOwner() {
 			return this.authorization?.isOwner;
 		}

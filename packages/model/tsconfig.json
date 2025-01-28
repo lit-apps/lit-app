@@ -1,10 +1,18 @@
 {
   "compilerOptions": {
     "paths": {
-      "lit": ["./node_modules/lit"],
+      "lit": [
+        "./node_modules/lit"
+      ],
+      "@lit-app/cmp": [
+        "./node_modules/@lit-app/cmp"
+      ],
     }
   },
   "extends": "../../tsconfig.json",
-  "include": ["src/**/*.ts", "index.ts"],
+  "include": [
+    "src/**/*.ts",
+    "index.ts"
+  ],
   "exclude": []
 }
