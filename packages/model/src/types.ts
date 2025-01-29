@@ -1,6 +1,13 @@
 import { CSSResult } from 'lit';
 import type AbstractEntity from './AbstractEntity.js';
 import type {
+	AccessT,
+	AuthorizationT,
+	GetAccessT,
+	StatusT,
+	UserAccessT
+} from './types/access';
+import type {
 	ColumnsConfig,
 	DefaultI,
 	EntityElement,
@@ -9,25 +16,15 @@ import type {
 	RenderConfig,
 } from './types/entity';
 import type {
-	GetAccessT,
-	AccessT,
-	AuthorizationT,
-	UserAccessT,
-	StatusT
-} from './types/access';
-export {
-	GetAccessT,
-	AccessT,
-	AuthorizationT,
-	UserAccessT,
-	StatusT
-}
-import type {
-	GridConfig,
 	FieldConfig,
+	GridConfig,
 	Lookup,
 	Model
 } from './types/modelComponent';
+export {
+	AccessT,
+	AuthorizationT, GetAccessT, StatusT, UserAccessT
+};
 
 export {
 	type AccessMixinInterface,
@@ -55,10 +52,7 @@ export {
 	ColumnsConfig,
 	EntityElement,
 	EntityElementList,
-	EntityStatus,
-	GridConfig,
-	FieldConfig,
-	Lookup,
+	EntityStatus, FieldConfig, GridConfig, Lookup,
 	Model,
 	RenderConfig
 };
@@ -78,14 +72,14 @@ export type Role = {
 
 
 
+import { DocumentationKeysT } from './AbstractEntity.js';
 import { ActionsT } from './types/actionTypes.js';
 import { RenderInterface as ActionI, StaticEntityActionI } from './types/renderActionI.js';
 import { RenderInterface as CreateI } from './types/renderEntityCreateI.js';
 import { RenderInterface as FieldI, StaticEntityField } from './types/renderEntityFieldI.js';
 import { RenderInterface as RenderI } from './types/renderEntityI.js';
-import { DocumentationKeysT } from './AbstractEntity.js';
 
-export interface StaticEntityI<D = any, A extends ActionsT = ActionsT> {
+export interface StaticEntityI<D extends DefaultI = any, A extends ActionsT = ActionsT> {
 	actions: A
 	styles: CSSResult | CSSResult[];
 	getAccess: GetAccessT
@@ -94,7 +88,7 @@ export interface StaticEntityI<D = any, A extends ActionsT = ActionsT> {
 	roles: Readonly<Role[]>
 	userLoader?: (search: string) => Promise<any>
 	documentationKeys: DocumentationKeysT
-	['constructor']: typeof AbstractEntity;
+	['constructor']: typeof AbstractEntity<D, A>;
 }
 export interface EntityI<
 	D extends DefaultI = DefaultI,
