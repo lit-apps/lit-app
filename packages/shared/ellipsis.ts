@@ -6,6 +6,9 @@
  * @returns The truncated string with an ellipsis if it exceeds the maximum length.
  */
 export function ellipsis(str: string, maxLength: number = 40): string {
+  if (!str) {
+    return '';
+  }
   if (str.length <= maxLength) {
     return str;
   }
