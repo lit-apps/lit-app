@@ -233,7 +233,7 @@ export default function renderMixin<
         return this.renderCardItem(data, config)
       }
       return html`
-			<div class="layout vertical">							
+			<div class="layout vertical" id="entityContent">							
 				${[this.showMetaData ? this.renderMetaData(data, config) : html``,
         super.renderContent(data, config),
         html`<form id="entityForm">
@@ -280,7 +280,7 @@ export default function renderMixin<
         return this.renderEmptyArray(config)
       }
       return html`
-      <md-list class="entity list ${this.entityName}">
+      <md-list class="entity list ${this.entityName}" id="entityList">
 				${repeat(data, (d: CollectionI<D>) => d.$id, (d: CollectionI<D>, index: number) => this.renderListItem(d, config, index))}
 			</md-list>`
 

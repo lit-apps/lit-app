@@ -142,7 +142,7 @@ export default function renderMixin<A extends ActionsT>(
           const event = await this.getActionEvent(actionName, host, data, isBulk)
           if (!event) {
             // return early for simple events
-            return
+            return event
           }
           host.dispatchEvent(event)
           await event.detail.promise
