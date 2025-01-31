@@ -1,11 +1,12 @@
-import { html, css, LitElement, nothing } from "lit";
+import { css, html, LitElement, nothing } from "lit";
 import { customElement, property } from 'lit/decorators.js';
+import { ifDefined } from "lit/directives/if-defined.js";
 
 export type BreadcrumbItemT = {
   /**
    * href of the link
    */
-  href: string
+  href?: string
   /**
    * title of the link
    */
@@ -65,10 +66,15 @@ export default class lappBreadcrumb extends LitElement {
         color: inherit;
         transition: var(--transition-quickly);
         color: inherit;
+        outline-offset: 3px;
       }
 
       a:hover {
         color: var(--_lapp-breadcrumb-color-hover);
+        text-decoration: none;
+      }
+      a:focus, a:focus-visible {
+        outline: var(--md-focus-ring-color, var(--md-sys-color-secondary)) auto 2px;
         text-decoration: none;
       }
       
@@ -84,7 +90,7 @@ export default class lappBreadcrumb extends LitElement {
      <nav aria-label="Breadcrumb" class="breadcrumb">
        <ol>
         ${this.items?.map((item, index, items) => html`
-        <li><a aria-current=${index === items.length - 1 ? 'page' : nothing as unknown as 'page'} href=${item.href}>${item.title}</a></li>
+        <li><a aria-current=${index === items.length - 1 ? 'page' : nothing as unknown as 'page'} href=${ifDefined(item.href)}>${item.title}</a></li>
         `)}
       </ol>
     </nav>
