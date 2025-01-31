@@ -57,7 +57,7 @@ export class UserQuote extends LitElement {
 			flex: 1;
 			display: inline-flex;
 			flex-direction: column;
-			justify-content: space-around;
+			justify-content: center;
 			margin: 0;
 		}
 		md-divider {
