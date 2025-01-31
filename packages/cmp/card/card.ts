@@ -5,6 +5,7 @@
 import { Card } from '@vaadin/card';
 import { css, html } from 'lit';
 
+import { watch } from '@lit-app/shared/decorator';
 import { customElement, property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -28,10 +29,10 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 @customElement('lapp-card')
 export default class lappCard extends Card {
 
-  static override shadowRootOptions: ShadowRootInit = {
-    mode: 'open' as const,
-    delegatesFocus: true,
-  };
+  // static override shadowRootOptions: ShadowRootInit = {
+  //   mode: 'open' as const,
+  //   delegatesFocus: true,
+  // };
 
   static override get styles() {
     return [
@@ -39,33 +40,16 @@ export default class lappCard extends Card {
       css`
       /* We have to re-adjust the layout */
       a {
-        text-decoration: none;
+        display: contents;
         color: inherit;
-        display: flex;
-        gap: var(--_gap);
-        flex-direction: column;
-        flex: 1;
-        cursor: pointer;
+        text-decoration: none;
+        cursor: pointer; 
+        border-radius: inherit;
       }
-      a:focus {
+
+      :host(:focus), a:focus {
         outline: none;
       }
-
-       /* Horizontal */
-        :host([theme~='horizontal']) a {
-        display: grid;
-        grid-template-columns: repeat(var(--_media), minmax(auto, max-content)) 1fr;
-        align-items: start;
-      }
-
-      :host([theme~='horizontal'][_f]) a {
-        grid-template-rows: 1fr auto;
-      }
-
-      :host([theme~='horizontal'][_c]) a {
-        grid-template-rows: repeat(var(--_header), auto) 1fr;
-      }
-
       ` ]
   }
 
@@ -73,7 +57,15 @@ export default class lappCard extends Card {
    * The href attribute of the card
    */
   @property() href!: string;
-
+  @watch('href') _hrefChanged(href) {
+    if (href) {
+      this.setAttribute('tabindex', '0');
+      const focusRing = this.renderRoot.querySelector('md-focus-ring')
+      if (focusRing) focusRing.control = this;
+    } else {
+      this.removeAttribute('tabindex');
+    }
+  }
   /**
   * Where to display the linked `href` URL for a link button. Common options
   * include `_blank` to open in a new tab.
@@ -84,13 +76,17 @@ export default class lappCard extends Card {
     const card = super.render();
     if (this.href) {
       return html`
-      <a href="${this.href}" id="link" target = ${ifDefined(this.target)} >
+      <a href="${this.href}" target = ${ifDefined(this.target)} >
         ${card}
       </a>
-      <md-focus-ring for="link" style = "--md-focus-ring-shape: var(--vaadin-card-border-radius)" > </md-focus-ring>
+      <md-focus-ring style="--md-focus-ring-shape: var(--vaadin-card-border-radius)" > </md-focus-ring>
         `;
     }
     return card;
+  }
+  override firstUpdated(props) {
+    super.firstUpdated(props);
+    this._hrefChanged(this.href);
   }
 }
 
