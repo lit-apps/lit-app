@@ -35,6 +35,9 @@ const tree: CSSResult = css`
 `
 
 const util = css`
+    [part~="cell"].strong {
+      font-weight: var(--font-weight-bold);
+    }
     [part~="cell"].primary {
       color: var(--color-on-primary-container);
       background-image: linear-gradient(var(--color-primary-container), var(--color-primary-container));
@@ -53,11 +56,53 @@ const util = css`
     
 `
 
+// TODO: remove this when we do not use structure of form theme (Version 1)
+const temp = css`
+  :host([theme~="form"]) [part~="cell"].page,
+  :host([theme~="form"]) [part~="cell"].templatePage,
+  :host([theme~="form"]) [part~="cell"].dimension {
+    font-weight: 600;
+  }
+  
+  :host([theme~="form"]) [part~="cell"].section {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  :host([theme~="form"]) [part~="cell"].question,
+  :host([theme~="form"]) [part~="cell"].field,
+  :host([theme~="form"]) [part~="cell"].option {
+    font-size: 12px;
+    min-height: 24px;
+  }
+  
+  [part~="row"]>[part~="body-cell"].templatePage {
+    background: var(--color-surface-container);
+    color: var(--color-secondary-text);
+  }
+  
+  :host([theme~="form"]) [part~="cell"].option {
+    color: var(--color-secondary-text);
+  }
+  :host([theme~="form"][theme~="structure"]) [part~="cell"] {
+    cursor: pointer;
+  }
+
+  :host([theme~="form"][theme~="structure"]) [part~="header-cell"] {
+    cursor: pointer;
+  }
+  
+  :host([theme~="form"][theme~="structure"]) [part~="header-cell"][first-column]:hover,
+  :host([theme~="machine"][theme~="structure"]) [part~="header-cell"][first-column]:hover {
+    background: var(--color-accent);
+    color: var(--color-on-tertiary);
+  }
+  `
+
 export {
-  hover, tree, util
+  hover, temp, tree, util
 };
 
 registerStyles(
   'vaadin-grid',
-  [hover, tree, util]
+  [hover, tree, util, temp]
 )
