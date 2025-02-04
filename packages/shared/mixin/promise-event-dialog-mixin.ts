@@ -14,7 +14,7 @@ type DialogConfigT = {
 }
 
 export type promiseEventDialogDetail<D = any> = DialogConfigT & {
-  render: (data: D) => TemplateResult
+  render: (data: D, host: LitElement) => TemplateResult
   data: D
   promise?: Promise<D>
 }
@@ -108,7 +108,7 @@ export const PromiseEventDialogMixin = <D = any>() => <T extends MixinBase<BaseT
         ${event.detail.icon ? html`<lapp-icon>${event.detail.icon}</lapp-icon>` : nothing}
         `} 
         <form id="promise-event-dialog-form" method="dialog" slot="content" novalidate="">
-          ${render(data)}
+          ${render(data, this)}
         </form>
         <div slot="actions">
           <md-outlined-button
