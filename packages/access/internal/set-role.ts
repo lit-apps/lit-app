@@ -16,7 +16,7 @@ import('@material/web/button/outlined-button')
 import('@material/web/button/filled-button')
 import('@material/web/button/filled-tonal-button')
 import('@material/web/icon/icon')
-import('@material/web/progress/circular-progress')
+import('@material/web/progress/circular-progress.js')
 
 /**
  *  Set the role of an entity

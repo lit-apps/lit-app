@@ -1,11 +1,11 @@
 // import { EntityI } from '@lit-app/model/src/types/entity';
-import { HTMLEvent } from '@lit-app/shared/types';
 import { UserSearch } from '@lit-app/cmp/user/internal/search';
 import '@lit-app/cmp/user/name';
 import '@lit-app/cmp/user/search';
 import '@lit-app/cmp/user/select-item';
-import { AccessActionI, Role } from '@lit-app/model';
+import { Role } from '@lit-app/model';
 import { EntityI } from '@lit-app/model/src/types';
+import { HTMLEvent } from '@lit-app/shared/types';
 import { LitElement, css, html } from "lit";
 import { property, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
@@ -20,7 +20,7 @@ import('@material/web/button/filled-tonal-button')
 import('@material/web/icon/icon')
 import('@material/web/select/filled-select')
 import('@material/web/select/select-option')
-import('@material/web/progress/circular-progress')
+import('@material/web/progress/circular-progress.js')
 /**
  *  Add user role for an entity
  */
@@ -90,7 +90,7 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 
 
 		const handlerFact = (action: 'addAccess' | 'invite') => async (e: CustomEvent) => {
-			
+
 			this.isLoading = true;
 			try {
 				if (!this.accessRole) return;
@@ -104,7 +104,7 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 				this.isEditing = false;
 				this.dispatchEvent(new ToastEvent(`Access request processed with success`));
 			} catch (error) {
-				this.dispatchEvent(new ToastEvent(`There was an error while processing the access request: ${(error as Error).message}`  ,'error' ));
+				this.dispatchEvent(new ToastEvent(`There was an error while processing the access request: ${(error as Error).message}`, 'error'));
 				this.isLoading = false;
 				this.isEditing = false;
 			}
@@ -134,12 +134,12 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 						Cancel
 						<lapp-icon slot="icon">cancel</lapp-icon>
 					</md-outlined-button>
-					${this.Entity?.userLoader ? 
+					${this.Entity?.userLoader ?
 						html`<lapp-user-search
 							.loader=${this.Entity?.userLoader}
 							@change=${onUserChanged}
 							@invite-email-changed=${onInviteEmailChanged}
-						></lapp-user-search>` : 
+						></lapp-user-search>` :
 						html`<md-filled-select
 							.label=${'select user'}
 							.value=${this.newUid}
@@ -147,7 +147,7 @@ export class AddRole extends ConsumeUserAccessMixin(LitElement) {
 							quick
 							>
 							${this.accessUsers?.map(user => html`
-								<lapp-user-select-item .value=${user.uid} .selected=${this.newUid === user.uid } .uid=${user.uid}>
+								<lapp-user-select-item .value=${user.uid} .selected=${this.newUid === user.uid} .uid=${user.uid}>
 									<lapp-user-name slot="headline" .uid=${user.uid}></lapp-user-name>  
 							</lapp-user-select-item>
 							`)}
