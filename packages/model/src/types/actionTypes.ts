@@ -4,11 +4,12 @@ import type { EntityStatus, RenderConfig } from "./entity.js";
 // import { dbRefEntity } from "@lit-app/persistence-shell";
 import type { CollectionReference, DocumentReference } from "firebase/firestore";
 import { EntityAction } from "../events.js";
-import { EntityI } from "../types.js";
+import { AuthorizationT, EntityI } from "../types.js";
 export type FilterActionKeyT = 'showOnViewing' | 'showOnEditing' | 'showInContextMenu'
 
 export interface HostElementI<D = any> extends HTMLElement {
   entityStatus?: EntityStatus
+  authorization?: AuthorizationT
   consumingMode?: RenderConfig['consumingMode']
   docId?: string,
   appID?: string,
@@ -32,8 +33,8 @@ type ConfigOrIndexOrFunctionOrContext<D> = FunctionOrValue<number | MenuConfigT<
 type StringOrFunctionT<D> = FunctionOrPrimitiveT<string, D>
 
 type ButtonConfigT = {
-  // disabled?: boolean
-  softDisabled?: boolean
+  disabled?: boolean
+  // softDisabled?: boolean
   outlined?: boolean
   filled?: boolean
   tonal?: boolean
@@ -91,7 +92,7 @@ interface ActionBaseI<D = any, ConfirmT = any> {
    */
   supportingText?: string
 
-  disabled?: (data: D) => boolean
+  disabled?: (data: D, authorization?: AuthorizationT, entityStatus?: EntityStatus) => boolean
 
   config?: FunctionOrButtonConfigT<D>
   /**

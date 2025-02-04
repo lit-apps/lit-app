@@ -65,6 +65,7 @@ export default function renderMixin<A extends ActionsT>(
     ): TemplateResult {
       const action = this.actions[actionName]
       const entityStatus = (config && isRenderConfig(config)) ? config.entityStatus : host.entityStatus
+      const authorization = (config && isRenderConfig(config)) ? config.authorization : host.authorization
       const callFunction = callFunctionOrValue.bind(host);
 
       const getConfig = (config: RenderConfig | FunctionOrButtonConfigT<unknown>) => {
@@ -75,8 +76,8 @@ export default function renderMixin<A extends ActionsT>(
         return callFunction(config, data, entityStatus)
       }
       const cfg = { ...{}, ...getConfig(action.config || {}), ...getConfig(config || {}) }
-      // const disabled =  cfg?.disabled === true
-      const softDisabled = action.disabled !== undefined ? action.disabled(data) : false
+      const disabled = cfg?.disabled || action.disabled
+      const softDisabled = disabled !== undefined ? callFunction(disabled, data, authorization, entityStatus) : false
       // cfg?.softDisabled === true
       const filled = cfg?.filled ?? false
       const tonal = cfg?.tonal ?? false
