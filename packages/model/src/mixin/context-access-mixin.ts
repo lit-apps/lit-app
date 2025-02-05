@@ -81,7 +81,10 @@ function getAccessDefault(
  * 
  * if getAccessFn is not provided, it uses Entity.getAccess or getAccessDefault
  */
-export const ProvideAccessMixin = <A extends AuthorizationT = AuthorizationT, G extends GetAccessT = GetAccessT>(getAccessFn?: G) =>
+export const ProvideAccessMixin = <
+	A extends AuthorizationT = AuthorizationT,
+	G extends GetAccessT = GetAccessT
+>(getAccessFn?: G) =>
 	<T extends Constructor<ReactiveElement & { Entity?: EntityI, data: any }>>(superClass: T) => {
 
 		class ProvideAccessMixinClass extends ApplyGetterMixin(superClass) {
@@ -108,7 +111,7 @@ export const ProvideAccessMixin = <A extends AuthorizationT = AuthorizationT, G 
 			async updateAccess(data: any) {
 				const accessDataGetter = this.Entity?.accessDataGetter || this.accessDataGetter;
 				const accessData = await accessDataGetter(data);
-				console.info('AccessData', accessData)
+				// console.info('AccessData', accessData)
 				if (!accessData) {
 					this.authorization = {
 						isOwner: false,
