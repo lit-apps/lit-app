@@ -222,7 +222,9 @@ export default class Actor extends State {
   }
   set actor(actor) {
     this._actor = actor;
+    this.dispatchEvent(new CustomEvent('actor-ready', { detail: { actor } }))
     this.subscribeActor(actor);
+    // dispatch an event so that we know the actor is ready - thi sis useful when we want to add listeners to the actor itself
   }
 
   // protected subscribeActor(actor) {
@@ -269,7 +271,12 @@ export default class Actor extends State {
     return this.actor.stop();
   }
 
-  on<TType extends EmittedFrom<this['machine']>['type']>(type: TType, handler: (emitted: any) => void) {
+  on<TType extends EmittedFrom<this['machine']>['type']>(type: TType, handler: (emitted: EmittedFrom<this['machine']>) => void) {
+    if (!this.actor) {
+      return this.addEventListener('actor-ready', () => {
+        this.actor.on<TType>(type, handler);
+      }, { once: true });
+    }
     return this.actor.on<TType>(type, handler);
   }
 
