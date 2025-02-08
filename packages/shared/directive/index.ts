@@ -1,0 +1,1 @@
+export { spread } from './spreadDirective';
