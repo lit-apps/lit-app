@@ -16,21 +16,20 @@
  * @property {string} label - Label text for the switch.
 
  */
-import { html, css, LitElement } from "lit";
-import { customElement, property } from 'lit/decorators.js';
-import { MdSwitch } from '@material/web/switch/switch'
 import { AdvancedModeEvent, ConsumeAdvancedModeMixin } from '@lit-app/shared/context/advanced-mode-mixin.js';
+import { IsNarrow } from '@lit-app/shared/controller';
+import { MdSwitch } from '@material/web/switch/switch';
+import { css, html, LitElement } from "lit";
+import { customElement, property } from 'lit/decorators.js';
 import('@material/web/switch/switch.js')
 import('@material/web/elevation/elevation.js')
-import isNarrowController from '@lit-app/shared/isNarrowController.js'
-
 /**
  *  A switch controller to set advanced mode
  * 
  */
 @customElement('lapp-advanced-switch')
 export default class AdvancedModeSwitch extends ConsumeAdvancedModeMixin(LitElement) {
-  private isNarrow = new isNarrowController(this);
+  private isNarrow = new IsNarrow(this);
 
   static override styles = css`
 
