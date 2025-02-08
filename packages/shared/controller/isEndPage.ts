@@ -3,14 +3,14 @@ import { ReactiveController, ReactiveControllerHost } from 'lit';
 /**
  * A controller that checks if the user has scrolled to the end of the page.
  */
-export default class EndPageController implements ReactiveController {
+export class IsEndPage implements ReactiveController {
   unsubscribe!: () => void;
   host: ReactiveControllerHost;
   /**
    * Whether the user has scrolled to the end of the page.
    */
   value!: boolean;
-  
+
   constructor(host: ReactiveControllerHost, private offset = 20) {
     (this.host = host).addController(this);
   }

@@ -11,16 +11,16 @@ window.addEventListener('resize', () => {
  * 
  * The default width is 800px.
  */
-export default class IsNarrowController implements ReactiveController {
+export class IsNarrow implements ReactiveController {
   private unsubscribe?: () => void;
-  
+
   /**
    * Whether the width of the viewport is less than the specified width.
    */
   value: boolean;
 
   /**
-   * Creates a new instance of the `IsNarrowController` class.
+   * Creates a new instance of the `IsNarrow` class.
    * @param host The ReactiveControllerHost instance.
    * @param width The width threshold for determining if the viewport is narrow. Default is 800.
    */

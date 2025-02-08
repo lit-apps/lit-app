@@ -3,10 +3,10 @@ import { ReactiveController, ReactiveControllerHost } from 'lit';
 /**
  * A controller that checks is the page has a vertical scrollbar.
  */
-export default class EndPageController implements ReactiveController {
+export class HasScrollbar implements ReactiveController {
   unsubscribe!: () => void;
   host: ReactiveControllerHost;
-  
+
   /**
    * Whether the page has a vertical scrollbar.
    */
@@ -19,8 +19,8 @@ export default class EndPageController implements ReactiveController {
   private subscribe() {
     const check = () => {
       const oldValue = this.value;
-      this.value = this.target.scrollHeight > this.target.clientHeight ;
-      if (oldValue !== this.value ) {
+      this.value = this.target.scrollHeight > this.target.clientHeight;
+      if (oldValue !== this.value) {
         this.host.requestUpdate();
       }
     }
