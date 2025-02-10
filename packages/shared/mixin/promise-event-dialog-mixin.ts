@@ -1,3 +1,6 @@
+import '@material/web/button/filled-button';
+import '@material/web/button/outlined-button';
+import '@material/web/dialog/dialog';
 import type { MdDialog } from '@material/web/dialog/dialog';
 import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import { html, LitElement, nothing, PropertyValues, TemplateResult } from 'lit';
@@ -8,9 +11,11 @@ type DialogConfigT = {
    * Template must contain a headline slot, possibly an icon slot 
    */
   template: TemplateResult
+  title?: never
 } | {
   title: string
   icon?: string
+  template?: never
 }
 
 export type promiseEventDialogDetail<D = any> = DialogConfigT & {
@@ -104,8 +109,8 @@ export const PromiseEventDialogMixin = <D = any>() => <T extends MixinBase<BaseT
         id="promiseEventDialog">
         ${'template' in event.detail ? event.detail.template :
           html`
-        <div slot="headline">${event.detail.title}</div>
-        ${event.detail.icon ? html`<lapp-icon>${event.detail.icon}</lapp-icon>` : nothing}
+          <div slot="headline">${event.detail.title}</div>
+          <lapp-icon>${event.detail.icon || 'send'}</lapp-icon>
         `} 
         <form id="promise-event-dialog-form" method="dialog" slot="content" novalidate="">
           ${render(data, this)}

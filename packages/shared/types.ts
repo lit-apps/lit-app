@@ -106,7 +106,10 @@ export type RecursivePartial<T> = {
 
 export type ProtoT<T, P> = T & { __proto__: P };
 export type ProtoOfT<T extends { __proto__: any }> = T['__proto__'] extends infer P ? P : never;
-
+/**
+ * A utility type that extends a type `T` with another type `U`, ensuring that `U`'s properties are present in `T`.
+ */
+export type ProtoExtends<T, U> = U & Omit<T, keyof U>;
 
 export type { MixinBase, MixinReturn } from './mixin/types.js';
 
@@ -135,3 +138,30 @@ export type NestedKeys<T> = (
 
 // type F = DistributeFunctionParamT<string | string[] | number, boolean>;
 // const fn: F = (item: number) => item === 'a';
+
+// type T1 = { a?: never; b: string };
+// type T2 = { b?: never; a: string };
+// type T = T1 | T2;
+// type C = (T1 & { c: number }) | (T2 & { c: number });
+
+// const c: C = { b: 'example', c: 1, a: 'example' };
+// const t: T = { b: 'example' };
+
+// function handleType(obj: T) {
+//   if ('a' in obj) {
+//     // obj is T2
+//     console.log('T2:', obj.a);
+//   } else if ('b' in obj) {
+//     // obj is T1
+//     console.log('T1:', obj.b);
+//   } else {
+//     throw new Error('Invalid type');
+//   }
+// }
+
+// // Example usage
+// const example1: T1 = { a: never, b: "example" };
+// const example2: T2 = { b: never, a: "example" };
+
+// handleType(example1); // Output: T1: example
+// handleType(example2); // Output: T2: example
