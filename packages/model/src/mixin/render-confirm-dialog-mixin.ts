@@ -82,6 +82,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement & { selected
 					try {
 						/** 
 						 * Redispatch the bulk event for each selected item
+						 * TODO: review if this is necessary, we could just dispatch the event once
 						 */
 						this.selectedItems?.forEach(item => {
 							const newEvent = Reflect.construct(

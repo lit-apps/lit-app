@@ -209,7 +209,7 @@ export class Edit extends BaseEvent<EntityDetail> {
 class BaseAction<T> extends BaseEvent<T & { promise?: Promise<any> }> {
   public bulkAction?: boolean
   override get shouldConfirm() {
-    return !!(!this.confirmed && (this.action?.confirmDialog || this.bulkAction));
+    return !!(!this.confirmed && (this.action?.confirmDialog || (this.bulkAction && !this.action?.bulk?.skipConfirm)));
   }
 
 }
@@ -299,13 +299,7 @@ export type Template = {
 }
 
 
-type EntityType = 'user' | 'organisation'
-export type CallToAction = {
-  id?: string
-  entity: {
-    [key in EntityType]: string
-  }
-}
+
 export type ActionLookup = {
   code: string
   label: string

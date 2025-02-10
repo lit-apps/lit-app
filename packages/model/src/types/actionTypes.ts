@@ -63,13 +63,26 @@ type ConfigDialogT<D> = {
   render: ((d: { data: D, selectedItems?: Collection<D> }) => TemplateResult);
 };
 
-type BulkDialogT<D> = Omit<ConfigDialogT<D>, 'render'> & {
+
+type BulkDialogBaseT<D> = Omit<ConfigDialogT<D>, 'render'> & {
   index: number // index used to sort the bulk actions
   tooltip?: string;
   icon?: string;  // we can override default icon
   disabled?: (selectedItems: Collection<D>) => boolean
-  render: ((d: { data: D, selectedItems: Collection<D> }) => TemplateResult);
 };
+
+type BulkDialogWithRenderT<D> = BulkDialogBaseT<D> & {
+  render: ((d: { data: D, selectedItems: Collection<D> }) => TemplateResult);
+  skipConfirm?: never
+
+};
+
+type BulkDialogWithSkipConfirmT<D> = BulkDialogBaseT<D> & {
+  skipConfirm: boolean;
+  render?: never
+};
+
+type BulkDialogT<D> = BulkDialogWithRenderT<D> | BulkDialogWithSkipConfirmT<D>;
 /**
  * used to group actions in the context menu
  */
@@ -173,7 +186,8 @@ export interface ActionEventI<D = any> extends ActionBaseI<D>, ActionConfigT<D, 
  * Entity actions are actions that require an entityAction to be dispatched. There is no need to define a getEvent function
  * The handler is called on entity-action-handler 
  */
-export interface ActionEntityI<D = any, TData = any> extends ActionBaseI<D, TData>, ActionConfigT<D, TData, EntityAction> {
+export interface ActionEntityI<D = any, TData = any>
+  extends ActionBaseI<D, TData>, ActionConfigT<D, TData, EntityAction> {
   kind: 'entity'
   handler: ActionHandlerT<D, TData, EntityAction>
 
@@ -183,7 +197,8 @@ export interface ActionEntityI<D = any, TData = any> extends ActionBaseI<D, TDat
  * Entity actions are actions that require an entityAction to be dispatched. There is no need to define a getEvent function
  * The handler if it exists is either called on entity-action-handler, the action is run on the server
  */
-export interface ActionServerEntityI<D = any, TData = any> extends ActionBaseI<D, TData>, ActionConfigT<D, TData, EntityAction> {
+export interface ActionServerEntityI<D = any, TData = any>
+  extends ActionBaseI<D, TData>, ActionConfigT<D, TData, EntityAction> {
   kind: 'server'
 }
 
