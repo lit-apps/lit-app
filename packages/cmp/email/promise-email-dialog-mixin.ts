@@ -105,12 +105,12 @@ export const PromiseEventDialogMixin = <D extends EmailRendererT = EmailRenderer
       )
     }
 
-    override render() {
-      return html`
-      ${super.render()}
-      ${this._renderPromiseEventDialog()}
-      `
-    }
+    // override render() {
+    //   return html`
+    //   ${super.render()}
+    //   ${this._renderPromiseEventDialog()}
+    //   `
+    // }
 
     _renderPromiseEventDialog() {
       console.log('event', event)

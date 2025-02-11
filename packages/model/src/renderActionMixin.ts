@@ -171,7 +171,7 @@ export default function renderMixin<A extends ActionsT>(
       data: unknown): ([string, number | MenuConfigT<any>])[] {
       const callFunction = callFunctionOrValue.bind(host);
       return Object.entries(this.actions)
-        .filter(([_, action]) => action[key] !== undefined)
+        .filter(([_, action]) => action && action[key] !== undefined)
         .map(([_, action]) => [_, callFunction(action[key]!, data)] as [string, number | MenuConfigT<any>])
         .filter(([_, numberOrConfig]) => {
           if (typeof numberOrConfig === 'number') return numberOrConfig > -1

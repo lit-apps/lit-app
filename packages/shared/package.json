@@ -44,10 +44,13 @@
     "access": "public"
   },
   "dependencies": {
+    "@lit-labs/observers": "^2.0.4",
     "@lit/context": "^1.1.2",
+    "@lit/reactive-element": "^2.0.4",
     "@material/web": "link:../../../app-dependencies/material-web",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/vaadin-themable-mixin": "link:../../../app-dependencies/web-components/packages/vaadin-themable-mixin",
-    "lit": "^3.2.1"
+    "lit": "^3.2.1",
+    "lit-html": "^3.2.1"
   }
 }

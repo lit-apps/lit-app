@@ -1,11 +1,12 @@
-import { html, css, LitElement, isServer, nothing } from "lit";
-import { customElement, property, query, queryAssignedElements, state } from 'lit/decorators.js';
-import { ListController, NavigableKeys } from "@material/web/list/internal/list-controller.js";
+import '@lit-app/cmp/icon/icon.js';
+import { ResizeController } from '@lit-app/shared/controller';
+import '@material/web/iconbutton/icon-button.js';
 import type { IconButton } from "@material/web/iconbutton/internal/icon-button.js";
-import '@material/web/iconbutton/icon-button.js'
-import '@material/web/menu/menu.js'
-import '@lit-app/cmp/icon/icon.js'
+import { ListController, NavigableKeys } from "@material/web/list/internal/list-controller.js";
+import '@material/web/menu/menu.js';
 import { MdMenu } from "@material/web/menu/menu.js";
+import { css, html, isServer, LitElement, nothing } from "lit";
+import { customElement, property, query, queryAssignedElements, state } from 'lit/decorators.js';
 const NAVIGABLE_KEY_SET = new Set<string>(Object.values(NavigableKeys));
 
 interface ToolbarItem extends IconButton {
@@ -93,11 +94,12 @@ export default class lappToolbar extends LitElement {
   private readonly internals =
     (this as HTMLElement).attachInternals();
 
+  resizeController = new ResizeController(this, { callback: () => this.updateWrappedItems() })
+
   constructor() {
     super();
     this.internals.role = 'toolbar';
-    const resizeObserver = new ResizeObserver(() => this.updateWrappedItems());
-    resizeObserver.observe(this);
+
     if (!isServer) {
       this.addEventListener('keydown', this.listController.handleKeydown);
     }
