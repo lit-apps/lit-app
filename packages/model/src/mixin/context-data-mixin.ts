@@ -143,14 +143,17 @@ export const ProvideDataMixin = <D = any>() => <T extends MixinBase<ReactiveElem
 				if (this.data === null && this.parentData) {
 					this.data = {} as D
 				}
-				const force = Array.isArray(this.data) ||
-					(this.relayParentChange && prop.has('parentData') && !!prop.get('parentData'));
-				if (this.data && this.parentData) {
-					const dataProto = Object.getPrototypeOf(this.data);
-					if (force || dataProto === Object.prototype) {
-						const newData = { ...this.data };
-						Object.setPrototypeOf(newData, this.parentData);
-						this.data = newData;
+				const activateParentChange = this.relayParentChange && prop.has('parentData') && !!prop.get('parentData');
+				const force = Array.isArray(this.data) || activateParentChange;
+				if (activateParentChange && this.data) {
+					const d = { ...this.data }
+					Object.setPrototypeOf(d, this.parentData);
+					this.data = d
+				} else if (this.data && this.parentData) {
+					if (Object.getPrototypeOf(this.data) === Object.prototype) {
+						Object.setPrototypeOf(
+							this.data,
+							this.parentData)
 					}
 				}
 
