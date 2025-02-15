@@ -5,7 +5,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
 
   test: {
-    onConsoleLog (log) {
+    onConsoleLog(log) {
       if (log.includes('Download the Vue Devtools extension')) return false
       if (log.includes('Lit is in dev mode.')) return false
     },
@@ -23,7 +23,7 @@ export default defineConfig({
       "api-viewer-element",
       "@material/web",
       "@material/mwc-base",
-      "@material/mwc-base/form-element.js", 
+      "@material/mwc-base/form-element.js",
       "@material/mwc-drawer",
       "@material/mwc-notched-outline",
       "@material/mwc-ripple",
@@ -33,7 +33,7 @@ export default defineConfig({
       "@material/mwc-top-app-bar-fixed",
       "@preignition/preignition-util",
       "@preignition/preignition-config",
-      "@preignition/preignition-state",
+
     ],
   },
 });

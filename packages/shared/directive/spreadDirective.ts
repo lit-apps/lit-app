@@ -19,8 +19,8 @@ type config = { [attrName: string]: boolean | string }
 /**
  * Allow to set component properties as object like:
  * ` <lapp-text-field ${spread(this.config)}></lapp-text-field>`
+ * @deprecated = use @open-wc/lit-helpers instead (spreadProps)
  */
-// @deprecated = use @open-wc/lit-helpers instead (spreadProps)
 class SpreadDirective extends Directive {
   config!: config
   constructor(partInfo: any) {

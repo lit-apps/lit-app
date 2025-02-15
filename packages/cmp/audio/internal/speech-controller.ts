@@ -1,9 +1,9 @@
-import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { PlayerI, SpeechConfigI } from './types';
-import hasTouchscreen from '@lit-app/shared/hasTouchscreen';
-import { ToastEvent } from '@lit-app/shared/event';
-import { cancelAudio } from './audio-controller';
 import { wait } from '@lit-app/shared';
+import { hasTouchscreen } from '@lit-app/shared/browser';
+import { ToastEvent } from '@lit-app/shared/event';
+import { ReactiveController, ReactiveControllerHost } from 'lit';
+import { cancelAudio } from './audio-controller';
+import { PlayerI, SpeechConfigI } from './types';
 
 // Note(CG): we need a different implementation for chrome and firefox as 
 // chrome stops after some time and FF do not support pause
@@ -60,8 +60,8 @@ const init = async () => {
 	return
 }
 
-let pauseTimeout : NodeJS.Timeout; // we reset the controller when paused after 6 seconds
-let synthTimeout: NodeJS.Timeout; 
+let pauseTimeout: NodeJS.Timeout; // we reset the controller when paused after 6 seconds
+let synthTimeout: NodeJS.Timeout;
 async function synthTimer() {
 	// Note(CG): removing pause as it seems to cause problems in chrome android
 	// https://stackoverflow.com/questions/21947730/chrome-speech-synthesis-with-longer-texts
@@ -234,7 +234,7 @@ export class SpeechController implements ReactiveController, PlayerI {
 			utter(this.utterance!, this._paused);
 			this.paused = false;
 			this.speaking = true;
-			if(pauseTimeout) {
+			if (pauseTimeout) {
 				clearTimeout(pauseTimeout);
 			}
 		} catch (error) {
@@ -255,7 +255,7 @@ export class SpeechController implements ReactiveController, PlayerI {
 	async restart() {
 		cancelAudio();
 		synth.cancel();
-		if(pauseTimeout) {
+		if (pauseTimeout) {
 			clearTimeout(pauseTimeout);
 		}
 		if (!this.utterance) {
@@ -272,7 +272,7 @@ export class SpeechController implements ReactiveController, PlayerI {
 	}
 	dispose() {
 		synth.cancel();
-		if(pauseTimeout) {
+		if (pauseTimeout) {
 			clearTimeout(pauseTimeout);
 		}
 		this.utterance = undefined;

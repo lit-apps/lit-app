@@ -31,7 +31,7 @@ export default defineConfig({
       "@material/mwc-snackbar",
       "@preignition/preignition-util",
       "@preignition/preignition-config",
-      "@preignition/preignition-state",
+
     ],
   },
 });

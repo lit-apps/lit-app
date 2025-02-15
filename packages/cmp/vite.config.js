@@ -33,7 +33,7 @@ export default defineConfig({
       "@material/mwc-top-app-bar-fixed",
       "@preignition/preignition-util",
       "@preignition/preignition-config",
-      "@preignition/preignition-state",
+
       "@vaadin/button",
       "@vaadin/upload",
       "@vaadin/popover",

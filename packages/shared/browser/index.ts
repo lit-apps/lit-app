@@ -1,0 +1,1 @@
+export { hasTouchscreen } from './hasTouchscreen';

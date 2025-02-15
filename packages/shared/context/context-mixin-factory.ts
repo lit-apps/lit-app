@@ -2,9 +2,9 @@
  * A Factory function that creates a mixin to context data to a LitElement component.
  */
 
-import { createContext, provide, consume } from "@lit/context";
-import { MixinBase, MixinReturn } from '../types.js';
+import { consume, createContext, provide } from "@lit/context";
 import { LitElement } from "lit";
+import { MixinBase, MixinReturn } from '../types.js';
 
 /**
  * A factory function that creates mixins for consuming and providing context in LitElement components.
@@ -65,7 +65,7 @@ export function ContextMixinFactory<I = any>(
       constructor(..._args: any[]) {
         super();
         if (defaultValue !== undefined) {
-          // @ts-expect-error - we know thi.name is a property
+          // @ts-expect-error - we know this.name is a property
           this[name] = defaultValue;
         }
       }
