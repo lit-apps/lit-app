@@ -10,7 +10,7 @@ const DASH_TO_CAMEL = /-[a-z]/g;
  * @param dash - The dash-separated string to convert.
  * @returns The camelCase version of the input string.
  */
-export default (dash: string): string => {
+export const dashToCamel = (dash: string): string => {
   if (!dash) {
     return '';
   }

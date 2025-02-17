@@ -1,5 +1,4 @@
-import camelToDash from "@lit-app/shared/camelToDash.js";
-
+import { camelToDash } from "@lit-app/shared/string";
 import { html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ConsumeAccessMixin } from '../mixin/context-access-mixin';

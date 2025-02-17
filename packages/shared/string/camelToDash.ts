@@ -1,4 +1,4 @@
-const map:{[key:string]:string} = {};
+const map: { [key: string]: string } = {};
 const CAMEL_TO_DASH = /([A-Z])/g;
 
 /**
@@ -7,7 +7,7 @@ const CAMEL_TO_DASH = /([A-Z])/g;
  * @param camel - The camelCase string to be converted.
  * @returns The converted dash-case string. If the input is an empty string, returns an empty string.
  */
-export default (camel: string): string => {
+export const camelToDash = (camel: string): string => {
   if (!camel) {
     return '';
   }
