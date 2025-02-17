@@ -1,12 +1,12 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { State } from './state.js'
-import { StateEvent } from './state-event.js'
+import { StateEvent } from './state-event.js';
+import { State } from './state.js';
 /**
  * A reactive-controller holding a state
  */
 type callback = () => void | EventListener | Promise<void>
 
-export class StateController<T extends State>
+export class StateController<T extends State = State>
 	implements ReactiveController {
 
 	callback: callback
