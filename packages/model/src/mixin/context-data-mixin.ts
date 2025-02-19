@@ -136,28 +136,37 @@ export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 
 		provider = new ContextProvider(this, { context: dataContext, initialValue: this.data });
 
+		/**
+		 * A flag to know if we have parent Data
+		 */
+		// private _hasParentData = false;
+
 		override willUpdate(prop: PropertyValues) {
 
 			// we set parentData as prototype of data if data and parentData are set
 			if (prop.has('parentData') || prop.has('data')) {
-				if (this.data === null && this.parentData) {
-					this.data = {} as D
-				}
-				const activateParentChange = this.relayParentChange && prop.has('parentData') && !!prop.get('parentData');
-				const force = Array.isArray(this.data) || activateParentChange;
-				if (activateParentChange && this.data) {
-					const d = { ...this.data }
-					Object.setPrototypeOf(d, this.parentData);
-					this.data = d
-				} else if (this.data && this.parentData) {
-					if (Object.getPrototypeOf(this.data) === Object.prototype) {
-						Object.setPrototypeOf(
-							this.data,
-							this.parentData)
-					}
-				}
+				if (this.data !== undefined) {
 
-				this.provider.setValue(this.data, force);
+					console.info('SET DATA', this.path, this.data, this.parentData)
+					if (this.data === null && this.parentData) {
+						this.data = {} as D
+					}
+					const activateParentChange = this.relayParentChange && prop.has('parentData') && !!prop.get('parentData');
+					const force = Array.isArray(this.data) || activateParentChange;
+					if (activateParentChange && this.data) {
+						const d = { ...this.data }
+						Object.setPrototypeOf(d, this.parentData);
+						this.data = d
+					} else if (this.data && this.parentData) {
+						if (this.data !== this.parentData && Object.getPrototypeOf(this.data) !== this.parentData) {
+							Object.setPrototypeOf(
+								this.data,
+								this.parentData)
+						}
+					}
+
+					this.provider.setValue(this.data, force);
+				}
 
 			}
 			super.willUpdate(prop);

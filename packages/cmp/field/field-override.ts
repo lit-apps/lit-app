@@ -14,24 +14,31 @@
  * 
  */
 
-import isChrome, { version as chromeVersion } from '@lit-app/shared/isChrome.js';
-import isSafari, { version as safariVersion } from '@lit-app/shared/isSafari.js';
-import isFirefox, { version as firefoxVersion } from '@lit-app/shared/isFirefox.js';
-import isEdge, { version as edgeVersion } from '@lit-app/shared/isEdge.js';
-import isOpera, { version as operaVersion } from '@lit-app/shared/isOpera.js';
+import {
+  chromeVersion,
+  edgeVersion,
+  firefoxVersion,
+  isChrome,
+  isEdge,
+  isFirefox,
+  isOpera,
+  isSafari,
+  operaVersion,
+  safariVersion
+} from '@lit-app/shared/browser';
 
+import { styles as checkboxStyles } from '@material/web/checkbox/internal/checkbox-styles';
 import { styles as filledStyles } from '@material/web/field/internal/filled-styles';
 import { styles as outlinedStyles } from '@material/web/field/internal/outlined-styles';
 import { styles as sharedStyles } from '@material/web/field/internal/shared-styles';
-import { styles as switchStyles } from '@material/web/switch/internal/switch-styles';
 import { styles as radioStyles } from '@material/web/radio/internal/radio-styles';
-import { styles as checkboxStyles } from '@material/web/checkbox/internal/checkbox-styles';
+import { styles as switchStyles } from '@material/web/switch/internal/switch-styles';
 import { CSSResult, unsafeCSS } from 'lit';
 
 if (
-  (isChrome && (chromeVersion! < 99))||
-  (isEdge && (edgeVersion! < 99))||
-  (isSafari && (safariVersion! < 15.4))||
+  (isChrome && (chromeVersion! < 99)) ||
+  (isEdge && (edgeVersion! < 99)) ||
+  (isSafari && (safariVersion! < 15.4)) ||
   (isFirefox && (firefoxVersion! < 97)) ||
   (isOpera && (operaVersion! < 85))
 ) {
@@ -40,9 +47,9 @@ if (
 }
 
 if (
-  (isChrome && (chromeVersion! < 88))||
-  (isEdge && (edgeVersion! < 88))||
-  (isSafari && (safariVersion! < 14))||
+  (isChrome && (chromeVersion! < 88)) ||
+  (isEdge && (edgeVersion! < 88)) ||
+  (isSafari && (safariVersion! < 14)) ||
   (isFirefox && (firefoxVersion! < 82)) ||
   (isOpera && (operaVersion! < 74))
 ) {
