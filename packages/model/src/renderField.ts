@@ -186,9 +186,7 @@ export function renderField<D extends DefaultI>(
         this.dispatchEvent(
           new DataChanged({ entityName: entity.entityName, id, data })
         );
-        // if (entity.realTime) {
-        //   debounceWrite(this, { entityName: entity.entityName, id: id, data: data });
-        // }
+
       }
       if (model.onInput) {
         model.onInput(data, v, this);

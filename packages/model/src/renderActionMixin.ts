@@ -24,7 +24,7 @@ import { html, nothing, TemplateResult } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
 import AbstractEntity, { DocumentationKeysT } from "./AbstractEntity.js";
 import { defaultActions, getEntityActionEvent } from "./defaultActions.js";
-import { Close, Dirty, Open } from "./events.js";
+import { Close, DataChanged, Dirty, Open } from "./events.js";
 import RenderEntityCreateMixin from "./renderEntityCreateMixin.js";
 import type { CollectionI, DataI, EntityAction } from "./types.js";
 import type {
@@ -391,6 +391,11 @@ export default function renderMixin<A extends ActionsT>(
         }, this.host)
       this.host.dispatchEvent(event)
       return event
+    }
+
+    update(data: unknown, entityName?: string) {
+      return this.host.dispatchEvent(new DataChanged({ entityName: entityName || this.entityName, data }))
+
     }
 
     close(id: string, entityName?: string) {

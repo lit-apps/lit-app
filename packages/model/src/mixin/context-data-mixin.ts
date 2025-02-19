@@ -1,21 +1,21 @@
 import DataHasChanged from '@lit-app/shared/event/data-has-changed';
 import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import { consume, ContextConsumer, ContextProvider, createContext, provide } from '@lit/context';
+import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
 export const dataContext = createContext<any>('data-context');
 export const dataIsArrayContext = createContext<boolean>('data-is-array-context');
 
-
 /**
  * ConsumeDataMixin a mixin that consumes data context
  */
-export declare class DataMixinInterface<D = any> {
+export declare class DataMixinInterface<D> {
 	data: D;
 	dataIsArray: boolean;
 }
-export declare class DataMixinConsumeInterface<D = any> extends DataMixinInterface<D> {
+export declare class DataMixinConsumeInterface<D> extends DataMixinInterface<D> {
 	preventConsume: boolean;
 	/**
 	 * whether the data has changed for a given entity and path
@@ -45,7 +45,7 @@ export declare class DataMixinConsumeInterface<D = any> extends DataMixinInterfa
  * }
  * ```
  */
-export const ConsumeDataMixin = <D = any>() => <T extends MixinBase<ReactiveElement>>(
+export const ConsumeDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<ReactiveElement>>(
 	superClass: T
 ): MixinReturn<T, DataMixinConsumeInterface<D>> => {
 
@@ -93,7 +93,7 @@ export const ConsumeDataMixin = <D = any>() => <T extends MixinBase<ReactiveElem
 
 	};
 	return ContextConsumeDataMixinClass;
-}
+})
 
 /**
  * A mixin function that provides context data to a LitElement component.
@@ -114,7 +114,7 @@ export const ConsumeDataMixin = <D = any>() => <T extends MixinBase<ReactiveElem
  * }
  * ```
  */
-export const ProvideDataMixin = <D = any>() => <T extends MixinBase<ReactiveElement>>(
+export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<ReactiveElement>>(
 	superClass: T
 ): MixinReturn<T, DataMixinInterface<D>> => {
 
@@ -165,4 +165,4 @@ export const ProvideDataMixin = <D = any>() => <T extends MixinBase<ReactiveElem
 	};
 
 	return ContextProvideDataMixinClass;
-}
+})

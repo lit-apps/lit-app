@@ -83,12 +83,12 @@ export class Update<T = any> extends BaseEvent<EntityWriteDetail<T>> {
 }
 
 /* Dispatch data-changed when data has changed on a view and needs to be updated on a server */
-export class DataChanged<T = any> extends BaseEvent<EntityWriteDetail<T>> {
+export class DataChanged<T = any> extends BaseEvent<Omit<EntityWriteDetail<T>, 'id'>> {
   static readonly eventName = 'entity-data-changed';
   readonly actionName = 'data-changed';
   public persisted?: boolean // true when data is persisted 
   constructor(
-    detail: EntityWriteDetail<T>
+    detail: Omit<EntityWriteDetail<T>, 'id'>
   ) {
     super(DataChanged.eventName, {
       bubbles: true,
