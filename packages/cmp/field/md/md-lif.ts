@@ -1,13 +1,13 @@
+import { parse } from '@lit-app/md-parser';
+import { HTMLEvent } from "@lit-app/shared/types.js";
+import { LifSpan } from '@preignition/lit-firebase/span';
+import FirebaseDocumentController from "@preignition/lit-firebase/src/firebase-document-controller";
 import { html, nothing } from "lit";
 import { property, state } from 'lit/decorators.js';
-import { ConsumeAccessibilityMixin } from '../../mixin/context-accessibility-mixin';
-import { parse } from '@lit-app/md-parser';
 import { classMap } from 'lit/directives/class-map.js';
-import { LifSpan } from '@preignition/lit-firebase/span';
-import { MdConfigT } from './types';
-import FirebaseDocumentController from "@preignition/lit-firebase/src/firebase-document-controller";
-import { HTMLEvent } from "@lit-app/shared/types.js";
+import { ConsumeAccessibilityMixin } from '../../mixin/context-accessibility-mixin';
 import { LappMdEditor } from "../md-editor.js";
+import { MdConfigT } from './types';
 
 /**
  * An element to render markdown content straight from firebase.
@@ -23,33 +23,37 @@ export default class lappMdLif extends ConsumeAccessibilityMixin(LifSpan) {
 	@property({ attribute: false }) mdConfig!: MdConfigT;
 	@state() edit: boolean = false;
 	constructor() {
-    super();
+		super();
 		if (import.meta.env.VITE_PREVIEW === 'true') {
+			// console.info('I AM IN PREVIEW');
 			document.addEventListener('keydown', (event) => {
-				if (event.ctrlKey && event.altKey && event.key === 'e' ) {
-				// Handle the Ctrl + Alt + E key combination
-				this.edit = !this.edit;
+				// console.info('I HEAR KEYDOWN', event);
+
+				if (event.ctrlKey && event.altKey && (event.key === 'e' || event.key === 'é' || event.code === 'KeyE' || event.key === 'p')) {
+					// if (event.ctrlKey && event.altKey && event.code === 'KeyE') {
+					// Handle the Ctrl + Alt + E key combination
+					this.edit = !this.edit;
 				}
 			});
 		}
-  }
+	}
 
-  override render() {
-    return this.edit && import.meta.env.VITE_PREVIEW === 'true' ? this.renderEdit() : super.render();
-  }
+	override render() {
+		return this.edit && import.meta.env.VITE_PREVIEW === 'true' ? this.renderEdit() : super.render();
+	}
 
-  renderEdit() {
+	renderEdit() {
 		const onInput = (e: HTMLEvent<LappMdEditor>) => {
 			console.info('onInput', e.target.md);
 			(this.valueController as FirebaseDocumentController).set(e.target.md);
 		}
-    return html`<lapp-md-editor
+		return html`<lapp-md-editor
 			style="width: 100%;"
 			rows="15"
     	.md=${this.value} 
 			@md-changed=${onInput}
     ></lapp-md-editor>`
-  }
+	}
 
 	override renderValue(value: string) {
 		// we make md field tabbable if we detect accessible device
