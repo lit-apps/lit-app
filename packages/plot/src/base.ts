@@ -1,7 +1,7 @@
-import { html, css, LitElement, TemplateResult } from "lit";
-import { customElement, property, state } from 'lit/decorators.js';
-import { ConsumeDataMixin } from "./context-data-mixin";
+import { css, html, LitElement, TemplateResult } from "lit";
+import { property } from 'lit/decorators.js';
 import { OptionT } from "../types";
+import { ConsumeDataMixin } from "./context-data-mixin";
 /**
  * Base abstract class for Plots 
  */
@@ -48,7 +48,6 @@ export default abstract class Base extends ConsumeDataMixin(LitElement) {
     figcaption {
       font-size: var(--font-size-small, 0.875rem);
       font-style: italic;
-      /* color: var(--color-text-secondary, #666); */
     }
   `;
 
@@ -61,9 +60,9 @@ export default abstract class Base extends ConsumeDataMixin(LitElement) {
    */
   @property({ type: Number }) height!: number;
 
- /**
-  * Options for the plot
-  */
+  /**
+   * Options for the plot
+   */
   @property({ attribute: false }) options!: OptionT;
 
   /**
@@ -72,17 +71,17 @@ export default abstract class Base extends ConsumeDataMixin(LitElement) {
   renderNoData() {
     return html`<slot name="no-data"><div>No data</div></slot>`
   }
-   /**
-   * What to render when no data is available
-   */
-   renderLoadingData() {
+  /**
+  * What to render when no data is available
+  */
+  renderLoadingData() {
     return html`<slot name="loading-data"><div>Loading data ...</div></slot>`
   }
 
 
   override render() {
-    if(!this.data) return this.renderLoadingData();
-    if(this.data.length === 0) return this.renderNoData();
+    if (!this.data) return this.renderLoadingData();
+    if (this.data.length === 0) return this.renderNoData();
     return html`${this.renderPlot(this.data, this.width, this.options)}`;
   }
 }
