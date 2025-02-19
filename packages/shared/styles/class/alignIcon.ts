@@ -14,7 +14,7 @@ import { css, CSSResult } from 'lit';
 const style: CSSResult = css`
 
 h1 lapp-icon, h2 > lapp-icon, h3 > lapp-icon, h4 > lapp-icon, h5 > lapp-icon, h6 > lapp-icon, p lapp-icon, .align-icon lapp-icon{
-  vertical-align: middle;
+  vertical-align: bottom;
 }
 
 h1 > lapp-icon, h2 > lapp-icon, h3 > lapp-icon {

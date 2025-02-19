@@ -8,7 +8,7 @@ import typography from './class/typography.js';
 import { Alignment, Factors, Layouts } from './flex/index.js';
 import { gap, margin, padding } from './index.js';
 
-const styles: CSSResult[] = [
+const styles = [
   typography,
   alignIcon,
   badge,
