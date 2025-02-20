@@ -1,4 +1,4 @@
-import type { PropertyValues, LitElement } from 'lit';
+import type { LitElement, PropertyValues } from 'lit';
 
 /**
  * Decorator that watches for changes in a specified property and calls a corresponding function when the property changes.
@@ -8,7 +8,7 @@ import type { PropertyValues, LitElement } from 'lit';
  * 
  * @watch('propName')
  * handlePropChange(newValue, oldValue) {
- *
+ *    ...handle change
  * }
  * 
  * from: https://github.com/zdhxiong/mdui/blob/v2/packages/shared/src/decorators/watch.ts
