@@ -9,7 +9,7 @@ export type FilterT = {
   value: string
 }
 
-export default function filter(items: object[] | undefined | null, filters: FilterT[]) {
+export function filter(items: object[] | undefined | null, filters: FilterT[]) {
   if (!items) {
     return [];
   }

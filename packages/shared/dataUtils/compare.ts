@@ -1,4 +1,4 @@
-import normalizeEmptyValue from "./normalizeEmptyValue.ts";
+import normalizeEmptyValue from "./normalizeEmptyValue.js";
 
 /**
  * Compares two values and returns a number indicating their relative order.
@@ -7,7 +7,7 @@ import normalizeEmptyValue from "./normalizeEmptyValue.ts";
  * @param b - The second value to compare.
  * @returns A negative number if `a` is less than `b`, a positive number if `a` is greater than `b`, or 0 if they are equal.
  */
-export default function compare(a, b) {
+export function compare(a: any, b: any) {
   a = normalizeEmptyValue(a);
   b = normalizeEmptyValue(b);
 

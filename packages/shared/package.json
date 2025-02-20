@@ -31,21 +31,23 @@
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
+    "@vitest/browser": "^3.0.6",
     "chai-a11y-axe": "^1.4.0",
     "eslint": "^8.14.0",
-    "firebase": "^11.1.0",
-    "happy-dom": "^8.9.0",
+    "firebase": "^11.3.1",
+    "happy-dom": "^17.1.1",
     "stripe": "^17.5.0",
-    "typescript": "^5.0.2",
-    "vite": "^5.4.10",
-    "vitest": "^2.1.8"
+    "typescript": "^5.7.3",
+    "vite": "^6.1.1",
+    "vitest": "^3.0.6"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
+    "@lit-app/testing": "link:../testing",
     "@lit-labs/observers": "^2.0.4",
-    "@lit/context": "^1.1.2",
+    "@lit/context": "^1.1.4",
     "@lit/reactive-element": "^2.0.4",
     "@material/web": "link:../../../app-dependencies/material-web",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",

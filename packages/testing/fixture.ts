@@ -1,4 +1,4 @@
-import {HTMLTemplateResult, render, LitElement} from 'lit'
+import { HTMLTemplateResult, LitElement, render } from 'lit';
 export const cachedWrappers: Node[] = [];
 const container = document.createElement('div');
 container.style.display = 'none';
@@ -31,11 +31,11 @@ export function fixtureCleanup() {
 }
 
 const fixture = async <T extends LitElement>(template: HTMLTemplateResult) => {
-		const container = fixtureWrapper()
-		render(template, container);
-		const el = container.firstElementChild as T;
-		await el.updateComplete;
-		return el as T;
+  const container = fixtureWrapper()
+  render(template, container);
+  const el = container.firstElementChild as T;
+  await el.updateComplete;
+  return el as T;
 }
 
 export default fixture;
@@ -46,16 +46,12 @@ export default fixture;
  */
 try {
   // we should not assume that our users load mocha types globally
-  // @ts-expect-error  - we are cheating
   if ('afterEach' in window) {
-    // @ts-expect-error  - we are cheating
     afterEach(() => {
       fixtureCleanup();
     });
   }
-  // @ts-expect-error  - we are cheating
   if ('teardown' in window) {
-    // @ts-expect-error  - we are cheating
     teardown(() => {
       fixtureCleanup();
     });

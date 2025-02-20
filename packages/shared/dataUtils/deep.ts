@@ -10,7 +10,7 @@ type ActionT = (obj: unknown, id: string) => unknown;
  * @returns The result of applying the action on the object.
  */
 export const deep = (action: ActionT, obj: unknown, keys: string | string[], id?: string[], key?: string) => {
-  keys = (keys as string).split('.');
+  keys = Array.isArray(keys) ? keys : keys.split('.');
   id = keys.splice(-1, 1);
   for (key in keys) obj = (obj as any)[keys[key]] = (obj as any)[keys[key]] || {};
   // this works as a['b'] == a[['b']]
@@ -26,7 +26,7 @@ const _set = (n: any) => (obj: any, prop: string) => (obj[prop] = n);
  * @param obj the object to get the property from
  * @returns the value of the property at the given path
  */
-export const get = (path: string, obj: any = {}) => deep(_get, obj, path);
+export const get = (path: string | string[], obj: any = {}) => deep(_get, obj, path);
 
 /**
  * set a deep nested property
@@ -35,4 +35,4 @@ export const get = (path: string, obj: any = {}) => deep(_get, obj, path);
  * @param obj the object to get the property from
  * @returns 
  */
-export const set = (path: string, value: any, obj: any) => deep(_set(value), obj, path);
+export const set = (path: string | string[], value: any, obj: any) => deep(_set(value), obj, path);
