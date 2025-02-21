@@ -1,5 +1,5 @@
+import { isSafari } from '@lit-app/shared/browser';
 import { Button } from '@material/web/button/internal/button';
-import isSafari  from '@lit-app/shared/isSafari';
 /**
  * Override initial version of button to make sure buttons are accessible with 
  * Safari + VoiceOver
