@@ -9,7 +9,7 @@ import {
 	headerFilterText
 } from '@lit-app/shared/directiveRenderer';
 
-import activeItemChanged from '@preignition/preignition-util/src/grid/activeItemChanged';
+import { activeItemChanged } from '@lit-app/shared/grid'
 import type { GridCellClassNameGenerator, GridRowDetailsRenderer } from '@vaadin/grid';
 import {
 	columnBodyRenderer,
@@ -40,18 +40,18 @@ export class UserList extends LitElement {
 				
 		`;
 
-	/** the  items to display on the list */		
-	@property({attribute: false}) items!: UserItemRole[];
+	/** the  items to display on the list */
+	@property({ attribute: false }) items!: UserItemRole[];
 
 	/** a renderer for row details */
-	@property({attribute: false}) rowDetailsRenderer!: GridRowDetailsRenderer<UserItem> | null;
+	@property({ attribute: false }) rowDetailsRenderer!: GridRowDetailsRenderer<UserItem> | null;
 
 	/** a renderer for row details */
-	@property({attribute: false}) cellClassNameGenerator!: GridCellClassNameGenerator<UserItem>;
+	@property({ attribute: false }) cellClassNameGenerator!: GridCellClassNameGenerator<UserItem>;
 
 	override render() {
 		const onSizeChanged = (e: Event) => redispatchEvent(this, e);
-		
+
 		return html`
       <vaadin-grid 
        .cellClassNameGenerator=${this.cellClassNameGenerator}
@@ -70,13 +70,13 @@ export class UserList extends LitElement {
 }
 
 const headerUserName = headerFilterText('name', 'user Name', true)
-const bodyUserName = (item: UserItemRole  ) => html`
+const bodyUserName = (item: UserItemRole) => html`
   <lapp-dom-observer @content-changed=${(e: CustomEvent) => {
 		const target = e.target as HTMLElement;
 		setTimeout(() => {
 			item.name = target.innerText;
 		}, 200)
-		}}>
+	}}>
     <lapp-user-card noninteractive .uid=${item.uid}></lapp-user-card>
   </lapp-dom-observer> 
 `;

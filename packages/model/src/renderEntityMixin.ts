@@ -1,6 +1,6 @@
+import { activeItemChanged } from '@lit-app/shared/grid';
 import { ensure } from '@lit-app/shared/types.js';
 import { get } from '@preignition/preignition-util/src/deep';
-import { activeItemChanged } from '@preignition/preignition-util/src/grid';
 import {
   columnBodyRenderer,
   columnHeaderRenderer,

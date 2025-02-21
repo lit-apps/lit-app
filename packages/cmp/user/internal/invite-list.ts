@@ -9,7 +9,7 @@ import {
 	headerFilterText, bodyDate
 } from '@lit-app/shared/directiveRenderer';
 
-import activeItemChanged from '@preignition/preignition-util/src/grid/activeItemChanged';
+import { activeItemChanged } from '@lit-app/shared/grid'
 import type { GridRowDetailsRenderer } from '@vaadin/grid';
 import {
 	columnBodyRenderer,
