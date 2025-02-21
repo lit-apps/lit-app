@@ -158,7 +158,8 @@ export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 						Object.setPrototypeOf(d, this.parentData);
 						this.data = d
 					} else if (this.data && this.parentData) {
-						if (this.data !== this.parentData && Object.getPrototypeOf(this.data) !== this.parentData) {
+						if (Object.getPrototypeOf(this.data) === Object.prototype) {
+							// if (this.data !== this.parentData && Object.getPrototypeOf(this.data) !== this.parentData) {
 							Object.setPrototypeOf(
 								this.data,
 								this.parentData)
