@@ -50,6 +50,7 @@
     "@lit/context": "^1.1.4",
     "@lit/reactive-element": "^2.0.4",
     "@material/web": "link:../../../app-dependencies/material-web",
+    "@vaadin/component-base": "link:../../../app-dependencies/web-components/packages/component-base",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/vaadin-themable-mixin": "link:../../../app-dependencies/web-components/packages/vaadin-themable-mixin",
     "lit": "^3.2.1",

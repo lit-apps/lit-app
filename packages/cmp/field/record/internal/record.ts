@@ -1,9 +1,9 @@
-import { LitElement, html, PropertyValues } from "lit";
-import { property, state, query } from 'lit/decorators.js';
+import { announce } from '@lit-app/shared/a11y';
+import { html, LitElement } from "lit";
+import { property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { when } from 'lit/directives/when.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { announce } from '@vaadin/a11y-base';
+import { when } from 'lit/directives/when.js';
 import('@material/web/iconbutton/filled-icon-button.js')
 import('@material/web/iconbutton/outlined-icon-button.js')
 import('@material/web/button/filled-button.js')
@@ -12,11 +12,12 @@ import('@material/web/button/text-button.js')
 import('@material/web/icon/icon.js')
 import('@material/web/progress/linear-progress.js')
 
+import translate from '@preignition/preignition-util/translate-mixin';
 import { ResizeControllerMixin } from '../../../mixin/resize-controller-mixin';
 import RecordEvent from '../RecordEvent';
 import { getStream } from '../stream';
+// @ts-expect-error - no types
 import locale from './record-locale.mjs';
-import translate from '@preignition/preignition-util/translate-mixin';
 
 
 type MediaRecorderErrorEvent = Event & {
