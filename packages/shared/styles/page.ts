@@ -6,7 +6,7 @@ import layoutGrid from './class/layout-grid.js';
 import tooltip from './class/tooltip.js';
 import typography from './class/typography.js';
 import { Alignment, Factors, Layouts } from './flex/index.js';
-import { gap, margin, padding } from './index.js';
+import { gap, label, margin, padding } from './index.js';
 
 const styles = [
   typography,
@@ -14,7 +14,7 @@ const styles = [
   badge,
   Layouts as unknown as CSSResult,
   layoutGrid,
-  gap, margin, padding,
+  gap, margin, padding, label,
   Factors as unknown as CSSResult,
   Alignment as unknown as CSSResult,
   tooltip,
