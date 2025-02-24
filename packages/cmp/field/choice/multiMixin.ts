@@ -14,8 +14,8 @@ import { MultiValidator } from './multiValidator';
 // import {
 // 	TextFieldValidator
 // } from '@material/web/labs/behaviors/validators/text-field-validator.js';
-import { Validator } from '@material/web/labs/behaviors/validators/validator';
 import { MdCheckbox } from '@material/web/checkbox/checkbox';
+import { Validator } from '@material/web/labs/behaviors/validators/validator';
 
 const NAVIGABLE_KEY_SET = new Set<string>(Object.values(NavigableKeys));
 
@@ -48,14 +48,14 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 		protected override readonly isMulti = true;
 		protected override readonly choiceInputSelector = '[data-role=checkbox]';
 		protected override readonly listRole = 'listbox';
-		declare protected  _value: string[];
+		declare protected _value: string[];
 
 		protected static isCodeSelected = (value: string[] | undefined, code: string) => {
 			return value && value.indexOf(code + '') > -1;
 		}
 
-		private readonly listController = new ListController<ListItem & {type: string} >({
-			isItem: (item: HTMLElement ): item is (ListItem & {type: string} ) =>
+		private readonly listController = new ListController<ListItem & { type: string }>({
+			isItem: (item: HTMLElement): item is (ListItem & { type: string }) =>
 				item.hasAttribute('data-role'),
 			getPossibleItems: () => [...this._queryItems(this.choiceInputSelector) as NodeListOf<MdCheckbox>],
 			isRtl: () => getComputedStyle(this).direction === 'rtl',
@@ -74,12 +74,12 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 		/**
 		 * The options to render
 		 */
-		@property({ type: Array }) override options!: OptionMulti[];
+		@property({ attribute: false }) override options!: OptionMulti[];
 		@property({ type: Object }) specify: string | { [key: string]: string } = {};
 
 		@state() exclusiveIsSelected = false;
 
-		@property({type: Array})
+		@property({ type: Array })
 		set selected(value: string[]) {
 			value = this.syncSelected(value);
 			[...this._queryItems(this.choiceInputSelector) as NodeListOf<MdCheckbox>]
@@ -133,7 +133,7 @@ export const MultiChoiceMixin = <T extends Constructor<Choice>>(superClass: T) =
 
 		}
 
-		override [createValidator](): Validator<unknown> {
+		override[createValidator](): Validator<unknown> {
 			return new MultiValidator(() => this);
 		}
 

@@ -1,3 +1,4 @@
+import { TemplateResult } from "lit"
 
 export type MediaYoutube = {
 	mediaType: 'youtube'
@@ -36,15 +37,17 @@ type OptionBase = {
 	innerTextLabel?: string
 }
 export type OptionLabelT = OptionBase & {
-	label: string
+	md?: never
+	label: string | TemplateResult
 }
 export type OptionMdT = OptionBase & {
+	label?: never
 	md: string
 }
 export type Option = OptionLabelT | OptionMdT
 
 export type OptionMulti = Option & {
-	exclusive?: boolean 
+	exclusive?: boolean
 }
 
 export function isOptionMdT(option: Option): option is OptionMdT {
@@ -58,5 +61,11 @@ export function isOptionLabelT(option: Option): option is OptionLabelT {
 export type AriaList = 'group' | 'listbox' | 'radiogroup'
 
 
-
-
+// const option: Option[] = [
+// 	{ code: '1', label: 'Option 1' },
+// 	{ code: '2', label: 'Option 2' },
+// ]
+// const option2: Option[] = [
+// 	{ code: '1', label: html`Option 1` },
+// 	{ code: '2', label: 'Option 2' },
+// ]
