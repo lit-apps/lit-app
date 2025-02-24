@@ -1,3 +1,4 @@
+import { NestedKeys } from "../types.js";
 
 type ActionT = (obj: unknown, id: string) => unknown;
 
@@ -26,7 +27,8 @@ const _set = (n: any) => (obj: any, prop: string) => (obj[prop] = n);
  * @param obj the object to get the property from
  * @returns the value of the property at the given path
  */
-export const get = (path: string | string[], obj: any = {}) => deep(_get, obj, path);
+// export const get = <D extends object, P extends NestedKeys<D>>(path: P, obj: D): NestedValue<D,P> => deep(_get, obj, path);
+export const get = <D extends object>(path: NestedKeys<D>, obj: D) => deep(_get, obj, path);
 
 /**
  * set a deep nested property
@@ -35,4 +37,4 @@ export const get = (path: string | string[], obj: any = {}) => deep(_get, obj, p
  * @param obj the object to get the property from
  * @returns 
  */
-export const set = (path: string | string[], value: any, obj: any) => deep(_set(value), obj, path);
+export const set = <D extends object>(path: NestedKeys<D>, value: unknown, obj: D) => deep(_set(value), obj, path);
