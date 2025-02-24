@@ -136,6 +136,18 @@ export type NestedKeys<T> = (
   { [K in Exclude<keyof T, symbol>]: `${K}${DotPrefix<NestedKeys<T[K]>>}` }[Exclude<keyof T, symbol>]
   : "") extends infer D ? Extract<D, string> : never;
 
+export type NestedValue<T, Key extends string> = Key extends `${infer K}.${infer Rest}` ?
+  K extends keyof T ? NestedValue<T[K], Rest> : never :
+  Key extends keyof T ? T[Key] : never;
+
+// type Form = {
+//   a: { b: string, c: number }
+// }
+
+// type FormKeys = NestedKeys<Form>
+// const tes: NestedValue<Form, 'a.b'> = 'example'
+// const tess: NestedValue<Form, 'a.c'> = 'example'
+
 // type F = DistributeFunctionParamT<string | string[] | number, boolean>;
 // const fn: F = (item: number) => item === 'a';
 
