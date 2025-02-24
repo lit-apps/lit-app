@@ -16,6 +16,7 @@ export declare class GetSetMixinInterface {
 }
 /**
  * GetSetMixin - a mixin for handling getter and setters 
+ * @deprecated - do not use this mixin, use deep.js instead
  */
 export const GetSetMixin = <T extends Constructor<LitElement>>(superClass: T) => {
 
