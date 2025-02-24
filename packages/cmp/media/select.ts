@@ -1,6 +1,16 @@
-import { LitElement, html, css } from 'lit';
+import type { position, sizing } from '@lit-app/cmp/media/image';
+import { set } from '@lit-app/shared/dataUtils';
+import { alignIcon, liteYoutube, typography } from '@lit-app/shared/styles';
+import { HTMLEvent } from '@lit-app/shared/types.js';
+import type { MdDialog } from '@material/web/dialog/dialog.js';
+import { MdTabs } from '@material/web/tabs/tabs.js';
+import '@preignition/lit-firebase/query';
+import { LitElement, css, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
-import { typography, alignIcon, liteYoutube } from '@lit-app/shared/styles';;
+import Gallery from '../media/gallery.js';
+import { FirebaseUploadFile } from '../upload/internals/storage-mixin.js';
+import { LappYoutubeId } from '../youtube/youtube-id';
+;
 import('../field/text-field');
 import('../media/gallery.js');
 import('../button/button')
@@ -13,17 +23,8 @@ import('@material/web/button/filled-button.js');
 import('@material/web/button/outlined-button.js');
 import('@material/web/button/text-button.js');
 import('@material/web/dialog/dialog.js');
-import '@preignition/lit-firebase/query';
 import('@material/web/tabs/tabs.js');
 import('@material/web/tabs/secondary-tab.js');
-import { GetSetMixin } from '@lit-app/shared/mixin/get-set';
-import type { position, sizing } from '@lit-app/cmp/media/image';
-import type { MdDialog } from '@material/web/dialog/dialog.js';
-import { HTMLEvent } from '@lit-app/shared/types.js';
-import {LappYoutubeId} from '../youtube/youtube-id';
-import Gallery from '../media/gallery.js';
-import { FirebaseUploadFile } from '../upload/internals/storage-mixin.js';
-import { MdTabs } from '@material/web/tabs/tabs.js';
 
 export type CollectionType = 'illustration' | 'easyread'
 type DataT = {
@@ -74,7 +75,7 @@ const initImage = { mediaType: 'image' };
  *  A widget to select a media item (image or video) and show the selection
  */
 @customElement('lapp-media-select')
-export default class LappMediaSelect extends GetSetMixin(LitElement) {
+export default class LappMediaSelect extends LitElement {
 
   static override styles = [
     typography,
@@ -307,10 +308,10 @@ export default class LappMediaSelect extends GetSetMixin(LitElement) {
             viewType="image" 
             noToolbar
             @selected-items-changed=${(e: CustomEvent) => {
-          if (e.detail.value[0]) {
-            this._dataImage = { ...e.detail.value[0], ...initImage };
-          }
-        }}>
+        if (e.detail.value[0]) {
+          this._dataImage = { ...e.detail.value[0], ...initImage };
+        }
+      }}>
            <slot name="gallery"></slot>
         </lapp-media-gallery>
 
@@ -323,6 +324,10 @@ export default class LappMediaSelect extends GetSetMixin(LitElement) {
       this._dataYoutube = { ...this._dataYoutube }
     }
     const supportingText = html`<span >video parameters as in <a href="https://developers.google.com/youtube/player_parameters#Parameters" target="_blank">here</a>.</span>`
+    const onInput = (path: string) => (e: HTMLEvent<HTMLInputElement>) => {
+      set(path, e.target.value, this);
+      this._dataYoutube = { ...this._dataYoutube }
+    }
     const renderYoutube = () => html`
       <h4><span>Youtube Video</span>${renderTab()}</h4>
       <div class="settings">
@@ -337,14 +342,14 @@ export default class LappMediaSelect extends GetSetMixin(LitElement) {
             label="play label" 
             supporting-text="label for play button" 
             .value=${this._dataYoutube?.playLabel || ''} 
-            @input=${this.onInput('_dataYoutube.playLabel')}></lapp-text-field>
+            @input=${onInput('_dataYoutube.playLabel')}></lapp-text-field>
         </div>
         <lapp-text-field 
           style="width: 100%" 
           label="parameters" 
           .supportingText=${supportingText as unknown as string} 
           .value=${this._dataYoutube?.params || ''} 
-          @input=${this.onInput('_dataYoutube.params')}>
+          @input=${onInput('_dataYoutube.params')}>
         </lapp-text-field>
       </div>
     `;
