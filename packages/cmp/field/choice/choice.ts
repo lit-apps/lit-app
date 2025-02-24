@@ -52,7 +52,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 
 	@query('#list') override readonly input!: HTMLInputElement;
 	@query('#list') override readonly inputOrTextarea!: HTMLInputElement;
-	
+
 	/**
 	 * when true, show each option on their own line
 	 */
@@ -62,7 +62,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	/**
 	 * The options to render
 	 */
-	@property({ type: Array }) options!: Option[]
+	@property({ attribute: false }) options!: Option[]
 
 
 	/**
@@ -73,18 +73,18 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	/**
 	 * `name` name for the input element
 	 */
-	@property() override name!: string;
+	// @property({ reflect: true }) override name!: string;
 
 	/**
 	 * The tabindex of the underlying list.
 	 */
 	@property({ type: Number }) listTabIndex = -1;
-	
+
 	/**
 	 * A filter function to filter out options
 	 * 
 	 */
-	@property({attribute: false }) filter: (option: Option) => boolean = () => true;
+	@property({ attribute: false }) filter: (option: Option) => boolean = () => true;
 
 	get items() {
 		return [...this._queryItems('[md-list-item]')] as LappListItem[];
@@ -116,20 +116,21 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	constructor() {
 		super();
 		// handle focus events
-		this.addEventListener('focusin', () => this.field.focused = true );
-		this.addEventListener('focusout', () =>	this.field.focused = false);
+		this.addEventListener('focusin', () => this.field.focused = true);
+		this.addEventListener('focusout', () => this.field.focused = false);
 	}
 
 	override willUpdate(props: PropertyValues<this>) {
-		if(props.has('options')) {
-		for (const option of this.options) {
-			option.innerTextLabel = getInnerText((option as OptionLabelT).label);
-		}}
+		if (props.has('options')) {
+			for (const option of this.options) {
+				option.innerTextLabel = getInnerText((option as OptionLabelT).label);
+			}
+		}
 		super.willUpdate(props);
 	}
 
 	override renderInputOrTextarea() {
-		
+
 		// we add an input field so that SR can announce 
 		// the status of the field
 		// <input
@@ -184,14 +185,14 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		// 		event.stopPropagation();
 		// }
 
-		return 
+		return
 	}
 
 	// we need to override updated in order to avoid infinite loop on value setter
-  // this is because there is a check this.value !== value which will always reschedule an update
-  protected override updated(_changedProperties: PropertyValues) {
-       
-  }
+	// this is because there is a check this.value !== value which will always reschedule an update
+	protected override updated(_changedProperties: PropertyValues) {
+
+	}
 
 	syncSelected(value: string[] | string) {
 		// do Nothing
@@ -203,15 +204,15 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	 * change event is not composable
 	 */
 	async onChange(e?: HTMLEvent<LitElement>) {
-		if(this.readOnly) {return}
+		if (this.readOnly) { return }
 		await this.updateComplete;
 		if (e?.target) {
 			await e.target.updateComplete;
 		}
-		const value =	this.syncSelected(this.selected)
+		const value = this.syncSelected(this.selected)
 		this.dispatchEvent(new CustomEvent('selected-changed', { detail: { value: value } }));
 		this._value = value; // Note(cg): get _value from the actual selection (dom query).
-		this.requestUpdate(); 
+		this.requestUpdate();
 		return
 	}
 
@@ -223,29 +224,29 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	}
 
 	getReadAloud(readHelper?: boolean) {
-    const getOptionText = (item: HTMLElement) => {
+		const getOptionText = (item: HTMLElement) => {
 			return item.ariaLabel || ''
-    };
+		};
 		let label = this.getTextLabel();
 		if (label.endsWith('*')) {
 			label = label.slice(0, -1);
 			label += this.getTranslate('required');
 		}
 		return this._selectedItems.length ?
-      `${[...this._selectedItems].map(getOptionText)} ${this.getTranslate('isTheAnswerTo')} ${label} ` :
-      (label + ' ' + (readHelper && this.supportingText ? ('. ' + this.getTranslate('hint') + ': ' + this.supportingText) + '.' : '') + this.getReadAloudOptions());
-  }
+			`${[...this._selectedItems].map(getOptionText)} ${this.getTranslate('isTheAnswerTo')} ${label} ` :
+			(label + ' ' + (readHelper && this.supportingText ? ('. ' + this.getTranslate('hint') + ': ' + this.supportingText) + '.' : '') + this.getReadAloudOptions());
+	}
 
-  private getReadAloudOptions() {
-    const items = this._queryItems(this.choiceInputSelector) as NodeListOf<Checkbox>;
-    // if (!readHelper && items.length > 5) {
-    //   return this.getTranslate('countOptions', {count: items.length + 1});
-    // }
-    const options = [...items].map((item, index) => `${this.getTranslate('option')} ${index + 1}: ${item.ariaLabel}.`);
-    return this.isMulti ?
-      (`${this.getTranslate('chooseOption')}: ${options}`) :
-      (`${this.getTranslate('chooseOptions')}: ${options}`);
-  }
+	private getReadAloudOptions() {
+		const items = this._queryItems(this.choiceInputSelector) as NodeListOf<Checkbox>;
+		// if (!readHelper && items.length > 5) {
+		//   return this.getTranslate('countOptions', {count: items.length + 1});
+		// }
+		const options = [...items].map((item, index) => `${this.getTranslate('option')} ${index + 1}: ${item.ariaLabel}.`);
+		return this.isMulti ?
+			(`${this.getTranslate('chooseOption')}: ${options}`) :
+			(`${this.getTranslate('chooseOptions')}: ${options}`);
+	}
 
 
 }
