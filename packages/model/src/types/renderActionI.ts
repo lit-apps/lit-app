@@ -190,7 +190,7 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
     * @param data - Partial data for the new entity.
     * @returns CustomEvent with details of the created entity.
     */
-  update: (data: Partial<unknown>, entityName?: string) => CustomEvent<Omit<EntityCreateDetail, 'id'>>;
+  update: (data: Partial<unknown>, entityName?: string) => boolean;
 }
 
 /**
@@ -262,4 +262,13 @@ export interface StaticEntityActionI<
     key: FilterActionKeyT,
     host: HTMLElement,
     data: unknown): ([string, number | MenuConfigT<any>])[]
+
+  /**
+   * Updates an entity with the provided data.
+   */
+  update: (
+    host: HTMLElement,
+    data: unknown,
+    entityName?: string) => boolean
+  // open: (id: string, entityName?: string) => boolean
 }

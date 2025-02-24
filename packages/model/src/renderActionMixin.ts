@@ -49,7 +49,7 @@ export default function renderMixin<A extends ActionsT>(
 ) {
 
   const staticApply: {
-    entityName?: string
+    entityName: string
     actions: A & DefaultActionsT<unknown>
   } &
     StaticEntityActionI<A> &
@@ -182,8 +182,11 @@ export default function renderMixin<A extends ActionsT>(
           const b = typeof numberOrConfigB === 'number' ? numberOrConfigB : numberOrConfigB.index
           return (a as number ?? 0) - (b as number ?? 0);
         })
-    }
+    },
 
+    update(host: HTMLElement, data: unknown, entityName?: string) {
+      return host.dispatchEvent(new DataChanged({ entityName: entityName || this.entityName, data }))
+    }
   }
 
   class R extends RenderEntityCreateMixin(superclass) implements RenderInterface<A> {
@@ -394,8 +397,8 @@ export default function renderMixin<A extends ActionsT>(
     }
 
     update(data: unknown, entityName?: string) {
-      return this.host.dispatchEvent(new DataChanged({ entityName: entityName || this.entityName, data }))
-
+      return this.constructor.update(this.host, data, entityName)
+      // host.dispatchEvent(new DataChanged({ entityName: entityName || this.entityName, data }))
     }
 
     close(id: string, entityName?: string) {
