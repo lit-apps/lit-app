@@ -105,6 +105,7 @@ The key to use for localStorage. Will take the name of the property if not set.
 `prefix` 
 
 A prefix to use for the the key (`_ls` if not set). An usual practice would be to override @storage and provide a default prefix for all `@storage` state values.
+Set to `null` or `''` to remove the prefix.
 
 **Example**
 
