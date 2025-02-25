@@ -10,12 +10,17 @@ import { property } from 'lit/decorators.js';
 export abstract class InputSwitch extends MdSwitch {
 
 	@property() supportingOrErrorText!: string;
-	@property({ type: Boolean })
-	get value() {
-		return this.checked;
+
+	override get value() {
+		return this.selected
+		// return this.input?.checked;
 	}
-	set value(value) {
-		this.checked = value
+	override set value(value) {
+		this.selected = !!value
+		// this.selected = !!value;
+		// if (this.input) {
+		// 	this.input.checked = !!value
+		// }
 	}
 
 	override firstUpdated(props: PropertyValues<this>) {

@@ -1,55 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Vite + Lit App</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="/" />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
-    <meta
-      name="description"
-      content="Web site created using create-snowpack-app"
-    />  
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block"
-    />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,100..700,0..1" rel="stylesheet">
-   
-    <link rel="stylesheet" type="text/css" href="/index.css" />
-    <link rel="stylesheet" type="text/css" href="/variables.css" />
-    <link rel="stylesheet" type="text/css" href="/theme.css" />
-    <style id="appendStyle">
-      /* 
+<head>
+  <title>Vite + Lit App</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="/" />
+  <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  <meta name="description" content="Web site created using create-snowpack-app" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,100..700,0..1"
+    rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="/index.css" />
+  <link rel="stylesheet" type="text/css" href="/variables.css" />
+  <link rel="stylesheet" type="text/css" href="/theme.css" />
+  <style id="appendStyle">
+    /* 
         Style to be appended to demo-root shadorRoot 
         see https://api-viewer.open-wc.org/docs/api/styling/ for styling
        */
-      api-viewer::part(demo-output) {}
-      body > * {
-        display: flex;
-        margin-top: 20px;
-        width: min(85vw, 1250px);
-      }
-      body > md-icon-button {
-        display: block;
-      }
-    </style>
-    <script type="module" >
-      import { Icon } from '@lit-app/cmp/icon/internal/icon'
-      Icon.getURL = function(name, noFill) {
-        return `http://localhost:5173/images/material-symbols/${name}/materialsymbolsoutlined/${name}${noFill ? '' : '_fill1'}_${Icon.opticalSize}px.svg`
-      }
-      if(import.meta.env.DEV) {
-        console.info('URL icon set to', Icon.getURL('home'));
-        console.warn('A Server must be running on port 5173 to serve the icons');
-      }
+    api-viewer::part(demo-output) {}
 
-    </script>
-    <script type="module" src="/initializeFirebase.js"></script> 
-    <script type="module" src="/field/choice-star"></script>
-    <!-- <script type="module" src="/field/choice-order"></script> 
+    body>* {
+      display: flex;
+      margin-top: 20px;
+      width: min(85vw, 1250px);
+    }
+
+    body>md-icon-button {
+      display: block;
+    }
+  </style>
+  <script type="module">
+    import { Icon } from '@lit-app/cmp/icon/internal/icon'
+    Icon.getURL = function (name, noFill) {
+      return `http://localhost:5173/images/material-symbols/${name}/materialsymbolsoutlined/${name}${noFill ? '' : '_fill1'}_${Icon.opticalSize}px.svg`
+    }
+    if (import.meta.env.DEV) {
+      console.info('URL icon set to', Icon.getURL('home'));
+      console.warn('A Server must be running on port 5173 to serve the icons');
+    }
+
+  </script>
+  <script type="module" src="/initializeFirebase.js"></script>
+  <script type="module" src="/field/choice-star"></script>
+  <script type="module" src="/field/switch-field"></script>
+  <!-- <script type="module" src="/field/choice-order"></script> 
     <script type="module" src="/field/choice-checkbox"></script>
     <script type="module" src="/button/button-override"></script>
     <script type="module" src="/field/choice-radio"></script>
@@ -59,62 +58,59 @@
     <script type="module" src="/field/record-field"></script>
     <script type="module" src="/field/checkbox-field"></script>
     <script type="module" src="/field/slider-field"></script> -->
-    <!-- <script type="module" src="/field/text-field"></script>  -->
-    <!-- <script type="module" src="/field/upload"></script> -->
-    <!-- <script type="module" src="/fab/fab"></script> -->
-    <!-- <script type="module" src="/fab/filled-fab.js"></script> -->
-    <!-- <script type="module" src="/audio/audio"></script> -->
-    <!-- <script type="module" src="/field/md-editor"></script>-->
-    <script type="module" src="/field/md-droppable-editor"></script> 
-    <script type="module" src="/upload/image"></script> 
-    <!-- <script type="module" src="/icon/icon"></script> -->
-    <!-- <script type="module" src="/tabs/primary-tab-closable"></script>  -->
-   
-  </head>
+  <!-- <script type="module" src="/field/text-field"></script>  -->
+  <!-- <script type="module" src="/field/upload"></script> -->
+  <!-- <script type="module" src="/fab/fab"></script> -->
+  <!-- <script type="module" src="/fab/filled-fab.js"></script> -->
+  <!-- <script type="module" src="/audio/audio"></script> -->
+  <!-- <script type="module" src="/field/md-editor"></script>-->
+  <script type="module" src="/field/md-droppable-editor"></script>
+  <script type="module" src="/upload/image"></script>
+  <!-- <script type="module" src="/icon/icon"></script> -->
+  <!-- <script type="module" src="/tabs/primary-tab-closable"></script>  -->
 
-  <body>
-    <script type="module">
-     
+</head>
 
-      // import '@material/web/select/select-option.js';
-      // import '@material/web/select/filled-select.js';
-      // import '@material/web/tabs/tabs.js';
-      // import '@material/web/textfield/filled-text-field.js';
-      import '@material/web/button/filled-button.js';
+<body>
+  <script type="module">
 
-      const options = [
-	      {code: '1', name:'radio', label: 'one', supportingText: 'hello'}, 
-	      {code: '2', name:'radio', label: 'two and two and two', exclusive: true}, 
-	      {code: '4', name:'radio', label: 'quatre is a long labelquatre is a long labelquatre is a long labelquatre is a long label. Does it wrap correctly? '},
-	      {code: '3', name:'radio', label: 'three', specify: true},
-      ] 
-      // document.querySelector('lapp-choice-checkbox').options = [...options];
-      // document.querySelector('lapp-choice-radio').options = [...options];
-      // document.querySelector('lapp-choice-order').options = [...options];
 
-      document.querySelectorAll('md-filled-text-field')
-        ?.forEach(el => el.addEventListener('focusout', e => {
-            e.target.reportValidity();
-        }));  
-    </script>
-    <div>
-      <lapp-upload-image 
-      fieldPath="logo"
-      path="app/gds/organisation/neworg"       
+    // import '@material/web/select/select-option.js';
+    // import '@material/web/select/filled-select.js';
+    // import '@material/web/tabs/tabs.js';
+    // import '@material/web/textfield/filled-text-field.js';
+    import '@material/web/button/filled-button.js';
 
-      ></lapp-upload-image>
-    </div>
-    <vaadin-upload></vaadin-upload>
-        <!-- <lapp-md-droppable-editor></lapp-md-droppable-editor> -->
+    const options = [
+      { code: '1', name: 'radio', label: 'one', supportingText: 'hello' },
+      { code: '2', name: 'radio', label: 'two and two and two', exclusive: true },
+      { code: '4', name: 'radio', label: 'quatre is a long labelquatre is a long labelquatre is a long labelquatre is a long label. Does it wrap correctly? ' },
+      { code: '3', name: 'radio', label: 'three', specify: true },
+    ]
+    // document.querySelector('lapp-choice-checkbox').options = [...options];
+    // document.querySelector('lapp-choice-radio').options = [...options];
+    // document.querySelector('lapp-choice-order').options = [...options];
 
-    <!-- <lapp-upload label="upload" supporting-text="support text">
+    document.querySelectorAll('md-filled-text-field')
+      ?.forEach(el => el.addEventListener('focusout', e => {
+        e.target.reportValidity();
+      }));  
+  </script>
+  <div>
+    <lapp-upload-image fieldPath="logo" path="app/gds/organisation/neworg"></lapp-upload-image>
+  </div>
+  <vaadin-upload></vaadin-upload>
+  <lapp-switch-field label="switch"></lapp-switch-field>
+  <!-- <lapp-md-droppable-editor></lapp-md-droppable-editor> -->
+
+  <!-- <lapp-upload label="upload" supporting-text="support text">
     </lapp-upload>
     <lapp-text-field label="text" variant="a11y"></lapp-text-field> -->
 
-    <!-- <lapp-fab size="large" label="fab" variant="primary">
+  <!-- <lapp-fab size="large" label="fab" variant="primary">
       <lapp-icon slot="icon">settings</lapp-icon>
     </lapp-fab> -->
-    <!--div>
+  <!--div>
       <lapp-filled-fab size="large" label="fab" variant="primary">
         <lapp-icon slot="icon">settings</lapp-icon>
       </lapp-filled-fab>
@@ -127,8 +123,8 @@
   </div>
     <lapp-audio></lapp-audio>
     <lapp-md-editor></lapp-md-editor> -->
-    <lapp-md-droppable-editor></lapp-md-droppable-editor>
-    <!-- <md-filled-text-field 
+  <!-- <lapp-md-droppable-editor></lapp-md-droppable-editor> -->
+  <!-- <md-filled-text-field 
     _required  
     _error-text="error text"
     _error
@@ -261,17 +257,16 @@
     <lapp-checkbox-field label="test checkbox" required supporting-text="Hey" _checked></lapp-checkbox-field>
     <lapp-record></lapp-record>
     <lapp-record-field required label="test record"></lapp-record-field>-->
-    <lapp-choice-star 
-      label="star"
-    ></lapp-choice-star> 
+  <lapp-choice-star label="star"></lapp-choice-star>
 
-    
-    <!--<lapp-choice-order 
+
+  <!--<lapp-choice-order 
       label="Select items below and order by priority" 
       supporting-text="this is supporting text" variant="a11y"></lapp-choice-order>
 
     <lapp-filled-text-field required label="lap"></lapp-filled-text-field>
     <md-filled-text-field required supporting-text="this is supporting text" label="md"></md-filled-text-field-->
 
-  </body>
+</body>
+
 </html>
