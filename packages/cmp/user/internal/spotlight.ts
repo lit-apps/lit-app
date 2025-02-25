@@ -1,8 +1,7 @@
+import '@vaadin/card';
 import { LitElement, css, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import '../img';
-import('@material/web/labs/card/outlined-card.js');
-
 
 /**
  * A card like container with a gradient at the top 
@@ -16,9 +15,9 @@ import('@material/web/labs/card/outlined-card.js');
 export class UserSpotlight extends LitElement {
 
 	static override shadowRootOptions: ShadowRootInit = {
-    mode: 'open',
-    delegatesFocus: true,
-  };
+		mode: 'open',
+		delegatesFocus: true,
+	};
 
 	static override styles = css`
     :host {
@@ -56,10 +55,12 @@ export class UserSpotlight extends LitElement {
 			top: calc( 0.5 * var(--_lapp-user-spotlight-height));
 			left: calc(1 * var(--_lapp-user-spotlight-height));
 		}
-		md-outlined-card {
+		.inside {
 			flex: 1;
 			min-height: calc(var(--_lapp-user-spotlight-height) * 2.5);
 			overflow:hidden;
+			border-radius: var(--space-small);
+			border: 1px solid var(--color-outline);
 		}
     `;
 	@property() uid!: string;
@@ -67,25 +68,25 @@ export class UserSpotlight extends LitElement {
 
 
 	override render() {
-		if(this.href) {
+		if (this.href) {
 			return html`<a href=${this.href}>
 				<md-focus-ring  style="--md-focus-ring-shape: 10px"></md-focus-ring>
 				${this.renderInside()}
 			</a>`
 		}
 		return this.renderInside();
-		
+
 	}
 
 	renderInside() {
 		return html`
-		<md-outlined-card>
+		<div  class ="inside">
 			<lapp-user-img .uid=${this.uid}></lapp-user-img>
 			 <div class="header"></div>
 			<div class="content">
 				<slot></slot>
 			</div>
-	</md-outlined-card>
+	</div>
 		`
 	}
 

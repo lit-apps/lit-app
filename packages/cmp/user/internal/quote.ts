@@ -1,7 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import '../img';
-import('@material/web/labs/card/outlined-card.js');
 
 type UserOrganisationT = {
 	name: string;
