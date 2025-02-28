@@ -5,11 +5,11 @@ export class DragStore<D = any> {
   private static instance: DragStore;
   private _currentDragData!: D | undefined;
 
-  static getInstance<D = any>(): DragStore {
+  static getInstance<D = any>(): DragStore<D> {
     if (!DragStore.instance) {
       DragStore.instance = new DragStore<D>();
     }
-    return DragStore.instance;
+    return DragStore.instance as DragStore<D>;
   }
 
   setDragData(data: D) {
@@ -18,7 +18,9 @@ export class DragStore<D = any> {
 
   getDragData() {
     const data = this._currentDragData;
-    this._currentDragData = undefined
     return data;
+  }
+  clearDragData() {
+    this._currentDragData = undefined;
   }
 }

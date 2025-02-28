@@ -10,7 +10,7 @@ export declare class DragMixinInterface<D> {
 
 type BaseT = HTMLElement & {}
 /**
- * DragMixin  - a mixin that allows passing data between drag and drop events as the native  only allows text.
+ * DragMixin - a mixin that allows passing data between drag and drop events as the native  only allows text.
  */
 export const DragMixin = <D = any>() => <T extends MixinBase<BaseT>>(
   superClass: T
