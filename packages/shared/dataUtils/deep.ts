@@ -1,6 +1,6 @@
 import { NestedKeys } from "../types.js";
 
-type ActionT = (obj: unknown, id: string) => unknown;
+type ActionT = <T = any>(obj: unknown, id: string) => T;
 
 /**
  * Applies a deep action on an object based on a given path.
@@ -20,6 +20,7 @@ export const deep = (action: ActionT, obj: unknown, keys: string | string[], id?
 
 const _get = (obj: any, prop: string) => obj[prop];
 const _set = (n: any) => (obj: any, prop: string) => (obj[prop] = n);
+// const _setOwnProperty = (n: any) => (obj: any, prop: string) => Object.defineProperty(obj, prop, { value: n, writable: true, enumerable: true, configurable: true });
 
 /**
  * get a deep nested property
