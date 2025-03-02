@@ -59,7 +59,7 @@ export const PromiseEventDialogMixin = <D = any>() => <T extends MixinBase<BaseT
 
   let event: PromiseEventDialogEvent<D>;
   let resolve: (value: D | PromiseLike<D>) => void;
-  let reject: () => void;
+  let reject: (reason: 'cancelled') => void;
   abstract class PromiseEventDialogMixinClass extends superClass {
 
     @query('#promiseEventDialog') _promiseEventDialog!: MdDialog;
@@ -90,7 +90,7 @@ export const PromiseEventDialogMixin = <D = any>() => <T extends MixinBase<BaseT
     }
 
     _renderPromiseEventDialog() {
-      console.log('event', event)
+      // console.log('event', event)
       if (!event) return nothing;
       const render = event.detail.render.bind(this);
       const { data } = event.detail;
@@ -99,7 +99,7 @@ export const PromiseEventDialogMixin = <D = any>() => <T extends MixinBase<BaseT
           resolve(data);
         }
         else {
-          reject();
+          reject('cancelled');
         }
       }
 
