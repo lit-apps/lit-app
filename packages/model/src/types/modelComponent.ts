@@ -1,10 +1,10 @@
 import { Media } from '@lit-app/cmp/field/choice/types';
-import type { LitElement } from 'lit';
-import { TemplateResult } from 'lit';
 import type {
 	GridColumnBodyLitRenderer,
 	GridColumnHeaderLitRenderer
 } from '@vaadin/grid/lit';
+import type { LitElement } from 'lit';
+import { TemplateResult } from 'lit';
 import { RenderConfig } from './entity.js';
 
 
@@ -79,6 +79,8 @@ interface ModelComponentBase<T = any> {
 	// do render the component only when the function returns true
 	show?: (data: any) => boolean
 	onInput?: (data: any, value: any, el: LitElement) => void // function called when the component value is updated
+	// Slots that can be passed to the component, for instance for translation icons
+	slots?: TemplateResult
 }
 export interface Lookup<T = string> {
 	label: string | TemplateResult

@@ -1,4 +1,4 @@
-import { get, set } from '@lit-app/shared';
+import { get, set } from '@lit-app/shared/dataUtils';
 import { TemplateResult, html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import AbstractEntity from './AbstractEntity.js';
@@ -23,6 +23,8 @@ import type {
 } from './types/modelComponent';
 import('@vaadin/multi-select-combo-box/vaadin-lit-multi-select-combo-box');
 
+import { NestedKeys } from '@lit-app/shared/types.js';
+import '../field-translate.js';
 import {
   isComponentCheckbox,
   isComponentCheckboxGroup,
@@ -53,8 +55,6 @@ type OComponentUpload = Omit<ModelComponentUpload, 'component'>;
 type OComponentUploadImage = Omit<ModelComponentUploadImage, 'component'>;
 type OComponentMd = Omit<ModelComponentMd, 'component'>;
 
-import('@preignition/pwi-input/src/pwi-input-translation')
-import('@preignition/pwi-input/src/pwi-input-translation-textarea')
 import('@material/web/checkbox/checkbox.js')
 import('@material/web/switch/switch.js')
 import('@material/web/select/select-option.js')
@@ -100,7 +100,7 @@ import('../../cmp/field/select.js')
  */
 export function renderField<D extends DefaultI>(
   this: EntityElement,
-  name: string,
+  name: NestedKeys<D>,
   data: D = {} as D,
   update: boolean,
   m: Model<D>,
@@ -122,7 +122,7 @@ export function renderField<D extends DefaultI>(
     throw new Error(`No model found for ${name}`);
   }
 
-  const key = name.split('.').pop();
+  const key = (name as string).split('.').pop();
 
   const { component } = model;
   if (!component) {
@@ -184,7 +184,8 @@ export function renderField<D extends DefaultI>(
       set(name, v, data);
       if (v !== value && entity.realTime) {
         this.dispatchEvent(
-          new DataChanged({ entityName: entity.entityName, id, data })
+          // we send a copy of the data to storing prototype
+          new DataChanged({ entityName: entity.entityName, id, ...{ data } })
         );
 
       }
@@ -200,12 +201,16 @@ export function renderField<D extends DefaultI>(
   // Handle translation First
   if (consumingMode === 'translate') {
     const origin = get(name, Object.getPrototypeOf(data));
-    if (isComponentText(model)) {
+    const value = Object.getOwnPropertyDescriptor(data, name)?.value;
+    if (isComponentText(model) || isComponentTextArea(model)) {
+      const type = isComponentTextArea(model) ? 'textarea' : 'text';
       return html`
-      <pwi-input-translation 
+      <lapp-field-translate 
         class=${cls}
         .name=${name}
+        type=${type}
         style=${ifDefined(model.style)}
+        rows=${ifDefined(model.rows)}
         .readOnly=${disabled}
         .label=${label}
         .value=${origin}
@@ -214,23 +219,7 @@ export function renderField<D extends DefaultI>(
         .minLength=${model.minLength}
         .charCounter=${!!model.maxLength}
         @translated-changed=${onInputFact('translated')} 
-      ></pwi-input-translation>`
-    }
-    if (isComponentTextArea(model)) {
-      return html`
-      <pwi-input-translation-textarea 
-        class=${cls}
-        .name=${name}
-        style=${ifDefined(model.style)}
-        rows=${ifDefined(model.rows)}
-        .readOnly=${disabled}
-        .label=${label}
-        .value=${origin}
-        .translated=${value || ''}
-        .maxLength=${model.maxLength!}
-        .charCounter=${!!model.maxLength}
-        @translated-changed=${onInputFact('translated')} 
-      ></pwi-input-translation-textarea>`
+      >${model.slots || nothing}</lapp-field-translate>`
     }
     if (isComponentMd(model) || isComponentMdDroppable(model)) {
       return html`
