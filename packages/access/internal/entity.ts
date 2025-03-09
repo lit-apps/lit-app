@@ -1,7 +1,6 @@
 import type { UserItemRole } from '@lit-app/cmp/user/internal/types';
 import {
 	AccessT,
-	AccessActionI,
 	ConsumeDataMixin,
 	ConsumeEntityMixin,
 	ConsumeEntityStatusMixin,
@@ -9,25 +8,26 @@ import {
 	GetAccessT,
 	ProvideAccessMixin,
 	RenderConfig,
-	RenderHeaderMixin,
+	RenderHeaderMixin
 } from '@lit-app/model';
+import closest from '@lit-app/shared/closest';
+import { HTMLEvent } from '@lit-app/shared/types';
 import {
 	PartialBy,
 	entries
 } from '@lit-app/shared/types.js';
+import type { MdTabs } from '@material/web/tabs/tabs';
 import { Where } from '@preignition/lit-firebase/src/types';
 import '@preignition/lit-firebase/store';
-import { LitElement, html } from "lit";
 import {
 	columnBodyRenderer,
 } from '@vaadin/grid/lit';
+import { LitElement, html } from "lit";
 import { property, state } from 'lit/decorators.js';
+import { choose } from 'lit/directives/choose.js';
 import { when } from 'lit/directives/when.js';
 import { ProvideUserAccessMixin } from './context-user-access-mixin';
 import hasUserRole from './hasUserRole';
-import { choose } from 'lit/directives/choose.js';
-import { HTMLEvent } from '@lit-app/shared/types';
-import type { MdTabs } from '@material/web/tabs/tabs';
 import('@material/web/chips/filter-chip.js')
 import('@material/web/chips/chip-set.js')
 import('@material/web/divider/divider.js')
@@ -37,7 +37,6 @@ import('../set-role')
 import('../add-role')
 import('@lit-app/cmp/user/list')
 import('@lit-app/cmp/user/invite-list')
-import closest from '@lit-app/shared/closest';
 
 type User = PartialBy<UserItemRole, 'provider' | 'created'>;
 
@@ -146,6 +145,10 @@ export class EntityAccess extends
 	}
 
 	protected renderEntityAccess() {
+		const path = this.path;
+		if (!path) {
+			return html`<div>no path</div>`
+		}
 		const where: Where[] = [{
 			field: 'ref.machineId',
 			op: '==',
@@ -153,7 +156,7 @@ export class EntityAccess extends
 		}, {
 			field: 'snapshot.context.targetRefOrPath',
 			op: '==',
-			value: this.path
+			value: path
 		}, {
 			field: 'snapshot.status',
 			op: '==',
