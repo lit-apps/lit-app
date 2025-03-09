@@ -37,27 +37,13 @@ export default class fieldTranslate extends LitElement {
   @property() pattern!: string
   @property() type: 'textarea' | 'text' = 'text'
 
-  @state() force: boolean = false
 
   @property() sourceIcon: string = 'language'
   @property() targetIcon: string = 'translate'
-
-  get targetHelper() {
-    return this.label + '  translation';
-  }
-
-  get placeholder() {
-    return `empty value for source (${this.label})`;
-  }
+  @property() targetHelper: string = 'translation for this field'
+  @property() placeholder: string = 'this field does not hav a value'
 
   override render() {
-    if (!this.value && !this.force) {
-      return this.renderEmpty();
-    }
-    return this.renderTranslate();
-  }
-
-  renderTranslate() {
     return html`
      <lapp-text-field
         class="source"
@@ -103,18 +89,7 @@ export default class fieldTranslate extends LitElement {
     this.dispatchEvent(new CustomEvent('translated-changed', { detail: { value: value } }));
   }
 
-  private renderEmpty() {
-    if (this.hideEmpty) {
-      return '';
-    }
-    return html`
-    <slot name="empty">
-      <div class="empty">
-        <p class="">${this.label} is empty - no translation required.</p>
-        <md-text-button @click=${() => this.force = true}>Display Translated Field</md-text-button>
-      </div>
-    </slot>`;
-  }
+
 }
 
 declare global {
