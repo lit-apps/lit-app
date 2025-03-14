@@ -13,6 +13,7 @@ import {
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 
+import { NestedKeys } from '@lit-app/shared/types.js';
 import { deprecated } from '@preignition/preignition-util';
 import type { RenderInterface } from './types/renderEntityFieldI';
 import { StaticEntityField } from './types/renderEntityFieldI';
@@ -28,11 +29,11 @@ export default function renderMixin<
 		/**
 		 * renders a data-entry field, depending on the model definition
 		 */
-		renderField(path: string, config?: FieldConfig, data?: D) {
+		renderField(path: NestedKeys<D>, config?: FieldConfig, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
-			
+
 			const consumingMode = (this.host as EntityElement<D>).consumingMode ?? 'edit';
 			return renderField.call(
 				this.host as EntityElement<D>,
@@ -41,17 +42,17 @@ export default function renderMixin<
 				false,
 				this.model,
 				this,
-				config, 
+				config,
 				consumingMode
 			);
 		}
 
-		
+
 		/**
 		 * renders a data-entry field, depending on the model definition
 		 * and updates the data object on input
 		 */
-		renderFieldUpdate(path: string, config?: FieldConfig, data?: D) {
+		renderFieldUpdate(path: NestedKeys<D>, config?: FieldConfig, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
@@ -63,13 +64,13 @@ export default function renderMixin<
 				true,
 				this.model,
 				this,
-				config, 
+				config,
 				consumingMode
 			);
 		}
 
 		@deprecated('use consumingMode on host instead')
-		renderFieldTranslate(name: string, config?: FieldConfig, data?: D) {
+		renderFieldTranslate(name: NestedKeys<D>, config?: FieldConfig, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
@@ -90,5 +91,5 @@ export default function renderMixin<
 
 	Object.assign(R, staticApply);
 	return R as unknown as Constructor<RenderInterface<D>> & StaticEntityField<D> &
-	 	typeof superclass;
+		typeof superclass;
 }

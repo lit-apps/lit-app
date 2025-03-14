@@ -1,4 +1,4 @@
-import type {AccessT} from './access.js'
+import type { AccessT } from './access.js'
 
 /**
  * Checks if the provided data is a collection.
@@ -7,12 +7,12 @@ import type {AccessT} from './access.js'
  */
 export function isCollection<T>(data: any): data is Collection<T> {
 	//return Array.isArray(data) && data.length > 0 && '$id' in data[0] && '$path' in data[0]
-	return Array.isArray(data) 
+	return Array.isArray(data)
 }
 
 
 type uid = string
-export type GroupName = 'admin' | 'editor' |  'guest' | 'superAdmin'
+export type GroupName = 'admin' | 'editor' | 'guest' | 'superAdmin'
 
 // Group is a collection of users with a name 
 // when a user is added as a member, their tokens are modified to include the group group[${teamId}_${groupName}] = timestamp
@@ -37,7 +37,7 @@ export interface MetaData<A = AccessT, T = string> {
 	/**
 	 * timestamp is the time the data was created
 	 */
-	timestamp: any 
+	timestamp: any
 	/**
 	 * timestampPublished is the time the data was last published
 	 */
@@ -57,8 +57,8 @@ export interface DataI<M = MetaData, R = Ref> {
 
 // a type that is an array of T and has $id and $path properties
 // $id and $path property are added by Firebase controllers on collections
-export type CollectionI<T> = (T & {$id: string, $path: string})
-export type Collection<T> = CollectionI<T>[]
+export type CollectionI<T, ID = string> = (T & { $id: ID, $path: string })
+export type Collection<T, ID = string> = CollectionI<T, ID>[]
 
 
 

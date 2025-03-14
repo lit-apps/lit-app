@@ -25,7 +25,7 @@ import {
 } from './types/modelComponent';
 
 
-import { RenderInterface } from './types/renderEntityI';
+import { RenderInterface, StaticRenderEntity } from './types/renderEntityI';
 export type { RenderInterface } from './types/renderEntityI';
 
 import { Parser } from '@json2csv/plainjs';
@@ -124,8 +124,10 @@ export default function renderMixin<
         @dblclick=${config?.gridConfig?.preventDblClick ? null : this.onGridDblClick.bind(this)}
         @selected-items-changed=${onSelected}
         @size-changed=${onSizeChanged}>
+        <slot name="grid-column-leading"></slot>
         ${this.renderGridColumns(config)}
         ${this.renderGridEmptyState(config)}
+        <slot name="grid-column"></slot>
       </vaadin-grid>`
     }
 
@@ -137,73 +139,14 @@ export default function renderMixin<
       }
     }
 
-    protected renderGridColumns(config: C) {
-      // console.log('renderGridColumns')
-      const showSelectionColumn = config.columnsConfig?.showSelectionColumn;
-      const model = this.model;
-      const colTag = literal`vaadin-grid-column`
-      const colSortTag = literal`vaadin-grid-sort-column`
-
-      // const fields = getFieldsFromModel(model, model?.grid?.condition ? model.grid?.condition : (model) => !!model.grid)
-      const fields = getFieldsFromModel(model, config, (model) => model.grid)
-        .sort((a, b) => (a[1].grid?.index || 0) - (b[1].grid?.index || 0));
-
-      return html`
-      ${showSelectionColumn ? html`<vaadin-grid-selection-column ></vaadin-grid-selection-column>` : nothing}
-      ${fields.map(([key, m]) => {
-
-        const grid = ensure<GridConfig>(m.grid as GridConfig)
-
-        const tagName = grid.sortable ? colSortTag : colTag
-        return htmlStatic`<${tagName} 
-        flex-grow=${ifDefined(grid.width ? '0' : grid.flex)} 
-        width=${ifDefined(grid.width)} 
-        ?resizable=${ifDefined(grid.resizable)} 
-        path=${grid.path || key}
-        header=${grid.header || m.label}
-        ${grid.bodyRenderer ? columnBodyRenderer(grid.bodyRenderer) : nothing}  
-        ${grid.headerRenderer ? columnHeaderRenderer(grid.headerRenderer) : nothing}  
-        ></${tagName}>
-      `})
-        }`
-    }
 
     renderGridDetail(data: CollectionI<D>, config: C, _model: any, _grid: any) {
       return html`
 			<div class="layout vertical">
-				${this.renderTable(data, config)}
+        ${this.renderTable(data, config)}
 			</div>`
     }
 
-    renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]) {
-      const model = this.model;
-      // get the fields to render in table
-      const fields = tableFields || getFieldsFromModel(model, config, (model) => model.table)
-        .sort((a, b) => (a[1].table?.index || 0) - (b[1].table?.index || 0));
-
-      return html`
-        <table class="entity table ${this.entityName}">
-          ${fields.map(([key, m]) => {
-        const component = m.component || 'textfield';
-        const value = get(m.table?.path || key, data)
-        let display = value
-
-        if ((m.table?.optional === true) && (value == undefined)) {
-          return
-        }
-        if (m.table?.renderer) {
-          display = m.table.renderer(data)
-        }
-        else if (component === 'select') {
-          const item = (m as ModelComponentSelect).items?.find(i => i.code === value)
-          display = item?.label || key
-        }
-        return html`<tr class="${key}"><td class="label">${m.table?.label || m.label || key}</td><td>${display}</td></tr>`
-      })
-        }
-        </table>
-     `
-    }
 
     protected canRender(data: D, config: C) {
       const consumingMode = this.host.consumingMode || 'edit';
@@ -354,7 +297,24 @@ export default function renderMixin<
       return html``
     }
 
-    protected getCsvParser(renderConfig: C) {
+    protected getCsvParser(renderConfig: C | undefined) {
+      return this.constructor.getCsvParser(renderConfig)
+    }
+    renderGridColumns(config: C) {
+      return this.constructor.renderGridColumns(config)
+
+    }
+
+    renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]) {
+      return this.constructor.renderTable(data, config, tableFields)
+    }
+
+  };
+
+
+  const staticApply: StaticRenderEntity<D, C> = {
+
+    getCsvParser(this: AbstractEntity, renderConfig: C | undefined) {
       const fields = getFieldsFromModel(this.model, renderConfig, (model) => model.csv)
         .sort((a, b) => (a[1].csv?.index || 0) - (b[1].csv?.index || 0))
         .map(([key, m]) => {
@@ -366,14 +326,75 @@ export default function renderMixin<
           }
         })
       return new Parser({ fields });
+    },
 
+    renderGridColumns(this: AbstractEntity, config: C) {
+      const showSelectionColumn = config.columnsConfig?.showSelectionColumn;
+      const model = this.model;
+      const colTag = literal`vaadin-grid-column`
+      const colSortTag = literal`vaadin-grid-sort-column`
+
+      const fields = getFieldsFromModel(model, config, (model) => model.grid)
+        .sort((a, b) => (a[1].grid?.index || 0) - (b[1].grid?.index || 0));
+
+      return html`
+      ${showSelectionColumn ? html`<vaadin-grid-selection-column ></vaadin-grid-selection-column>` : nothing}
+      ${fields.map(([key, m]) => {
+
+        const grid = ensure<GridConfig>(m.grid as GridConfig)
+
+        const tagName = grid.sortable ? colSortTag : colTag
+        return htmlStatic`<${tagName} 
+        flex-grow=${ifDefined(grid.width ? '0' : grid.flex)} 
+        width=${ifDefined(grid.width)} 
+        ?resizable=${ifDefined(grid.resizable)} 
+        path=${grid.path || key}
+        header=${grid.header || m.label}
+        ${grid.bodyRenderer ? columnBodyRenderer(grid.bodyRenderer) : nothing}  
+        ${grid.headerRenderer ? columnHeaderRenderer(grid.headerRenderer) : nothing}  
+        ></${tagName}>
+      `})
+        }`
+    },
+
+    renderTable(this: AbstractEntity, data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]) {
+      const model = this.model;
+      // get the fields to render in table
+      const fields = tableFields || getFieldsFromModel(model, config, (model) => model.table)
+        .sort((a, b) => (a[1].table?.index || 0) - (b[1].table?.index || 0));
+
+      return html`
+        <table class="entity table ${this.entityName}">
+          ${fields.map(([key, m]) => {
+        const component = m.component || 'textfield';
+        const value = get(m.table?.path || key, data)
+        let display = value
+
+        if ((m.table?.optional === true) && (value == undefined)) {
+          return
+        }
+        if (m.table?.renderer) {
+          display = m.table.renderer(data)
+        }
+        else if (component === 'select') {
+          const item = (m as ModelComponentSelect).items?.find(i => i.code === value)
+          display = item?.label || key
+        }
+        return html`<tr class="${key}"><td class="label">${m.table?.label || m.label || key}</td><td>${display}</td></tr>`
+      })
+        }
+        </table>
+     `
     }
-  };
+
+
+  }
+  Object.assign(R, staticApply);
   return R as unknown as Constructor<RenderInterface<D, C>> & typeof superclass;
 }
 
 function getFieldsFromModel(
-  model: Model<any>, renderConfig: RenderConfig, getConfig: (m: ModelComponent
+  model: Model<any>, renderConfig: RenderConfig | undefined, getConfig: (m: ModelComponent
 
   ) => ModelComponent['grid'] | ModelComponent['csv'] | ModelComponent['table'] | undefined): [string, ModelComponent][] {
   function getFields(model: Model<any>, path: string = ''): [string, ModelComponent][] {

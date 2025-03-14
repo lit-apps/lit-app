@@ -14,12 +14,14 @@ export type DocumentationKeysT = {
 }
 
 
+import { Parser } from '@json2csv/plainjs';
 import { ToastEvent } from '@lit-app/shared/event';
 import type { AccessT, GetAccessT } from './types/access.js';
 import { ActionsT } from './types/actionTypes.js';
 import {
 	DefaultI,
-	EntityElement
+	EntityElement,
+	RenderConfig
 } from './types/entity';
 
 /**
@@ -73,6 +75,13 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	 */
 	static declare getAccess: GetAccessT
 	static declare accessDataGetter: (data: any) => Promise<AccessT>
+
+	/** static functions implemented in renderEntiyMixin that use model to generate template */
+	static declare getCsvParser: (renderConfig: RenderConfig | undefined) => Parser<any, any>;
+	static declare renderGridColumns: (renderConfig: RenderConfig | undefined) => TemplateResult;
+	static declare renderTable: (
+		data: any, renderConfig: RenderConfig | undefined, tableFields?: [string, any][]
+	) => TemplateResult;
 	/**
 	 * inspired from https://github.com/Microsoft/TypeScript/issues/3841#issuecomment-1488919713
 	 * We will need to set the type of constructor on all subclasses so that

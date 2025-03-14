@@ -1,5 +1,5 @@
-import { LitElement, html, TemplateResult, nothing } from 'lit';
-import { property } from 'lit/decorators.js'
+import { LitElement, TemplateResult, html, nothing } from 'lit';
+import { property } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
 import { DefaultI, RenderConfig } from '../types/entity';
 import('@material/web/icon/icon.js')
@@ -94,7 +94,7 @@ export const RenderHeaderMixin = <T extends Constructor<LitElement>>(superClass:
 					[4, () => html``]
 				],
 				() => html`
-				<h2 class="header layout horizontal underline">
+				<h2 class="header layout horizontal center wrap underline">
 					<md-focus-ring  style="--md-focus-ring-shape: 10px"></md-focus-ring>
 					<lapp-icon .icon=${config?.entityStatus.isEditing ? 'edit' : this.icon}></lapp-icon>
 					${title}

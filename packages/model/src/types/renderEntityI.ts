@@ -16,10 +16,10 @@ export declare abstract class RenderInterface<
 	protected renderDataLoading(config: C): TemplateResult
 	// protected renderTitle(data: D, config: C): TemplateResult | string
 	protected renderArrayTitle(data: Collection<D>, config: C): TemplateResult | string
-	protected renderGridColumns(config: C): TemplateResult
+	renderGridColumns(config: C): TemplateResult
 	protected renderGridEmptyState(config: C): TemplateResult
 	protected renderGridDetail(data: CollectionI<D>, config: C, _model: any, _grid: any): TemplateResult
-	protected renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]): TemplateResult
+	renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]): TemplateResult
 	protected renderMetaData(_data: D, _config: C): TemplateResult
 	protected renderCard(data: Collection<D>, config: C): TemplateResult
 	protected renderGrid(data: Collection<D>, config: C): TemplateResult
@@ -43,7 +43,13 @@ export declare abstract class RenderInterface<
 	renderForm(data: D, config: C): TemplateResult;
 	renderFormNew(data: D, config: C): TemplateResult;
 	renderFieldUpdate(name: string, config: any, data?: D): TemplateResult;
-	getCsvParser(renderConfig: C): Parser<any, any>;
+	getCsvParser(renderConfig: C | undefined): Parser<any, any>;
 	renderTitle(data: D, config: C): TemplateResult | string;
 }
 
+export interface StaticRenderEntity<
+	D extends DefaultI = DefaultI,
+	C extends RenderConfig = RenderConfig
+> extends Pick<RenderInterface<D, C>, 'getCsvParser' | 'renderGridColumns' | 'renderTable'> {
+
+}

@@ -9,6 +9,7 @@ import fieldMixin, { RenderInterface as FieldI, StaticEntityField } from './rend
 import entityMixin, { RenderInterface as RenderI } from './renderEntityMixin';
 import { RenderInterface as ActionI, StaticEntityActionI } from "./types/renderActionI.js";
 import { type StaticRenderInterface as StaticCreate } from "./types/renderEntityCreateI.js";
+import { type StaticRenderEntity } from "./types/renderEntityI.js";
 
 import { CSSResult } from 'lit';
 // import { defaultActions } from './defaultActions';
@@ -97,10 +98,10 @@ export default function abstractEntityFact<
     static declare actions: A
     static declare styles: CSSResult | CSSResult[]
     static declare documentationKeys: DocumentationKeysT
-    
+
   }
 
-  return R as unknown as 
+  return R as unknown as
     Constructor<AbstractEntity<D, A>> &
     Constructor<RenderI<D, C>> &
     Constructor<FieldI<D>> &
@@ -109,6 +110,7 @@ export default function abstractEntityFact<
     StaticEntityActionI<A> &
     StaticEntityField<D> &
     StaticEntityI<D, A> &
+    StaticRenderEntity<D, C> &
     StaticCreate<D>
 }
 

@@ -147,7 +147,7 @@ export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 			if (prop.has('parentData') || prop.has('data')) {
 				if (this.data !== undefined) {
 
-					console.info('SET DATA', this.data, this.parentData)
+					// console.info('SET DATA', this.data, this.parentData)
 					if (this.data === null && this.parentData) {
 						this.data = {} as D
 					}

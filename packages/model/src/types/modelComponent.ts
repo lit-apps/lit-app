@@ -31,7 +31,7 @@ type TableConfig<T = any> = {
 	/**
 	 * condition to render the column depending on renderConfig
 	 */
-	condition?: (config: RenderConfig) => boolean
+	condition?: (config: RenderConfig | undefined) => boolean
 	renderer?: (data: T) => TemplateResult | string
 }
 
@@ -46,7 +46,7 @@ export type GridConfig<T = any> = {
 	/**
 	 * condition to render the column depending on renderConfig
 	 */
-	condition?: (config: RenderConfig) => boolean
+	condition?: (config: RenderConfig | undefined) => boolean
 	headerRenderer?: GridColumnHeaderLitRenderer
 	bodyRenderer?: GridColumnBodyLitRenderer<T>
 }
@@ -56,7 +56,7 @@ export type CsvConfig<T = any> = {
 	default?: string
 	value?: (data: T) => string
 	index?: number
-	condition?: (config: RenderConfig) => boolean
+	condition?: (config: RenderConfig | undefined) => boolean
 }
 
 interface ModelComponentBase<T = any> {

@@ -13,7 +13,7 @@ export type RoleT = 'admin' | 'editor' | 'owner' | 'guest'  // | 'superAdmin' ;
 export type StatusT = 'public' | 'private'
 
 export type UserAccessT = {
-  owner: uid 
+  owner: uid
   admin?: uid[] // can set editor and viewer
   editor?: uid[] // can edit
   guest?: uid[] // can view
@@ -22,16 +22,18 @@ export type UserAccessT = {
 export type AccessT<A = UserAccessT> = {
   app: app
   user: A
-  userById: {[uid: uid]: (keyof A)[]}
+  // this is breaking tsoa  - hence the code below ... 
+  userById: { [uid: uid]: (keyof A)[] }
+  //userById: { [uid: string]: (keyof UserAccessT)[] }
   status: StatusT
 }
 
 // storing the access information for an entity
 export type AuthorizationT = {
-	isOwner: boolean
-	canEdit: boolean
-	canView: boolean
-	canDelete: boolean
+  isOwner: boolean
+  canEdit: boolean
+  canView: boolean
+  canDelete: boolean
 }
 
 /**
