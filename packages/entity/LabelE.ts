@@ -1,7 +1,7 @@
 import type { Model } from '@lit-app/model';
 import EntityFact from '@lit-app/model/src/entityFact';
 import type { Collection, CollectionI, RenderConfig } from '@lit-app/model/src/types';
-import getAdjustedColor from '@lit-app/shared/getAdjustedColor';
+import { getAdjustedColor } from '@lit-app/shared/styles';
 import '@material/web/chips/chip-set';
 import '@material/web/chips/suggestion-chip';
 import '@material/web/labs/badge/badge';

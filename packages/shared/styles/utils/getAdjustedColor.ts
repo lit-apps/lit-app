@@ -16,7 +16,7 @@
  * @param white - The default white color to use if the contrast is low.
  * @returns The adjusted text color (either black or white).
  */
-export default function getAdjustedColor(color: string, black: string = '#000', white: string = '#fff'): string {
+export function getAdjustedColor(color: string, black: string = '#000', white: string = '#fff'): string {
   let r: number, g: number, b: number;
 
   const parseHex = (c: string): number => parseInt(c, 16);

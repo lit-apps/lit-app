@@ -31,3 +31,5 @@ export { default as tooltip } from './class/tooltip.js';
 export { default as topCard } from './class/top-card.js';
 export { default as typography } from './class/typography.js';
 
+export { getAdjustedColor, themeResetColors } from './utils/index.js';
+
