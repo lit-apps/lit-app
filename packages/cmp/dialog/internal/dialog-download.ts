@@ -1,21 +1,21 @@
-import { html, css, LitElement } from "lit";
+import type { Parser } from "@json2csv/plainjs";
 import { ToastEvent } from '@lit-app/shared/event';
-import { property, state, query } from 'lit/decorators.js';
+import { HTMLEvent } from '@lit-app/shared/types';
+import { MdDialog } from '@material/web/dialog/dialog';
+import { css, html, LitElement } from "lit";
+import { property, query, state } from 'lit/decorators.js';
+import { LappChoiceRadio } from "../../field/choice-radio.js";
+import { DownloadEvent } from "../dialog-download.js";
+import downloadCSV from '../downloadCSV.js';
+import downloadJSON from '../downloadJSON.js';
 import('@material/web/dialog/dialog.js')
 import('@material/web/button/text-button.js')
 import('@material/web/checkbox/checkbox.js');
 import('@material/web/button/filled-button.js')
 import('../../field/text-field')
 import('../../copy/copy')
-import { MdDialog } from '@material/web/dialog/dialog';
-import { HTMLEvent } from '@lit-app/shared/types';
-import { DownloadEvent } from "../dialog-download.js";
-import downloadJSON from '../downloadJSON.js';
-import downloadCSV from '../downloadCSV.js';
-import { LappChoiceRadio } from "../../field/choice-radio.js";
-import type { Parser } from "@json2csv/plainjs";
 
-type AllowedExportFormats = 'json' | 'csv'
+export type AllowedExportFormats = 'json' | 'csv'
 
 /**
  *  A dialog to download a file
@@ -100,7 +100,7 @@ export class DialogDownload extends LitElement {
   /**
    * a @json2csv/plainjs parse to format csv data
    */
-  @property({ attribute: false }) parser: Parser<any, any> | undefined; 
+  @property({ attribute: false }) parser: Parser<any, any> | undefined;
 
   /** 
    *  - api href
@@ -272,8 +272,12 @@ export class DialogDownload extends LitElement {
    * 
    */
   private async _clickDownloadClient() {
-    const event = new DownloadEvent({})
-    this.dispatchEvent(event)
+    // const promise = new Promise((resolve) => {
+    //   const event = new DownloadEvent({ promise: resolve });
+    //   this.dispatchEvent(event);
+    // });
+    const event = new DownloadEvent({ promise: undefined });
+    this.dispatchEvent(event);
     const data = await event.detail.promise;
     if (data) {
       console.log('download data', data)
@@ -284,7 +288,7 @@ export class DialogDownload extends LitElement {
         // Method to convert data to CSV format
         const convertToCSV = (data: any[]): string => {
           // TODO: use the async parser to liberate the main thread
-          if (this.parser ) {
+          if (this.parser) {
             return this.parser.parse(data)
           }
           const headers = Object.keys(data[0])
