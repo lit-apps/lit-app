@@ -1,7 +1,7 @@
+import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import { consume, createContext, provide } from '@lit/context';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { } from '../types/entity';
 
 
 // import type { Access } from '../types/dataI';
@@ -24,7 +24,9 @@ export declare class AccessMixinInterface {
 /**
  * ApplyGetterMixin applies access getters to an element.
  */
-export const ApplyGetterMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
+export const ApplyGetterMixin = <T extends MixinBase<ReactiveElement>>(
+	superClass: T
+): MixinReturn<T, AccessMixinInterface> => {
 
 	abstract class ApplyGetterMixinClass extends superClass {
 
@@ -44,7 +46,7 @@ export const ApplyGetterMixin = <T extends Constructor<ReactiveElement>>(superCl
 		}
 
 	};
-	return ApplyGetterMixinClass as unknown as Constructor<AccessMixinInterface> & T;
+	return ApplyGetterMixinClass;
 }
 
 export declare class ProvideAccessMixinInterface<A extends AuthorizationT = AuthorizationT> extends AccessMixinInterface {
@@ -85,9 +87,11 @@ export const ProvideAccessMixin = <
 	A extends AuthorizationT = AuthorizationT,
 	G extends GetAccessT = GetAccessT
 >(getAccessFn?: G) =>
-	<T extends Constructor<ReactiveElement & { Entity?: EntityI, data: any }>>(superClass: T) => {
+	<T extends MixinBase<ReactiveElement & { Entity?: EntityI, data: any }>>(
+		superClass: T
+	): MixinReturn<T, ProvideAccessMixinInterface<A>> => {
 
-		class ProvideAccessMixinClass extends ApplyGetterMixin(superClass) {
+		abstract class ProvideAccessMixinClass extends ApplyGetterMixin(superClass) {
 
 			/** context storing document access  */
 			@provide({ context: entityAccessContext })
@@ -133,7 +137,9 @@ export const ProvideAccessMixin = <
  * ConsumeAccessMixin consumes entityAccessContext for an entity.
  * Entity Access stores access information about the entity, like `isOwner`, `canEdit`, `canView`, `canDelete`
  */
-export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
+export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(
+	superClass: T
+): MixinReturn<T, AccessMixinInterface> => {
 
 	abstract class ContextConsumeAccessMixinClass extends ApplyGetterMixin(superClass) {
 
@@ -142,6 +148,6 @@ export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(super
 		@property() override authorization!: AuthorizationT;
 
 	};
-	return ContextConsumeAccessMixinClass as unknown as Constructor<AccessMixinInterface> & T;
+	return ContextConsumeAccessMixinClass;
 }
 

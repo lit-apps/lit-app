@@ -5,15 +5,16 @@ import('@material/web/dialog/dialog.js')
 import('@material/web/button/outlined-button.js')
 import('@material/web/button/filled-button.js')
 
+import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import { LitElement, PropertyValues, html } from 'lit';
 import { queryAsync, state } from 'lit/decorators.js';
 import { AppAction, Create, Delete, EntityAction, isEntityAction } from '../events';
 
 
-type Constructor<T = {}> = new (...args: any[]) => T;
+
 export declare class ConfirmDialogMixinInterface {
 	// Define the interface for the mixin
-	_activeEvent: EntityAction | AppAction | undefined
+	_activeEvent: EntityAction | AppAction | Create | Delete | undefined
 }
 /**
  * ConfirmDialogMixin 
@@ -24,14 +25,16 @@ export declare class ConfirmDialogMixinInterface {
  * - add support for bulk actions 
  * - remove deprecated old bulk actions dialog 
  */
-export const ConfirmDialogMixin = <T extends Constructor<LitElement & { selectedItems?: any[] }>>(superClass: T) => {
+export const ConfirmDialogMixin = <T extends MixinBase<LitElement & { selectedItems?: any[] }>>(
+	superClass: T
+): MixinReturn<T, ConfirmDialogMixinInterface> => {
 
-	class ConfirmDialogMixinClass extends superClass {
+	abstract class ConfirmDialogMixinClass extends superClass {
 
 		data: any
 		// selectedItems!: any[]
 
-		@state() private _activeEvent!: EntityAction | AppAction | Create | Delete | undefined;
+		@state() _activeEvent!: EntityAction | AppAction | Create | Delete | undefined;
 		@state() private _resolved: boolean = true;
 		@queryAsync('#confirmDialog') _confirmDialog!: MdDialog;
 
@@ -170,7 +173,7 @@ export const ConfirmDialogMixin = <T extends Constructor<LitElement & { selected
 		}
 	};
 	// Cast return type to your mixin's interface intersected with the superClass type
-	return ConfirmDialogMixinClass as unknown as Constructor<ConfirmDialogMixinInterface> & T;
+	return ConfirmDialogMixinClass;
 }
 
 export default ConfirmDialogMixin;

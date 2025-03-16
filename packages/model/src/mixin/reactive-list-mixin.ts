@@ -1,13 +1,7 @@
+import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import { LitElement } from 'lit';
-import { property } from 'lit/decorators.js'
+import { property } from 'lit/decorators.js';
 
-declare global {
-  interface HTMLElementEventMap {
-    
-  }
-}
-
-type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class ReactiveListMixinInterface {
   size: number;
   selectedItems: any[];
@@ -20,13 +14,16 @@ export declare class ReactiveListMixinInterface {
  * @property {Array} selectedItems - list of selected items in a grid
  * 
  */
-export const ReactiveListMixin = <T extends Constructor<LitElement>>(superClass: T) => {
-  abstract class ReactiveListMixinClass extends superClass  {
-    @property({type: Number}) size!: number;
-    @property({type: Array}) selectedItems!: any[];
+export const ReactiveListMixin = <T extends MixinBase<LitElement>>(
+  superClass: T
+): MixinReturn<T, ReactiveListMixinInterface> => {
+
+  abstract class ReactiveListMixinClass extends superClass {
+    @property({ type: Number }) size!: number;
+    @property({ type: Array }) selectedItems!: any[];
 
   };
-  return ReactiveListMixinClass as unknown as Constructor<ReactiveListMixinInterface> & T;
+  return ReactiveListMixinClass;
 }
 
 export default ReactiveListMixin;

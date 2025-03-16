@@ -1,14 +1,13 @@
+import { consume, createContext, provide } from '@lit/context';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { state } from 'lit/decorators.js';
-import { consume, provide, createContext } from '@lit/context';
 // import type {EntityI} from '../types/entity';
-import type {EntityI} from '../types';
+import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
+import type { EntityI } from '../types';
 
 // type Actions = Record<string, Action>;
 // context for holding the entity id
 export const entityContext = createContext<EntityI>('entity-class-context');
-
-type Constructor<T = {}> = new (...args: any[]) => T;
 
 export declare class EntityMixinInterface {
 	Entity: EntityI;
@@ -18,25 +17,29 @@ export declare class EntityMixinInterface {
  * ConsumeEntityMixin a mixin that consumes an Entity context.
  * 
  */
-export const ConsumeEntityMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
+export const ConsumeEntityMixin = <T extends MixinBase<ReactiveElement>>(
+	superClass: T
+): MixinReturn<T, EntityMixinInterface> => {
 
-	class ContextConsumeEntityMixinClass extends superClass {
+	abstract class ContextConsumeEntityMixinClass extends superClass {
 		@consume({ context: entityContext, subscribe: true })
 		@state() Entity!: EntityI;
 	};
-	return ContextConsumeEntityMixinClass as unknown as Constructor<EntityMixinInterface> & T;
+	return ContextConsumeEntityMixinClass;
 }
 
 /**
  * ProvideEntityMixin a mixin that Provides an Entity context.
  * 
  */
-export const ProvideEntityMixin = <T extends Constructor<ReactiveElement>>(superClass: T) => {
+export const ProvideEntityMixin = <T extends MixinBase<ReactiveElement>>(
+	superClass: T
+): MixinReturn<T, EntityMixinInterface> => {
 
-	class ContextProvideEntityMixinClass extends superClass {
+	abstract class ContextProvideEntityMixinClass extends superClass {
 		@provide({ context: entityContext })
 		@state() Entity!: EntityI;
-		
+
 		override willUpdate(props: PropertyValues<this>) {
 			// we set the data-entity attribute to the entity name
 			// so that we can query the dom for this entity - this is used 
@@ -49,5 +52,5 @@ export const ProvideEntityMixin = <T extends Constructor<ReactiveElement>>(super
 
 	};
 
-	return ContextProvideEntityMixinClass as unknown as Constructor<EntityMixinInterface> & T;
+	return ContextProvideEntityMixinClass;
 }

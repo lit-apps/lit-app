@@ -1,7 +1,9 @@
+import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import { LitElement, TemplateResult, html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
 import { DefaultI, RenderConfig } from '../types/entity';
+
 import('@material/web/icon/icon.js')
 
 
@@ -67,7 +69,9 @@ export declare class RenderHeaderMixinInterface {
  * level 3 a h5 secondary title, 
  * level 4 no title.
  */
-export const RenderHeaderMixin = <T extends Constructor<LitElement>>(superClass: T) => {
+export const RenderHeaderMixin = <T extends MixinBase<LitElement>>(
+	superClass: T
+): MixinReturn<T, RenderHeaderMixinInterface> => {
 
 	abstract class RenderHeaderMixinClass extends superClass {
 
@@ -113,8 +117,7 @@ export const RenderHeaderMixin = <T extends Constructor<LitElement>>(superClass:
 		}
 
 	};
-	// Cast return type to your mixin's interface intersected with the superClass type
-	return RenderHeaderMixinClass as unknown as Constructor<RenderHeaderMixinInterface> & T;
+	return RenderHeaderMixinClass;
 }
 
 export default RenderHeaderMixin;
