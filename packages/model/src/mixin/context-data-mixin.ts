@@ -51,11 +51,21 @@ export const ConsumeDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 
 	abstract class ContextConsumeDataMixinClass extends superClass {
 
-		@state() data!: D;
+		@state() contextData!: D;
+		// TODO: check if we still need prevent-consume as having data and contextData as separate props should be enough
 		@property({ type: Boolean, attribute: 'prevent-consume' }) preventConsume = false;
 
 		@consume({ context: dataIsArrayContext, subscribe: true })
 		@state() dataIsArray!: boolean;
+
+		private _data!: D;
+		@property()
+		set data(val: D) {
+			this._data = val;
+		}
+		get data() {
+			return this._data !== undefined ? this._data : this.contextData
+		}
 
 		/**
 		 * whether the data has changed for a given entity and path
@@ -120,6 +130,7 @@ export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 
 	abstract class ContextProvideDataMixinClass extends superClass {
 
+		declare loading: boolean;
 		@consume({ context: dataContext, subscribe: true })
 		@state() parentData!: any;
 
@@ -137,15 +148,23 @@ export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 		provider = new ContextProvider(this, { context: dataContext, initialValue: this.data });
 
 		/**
-		 * A flag to know if we have parent Data
+		 * A flag to know if we have a parent Provider
+		 * we only set provider values when: 
+		 * - we do not have parentData
+		 * - we have parentData and both data and parentData are set
 		 */
-		// private _hasParentData = false;
+		// private _hasParentProvider = false;
 
 		override willUpdate(prop: PropertyValues) {
 
 			// we set parentData as prototype of data if data and parentData are set
 			if (prop.has('parentData') || prop.has('data')) {
 				if (this.data !== undefined) {
+
+					// we might get parentData while data is still loading 
+					if (!prop.has('data') && this.loading === true) {
+						return;
+					}
 
 					// console.info('SET DATA', this.data, this.parentData)
 					if (this.data === null && this.parentData) {
