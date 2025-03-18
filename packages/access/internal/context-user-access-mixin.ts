@@ -1,11 +1,11 @@
 import type { UserUidRoleT } from '@lit-app/cmp/user/internal/types';
 import { ResourceI } from '@lit-app/model';
 import { ContextProvider, consume, createContext } from '@lit/context';
+import { FirestoreDocumentController } from '@preignition/lit-firebase';
+import { doc, getFirestore } from 'firebase/firestore';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import usersFromData from './usersFromData';
-import { FirestoreDocumentController } from '@preignition/lit-firebase';
-import { doc, getFirestore } from 'firebase/firestore';
 
 export const userAccessContext = createContext<UserUidRoleT[]>('user-access');
 
@@ -36,7 +36,7 @@ export const ConsumeUserAccessMixin = <T extends Constructor<ReactiveElement>>(s
  * 
  * It reacts on data change; fetches the team owning the entity and reads all uids of users belonging to the team
  */
-export const ProvideUserAccessMixin = <T extends Constructor<ReactiveElement & { data: any }>>(superClass: T) => {
+export const ProvideUserAccessMixin = <T extends Constructor<ReactiveElement & { data: any, contextData: any }>>(superClass: T) => {
 
 	class ContextProvideUserAccessMixinClass extends superClass {
 
@@ -72,10 +72,10 @@ export const ProvideUserAccessMixin = <T extends Constructor<ReactiveElement & {
 
 		override willUpdate(props: PropertyValues<this>) {
 			super.willUpdate(props);
-			if (props.has('data')) {
+			if (props.has('data') || props.has('contextData')) {
 				const oldTeam = props.get('data')?.metaData?.access?.team || props.get('teamId');
 				const team = this.data?.metaData?.access?.team || this.teamId;
-				if(team && team !== oldTeam) {
+				if (team && team !== oldTeam) {
 					this.setupTeamID(team);
 				}
 			}
