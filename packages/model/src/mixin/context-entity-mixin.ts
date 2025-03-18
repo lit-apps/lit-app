@@ -1,6 +1,6 @@
 import { consume, createContext, provide } from '@lit/context';
 import { PropertyValues, ReactiveElement } from 'lit';
-import { state } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 // import type {EntityI} from '../types/entity';
 import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import type { EntityI } from '../types';
@@ -12,6 +12,10 @@ export const entityContext = createContext<EntityI>('entity-class-context');
 export declare class EntityMixinInterface {
 	Entity: EntityI;
 }
+export declare class ConsumeEntityMixinInterface extends EntityMixinInterface {
+	contextEntity: EntityI;
+}
+
 
 /**
  * ConsumeEntityMixin a mixin that consumes an Entity context.
@@ -19,11 +23,20 @@ export declare class EntityMixinInterface {
  */
 export const ConsumeEntityMixin = <T extends MixinBase<ReactiveElement>>(
 	superClass: T
-): MixinReturn<T, EntityMixinInterface> => {
+): MixinReturn<T, ConsumeEntityMixinInterface> => {
 
 	abstract class ContextConsumeEntityMixinClass extends superClass {
 		@consume({ context: entityContext, subscribe: true })
-		@state() Entity!: EntityI;
+		@state() contextEntity!: EntityI;
+
+		private _Entity!: EntityI;
+		@property({ attribute: false })
+		set Entity(val: EntityI) {
+			this._Entity = val;
+		}
+		get Entity(): EntityI {
+			return this._Entity !== undefined ? this._Entity : this.contextEntity
+		}
 	};
 	return ContextConsumeEntityMixinClass;
 }

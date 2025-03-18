@@ -1,5 +1,4 @@
 import { Parser } from '@json2csv/plainjs';
-import { GridDataProvider } from '@vaadin/grid';
 import { TemplateResult } from 'lit';
 import { Collection, CollectionI } from './dataI';
 import { DefaultI, RenderConfig } from './entity';
@@ -15,7 +14,7 @@ export declare abstract class RenderInterface<
 	protected onGridDblClick(e: CustomEvent): void
 	protected onActiveItemChanged(e: CustomEvent): void
 	// getEntityData(data: D | Collection<D>, config: C): unknown
-	getDataProvider(data: unknown, config: C): undefined | GridDataProvider<D>
+	// getDataProvider(data: unknown, config: C): undefined | GridDataProvider<D>
 	protected renderDataLoading(config: C): TemplateResult
 	// protected renderTitle(data: D, config: C): TemplateResult | string
 	protected renderArrayTitle(data: Collection<D>, config: C): TemplateResult | string

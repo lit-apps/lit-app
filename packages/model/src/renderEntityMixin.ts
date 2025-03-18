@@ -113,7 +113,7 @@ export default function renderMixin<
         this.onActiveItemChanged(e);
       }
       const doc = this.constructor.documentationKeys?.grid
-
+      // const dataProvider = this.getDataProvider(data, config)
       return html`<vaadin-grid 
         accessible-name="grid for ${this.entityName}"
         id="grid"
@@ -121,7 +121,6 @@ export default function renderMixin<
         class="flex entity grid ${this.entityName}"
         .itemIdPath=${this.itemIdPath}
         .items=${data}
-        .dataProvider=${this.getDataProvider(data, config)}
         ${gridRowDetailsRenderer(
         (data: CollectionI<D>,
           model: any,
@@ -138,9 +137,9 @@ export default function renderMixin<
       </vaadin-grid>`
     }
 
-    protected getDataProvider(_data: Collection<D>, _config: C) {
-      return undefined
-    }
+    // protected getDataProvider(_data: Collection<D>, _config: C) {
+    //   return undefined
+    // }
 
     protected onGridDblClick(e: CustomEvent): void {
       const context = (e.currentTarget as Grid).getEventContext(e);

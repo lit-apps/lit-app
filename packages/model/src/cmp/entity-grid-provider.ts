@@ -1,8 +1,10 @@
+import { wait } from "@lit-app/shared";
 import { watch } from "@lit-app/shared/decorator/index.js";
 import { Grid } from "@vaadin/grid";
-import { css, html, LitElement } from "lit";
+import { css, TemplateResult } from "lit";
 import { customElement, property, query } from 'lit/decorators.js';
 import { entityI, RenderConfig } from "../types.js";
+import AbstractEntityElement from "./abstract-entity-element.js";
 
 /**
  * an element that display an entity grid and reloads data on demand
@@ -10,29 +12,31 @@ import { entityI, RenderConfig } from "../types.js";
  *
  */
 @customElement('lapp-entity-grid-provider')
-export default class lappEntityGridProvider extends LitElement {
-  // ProvideEntityMixin( 
-  //   ProvideDataMixin()(LitElement)) {
+export default class lappEntityGridProvider extends AbstractEntityElement {
 
   static override styles = css`
       :host {
         display: block;
       }
     `;
-
-  @property({ attribute: false }) entity!: entityI;
-  @property({ attribute: false }) data!: any;
-  @watch('data') dataChanged(data: any) {
-    this.grid.items = data;
+  @watch('contextData')
+  @watch('data') async dataChanged(data: any) {
+    if (!this.entity) {
+      await wait(50);
+    }
+    this.items = await this.entity.getGridData(this.data, this.language);
+    if (this.grid) {
+      this.grid.items = this.items;
+    }
   }
+  private items: any[] = [];
+  @property() language!: string;
   @property({ attribute: false }) config!: RenderConfig;
 
   @query('#grid') grid!: Grid;
-  override render() {
-    if (!this.entity) {
-      return html`loading entity... `;
-    }
-    return this.entity.renderGrid.call(this.entity, this.data, this.config);
+
+  override renderEntity(entity: entityI, config: RenderConfig): TemplateResult {
+    return this.entity.renderGrid.call(entity, this.items, config) as TemplateResult;
   }
 
 }

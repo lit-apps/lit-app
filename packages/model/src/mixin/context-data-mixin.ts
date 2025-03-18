@@ -1,6 +1,6 @@
 import DataHasChanged from '@lit-app/shared/event/data-has-changed';
 import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
-import { consume, ContextConsumer, ContextProvider, createContext, provide } from '@lit/context';
+import { consume, ContextProvider, createContext, provide } from '@lit/context';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -51,9 +51,11 @@ export const ConsumeDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 
 	abstract class ContextConsumeDataMixinClass extends superClass {
 
+		@consume({ context: dataContext, subscribe: true })
 		@state() contextData!: D;
+
 		// TODO: check if we still need prevent-consume as having data and contextData as separate props should be enough
-		@property({ type: Boolean, attribute: 'prevent-consume' }) preventConsume = false;
+		// @property({ type: Boolean, attribute: 'prevent-consume' }) preventConsume = false;
 
 		@consume({ context: dataIsArrayContext, subscribe: true })
 		@state() dataIsArray!: boolean;
@@ -61,6 +63,10 @@ export const ConsumeDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 		private _data!: D;
 		@property()
 		set data(val: D) {
+			// if (val !== undefined) {
+			// if se set data, we should not consume context data
+			// this.preventConsume = true
+			// }
 			this._data = val;
 		}
 		get data() {
@@ -76,29 +82,29 @@ export const ConsumeDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 			return !!hasChangedEvent.detail.hasChanged;
 		}
 
-		private cachedData!: any;
-		consumer = new ContextConsumer(this, {
-			context: dataContext,
-			subscribe: true,
-			callback: (value: any) => {
-				if (this.preventConsume) {
-					this.cachedData = value;
-					// this.requestUpdate();
-				} else {
-					this.data = value;
-				}
-			}
-		});
+		// private cachedData!: any;
+		// consumer = new ContextConsumer(this, {
+		// 	context: dataContext,
+		// 	subscribe: true,
+		// 	callback: (value: any) => {
+		// 		if (this.preventConsume) {
+		// 			this.cachedData = value;
+		// 			// this.requestUpdate();
+		// 		} else {
+		// 			this.contextData = value;
+		// 		}
+		// 	}
+		// });
 
-		override willUpdate(prop: PropertyValues) {
-			if (prop.has('preventConsume')) {
-				const old = prop.get('preventConsume');
-				if (old === false && this.preventConsume === true && this.cachedData) {
-					this.data = this.cachedData;
-				}
-			}
-			super.willUpdate(prop);
-		}
+		// override willUpdate(prop: PropertyValues) {
+		// 	if (prop.has('preventConsume')) {
+		// 		const old = prop.get('preventConsume');
+		// 		if (old === false && this.preventConsume === true && this.cachedData) {
+		// 			this.data = this.cachedData;
+		// 		}
+		// 	}
+		// 	super.willUpdate(prop);
+		// }
 
 
 	};

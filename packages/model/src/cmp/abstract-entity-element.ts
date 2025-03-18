@@ -89,8 +89,8 @@ export default abstract class AbstractEntityElement extends
 	}
 
 	protected override willUpdate(props: PropertyValues<this>) {
-		if (props.has('Entity') || props.has('useEntity')) {
-			this.setEntity(this.useEntity || this.Entity)
+		if (props.has('Entity') || props.has('contextEntity')) {
+			this.setEntity(this.Entity)
 		}
 		if (props.has('realTime') && this.entity) {
 			this.entity.realTime = this.realTime
@@ -147,10 +147,10 @@ export default abstract class AbstractEntityElement extends
 		// 	return html``;
 		// }
 
-		return [
-			super.render(),
-			this.renderEntity(this.entity, this.renderConfig)
-		]
+		return html`
+		${super.render()}
+		${this.renderEntity(this.entity, this.renderConfig)}
+		`
 	}
 
 	/**
