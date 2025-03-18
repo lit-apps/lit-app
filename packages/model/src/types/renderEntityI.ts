@@ -1,4 +1,5 @@
 import { Parser } from '@json2csv/plainjs';
+import { GridDataProvider } from '@vaadin/grid';
 import { TemplateResult } from 'lit';
 import { Collection, CollectionI } from './dataI';
 import { DefaultI, RenderConfig } from './entity';
@@ -13,6 +14,8 @@ export declare abstract class RenderInterface<
 
 	protected onGridDblClick(e: CustomEvent): void
 	protected onActiveItemChanged(e: CustomEvent): void
+	// getEntityData(data: D | Collection<D>, config: C): unknown
+	getDataProvider(data: unknown, config: C): undefined | GridDataProvider<D>
 	protected renderDataLoading(config: C): TemplateResult
 	// protected renderTitle(data: D, config: C): TemplateResult | string
 	protected renderArrayTitle(data: Collection<D>, config: C): TemplateResult | string
@@ -22,8 +25,7 @@ export declare abstract class RenderInterface<
 	renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]): TemplateResult
 	protected renderMetaData(_data: D, _config: C): TemplateResult
 	protected renderCard(data: Collection<D>, config: C): TemplateResult
-	protected renderGrid(data: Collection<D>, config: C): TemplateResult
-	protected renderGrid(data: Collection<D>, config: C): TemplateResult
+	renderGrid(data: Collection<D>, config: C): TemplateResult
 	protected renderCardItem(data: D, config: C, index?: number): TemplateResult
 	protected renderEmptyArray(_config: C): TemplateResult
 	protected renderList(_data: Collection<D>, _config: C): TemplateResult

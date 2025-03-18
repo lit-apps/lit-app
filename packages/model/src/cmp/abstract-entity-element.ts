@@ -123,15 +123,15 @@ export default abstract class AbstractEntityElement extends
 		this.entity = new E(this, this.realTime)
 
 		/** Handle Localization */
-		if (this.Entity.locale && this.setLocale) {
-			this.setLocale(camelToDash(this.Entity.entityName), this.Entity.locale);
+		if (E.locale && this.setLocale) {
+			this.setLocale(camelToDash(E.entityName), E.locale);
 		}
 
 		// notify entity is ready
 		this.dispatchEvent(new entityEvent(this.entity))
 
 		if (import.meta.env.DEV) {
-			this.setAttribute('entity-name', this.Entity.entityName)
+			this.setAttribute('entity-name', E.entityName)
 		}
 	};
 
@@ -159,15 +159,19 @@ export default abstract class AbstractEntityElement extends
 	protected abstract renderEntity(entity: entityI, config?: RenderConfig): TemplateResult;
 
 	protected renderHeader(entity: entityI, config?: RenderConfig) {
-		return entity.renderHeader(this.data, config || this.renderConfig);
+		const c = config || this.renderConfig
+		return entity.renderHeader(this.data, c);
 	}
 	protected renderSubHeader(entity: entityI, config?: RenderConfig) {
-		return entity.renderSubHeader(this.data, config || this.renderConfig);
+		const c = config || this.renderConfig
+		return entity.renderSubHeader(this.data, c);
 	}
 	protected renderBody(entity: entityI, config?: RenderConfig) {
-		return entity.renderBody(this.data, config || this.renderConfig);
+		const c = config || this.renderConfig
+		return entity.renderBody(this.data, c);
 	}
 	protected renderFooter(entity: entityI, config?: RenderConfig) {
-		return entity.renderFooter(this.data, config || this.renderConfig);
+		const c = config || this.renderConfig
+		return entity.renderFooter(this.data, c);
 	}
 }

@@ -94,6 +94,11 @@ export default function renderMixin<
     protected onActiveItemChanged(e: CustomEvent) {
       activeItemChanged(e)
     }
+
+    // protected getEntityData(data: D | Collection<D>, config: C): unknown {
+    //   return data;
+    // }
+
     renderGrid(data: Collection<D>, config: C) {
       // bring selection up to host 
       const onSelected = async (e: CustomEvent) => {
@@ -108,6 +113,7 @@ export default function renderMixin<
         this.onActiveItemChanged(e);
       }
       const doc = this.constructor.documentationKeys?.grid
+
       return html`<vaadin-grid 
         accessible-name="grid for ${this.entityName}"
         id="grid"
@@ -115,6 +121,7 @@ export default function renderMixin<
         class="flex entity grid ${this.entityName}"
         .itemIdPath=${this.itemIdPath}
         .items=${data}
+        .dataProvider=${this.getDataProvider(data, config)}
         ${gridRowDetailsRenderer(
         (data: CollectionI<D>,
           model: any,
@@ -129,6 +136,10 @@ export default function renderMixin<
         ${this.renderGridEmptyState(config)}
         <slot name="grid-column"></slot>
       </vaadin-grid>`
+    }
+
+    protected getDataProvider(_data: Collection<D>, _config: C) {
+      return undefined
     }
 
     protected onGridDblClick(e: CustomEvent): void {

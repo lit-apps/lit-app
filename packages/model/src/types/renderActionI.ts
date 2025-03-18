@@ -106,7 +106,8 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
    * @returns TemplateResult for the specified action.
    */
   renderAction<
-    N extends ActionKeyT<A, unknown>,
+    N extends ActionKeyT<typeof this['actions'], unknown>,
+    // N extends ActionKeyT<A, unknown>,
     // @-ts-expect-error - but this is working
     // D extends Parameters<this['actions'][N]['handler']>[1] 
     D extends this['actions'][N] extends ActionEntityI | ActionSimpleI ?
