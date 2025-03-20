@@ -24,7 +24,11 @@ const tree: CSSResult = css`
   :host([theme~='tree']) [part~='level-1'] {
     font-weight: var(--font-semi-bold);
   }
-  :host([theme~='tree']) [part~='level-2'] {
+  /* :host([theme~='tree']) [part~='level-2'] {
+    font-size: var(--font-size-small);
+  } */
+  :host([theme~='tree']) [part~='level-3'], 
+  :host([theme~='tree']) [part~='level-4'] {
     font-size: var(--font-size-small);
   }
   :host([theme~='tree']) [part~='cell'] {
