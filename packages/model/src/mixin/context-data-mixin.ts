@@ -16,7 +16,7 @@ export declare class DataMixinInterface<D> {
 	dataIsArray: boolean;
 }
 export declare class DataMixinConsumeInterface<D> extends DataMixinInterface<D> {
-	preventConsume: boolean;
+	// preventConsume: boolean;
 	/**
 	 * whether the data has changed for a given entity and path
 	 */
@@ -52,7 +52,7 @@ export const ConsumeDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 	abstract class ContextConsumeDataMixinClass extends superClass {
 
 		@consume({ context: dataContext, subscribe: true })
-		@state() contextData!: D;
+		@state() contextData!: any;
 
 		// TODO: check if we still need prevent-consume as having data and contextData as separate props should be enough
 		// @property({ type: Boolean, attribute: 'prevent-consume' }) preventConsume = false;

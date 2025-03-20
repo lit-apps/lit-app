@@ -87,7 +87,7 @@ export const ProvideAccessMixin = <
 	A extends AuthorizationT = AuthorizationT,
 	G extends GetAccessT = GetAccessT
 >(getAccessFn?: G) =>
-	<T extends MixinBase<ReactiveElement & { Entity?: EntityI, data: any }>>(
+	<T extends MixinBase<ReactiveElement & { Entity?: EntityI, data: any, contextData: any }>>(
 		superClass: T
 	): MixinReturn<T, ProvideAccessMixinInterface<A>> => {
 
@@ -102,9 +102,9 @@ export const ProvideAccessMixin = <
 				return data?.metaData?.access;
 			};
 
-			override willUpdate(changedProperties: PropertyValues<this>) {
-				super.willUpdate(changedProperties);
-				if (changedProperties.has('data') || changedProperties.has('accessDataGetter')) {
+			override willUpdate(props: PropertyValues<this>) {
+				super.willUpdate(props);
+				if (props.has('data') || props.has('contextData') || props.has('accessDataGetter')) {
 					this.updateAccess(this.data)
 				}
 			}

@@ -7,7 +7,6 @@ import { DefaultI, RenderConfig } from '../types/entity';
 import('@material/web/icon/icon.js')
 
 
-type Constructor<T = {}> = abstract new (...args: any[]) => T;
 export declare class RenderHeaderMixinInterface {
 	heading: string
 	icon: string
