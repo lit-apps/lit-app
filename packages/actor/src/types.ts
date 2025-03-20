@@ -1,5 +1,5 @@
 import { type TemplateResult } from 'lit';
-import  type Actor  from './actor.js';
+import type Actor from './actor.js';
 
 /**
  * Utils type constructor for events
@@ -30,12 +30,12 @@ import  type Actor  from './actor.js';
  */
 export type MachineParams<A extends Record<string, Record<string, any>>> =
   keyof A extends infer Type
-    ? Type extends keyof A
-      ? keyof A[Type] extends ""
-        ? { readonly type: Type }
-        : { readonly type: Type; readonly params: A[Type] }
-      : never
-    : never;
+  ? Type extends keyof A
+  ? keyof A[Type] extends ""
+  ? { readonly type: Type }
+  : { readonly type: Type; readonly params: A[Type] }
+  : never
+  : never;
 
 export type ActorIdT = string | undefined | null
 
@@ -46,23 +46,24 @@ export type ActorIdT = string | undefined | null
  * and allows to know how to render as buttons or other UI elements
  */
 export type EventMetaT = {
-    label?: string;
-    helper?: string;
-    filled?: boolean;
-    outlined?: boolean;
-    icon?: string;
-    style?: string;
-    renderer?: (html: TemplateT, actor: Actor) => TemplateResult;
-    /**
-     * a function that returns true if the action should be hidden when guarded
-     */
-    hideGuarded?: boolean | ((actor: Actor) => boolean);
-    confirm?: {
-      heading: string;
-      renderer: (html: TemplateT, actor: Actor, data?: any) => TemplateResult;
-      confirmLabel?: string;
-      cancelLabel?: string;
-    };
+  label?: string;
+  helper?: string;
+  filled?: boolean;
+  outlined?: boolean;
+  icon?: string;
+  isIconButton?: boolean;
+  style?: string;
+  renderer?: (html: TemplateT, actor: Actor) => TemplateResult;
+  /**
+   * a function that returns true if the action should be hidden when guarded
+   */
+  hideGuarded?: boolean | ((actor: Actor) => boolean);
+  confirm?: {
+    heading: string;
+    renderer: (html: TemplateT, actor: Actor, data?: any) => TemplateResult;
+    confirmLabel?: string;
+    cancelLabel?: string;
+  };
 }
 
 /**

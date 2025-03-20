@@ -158,7 +158,8 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
             icon, 
             renderer, 
             confirm, 
-            style 
+            style, 
+            isIconButton 
           } = eventConfig.meta || {}
           if (renderer) {
             return renderer.call(this, html, actor);
@@ -172,16 +173,19 @@ export default class actorActions extends ConsumeActorMixin(LitElement) {
             }
           };
 
-          const tag = tags[iconButton ? 'iconButton' : 'button'][filled ? 'filled' : outlined ? 'outlined' : 'default'];
+          const ib = isIconButton || iconButton;
+          const tag = tags[ib ? 'iconButton' : 'button'][filled ? 'filled' : outlined ? 'outlined' : 'default'];
 
+          
           return htmlStatic`
             <${tag}
               ?soft-disabled=${disabled}
               @click=${onClick}
               style=${ifDefined(style)} 
+              aria-label=${label}
             >
-              ${icon ? html`<lapp-icon slot="icon">${icon}</lapp-icon>` : nothing}
-              ${label}
+              ${icon ? html`<lapp-icon slot=${ib ? nothing as any : 'icon' }>${icon}</lapp-icon>` : nothing}
+              ${ib ? nothing : label}
             </${tag}>
           `;
         })}
