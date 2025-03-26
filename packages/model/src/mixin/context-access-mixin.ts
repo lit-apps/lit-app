@@ -87,7 +87,7 @@ export const ProvideAccessMixin = <
 	A extends AuthorizationT = AuthorizationT,
 	G extends GetAccessT = GetAccessT
 >(getAccessFn?: G) =>
-	<T extends MixinBase<ReactiveElement & { Entity?: EntityI, data: any, contextData: any }>>(
+	<T extends MixinBase<ReactiveElement & { Entity?: EntityI, data: any, contextData?: any }>>(
 		superClass: T
 	): MixinReturn<T, ProvideAccessMixinInterface<A>> => {
 
