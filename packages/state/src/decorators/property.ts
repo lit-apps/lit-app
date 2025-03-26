@@ -1,5 +1,5 @@
 
-import { State } from '../state.js'
+import { State } from '../state.js';
 
 export type PropertyTypes = Array<unknown> | Boolean | Object | String | Number
 /**
@@ -65,9 +65,7 @@ export function property(
     // for fields, which don't have a descriptor, because this could overwrite
     // descriptor defined by other decorators.
     // @ts-expect-error  - we are cheating
-    return hasOwnProperty
-      ? Object.getOwnPropertyDescriptor(proto, name)
-      : undefined;
+    return hasOwnProperty ? Object.getOwnPropertyDescriptor(proto, name) : undefined;
   }
 
 }
