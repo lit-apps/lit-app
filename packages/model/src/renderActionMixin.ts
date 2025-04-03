@@ -401,6 +401,15 @@ export default function renderMixin<A extends ActionsT>(
       // host.dispatchEvent(new DataChanged({ entityName: entityName || this.entityName, data }))
     }
 
+    onInput(path: string, value: unknown) {
+      return (e: InputEvent) => {
+        const target = e.target as HTMLInputElement
+        const value = target.value
+        return this.update({ [path]: value })
+      }
+      // return this.host.dispatchEvent(new DataChanged({ path, value }))
+    }
+
     close(id: string, entityName?: string) {
       return this.host.dispatchEvent(new Close({ entityName: entityName || this.entityName, id }))
     }

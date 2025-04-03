@@ -49,7 +49,9 @@ export const ApplyGetterMixin = <T extends MixinBase<ReactiveElement>>(
 	return ApplyGetterMixinClass;
 }
 
-export declare class ProvideAccessMixinInterface<A extends AuthorizationT = AuthorizationT> extends AccessMixinInterface {
+export declare class ProvideAccessMixinInterface<
+	A extends AuthorizationT = AuthorizationT
+> extends AccessMixinInterface {
 	accessDataGetter: (data: any) => AccessT
 	updateAccess: (data: any) => void;
 	authorization: A;

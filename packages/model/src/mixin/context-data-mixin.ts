@@ -134,13 +134,15 @@ export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 	superClass: T
 ): MixinReturn<T, DataMixinInterface<D>> => {
 
+	// const [Symbol] = 
+
 	abstract class ContextProvideDataMixinClass extends superClass {
 
 		declare loading: boolean;
 		@consume({ context: dataContext, subscribe: true })
 		@state() parentData!: any;
 
-		@state() data!: D;
+		@state() data!: D //| undefined;
 
 		@provide({ context: dataIsArrayContext })
 		@state() dataIsArray!: boolean;
@@ -162,6 +164,9 @@ export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 		// private _hasParentProvider = false;
 
 		override willUpdate(prop: PropertyValues) {
+			// if (prop.has('path')) {
+			// 	this.data = undefined;
+			// }
 
 			// we set parentData as prototype of data if data and parentData are set
 			if (prop.has('parentData') || prop.has('data')) {
@@ -173,7 +178,7 @@ export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 					}
 
 					// console.info('SET DATA', this.data, this.parentData)
-					if (this.data === null && this.parentData) {
+					if (this.data === null) {
 						this.data = {} as D
 					}
 					const activateParentChange = this.relayParentChange && prop.has('parentData') && !!prop.get('parentData');

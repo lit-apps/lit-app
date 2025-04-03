@@ -192,6 +192,19 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
     * @returns CustomEvent with details of the created entity.
     */
   update: (data: Partial<unknown>, entityName?: string) => boolean;
+  /**
+   * Handles input events for the entity.
+   * 
+   * Example:
+   * ```ts
+   * <lapp-text-field 
+        label="image alt text" 
+        .value=${data?.alt || ''} 
+         @input=${this.onInput('alt')} 
+      ></lapp-text-field>
+   * ```
+   */
+  onInput: (path: string) => (e: CustomEvent) => boolean
 }
 
 /**

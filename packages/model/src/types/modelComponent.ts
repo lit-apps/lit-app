@@ -71,6 +71,7 @@ interface ModelComponentBase<T = any> {
 	table?: TableConfig<T>
 	grid?: GridConfig<T>
 	csv?: CsvConfig<T>
+	tags?: string[]
 	// set requestUpdate to true to request an update when the value changes
 	requestUpdate?: boolean
 	// do not render component when the function returns true 

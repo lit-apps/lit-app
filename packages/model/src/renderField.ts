@@ -227,6 +227,8 @@ export function renderField<D extends DefaultI>(
         .rows=${3}
         .name=${name}
         style=${ifDefined(model.style)}
+        rows=${model.rows || nothing as any}
+        resize=${model.resize || nothing}
         .required=${!!model.required}
         .writeLabel=${label}
         .translate=${true} 
