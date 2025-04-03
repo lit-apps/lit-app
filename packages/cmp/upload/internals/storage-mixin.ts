@@ -2,15 +2,16 @@
  * A mixin to handle file upload to firebase storage
  */
 
+import watch from '@lit-app/shared/decorator/watch.js';
+import { ToastEvent } from '@lit-app/shared/event/index.js';
 import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import { Upload } from '@vaadin/upload/src/vaadin-lit-upload';
 import type { UploadFile } from '@vaadin/upload/src/vaadin-upload.js';
 import { getApp } from "firebase/app";
+import { DocumentReference } from 'firebase/firestore';
+import { getDownloadURL, getStorage, ref, StorageReference, uploadBytesResumable, UploadTask } from 'firebase/storage';
 import { PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { ToastEvent } from '@lit-app/shared/event/index.js';
-import { getDownloadURL, getStorage, ref, StorageReference, uploadBytesResumable, UploadTask } from 'firebase/storage';
-import watch from '@lit-app/shared/decorator/watch.js';
 import { normalizeFile } from './normalizeFile.js';
 
 export interface uploadFinishedDetail {
@@ -82,7 +83,10 @@ export declare class StorageInterface {
   /**
    * Whether to prevent reading the file
    */
-  metaData: FirebaseUploadFile | { [key: string]: FirebaseUploadFile } | undefined
+  metaData: FirebaseUploadFile
+    | { [key: string]: FirebaseUploadFile }
+    | FirebaseUploadFile[]
+    | undefined
 
   uploading: number
 
@@ -95,6 +99,8 @@ type BaseT = Upload
 export type FirebaseUploadFile = UploadFile & {
   /** storage reference */
   url: string | undefined,
+  thumbnail: string | undefined,
+  ref: DocumentReference | undefined,
   timestamp: string,
   indeterminate: boolean | undefined,
 }
@@ -133,7 +139,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
       if (!metaData) return;
       let files: FirebaseUploadFile[] = [];
       if (this._isMultiple(this.maxFiles)) {
-        files = Object.values(metaData)
+        files = (Array.isArray(metaData) ? metaData : Object.values(metaData))
           .filter(meta => meta.name)
           .filter(meta => !(this.files as FirebaseUploadFile[]).some(file => file.url === meta.url));
 
@@ -141,7 +147,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
         files = [metaData];
       }
       this.uploadFiles(files);
-      this.dispatchEvent(new CustomEvent('meta-data-changed', { detail: {value: metaData} , bubbles: true, composed: true }));
+      this.dispatchEvent(new CustomEvent('meta-data-changed', { detail: { value: metaData }, bubbles: true, composed: true }));
     }
 
     @watch('readonly') readonlyChanged(readonly: boolean, oldReadonly: boolean) {
@@ -224,8 +230,9 @@ export const Storage = <T extends MixinBase<BaseT>>(
       let uploadTask: UploadTask;
       let fileRef: StorageReference
       const isMulti = this._isMultiple(this.maxFiles)
+      const name = this.fileName || file.name;
       try {
-        fileRef = getFileRef(this.appName, this.storageBasePath, this.fileName || file.name, !isMulti, this.noFileExtension);
+        fileRef = getFileRef(this.appName, this.storageBasePath, name, !isMulti, this.noFileExtension);
         uploadTask = uploadBytesResumable(fileRef, file, { contentType: file.type });
       } catch (e) {
         console.error('cannot upload document', e);
@@ -301,7 +308,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
             this.dispatchEvent(new ToastEvent(`error while uploading document (${e.message})`, 'error'));
 
           },
-          () => {
+          async () => {
             this.log && console.log('uploaded, now storing at db level');
             file.loadedStr = file.totalStr;
             file.uploading = false;
@@ -310,27 +317,30 @@ export const Storage = <T extends MixinBase<BaseT>>(
             this._renderFileList();
             this.dispatchEvent(new CustomEvent('upload-success', { detail: { file } }));
             // Upload completed successfully, now we can get the download URL
-            return getDownloadURL(fileRef)
-              .then(downloadURL => {
-                this.log && console.log('File available at', downloadURL);
-                file.url = downloadURL;
-                file.complete = true;
-                file.status = '';
-                this._renderFileList();
-                const event = new UploadFinishedEvent(normalizeFile(file), isMulti);
-                if(this.dispatchEvent(event)) {
-                  this.uploadFinished(event);
-                };
-                return event.detail.promise;
-              })
-              .then(() => {
-                this.clearFile(file);
-                this.log && console.log('All done');
-              })
-              .catch(e => {
-                this.log && console.error('cannot save metaData', e);
-                this.dispatchEvent(new ToastEvent(`error while saving document metaData  (${e.message})`, 'error'));
-              })
+            try {
+              const downloadURL = await getDownloadURL(fileRef);
+              file.url = downloadURL;
+              // Try to get the thumbnail URL, fallback to empty string if it fails
+              try {
+                const thumbnailURL = downloadURL.replace('/media/', '/media/thumbnails/').replace(/(\.[^.]+)$/, '_200x200$1');
+                file.thumbnail = thumbnailURL || '';
+              } catch (err) {
+                console.error('Failed to create thumbnail URL:', err);
+              }
+              this.log && console.log('File available at', downloadURL);
+              file.complete = true;
+              file.status = '';
+              this._renderFileList();
+              const event = new UploadFinishedEvent(normalizeFile(file), isMulti);
+              if (this.dispatchEvent(event)) {
+                this.uploadFinished(event);
+              };
+              this.clearFile(file);
+              this.log && console.log('All done');
+            } catch (error) {
+              this.log && console.error('cannot save metaData', error);
+              this.dispatchEvent(new ToastEvent(`error while saving document metaData  (${(error as Error).message})`, 'error'));
+            }
           }
         );
       }
