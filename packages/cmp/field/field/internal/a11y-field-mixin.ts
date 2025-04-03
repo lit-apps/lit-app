@@ -2,7 +2,7 @@ import { PropertyValues, TemplateResult, html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
-import { parseInline } from '@lit-app/md-parser';
+import { parseInline } from '@lit-app/shared/md/index.js';
 import { Field } from '@material/web/field/internal/field';
 
 export type Variant = 'a11y'
@@ -24,8 +24,8 @@ export declare class A11yFieldMixinInterface {
 	 */
 	persistSupportingText: boolean | undefined;
 	/**
-   * get the label as text - and parsed when it is markdown
-   */
+	 * get the label as text - and parsed when it is markdown
+	 */
 	getTextLabel(): string;
 
 }

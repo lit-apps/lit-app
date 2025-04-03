@@ -11,7 +11,7 @@ import { githubHighlight } from '@lit-app/shared/styles'
 import('@lit-app/cmp/youtube/youtube.js');
 import('@preignition/gitbook-parser/src/gitbook-hint.js');
 
-import { parse } from '@lit-app/md-parser';
+import { parse } from '@lit-app/shared/md/index.js';
 import { MdFilledTextField } from '@material/web/textfield/filled-text-field';
 import '@github/markdown-toolbar-element';
 import '@lit-app/cmp/toolbar/toolbar.js';
@@ -1023,7 +1023,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 		this._input.value = front + newText + back;
 		this._input.setSelectionRange(selectionStart, selectionStart + newText.length);
 		if (format.includes('$2')) {
-			const newTextWithoutPlaceholder = newText.replace('$2', defaultText2 ||'');
+			const newTextWithoutPlaceholder = newText.replace('$2', defaultText2 || '');
 			this._input.value = front + newTextWithoutPlaceholder + back;
 			const caretPos = front.length + newText.indexOf('$2');
 			this._input.setSelectionRange(caretPos, caretPos);

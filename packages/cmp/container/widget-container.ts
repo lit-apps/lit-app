@@ -1,4 +1,4 @@
-import { parseInline } from '@lit-app/md-parser';
+import { parseInline } from '@lit-app/shared/md/index.js';
 import { css, LitElement, nothing } from "lit";
 import { customElement, property } from 'lit/decorators.js';
 import { literal, html as staticHtml } from 'lit/static-html.js';

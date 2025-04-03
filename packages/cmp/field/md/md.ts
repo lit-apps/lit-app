@@ -1,7 +1,7 @@
 import { html, LitElement, nothing } from "lit";
 import { property } from 'lit/decorators.js';
 import { ConsumeAccessibilityMixin } from '../../mixin/context-accessibility-mixin';
-import { parse } from '@lit-app/md-parser';
+import { parse } from '@lit-app/shared/md/index.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { MdConfigT } from './types';
 

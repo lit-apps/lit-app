@@ -1,4 +1,4 @@
-import { parse } from '@lit-app/md-parser';
+import { parse } from '@lit-app/shared/md/index.js';
 import { HTMLEvent } from "@lit-app/shared/types.js";
 import { LifSpan } from '@preignition/lit-firebase/span';
 import FirebaseDocumentController from "@preignition/lit-firebase/src/firebase-document-controller";
