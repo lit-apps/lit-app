@@ -1,10 +1,10 @@
-import { LitElement, html, css, PropertyValues } from 'lit';
-import '@vaadin/grid/lit-all-imports.js'
-import { customElement, property, query, state } from 'lit/decorators.js';
-import { MdDialog } from '@material/web/dialog/dialog.js';
-import { HTMLEvent } from '@lit-app/shared/types.js';
-import { Grid } from '@vaadin/grid/lit-all-imports.js';
 import { LappImage } from '@lit-app/cmp/media/image';
+import { HTMLEvent } from '@lit-app/shared/types.js';
+import { MdDialog } from '@material/web/dialog/dialog.js';
+import '@vaadin/grid/lit-all-imports.js';
+import { Grid } from '@vaadin/grid/lit-all-imports.js';
+import { css, html, LitElement, nothing, PropertyValues } from 'lit';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import('./image')
 import('./lazy-image')
 
@@ -15,6 +15,8 @@ import('@material/web/dialog/dialog.js');
 type ItemT = {
   src: string;
   thumbnail?: string;
+  url?: string;
+  tags?: string[];
 }
 
 @customElement('lapp-media-gallery')
@@ -31,16 +33,17 @@ export default class Gallery extends LitElement {
       }
 
       #container {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(var(--lapp-media-gallery-width, 200px), 1fr));
         position: relative;
-        display: flex;
-        flex-wrap: wrap;
         width: 100%;
         height: 100%;
       }
 
       lapp-lazy-image {
-        max-width: var(--lapp-media-gallery-max-width);
-        width: var(--lapp-media-gallery-width, 200px);
+        max-width: var(--lapp-media-gallery-max-width, calc(3 * var(--lapp-media-gallery-width, 200px)));
+        /* width: var(--lapp-media-gallery-width, 200px); */
         height: var(--lapp-media-gallery-height, 200px);
         margin: 4px;
         flex-grow: 1;
@@ -74,7 +77,7 @@ export default class Gallery extends LitElement {
       }  
       
       #toolbar {
-        padding: 4px 0 ;
+        margin: var(--space-medium);
         opacity: 0;
         transition: opacity var(--transition-quickly);
       }
@@ -85,6 +88,7 @@ export default class Gallery extends LitElement {
 
       .toolbar {
         display: flex;
+        gap: var(--space-medium);
       }
       
       .flex {
@@ -95,13 +99,13 @@ export default class Gallery extends LitElement {
         position: absolute;
         cursor: pointer;
         top: 50%;
-        margin-top: -45px;
+        margin-top: -15px;
         transition: opacity var(--transition-quickly);
         fill: white;
         width: 42px;
         height: 42px;
         opacity: 0.8;
-        background-color: var(--color-accent, rgba(0,0,0,0.7));
+        background-color: var(--color-secondary, rgba(0,0,0,0.7));
         border-radius: 50%;
         box-shadow: var(--material-shadow-elevation-24dp);
       }
@@ -118,11 +122,14 @@ export default class Gallery extends LitElement {
         left: 24px;
       }
 
+      form {
+        margin: 10px 52px;
+      }
       lapp-image {
         width: 100%; 
         height: 100%; 
-        max-width: 900px;
-        min-height: 400px;
+        min-width: 300px;
+        min-height: 150px; 
       }
       `
 
@@ -140,7 +147,6 @@ export default class Gallery extends LitElement {
   @query('md-dialog') dialog!: MdDialog;
   @query('#slotContainer') slotContainer!: HTMLSlotElement;
   @query('#slotPlaceholder') slotPlaceholder!: HTMLSlotElement;
-
 
 
   override render() {
@@ -161,10 +167,19 @@ export default class Gallery extends LitElement {
       ${this.noToolbar ? '' : html`
       <div id="toolbar" ?hasSelection=${this.hasSelection} part="toolbar">
         <slot name="toolbar">
-          <div class="toolbar">
+          <div class="toolbar ">
             <span class="flex"></span>
-            ${this.readonly ? '' : html`<md-outlined-button delete @click=${this.delete} icon="delete" >Delete ${this.selectedItems?.length} item${this.selectedItems?.length > 1 ? 's' : ''}</md-outlined-button>`}
-            <md-filled-button @click=${this.download} >Download ${this.selectedItems?.length} item${this.selectedItems?.length > 1 ? 's' : ''}</md-filled-button>
+            ${this.readonly ? nothing :
+          html`
+                <md-outlined-button @click=${this.delete} >
+                  <lapp-icon slot="icon">delete</lapp-icon>
+                  Delete ${this.selectedItems?.length} item${this.selectedItems?.length > 1 ? 's' : ''}
+                </md-outlined-button>
+                `}
+                <md-filled-button @click=${this.download} >
+                <lapp-icon slot="icon">download</lapp-icon>
+                Download ${this.selectedItems?.length} item${this.selectedItems?.length > 1 ? 's' : ''}
+              </md-filled-button>
           </div>
         </slot>
       </div>
@@ -197,11 +212,13 @@ export default class Gallery extends LitElement {
       window.removeEventListener('keydown', onkeydown);
     };
     return html`
-          <md-dialog 
+      <md-dialog 
         @open=${setListener} 
         @close=${unsetListener}>
         <form id="form-switch" method="dialog" slot="content">
-          <lapp-image sizing="contain" .src="${this.selected && this.selected.thumbnail || this.selected && this.selected.src || ''}" .placeholder="${this.previousPlaceholder || ''}" fade preload></lapp-image>
+          <lapp-image sizing="contain" 
+            .src="${this.selected?.thumbnail || this.selected?.url || this.selected?.src || ''}" 
+             fade preload></lapp-image>
           <div>
             <slot name="toolbar">
               ${this.isFirst ? '' : html`
@@ -216,8 +233,8 @@ export default class Gallery extends LitElement {
           </div>
         </form>
         <div slot="actions"> 
-          <md-outlined-button value="close">Cancel</md-outlined-button>
-          <md-filled-button value="ok">Select</md-filled-button>
+          <md-outlined-button  form="form-switch" value="close">Cancel</md-outlined-button>
+          <md-filled-button form="form-switch" value="ok">Select</md-filled-button>
         </div>
       </md-dialog>
     `
@@ -232,7 +249,7 @@ export default class Gallery extends LitElement {
         this.onClickImage(item, e);
       }}
         ?selected="${this.selectedItems.indexOf(item) > -1}" 
-        .src="${item.thumbnail || item.src || ''}">
+        .src="${item.thumbnail || item.url || item.src || ''}">
         <svg name="placeholder" viewBox="-500 -500 1100 1100" slot="placeholder"><use xlink:href="#placeholder-svg"></use></svg> 
       </lapp-lazy-image>`
     );
@@ -339,7 +356,6 @@ export default class Gallery extends LitElement {
 
   override updated(props: PropertyValues<this>) {
     if (props.has('selected')) {
-      this.toggleSelected(this.selected, props.get('selected'));
       this.dispatchEvent(new CustomEvent('selected-changed', { detail: { value: this.selected } }));
     }
     if (props.has('selectedItems')) {
@@ -348,17 +364,32 @@ export default class Gallery extends LitElement {
     super.updated(props);
   }
 
-  toggleSelected(_selected: ItemT | undefined, previous: ItemT | undefined) {
-    if (previous) {
-      this.previousPlaceholder = previous.src;
-    }
-  }
 
   updateItemsFromDom() {
-    this.items = this.slotContainer.assignedNodes()
+    const slotItems = Array.from(this.slotContainer.assignedNodes())
       .filter(node => node.nodeType === Node.ELEMENT_NODE)
       .filter(node => Object.keys((node as HTMLElement).dataset).length)
-      .map(node => (node as HTMLElement).dataset as ItemT);
+      .map(node => {
+        const dataset = (node as HTMLElement).dataset;
+        const item: ItemT = {
+          src: dataset.src || '',
+          thumbnail: dataset.thumbnail || undefined
+        };
+
+        // Parse tags array from JSON string if available
+        if (dataset.tags) {
+          try {
+            item.tags = JSON.parse(dataset.tags);
+          } catch (e) {
+            // Handle case where tags might be a comma-separated string
+            item.tags = dataset.tags.split(',').map(tag => tag.trim());
+          }
+        }
+
+        return item;
+      });
+
+    this.items = slotItems;
   }
 
   open(item: ItemT) {

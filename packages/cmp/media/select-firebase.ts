@@ -1,29 +1,31 @@
-import { html } from "lit";
+import '@preignition/lit-firebase/query';
+import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import MediaSelectBase from "./select-base.js";
+import { FirebaseUploadFile } from '../upload/internals/storage-mixin.js';
+import MediaSelectBase from './select-base.js';
 import('./gallery.js');
-import('../upload/document.js');
+import('../upload/document-firebase.js');
+
+
+export type CollectionType = 'illustration' | 'easyread'
+
+
+
+const toMediaItems = (obj: FirebaseUploadFile) => {
+  // TODO(cg): handle thumbnail and getDownloadURL for each file.
+  return Object.entries(obj || {}).map(([_k, v]) => Object.assign({ src: v.url }, v));
+};
+
+const initImage = { mediaType: 'image' };
+
 
 /**
- *  
+ *  A widget to select a media item (image or video) and show the selection
  */
+@customElement('lapp-media-select-firebase')
+export default class LappMediaSelect extends MediaSelectBase {
 
-@customElement('lapp-media-select')
-export default class lappMediaSelect extends MediaSelectBase {
 
-  // static override styles = css`
-  //     :host {}
-  //   `;
-
-  // @property() name!: string;
-
-  // override render() {
-  //   return html`
-  //     <div>
-
-  //     </div>
-  //   `;
-  // }
   /**
    * firebase database collection
    */
@@ -32,18 +34,18 @@ export default class lappMediaSelect extends MediaSelectBase {
 
   protected override renderImage() {
     const onMetaChanged = (e: CustomEvent) => {
-      this.gallery.items = e.detail.value;
+      this.gallery.items = toMediaItems(e.detail.value);
     }
 
     return html`
       <h4><span>Image</span>${this.renderTab()}</h4>
-      <lapp-upload-document
-          max-file-size="5000000" 
+      <lapp-upload-document-firebase 
+          max-files-size="5000000" 
           accept="image/*, video/*" 
           .path=${this.collectionPath} 
           .store=${this.collectionStore}
           @meta-data-changed=${onMetaChanged} 
-          >
+          .hideExisting=${true}>
           <vaadin-button slot="add-button" theme="primary">
             Upload Media Files ...
           </vaadin-button>
@@ -57,17 +59,14 @@ export default class lappMediaSelect extends MediaSelectBase {
       }}>
         <slot name="gallery"></slot>
     </lapp-media-gallery>
-    </lapp-upload-document>`;
+    </lapp-upload-document-firebase>`;
   }
+
 
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lapp-media-select': lappMediaSelect;
+    'lapp-media-select-firebase': LappMediaSelect;
   }
 }
-
-
-
-const initImage = { mediaType: 'image' };
