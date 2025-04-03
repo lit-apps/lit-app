@@ -15,7 +15,7 @@ const hover: CSSResult = css`
 
 const tree: CSSResult = css`
   :host([theme~='tree'])  {
-    --vaadin-grid-cell-padding: 6px 16px;
+    /* --vaadin-grid-cell-padding: 6px 16px; */
   }
 
   :host([theme~='tree']) [part~='level-0'] {
@@ -38,10 +38,16 @@ const tree: CSSResult = css`
 
 `
 
+// TODO: replace class by part
 const util = css`
+    [part~="cell"][part~="no-padding"] {
+      --vaadin-grid-cell-padding:  var(--lumo-space-xs);
+    }
+
     [part~="cell"].strong {
       font-weight: var(--font-weight-bold);
     }
+    
     [part~="cell"].primary {
       color: var(--color-on-primary-container);
       background-image: linear-gradient(var(--color-primary-container), var(--color-primary-container));

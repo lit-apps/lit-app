@@ -4,8 +4,7 @@ export interface ValueChangedDetail<T = any> {
 }
 
 /**
- * This event is fired when an element closes on the main application
- * this can happen for instance when a dialog is closed, or a close tab button is clicked
+ * This event is fired when a value is changed.
  */
 export default class ValueChangedEvent<T = any, C = any> extends CustomEvent<ValueChangedDetail<T>> {
 	static readonly eventName = 'value-changed';
