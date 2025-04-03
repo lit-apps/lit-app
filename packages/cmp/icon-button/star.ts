@@ -34,11 +34,19 @@ export default class lappWidgetStar extends LitElement {
   /**
    * the label to use when the item is starred
    */
-  @property() starredLabel!: string;
+  @property() starredLabel: string = 'This item is starred - click to unstar';
   /**
    * the label to use when the item is not starred
    */
   @property() label: string = 'This item is not starred - click to star';
+
+  constructor() {
+    super();
+    this.addEventListener('click', (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+    });
+  }
 
   override render() {
     const label = this.selected ? this.starredLabel || this.label : this.label;

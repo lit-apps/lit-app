@@ -50,6 +50,15 @@ export default class lappCard extends Card {
       :host(:focus), a:focus {
         outline: none;
       }
+      :host([theme~="hover"]) { 
+        transform: scale(1);
+        will-change: transform, --vaadin-card-box-shadow;
+        transition: all var(--transition-quickly);
+      }
+      :host([theme~="hover"]:hover) {
+        transform: scale(1.015);
+        --vaadin-card-box-shadow: var(--lumo-box-shadow-m);
+      }
       ` ]
   }
 
