@@ -45,11 +45,11 @@ export const UploadFirestoreMixin = <T extends MixinBase<BaseT>>(
           return e.detail.promise = Promise.resolve();
         }
 
-        e.detail.promise = addDoc(collection(firestore, this.path), { ...e.detail.file });
-        return
+        return e.detail.promise = addDoc(collection(firestore, this.path), { ...e.detail.file });
+
       }
       const fieldPath = this.fieldPath + (isMultiple ? '.' + this.fileName.split('.')[0] : '');
-      e.detail.promise = updateDoc(doc(firestore, this.path), { [fieldPath]: { ...e.detail.file } });
+      return e.detail.promise = updateDoc(doc(firestore, this.path), { [fieldPath]: { ...e.detail.file } });
     }
 
     override subscribeMetaData(path: string, fieldPath?: string) {

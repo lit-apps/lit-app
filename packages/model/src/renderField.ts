@@ -107,7 +107,7 @@ export function renderField<D extends DefaultI>(
   entity: AbstractEntity,
   config?: FieldConfig<D>,
   consumingMode: RenderConfig['consumingMode'] = 'edit',
-  path?: string
+  path?: NestedKeys<D>
 ): TemplateResult {
   let model: ModelComponent<any> = get(path || name, m);
   if (!model && import.meta.env.DEV) {
@@ -210,7 +210,7 @@ export function renderField<D extends DefaultI>(
         .name=${name}
         type=${type}
         style=${ifDefined(model.style)}
-        rows=${ifDefined(model.rows)}
+        rows=${ifDefined(isComponentTextArea(model) && model.rows)}
         .readOnly=${disabled}
         .label=${label}
         .value=${origin}

@@ -1,15 +1,16 @@
 
 
 
+import { NestedKeys } from '../types.js';
 import { get } from './deep';
 import normalizeEmptyValue from './normalizeEmptyValue';
 
-export type FilterT = {
-  path: string
-  value: string
+export type FilterT<T> = {
+  path: NestedKeys<T>
+  value: T
 }
 
-export function filter(items: object[] | undefined | null, filters: FilterT[]) {
+export function filter<T extends object = any>(items: T[] | undefined | null, filters: FilterT<T>[]) {
   if (!items) {
     return [];
   }

@@ -48,12 +48,12 @@ export default function renderMixin<A extends ActionsT>(
   actions?: A
 ) {
 
-  const staticApply: {
-    entityName: string
+  type StaticApplyT = {
     actions: A & DefaultActionsT<unknown>
   } &
     StaticEntityActionI<A> &
-  { documentationKeys?: DocumentationKeysT } = {
+  { documentationKeys?: DocumentationKeysT }
+  const staticApply: StaticApplyT = {
     actions: Object.assign({}, defaultActions(), actions as A || {}),
 
     renderAction(
@@ -102,6 +102,7 @@ export default function renderMixin<A extends ActionsT>(
     },
 
     async getActionEvent(
+      this: StaticApplyT & { entityName: string },
       actionName: ActionKeyT<A, unknown>,
       host: HostElementI,
       data: ActionDataT<unknown>,
@@ -184,7 +185,10 @@ export default function renderMixin<A extends ActionsT>(
         })
     },
 
-    update(host: HTMLElement, data: unknown, entityName?: string) {
+    update(
+      this: StaticApplyT & { entityName: string },
+      host: HTMLElement, data: unknown, entityName?: string
+    ) {
       return host.dispatchEvent(new DataChanged({ entityName: entityName || this.entityName, data }))
     }
   }
@@ -198,7 +202,7 @@ export default function renderMixin<A extends ActionsT>(
     * the type of actions is properly inferred. 
     */
     // @ts-expect-error - we are cheating
-    declare ['constructor']: typeof staticApply
+    declare ['constructor']: typeof staticApply & { entityName: string }
 
     // TODO remove this when integrated in the model (we should have this on AbstractEntity only)
     override get actions() {
@@ -340,12 +344,12 @@ export default function renderMixin<A extends ActionsT>(
      * @returns The rendered action as a `TemplateResult`.
      */
     renderAction(
-      actionName: ActionKeyT<A, unknown>,
+      actionName: ActionKeyT<typeof this['actions'], unknown>,
       data: unknown,
       config?: RenderConfig,
       clickHandler?: (e: CustomEvent) => void
     ): TemplateResult {
-      return this.constructor.renderAction(actionName, this.host, data, config, clickHandler)
+      return this.constructor.renderAction(actionName as ActionKeyT<A, unknown>, this.host, data, config, clickHandler)
     }
 
     protected renderBulkAction(
@@ -401,7 +405,7 @@ export default function renderMixin<A extends ActionsT>(
       // host.dispatchEvent(new DataChanged({ entityName: entityName || this.entityName, data }))
     }
 
-    onInput(path: string, value: unknown) {
+    onInput(path: string, value?: unknown) {
       return (e: InputEvent) => {
         const target = e.target as HTMLInputElement
         const value = target.value

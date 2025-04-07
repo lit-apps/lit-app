@@ -204,7 +204,7 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
       ></lapp-text-field>
    * ```
    */
-  onInput: (path: string) => (e: CustomEvent) => boolean
+  onInput: (path: string, value?: unknown) => (e: InputEvent) => boolean
 }
 
 /**

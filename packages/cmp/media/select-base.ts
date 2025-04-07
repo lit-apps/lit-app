@@ -205,7 +205,7 @@ export default abstract class MediaSelectBase extends LitElement {
     };
     const onRemove = () => {
       this.value = null;
-      this.dispatchEvent(new ValueChangedEvent(this.data));
+      this.dispatchEvent(new ValueChangedEvent(this.value));
     };
 
     const youtubePreview = () => {

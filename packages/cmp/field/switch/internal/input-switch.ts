@@ -11,17 +11,12 @@ export abstract class InputSwitch extends MdSwitch {
 
 	@property() supportingOrErrorText!: string;
 
-	override get value() {
-		return this.selected
-		// return this.input?.checked;
-	}
-	override set value(value) {
-		this.selected = !!value
-		// this.selected = !!value;
-		// if (this.input) {
-		// 	this.input.checked = !!value
-		// }
-	}
+	// override get value() {
+	// 	return this.selected
+	// }
+	// override set value(value) {
+	// 	this.selected = !!value
+	// }
 
 	override firstUpdated(props: PropertyValues<this>) {
 		super.firstUpdated(props);

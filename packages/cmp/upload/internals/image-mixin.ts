@@ -1,8 +1,8 @@
-import '@vaadin/button/vaadin-lit-button.js';
 import watch from '@lit-app/shared/decorator/watch.js';
 import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
-import type { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';
+import '@vaadin/button/vaadin-lit-button.js';
 import { SlotController } from '@vaadin/component-base/src/slot-controller.js';
+import type { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';
 
 import { css, html } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
@@ -257,8 +257,8 @@ export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles?: any }>(
     @property() position: position = 'center';
     @property() sizing: sizing = 'contain';
 
-    @property({type: Boolean, attribute: 'hide-wrapper', reflect: true}) _hideWrapper: boolean = false;
-    
+    @property({ type: Boolean, attribute: 'hide-wrapper', reflect: true }) _hideWrapper: boolean = false;
+
     @state() error = ''
     @state() loading = false
     @state() loaded = false
@@ -283,7 +283,7 @@ export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles?: any }>(
     @watch('dropLabel') dropLabelChanged(label: string) {
       this.i18n.dropFiles.one = label;
     }
-    
+
     get hideWrapper() {
       return !!(this.src && this.loaded);
     }
@@ -302,7 +302,8 @@ export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles?: any }>(
     }
 
     get src() {
-      return this.metaData?.url || this.fallback;
+      const m = Array.isArray(this.metaData) ? this.metaData[0] : this.metaData
+      return m?.url || this.fallback;
     }
 
     constructor(...args: any[]) {
@@ -371,7 +372,7 @@ export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles?: any }>(
               <slot name="drop-label-icon"></slot>
               <slot name="drop-label"></slot>
             </div>
-            </div>` : 
+            </div>` :
           html`<div hidden>
             <slot name="drop-label-icon"></slot>
             <slot name="drop-label"></slot>
@@ -404,7 +405,7 @@ export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles?: any }>(
       // Note(cg): reset files list so that we can change again.
       console.log('image upload finished', e.detail);
       super.uploadFinished(e);
-      this.i18n = {...this.i18n};
+      this.i18n = { ...this.i18n };
       this._hideWrapper = this.hideWrapper;
       this.files = [];
     }
