@@ -1,6 +1,6 @@
+import DOMPurify from 'dompurify';
 import { html, nothing, TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import DOMPurify from 'dompurify';
 import { marked } from './marked';
 import cfg from './parseConfig';
 
@@ -41,3 +41,22 @@ export function sanitizeHTML(markdown: string, config = cfg): string {
   return DOMPurify.sanitize(marked(markdown, { renderer }) as string, config);
 }
 
+/**
+ * Replaces placeholders in a string with corresponding values from a data object.
+ * 
+ * Placeholders are defined in the format {{key}} where 'key' is a property name in the data object.
+ * If a placeholder's key is not found in the data object, the key itself is returned.
+ * 
+ * @param content - The string containing placeholders to be replaced
+ * @param data - An object containing key-value pairs for replacement
+ * @returns The content string with all placeholders replaced by their corresponding values
+ * 
+ * @example
+ * ```
+ * const result = replacePlaceholders("Hello, {{name}}!", { name: "World" });
+ * // result: "Hello, World!"
+ * ```
+ */
+export function replacePlaceholders(content: string, data: Record<string, string>) {
+  return content.replace(/{{(\w+)}}/g, (_, key) => data[key] || key);
+};
