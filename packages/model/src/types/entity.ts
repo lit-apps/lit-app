@@ -99,6 +99,7 @@ export type RenderConfig<O = OptionsT, A = AuthorizationT, T = any> = RenderConf
 	 * **view**: like data-entry mode but with all fields disabled / readonly
 	 */
 	consumingMode: 'view' | 'edit' | 'translate' | 'print' | 'offline'
+	advancedMode?: boolean // true when the entity is in advanced mode
 	/**
 	 * The id of the entity (docId)
 	 */

@@ -13,6 +13,7 @@ import {
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 
+import { get } from '@lit-app/shared/dataUtils/index.js';
 import { NestedKeys } from '@lit-app/shared/types.js';
 import { deprecated } from '@preignition/preignition-util';
 import type { RenderInterface } from './types/renderEntityFieldI';
@@ -33,17 +34,17 @@ export default function renderMixin<
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
-
+			const model = get(path, this.model);
 			const consumingMode = (this.host as EntityElement<D>).consumingMode ?? 'edit';
 			return renderField.call(
 				this.host as EntityElement<D>,
-				path,
-				(data ?? this.host.data ?? {}) as D,
-				false,
-				this.model,
-				this,
-				config,
-				consumingMode
+				{
+					path,
+					data: data ?? this.host.data as D,
+					model: { ...model, ...config },
+					entity: this,
+					consumingMode
+				}
 			);
 		}
 
@@ -56,33 +57,38 @@ export default function renderMixin<
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
+			const model = get(path, this.model);
+
 			const consumingMode = (this.host as EntityElement<D>).consumingMode ?? 'edit';
 			return renderField.call(
 				this.host as EntityElement<D>,
-				path,
-				data ?? this.host.data as D,
-				true,
-				this.model,
-				this,
-				config,
-				consumingMode
+				{
+					path,
+					data: data ?? this.host.data as D,
+					update: true,
+					model: { ...model, ...config },
+					entity: this,
+					consumingMode
+				}
 			);
 		}
 
 		@deprecated('use consumingMode on host instead')
-		renderFieldTranslate(name: NestedKeys<D>, config?: FieldConfig, data?: D) {
+		renderFieldTranslate(path: NestedKeys<D>, config?: FieldConfig, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
+			const model = get(path, this.model);
+			const consumingMode = 'translate'
 			return renderField.call(
 				this.host as EntityElement<D>,
-				name,
-				(data ?? this.host.data ?? {}) as D,
-				false,
-				this.model,
-				this,
-				config,
-				'translate');
+				{
+					path,
+					data: data ?? this.host.data as D,
+					model: { ...model, ...config },
+					entity: this,
+					consumingMode
+				})
 		}
 	}
 	const staticApply: StaticEntityField<D> = {

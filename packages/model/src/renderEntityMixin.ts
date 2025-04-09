@@ -403,10 +403,11 @@ export default function renderMixin<
   return R as unknown as Constructor<RenderInterface<D, C>> & typeof superclass;
 }
 
-function getFieldsFromModel(
-  model: Model<any>, renderConfig: RenderConfig | undefined, getConfig: (m: ModelComponent
-
-  ) => ModelComponent['grid'] | ModelComponent['csv'] | ModelComponent['table'] | undefined): [string, ModelComponent][] {
+export function getFieldsFromModel(
+  model: Model<any>,
+  renderConfig: RenderConfig | undefined,
+  getConfig: (m: ModelComponent) => ModelComponent['grid'] | ModelComponent['csv'] | ModelComponent['table'] | ModelComponent | undefined
+): [string, ModelComponent][] {
   function getFields(model: Model<any>, path: string = ''): [string, ModelComponent][] {
     const fields: [string, ModelComponent][] = [];
 
@@ -416,7 +417,7 @@ function getFieldsFromModel(
         continue
       }
       const p = path ? `${path}.${key}` : key
-      const config = getConfig(component)
+      const config = getConfig(component) as ModelComponent['grid']
       if (config) {
         if (config?.condition && !config.condition(renderConfig)) {
           continue;

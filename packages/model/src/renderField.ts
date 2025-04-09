@@ -26,6 +26,7 @@ import('@vaadin/multi-select-combo-box/vaadin-lit-multi-select-combo-box');
 import { NestedKeys } from '@lit-app/shared/types.js';
 import '../field-translate.js';
 import {
+  iComponentRenderer,
   isComponentCheckbox,
   isComponentCheckboxGroup,
   isComponentMd,
@@ -68,6 +69,7 @@ import('../../cmp/field/text-field')
 import('../../cmp/field/md-editor')
 import('../../cmp/field/md-droppable-editor')
 import('../../cmp/field/slider-field.js')
+import('../../cmp/field/switch-field.js')
 import('../../cmp/field/select.js')
 
 /**
@@ -82,7 +84,14 @@ import('../../cmp/field/select.js')
 //   element.dispatchEvent(new Update(detail));
 // }, 2000, true)
 
-
+type ParamsT<D> = {
+  path: NestedKeys<D>;
+  data: D;
+  model: ModelComponent<any>;
+  entity: AbstractEntity;
+  update?: boolean;
+  consumingMode?: RenderConfig['consumingMode'];
+}
 /**
  * Renders a field based on the provided model and configuration.
  *
@@ -100,29 +109,12 @@ import('../../cmp/field/select.js')
  */
 export function renderField<D extends DefaultI>(
   this: EntityElement,
-  name: NestedKeys<D>,
-  data: D = {} as D,
-  update: boolean,
-  m: Model<D>,
-  entity: AbstractEntity,
-  config?: FieldConfig<D>,
-  consumingMode: RenderConfig['consumingMode'] = 'edit',
-  path?: NestedKeys<D>
+  { path, data = {} as D, update, model, entity, consumingMode }: ParamsT<D>
+
 ): TemplateResult {
-  let model: ModelComponent<any> = get(path || name, m);
-  if (!model && import.meta.env.DEV) {
-    console.warn(`No model found for ${name}`);
-    return html`<i class="field" style="color:var(--color-warning);">Missing model for "${name}" in "${entity.entityName}"</i>`
-  }
-  if (config) {
-    model = { ...model, ...config } as ModelComponent
-  }
 
-  if (!model) {
-    throw new Error(`No model found for ${name}`);
-  }
 
-  const key = (name as string).split('.').pop();
+  const key = (path as string).split('.').pop();
 
   const { component } = model;
   if (!component) {
@@ -158,13 +150,13 @@ export function renderField<D extends DefaultI>(
       this.entityStatus?.isEditing ||
       this.entityStatus?.isNew ||
       (entity.realTime && this.authorization.canEdit)
-    ) && !(config?.disabled === true)
+    ) && !(model?.disabled === true)
       && consumingMode !== 'view');
 
   let disabled = !canEdit;
 
   // input handler
-  const value = get(name, data);
+  const value = get(path, data);
   const onInputFact = (property: string) => {
     return async (e: CustomEvent) => {
       if (consumingMode === 'offline'
@@ -181,7 +173,7 @@ export function renderField<D extends DefaultI>(
         );
         await this.updateComplete
       }
-      set(name, v, data);
+      set(path, v, data);
       if (v !== value && entity.realTime) {
         this.dispatchEvent(
           // we send a copy of the data to storing prototype
@@ -200,14 +192,14 @@ export function renderField<D extends DefaultI>(
 
   // Handle translation First
   if (consumingMode === 'translate') {
-    const origin = get(name, Object.getPrototypeOf(data));
-    const value = Object.getOwnPropertyDescriptor(data, name)?.value;
+    const origin = get(path, Object.getPrototypeOf(data));
+    const value = Object.getOwnPropertyDescriptor(data, path)?.value;
     if (isComponentText(model) || isComponentTextArea(model)) {
       const type = isComponentTextArea(model) ? 'textarea' : 'text';
       return html`
       <lapp-field-translate 
         class=${cls}
-        .name=${name}
+        .name=${path}
         type=${type}
         style=${ifDefined(model.style)}
         rows=${ifDefined(isComponentTextArea(model) && model.rows)}
@@ -225,7 +217,7 @@ export function renderField<D extends DefaultI>(
       return html`
       <lapp-md-editor 
         .rows=${3}
-        .name=${name}
+        .name=${path}
         style=${ifDefined(model.style)}
         rows=${model.rows || nothing as any}
         resize=${model.resize || nothing}
@@ -241,9 +233,13 @@ export function renderField<D extends DefaultI>(
         .charCounter=${!!model.maxLength}></lapp-md-editor>
       `
     }
-    throw new Error(`Translation not allowed for ${name}`);
+    throw new Error(`Translation not allowed for ${path}`);
   }
 
+  if (iComponentRenderer(model)) {
+    const renderer = model.renderer;
+    return renderer({ model, value, data, onInputFact });
+  }
   if (isComponentText(model)) {
     return renderText(model);
   }
@@ -310,7 +306,7 @@ export function renderField<D extends DefaultI>(
   if (isComponentStar(model)) {
     return renderStar(model)
   }
-  throw new Error(`No component found for ${name}`);
+  throw new Error(`No component found for ${path}`);
 
 
   // All the rendering functions
@@ -318,9 +314,13 @@ export function renderField<D extends DefaultI>(
     return html`
       <lapp-filled-text-field
         class=${cls}
-        .name=${name}
+        .name=${path}
         style=${ifDefined(model.style)}
         type=${ifDefined(model.type)}
+        min=${ifDefined(model.min)}
+        max=${ifDefined(model.max)}
+        step=${ifDefined(model.step)}
+        pattern=${ifDefined(model.pattern)}
         .icon=${model.icon}
         .readOnly=${disabled}
         .placeholder=${placeholder}
@@ -341,7 +341,7 @@ export function renderField<D extends DefaultI>(
         class=${cls}
         style=${ifDefined(model.style)}
         rows=${ifDefined(model.rows)}
-        .name=${name}
+        .name=${path}
         .readOnly=${disabled}
         .placeholder=${placeholder}
         .label=${label}
@@ -358,7 +358,7 @@ export function renderField<D extends DefaultI>(
     return html`
       <lapp-md-droppable-editor
         class=${cls}
-        .name=${name}
+        .name=${path}
         style=${ifDefined(model.style)}
         
         .flavour=${model.flavour}
@@ -388,7 +388,7 @@ export function renderField<D extends DefaultI>(
     return html`
       <lapp-md-editor
         class=${cls}
-        .name=${name}
+        .name=${path}
         style=${ifDefined(model.style)}
         .flavour=${model.flavour}
         .hideTabsOnReadOnly=${model.hideTabsOnReadOnly || false}
@@ -412,7 +412,7 @@ export function renderField<D extends DefaultI>(
     return html`
       <lapp-upload
         class=${cls}
-        .name=${name}
+        .name=${path}
         style=${ifDefined(model.style)}
         .readOnly=${disabled}
         .writeLabel=${label}
@@ -424,7 +424,7 @@ export function renderField<D extends DefaultI>(
         .accept=${model.accept}
         .maxFileSize=${model.maxFileSize}
         .useFirestore=${!!model.useFirestore}
-        .fieldPath=${model.fieldPath || name}
+        .fieldPath=${model.fieldPath || path}
       ></lapp-upload>
       `;
   }
@@ -432,7 +432,7 @@ export function renderField<D extends DefaultI>(
   function renderUploadImage(model: OComponentUploadImage) {
     const image = html`<lapp-upload-image
       class=${cls}
-      .name=${name}
+      .name=${path}
       style=${ifDefined(model.style)}
       .readonly=${disabled}
       .writeLabel=${label}
@@ -442,13 +442,13 @@ export function renderField<D extends DefaultI>(
       .path=${model.path!}
       .accept=${model.accept!}
       .maxFileSize=${model.maxFileSize!}
-      .fieldPath=${model.fieldPath || name}
+      .fieldPath=${model.fieldPath || path}
       .buttonLabel=${model.buttonLabel || nothing as any}
       ></lapp-upload-image>`
 
     const imageFirebase = html`<lapp-upload-image-firebase
       class=${cls}
-      .name=${name}
+      .name=${path}
       style=${ifDefined(model.style)}
       .readonly=${disabled}
       .writeLabel=${label}
@@ -458,7 +458,7 @@ export function renderField<D extends DefaultI>(
       .path=${model.path!}
       .accept=${model.accept!}
       .maxFileSize=${model.maxFileSize!}
-      .fieldPath=${model.fieldPath || name}
+      .fieldPath=${model.fieldPath || path}
       .buttonLabel=${model.buttonLabel || nothing as any}
      ></lapp-upload-image-firebase>`
     return model.useFirestore ? image : imageFirebase;
@@ -468,7 +468,7 @@ export function renderField<D extends DefaultI>(
     return html`
       <lapp-slider-field
           class=${cls}
-          .name=${name}
+          .name=${path}
           style=${ifDefined(model.style)}
           ?disabled=${disabled}
           .label=${label}
@@ -490,7 +490,7 @@ export function renderField<D extends DefaultI>(
       <lapp-select
         quick
         class=${cls}
-        .name=${name}
+        .name=${path}
         style=${ifDefined(model.style)}
         .icon=${model.icon}
         .readOnly=${disabled}
@@ -511,7 +511,7 @@ export function renderField<D extends DefaultI>(
     return html`
     <vaadin-multi-select-combo-box
       class=${cls}
-      .name=${name}
+      .name=${path}
       style=${ifDefined(model.style)}
       .items=${model.items}
       .selectedItems=${(model.items || []).filter(item => (value || []).indexOf(item.code) > -1)}
@@ -530,41 +530,58 @@ export function renderField<D extends DefaultI>(
   `;
   }
 
+  function getBooleanLabel(model: OComponentBoolean, value: boolean) {
+    if (model.trueLabel && value) {
+      return model.trueLabel
+    }
+    return label || '';
+  }
+
+  // TODO: add a setting that will use lapp-checkbox-field
   function renderCheckbox(model: OComponentBoolean) {
     return html`
       <label class=${cls}>
         <md-checkbox touch-target="wrapper" 
         aria-label=${label || ''}
-        .name=${name}
+        .name=${path}
         style=${ifDefined(model.style)}
         .checked=${value}
         ?disabled=${disabled}
         @change=${onInputFact('checked')} 
         ></md-checkbox>
-        ${label || ''}
+        ${getBooleanLabel(model, value)}
       </label>
       `;
   }
-
+  // TODO: add a setting that will use lapp-switch-field
   function renderSwitch(model: OComponentBoolean) {
-    return html`
+    const field = html`
       <label class=${cls}>
-        ${label || ''}
         <md-switch 
-          .selected=${value}
-          .name=${name}
-          .disabled=${disabled}
-          @change=${onInputFact('selected')} 
-          ></md-switch>
+        .selected=${value}
+        .name=${path}
+        .disabled=${disabled}
+        @change=${onInputFact('selected')} 
+        ></md-switch>
+        ${getBooleanLabel(model, value)}
         </label>
+    `
+    if (model.helper) {
+      return html`
+        <div class="layout vertical small gap">
+          <div>${model.helper}</div>
+          ${field}
+        </div>
       `;
+    }
+    return field
   }
 
   function renderCheckboxGroup(model: OComponentCheckboxGroup) {
     return html`
       <lapp-choice-checkbox
         class=${cls}
-        .name=${name}
+        .name=${path}
         style=${ifDefined(model.style)}
         .icon=${model.icon}
         .readOnly=${disabled}
@@ -582,7 +599,7 @@ export function renderField<D extends DefaultI>(
     return html`
       <lapp-choice-radio
         class=${cls}
-        .name=${name}
+        .name=${path}
         style=${ifDefined(model.style)}
         .icon=${model.icon}
         .readOnly=${disabled}
@@ -600,7 +617,7 @@ export function renderField<D extends DefaultI>(
     return html`
       <lapp-choice-star
         class=${cls}
-        .name=${name}
+        .name=${path}
         style=${ifDefined(model.style)}
         .readOnly=${disabled}
         .label=${label}

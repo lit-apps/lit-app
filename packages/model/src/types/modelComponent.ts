@@ -59,7 +59,14 @@ export type CsvConfig<T = any> = {
 	condition?: (config: RenderConfig | undefined) => boolean
 }
 
-interface ModelComponentBase<T = any> {
+type RendererParamT<T = any> = {
+	model: ModelComponentBase<T>
+	value: string
+	data: T
+	onInputFact: (prop: string) => void
+}
+type RendererT<T = any> = (prop: RendererParamT<T>) => TemplateResult
+interface ModelComponentBase<T = any, TagsT = string> {
 	label?: string | TemplateResult
 	helper?: string
 	required?: boolean
@@ -71,7 +78,8 @@ interface ModelComponentBase<T = any> {
 	table?: TableConfig<T>
 	grid?: GridConfig<T>
 	csv?: CsvConfig<T>
-	tags?: string[]
+	tags?: TagsT[]
+	renderer?: RendererT<T>
 	// set requestUpdate to true to request an update when the value changes
 	requestUpdate?: boolean
 	// do not render component when the function returns true 
@@ -93,7 +101,7 @@ export interface Lookup<T = string> {
 	media?: Media
 }
 
-export interface ModelComponentSlider<T = any> extends ModelComponentBase<T> {
+export interface ModelComponentSlider<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: SliderComponent
 	min: string
 	max: string
@@ -101,7 +109,7 @@ export interface ModelComponentSlider<T = any> extends ModelComponentBase<T> {
 	ticks?: boolean
 	labeled?: boolean
 }
-export interface ModelComponentUpload<T = any> extends ModelComponentBase<T> {
+export interface ModelComponentUpload<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: UploadComponent
 	multi?: boolean
 	maxFiles?: number
@@ -116,7 +124,7 @@ export interface ModelComponentUpload<T = any> extends ModelComponentBase<T> {
 	dropText?: { one: string, many: string }
 	buttonLabel?: string
 }
-export interface ModelComponentUploadImage<T = any> extends ModelComponentBase<T> {
+export interface ModelComponentUploadImage<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: UploadComponentImage
 	accept?: string
 	maxFileSize?: number
@@ -131,19 +139,19 @@ export interface ModelComponentUploadImage<T = any> extends ModelComponentBase<T
 
 }
 
-export interface ModelComponentSelect<T = any> extends ModelComponentBase<T> {
+export interface ModelComponentSelect<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: SelectComponent
 	items?: Lookup[]
 }
-export interface ModelComponentCheckboxGroup<T = any> extends ModelComponentBase<T> {
+export interface ModelComponentCheckboxGroup<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: CheckboxGroupComponent
 	items?: Lookup[]
 }
-export interface ModelComponentRadioGroup<T = any> extends ModelComponentBase<T> {
+export interface ModelComponentRadioGroup<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: RadioGroupComponent
 	items?: Lookup[]
 }
-export interface ModelComponentText<T = any> extends ModelComponentBase<T> {
+export interface ModelComponentText<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component?: TextComponent | DateComponent
 	placeholder?: string
 	/**
@@ -152,9 +160,13 @@ export interface ModelComponentText<T = any> extends ModelComponentBase<T> {
 	storageKey?: string
 	maxLength?: number
 	minLength?: number
+	min?: number
+	max?: number
+	step?: number
+	pattern?: string
 	type?: 'text' | 'number' | 'email' | 'password' | 'tel' | 'url' | 'search' | 'color' | 'date' | 'datetime-local' | 'month' | 'time' | 'week'
 }
-export interface ModelComponentTextArea<T = any> extends ModelComponentBase<T> {
+export interface ModelComponentTextArea<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: TextComponent
 	rows?: number
 	placeholder?: string
@@ -166,7 +178,7 @@ export interface ModelComponentTextArea<T = any> extends ModelComponentBase<T> {
 	minLength?: number
 	resize?: 'vertical' | 'horizontal' | 'auto'
 }
-export interface ModelComponentMd<T = any> extends ModelComponentBase<T> {
+export interface ModelComponentMd<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: MdComponent
 	/**
 	 * flavour of the markdown editor
@@ -195,41 +207,52 @@ export interface ModelComponentMd<T = any> extends ModelComponentBase<T> {
 	 */
 	defaultValueOnEmpty?: string
 }
-export interface ModelComponentMdDroppable<T = any> extends ModelComponentMd<T> {
+export interface ModelComponentMdDroppable<T = any, TagsT = string> extends ModelComponentMd<T, TagsT> {
 	droppable: boolean
 	path: string
 	maxFileSize?: number
 	accept?: string
 	useFirestore?: boolean
 }
-export interface ModelComponentBoolean<T = any> extends ModelComponentBase<T> {
-	component: BooleanComponent
+export interface ModelComponentBoolean<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
+	component: BooleanComponent,
+	/**
+	 * the label to display when the checkbox is checked
+	 */
+	trueLabel?: string | TemplateResult
+
 }
 
-export interface ModelComponentStar<T = any> extends ModelComponentBase<T> {
+export interface ModelComponentStar<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: StarComponent,
 	starNumber?: number
 	allowNoStar?: boolean
 }
 
-export type ModelComponent<T = any> =
-	ModelComponentSelect<T> |
-	ModelComponentRadioGroup<T> |
-	ModelComponentCheckboxGroup<T> |
-	ModelComponentText<T> |
-	ModelComponentTextArea<T> |
-	ModelComponentMd<T> |
-	ModelComponentMdDroppable<T> |
-	ModelComponentBoolean<T> |
-	ModelComponentSlider<T> |
-	ModelComponentUpload<T> |
-	ModelComponentUploadImage<T> |
-	ModelComponentStar<T>
+export type ModelComponent<T = any, TagsT = string> =
+	ModelComponentSelect<T, TagsT> |
+	ModelComponentRadioGroup<T, TagsT> |
+	ModelComponentCheckboxGroup<T, TagsT> |
+	ModelComponentText<T, TagsT> |
+	ModelComponentTextArea<T, TagsT> |
+	ModelComponentMd<T, TagsT> |
+	ModelComponentMdDroppable<T, TagsT> |
+	ModelComponentBoolean<T, TagsT> |
+	ModelComponentSlider<T, TagsT> |
+	ModelComponentUpload<T, TagsT> |
+	ModelComponentUploadImage<T, TagsT> |
+	ModelComponentStar<T, TagsT>
 
-export type FieldConfig<T = any> = Partial<ModelComponent<T>>
+export type FieldConfig<T = any> = Partial<ModelComponent<T>> & { renderConfig?: RenderConfig }
 
-export type Model<T, B = T> = {
-	[key in keyof Partial<T>]: ModelComponent<B> | Model<T[key], B>
+export type Model<T, B = T, TagsT = string> = {
+	[key in keyof Partial<T>]: ModelComponent<B, TagsT> | Model<T[key], B, TagsT>
+}
+
+export function iComponentRenderer<T = any>(
+	model: ModelComponent<T>
+): model is ModelComponent<T> & { renderer: RendererT<T> } {
+	return !!(model as ModelComponent<T>).renderer;
 }
 
 export function isComponentSelect<T = any>(

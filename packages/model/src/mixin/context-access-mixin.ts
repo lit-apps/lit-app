@@ -147,7 +147,7 @@ export const ConsumeAccessMixin = <T extends Constructor<ReactiveElement>>(
 
 		/** context storing document access  */
 		@consume({ context: entityAccessContext, subscribe: true })
-		@property() override authorization!: AuthorizationT;
+		@property({ attribute: false }) override authorization!: AuthorizationT;
 
 	};
 	return ContextConsumeAccessMixinClass;
