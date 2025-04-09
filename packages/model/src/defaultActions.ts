@@ -1,14 +1,14 @@
+import { html } from "lit";
 import {
+  Close,
   Create,
+  Delete,
+  Edit,
+  EntityAction,
+  Open,
   Reset,
   Write,
-  Edit,
-  Open,
-  Close,
-  Delete,
-  EntityAction,
-} from "./events.js"
-import { html } from "lit";
+} from "./events.js";
 import { ActionEntityI, ActionServerEntityI, DefaultActionsT, GetEventT } from "./types/actionTypes.js";
 import { CollectionI } from "./types/dataI.js";
 
@@ -129,7 +129,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       },
       confirmDialog: {
         heading: 'Confirm Delete',
-        render: ({data }: {data: any}) => {
+        render: ({ data }: { data: any }) => {
           const name = data.hasOwnProperty('name') && data.name ?
             data.name : data.hasOwnProperty('title') && data.title ?
               data.title : 'an entity';
@@ -152,7 +152,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       },
       confirmDialog: {
         heading: 'Confirm Delete',
-        render: ({data }: {data: any}) => {
+        render: ({ data }: { data: any }) => {
           const name = data.hasOwnProperty('name') && data.name ? data.name : data.hasOwnProperty('title') && data.title ? data.title : 'an entity';
           return html`<p>You are about to mark <strong>${name}</strong> as deleted. Please confirm.</p>`;
         }
@@ -216,11 +216,11 @@ const actions = defaultActions();
 export function getEntityActionEvent<D>(actionName: string, action?: ActionEntityI | ActionServerEntityI): GetEventT<D> {
   return (entityName, { data }, host, isBulk?, confirmed?) => {
     action = action || (actions[actionName as keyof DefaultActionsT<D>] as ActionEntityI);
-    if(isBulk) {
+    if (isBulk) {
       // we do not have an id for bulk actions
       return new EntityAction({ entityName, data }, action, actionName, confirmed, isBulk);
-    }  
-    const id = (data as CollectionI<D>).$id || host?.docId;
+    }
+    const id = (data as CollectionI<D>)?.$id || host?.docId;
     if (!id) {
       console.warn(`No id provided for ${actionName} action`, data);
     }
