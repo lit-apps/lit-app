@@ -322,7 +322,25 @@ export const Storage = <T extends MixinBase<BaseT>>(
               file.url = downloadURL;
               // Try to get the thumbnail URL, fallback to empty string if it fails
               try {
-                const thumbnailURL = downloadURL.replace('/media/', '/media/thumbnails/').replace(/(\.[^.]+)$/, '_200x200$1');
+                // Create a thumbnail URL by inserting 'thumbnails/' before the last segment of the path
+                // and adding '_200x200' before the file extension
+                const urlObj = new URL(downloadURL);
+                const pathParts = urlObj.pathname.split('%2F');
+                const lastIndex = pathParts.length - 1;
+                let lastSegment = pathParts[lastIndex];
+
+                // Add '_200x200' before the file extension
+                const lastSegmentParts = lastSegment.split('.');
+                if (lastSegmentParts.length > 1) {
+                  const ext = lastSegmentParts.pop();
+                  lastSegment = lastSegmentParts.join('.') + '_200x200.' + ext;
+                } else {
+                  lastSegment = lastSegment + '_200x200';
+                }
+
+                pathParts[lastIndex] = `thumbnails%2F${lastSegment}`;
+                urlObj.pathname = pathParts.join('%2F');
+                const thumbnailURL = urlObj.toString();
                 file.thumbnail = thumbnailURL || '';
               } catch (err) {
                 console.error('Failed to create thumbnail URL:', err);
