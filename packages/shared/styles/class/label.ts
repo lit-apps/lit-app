@@ -12,12 +12,8 @@ const style: CSSResult = css`
 		display: flex;
 		align-items: center;
 		font-size: var(--font-size-small);
+		gap: var(--space-small);
 	}
-  
-	label > md-switch {
-    margin-inline-start: var(--space-small);
-    margin-inline-end: var(--space-small);
-  }
 
 `
 
