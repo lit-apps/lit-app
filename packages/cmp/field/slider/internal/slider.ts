@@ -29,7 +29,13 @@ export abstract class Slider extends Generic {
     if (!this.input) {
       return this._value;
     }
-    return input.range ? [input.valueStart, input.valueEnd] : input.value;
+    if (input.range) {
+      return [input.valueStart, input.valueEnd];
+    }
+    // input.value is '' sometimes, event when value is set. There seem to be a bug in the slider that fires change event
+    // before setting the value. So we need to check if input.value is empty and use inputEnd.value instead.
+    // @ts-expect-error inputEnd is private
+    return input?.inputEnd.value || input.value;
 
   }
   override set value(value) {

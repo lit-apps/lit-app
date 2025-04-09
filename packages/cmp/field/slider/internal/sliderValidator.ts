@@ -11,7 +11,7 @@ export interface SliderState {
   readonly valueEnd?: number | undefined;
   readonly min: number | undefined;
   readonly max: number | undefined;
-  readonly required: boolean ;
+  readonly required: boolean;
 
 }
 
@@ -30,7 +30,7 @@ export class SliderValidator extends Validator<SliderState> {
     }
 
     let customError = ''
-    
+
     if (state.range) {
       if (!(state.valueStart + '')) {
         customError = 'Start value is required';
@@ -55,18 +55,19 @@ export class SliderValidator extends Validator<SliderState> {
         customError = 'Value must be less than max value';
       }
     }
-    if(customError) {
+    if (customError) {
       // we force an error because validator [syncValidation] has a bug
       // with customError
       this.sliderControl.value = '';
-      this.sliderControl.required = true;  
+      this.sliderControl.required = true;
       this.sliderControl.setCustomValidity(customError);
     } else {
+      this.sliderControl.setCustomValidity('');
       this.sliderControl.value = state.range ? (state.valueStart + '') + (state.valueEnd + '') : state.value + '';
       this.sliderControl.required = state.required;
-      
+
     }
-    
+
     return {
       validity: this.sliderControl.validity,
       validationMessage: this.sliderControl.validationMessage,
