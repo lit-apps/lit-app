@@ -35,6 +35,14 @@ const tree: CSSResult = css`
     min-height: 38px;
     cursor: pointer;
   }
+  :host([theme~='tree']) [part~='border-top'] {
+    border-top: 1px solid var(--color-divider);
+    --_lumo-grid-secondary-border-color: var(--color-divider);
+    
+  }
+  :host([theme~='tree']) [part~='italic'] {
+    font-style: italic;
+  }
 
 `
 
