@@ -139,7 +139,9 @@ export default function renderMixin<A extends ActionsT>(
           return
         }
         const button = e.target as LappButton
-        button.loading = true
+        if (button) {
+          button.loading = true
+        }
         try {
           const event = await this.getActionEvent(actionName, host, data, isBulk)
           if (!event) {
@@ -161,7 +163,9 @@ export default function renderMixin<A extends ActionsT>(
           host?.dispatchEvent(new ToastEvent((error as Error).message, 'error'))
         }
         finally {
-          button.loading = false
+          if (button) {
+            button.loading = false
+          }
         }
       }
     },
