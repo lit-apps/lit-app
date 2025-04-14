@@ -1,7 +1,3 @@
-// export interface appDialogOkDetail {
-// data: any;
-// }
-
 /**
  * This event is fired when a dialog is closed with an `ok` action
  */
