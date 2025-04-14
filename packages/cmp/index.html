@@ -48,6 +48,7 @@
   <script type="module" src="/initializeFirebase.js"></script>
   <script type="module" src="/field/choice-star"></script>
   <script type="module" src="/field/switch-field"></script>
+  <script type="module" src="/tooltip/tooltip"></script>
   <!-- <script type="module" src="/field/choice-order"></script> 
     <script type="module" src="/field/choice-checkbox"></script>
     <script type="module" src="/button/button-override"></script>
@@ -96,6 +97,16 @@
         e.target.reportValidity();
       }));  
   </script>
+  <div>
+    <p>This is a test para with a<lapp-tooltip discrete text="I am the def">definition</lapp-tooltip>. test</p>
+
+    <p style="width: 300px;">Testing how that works in a longer para. This is a test para with a<lapp-tooltip
+        text="I am also the def">definition</lapp-tooltip>test. And the para might continue ,...</p>
+    <p style="width: 300px;">Testing how that works in a longer para.This is a test para without a<span
+        text="I am the def">DEFINITION</span>. test</p>
+    <p>This is a test para with a DEFINITION. test</p>
+  </div>
+
   <div>
     <lapp-upload-image fieldPath="logo" path="app/gds/organisation/neworg"></lapp-upload-image>
   </div>

@@ -10,7 +10,7 @@ import {
 	RenderConfig,
 	RenderHeaderMixin
 } from '@lit-app/model';
-import closest from '@lit-app/shared/closest';
+import { closest } from '@lit-app/shared/domUtils/index.js';
 import { HTMLEvent } from '@lit-app/shared/types';
 import {
 	PartialBy,
