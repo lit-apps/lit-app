@@ -46,11 +46,12 @@ export declare abstract class RenderInterface<
 	renderFieldUpdate(name: string, config: any, data?: D): TemplateResult;
 	getCsvParser(renderConfig: C | undefined): Parser<any, any>;
 	renderTitle(data: D, config: C): TemplateResult | string;
+	getDefaultData(): Partial<D>;
 }
 
 export interface StaticRenderEntity<
 	D extends DefaultI = DefaultI,
 	C extends RenderConfig = RenderConfig
-> extends Pick<RenderInterface<D, C>, 'getCsvParser' | 'renderGridColumns' | 'renderTable'> {
+> extends Pick<RenderInterface<D, C>, 'getCsvParser' | 'renderGridColumns' | 'renderTable' | 'getDefaultData'> {
 
 }

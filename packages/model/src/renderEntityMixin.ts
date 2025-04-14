@@ -296,6 +296,7 @@ export default function renderMixin<
     renderForm(_data: D, _config: C) {
       return html`Form`
     }
+
     renderFormNew(data: D, _config: C) {
       return html`
       <div class="layout vertical  wrap">
@@ -317,6 +318,10 @@ export default function renderMixin<
 
     renderTable(data: CollectionI<D>, config: C, tableFields?: [string, ModelComponent][]) {
       return this.constructor.renderTable(data, config, tableFields)
+    }
+
+    getDefaultData(): Partial<D> {
+      return this.constructor.getDefaultData()
     }
 
   };
@@ -395,9 +400,11 @@ export default function renderMixin<
         }
         </table>
      `
+    },
+
+    getDefaultData(this: AbstractEntity): Partial<D> {
+      return {}
     }
-
-
   }
   Object.assign(R, staticApply);
   return R as unknown as Constructor<RenderInterface<D, C>> & typeof superclass;

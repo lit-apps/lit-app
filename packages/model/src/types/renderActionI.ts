@@ -183,7 +183,7 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
    * @param data - Partial data for the new entity.
    * @returns CustomEvent with details of the created entity.
   */
-  create: (data: Partial<unknown>) => CustomEvent<EntityCreateDetail>;
+  create(data: Partial<unknown>): CustomEvent<EntityCreateDetail>;
 
   /**
     * update an entity with the provided data.
@@ -191,7 +191,7 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
     * @param data - Partial data for the new entity.
     * @returns CustomEvent with details of the created entity.
     */
-  update: (data: Partial<unknown>, entityName?: string) => boolean;
+  update(data: Partial<unknown>, entityName?: string): boolean;
   /**
    * Handles input events for the entity.
    * 
@@ -280,9 +280,9 @@ export interface StaticEntityActionI<
   /**
    * Updates an entity with the provided data.
    */
-  update: (
+  update(
     host: HTMLElement,
     data: unknown,
-    entityName?: string) => boolean
+    entityName?: string): boolean
   // open: (id: string, entityName?: string) => boolean
 }

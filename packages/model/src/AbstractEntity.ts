@@ -82,6 +82,7 @@ export default class AbstractEntity<D extends DefaultI = DefaultI, A extends Act
 	static declare renderTable: (
 		data: any, renderConfig: RenderConfig | undefined, tableFields?: [string, any][]
 	) => TemplateResult;
+	static declare getDefaultData: () => object;
 	/**
 	 * inspired from https://github.com/Microsoft/TypeScript/issues/3841#issuecomment-1488919713
 	 * We will need to set the type of constructor on all subclasses so that

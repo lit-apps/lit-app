@@ -1,14 +1,14 @@
-import page from '@lit-app/shared/styles/page.js';;
 import { label } from '@lit-app/shared/styles';
-import { form } from '@lit-app/shared/styles';
-import { customElement } from 'lit/decorators.js';
+import page from '@lit-app/shared/styles/page.js';
 import { css } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import CreateDialog from './src/cmp/entity-create-dialog';
+;
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'lapp-entity-create-dialog': LappEntityCreateDialog;
-  }
+	interface HTMLElementTagNameMap {
+		'lapp-entity-create-dialog': LappEntityCreateDialog;
+	}
 }
 
 /**
@@ -19,8 +19,7 @@ declare global {
 export class LappEntityCreateDialog extends CreateDialog {
 	static override styles = [
 		...page,
-		form, 
-		label, 
+		label,
 		css`
 			:host {
 				/* 
@@ -32,5 +31,5 @@ export class LappEntityCreateDialog extends CreateDialog {
 			}
 		`
 	]
-  
+
 }

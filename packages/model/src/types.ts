@@ -88,7 +88,9 @@ export interface StaticEntityI<D extends DefaultI = any, A extends ActionsT = Ac
 	roles: Readonly<Role[]>
 	userLoader?: (search: string) => Promise<any>
 	documentationKeys: DocumentationKeysT
-	['constructor']: typeof AbstractEntity<D, A>;
+	getDefaultData: () => Partial<D>
+	['constructor']: typeof AbstractEntity<D, A>
+
 }
 export interface EntityI<
 	D extends DefaultI = DefaultI,
@@ -98,7 +100,7 @@ export interface EntityI<
 	StaticEntityActionI<A>,
 	StaticEntityField<D>,
 	StaticEntityI<D, A> {
-	documentationKeys: DocumentationKeysT
+	// documentationKeys: DocumentationKeysT
 	entityName: string,
 	icon: string,
 	new(cmp: EntityElement, realtime?: boolean): entityI<D, C, A>;
