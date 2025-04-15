@@ -204,7 +204,7 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
       ></lapp-text-field>
    * ```
    */
-  onInput: (path: string, value?: unknown) => (e: InputEvent) => boolean
+  onInput: (path: string, prop: 'selected' | 'value') => (e: InputEvent) => boolean
 }
 
 /**
@@ -284,5 +284,9 @@ export interface StaticEntityActionI<
     host: HTMLElement,
     data: unknown,
     entityName?: string): boolean
+  onInput: (
+    host: HTMLElement,
+    path: string, prop?: 'selected' | 'value'
+  ) => (e: InputEvent) => boolean
   // open: (id: string, entityName?: string) => boolean
 }

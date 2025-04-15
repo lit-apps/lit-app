@@ -194,7 +194,22 @@ export default function renderMixin<A extends ActionsT>(
       host: HTMLElement, data: unknown, entityName?: string
     ) {
       return host.dispatchEvent(new DataChanged({ entityName: entityName || this.entityName, data }))
+    },
+
+    onInput(
+      this: StaticApplyT & { entityName: string },
+      host: HTMLElement,
+      path: string, prop: 'value' | 'selected' = 'value') {
+      return (e: InputEvent) => {
+        const target = e.target as HTMLInputElement
+        const value = target[prop as keyof HTMLInputElement]
+        return this.update(host, { [path]: value })
+      }
+      // return this.host.dispatchEvent(new DataChanged({ path, value }))
     }
+
+
+
   }
 
   class R extends RenderEntityCreateMixin(superclass) implements RenderInterface<A> {
@@ -409,10 +424,10 @@ export default function renderMixin<A extends ActionsT>(
       // host.dispatchEvent(new DataChanged({ entityName: entityName || this.entityName, data }))
     }
 
-    onInput(path: string, value?: unknown) {
+    onInput(path: string, prop: 'value' | 'selected' = 'value') {
       return (e: InputEvent) => {
         const target = e.target as HTMLInputElement
-        const value = target.value
+        const value = target[prop as keyof HTMLInputElement]
         return this.update({ [path]: value })
       }
       // return this.host.dispatchEvent(new DataChanged({ path, value }))
