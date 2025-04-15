@@ -1,9 +1,9 @@
 import type { MdCheckbox } from '@material/web/checkbox/checkbox';
-import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
-import { html } from 'lit';
 import {
 	type GridColumnHeaderLitRenderer
 } from '@vaadin/grid/lit';
+import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
+import { html } from 'lit';
 import('@material/web/checkbox/checkbox.js');
 
 
@@ -48,7 +48,6 @@ export default function headerFilterCheck(
 		}
 		// @ts-expect-error  - we are cheating
 		filter.value = lookup(target.checked);
-		column.dispatchEvent(new CustomEvent('grid-filter-input', { detail: filter.value, bubbles: true, composed: true }));
 		filter.dispatchEvent(new CustomEvent('filter-changed', { bubbles: true }));
 	}
 

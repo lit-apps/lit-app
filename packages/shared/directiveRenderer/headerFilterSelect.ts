@@ -1,16 +1,16 @@
 import '@vaadin/combo-box/vaadin-lit-combo-box';
-import '@vaadin/select/vaadin-lit-select';
-import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
-import { html, TemplateResult, LitElement } from 'lit';
 import {
 	type GridColumnHeaderLitRenderer
 } from '@vaadin/grid/lit';
+import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
+import '@vaadin/select/vaadin-lit-select';
+import { html, LitElement, TemplateResult } from 'lit';
 
 
 type direction = 'asc' | 'desc' | null;
 type getter = (value: string) => string;
 type lookupItem = { code: string, label: string | TemplateResult };
-type hasValue = {value: string, clearButtonVisible?: boolean};
+type hasValue = { value: string, clearButtonVisible?: boolean };
 
 /**
  * @param  {string} path - The path to the property to sort and filter on
@@ -23,30 +23,30 @@ type hasValue = {value: string, clearButtonVisible?: boolean};
  */
 
 export function headerFilterText(
-	path: string, 
-	label: string, 
-	lookup: lookupItem[] , 
-	sort?: boolean, 
-	direction?: direction, 
-	valueGetter?: getter): GridColumnHeaderLitRenderer 
+	path: string,
+	label: string,
+	lookup: lookupItem[],
+	sort?: boolean,
+	direction?: direction,
+	valueGetter?: getter): GridColumnHeaderLitRenderer
 export function headerFilterText(
-	path: string, 
-	label: string, 
-	lookup: {items: lookupItem[]} , 
-	sort?: boolean, 
-	direction?: direction, 
-	valueGetter?: getter): GridColumnHeaderLitRenderer 
+	path: string,
+	label: string,
+	lookup: { items: lookupItem[] },
+	sort?: boolean,
+	direction?: direction,
+	valueGetter?: getter): GridColumnHeaderLitRenderer
 export default function headerFilterText(
-	path: string, 
-	label: string, 
-	lookup: (lookupItem[]) | ({items: lookupItem[]}), 
-	sort?: boolean, 
-	direction?: direction, 
+	path: string,
+	label: string,
+	lookup: (lookupItem[]) | ({ items: lookupItem[] }),
+	sort?: boolean,
+	direction?: direction,
 	valueGetter?: getter
 ): GridColumnHeaderLitRenderer {
 	const onChange = (column: GridColumn) => async (e: CustomEvent) => {
 		const target = e.target as (LitElement & hasValue)
-		const filter = target.parentElement as HTMLInputElement ;
+		const filter = target.parentElement as HTMLInputElement;
 		let value = target.value;
 		if (value === '__') {
 			value = '';
@@ -57,16 +57,15 @@ export default function headerFilterText(
 		filter.value = value;
 		target.clearButtonVisible = true;
 		await target.updateComplete;
-		column.dispatchEvent(new CustomEvent('grid-filter-input', { detail: value, bubbles: true, composed: true }));
 		filter.dispatchEvent(new CustomEvent('filter-changed', { bubbles: true }));
 	}
-	
-	const items = ((lookup as { items: lookupItem[] }).items || lookup).map((item: lookupItem) => ({value: item.code, label: item.label}));
+
+	const items = ((lookup as { items: lookupItem[] }).items || lookup).map((item: lookupItem) => ({ value: item.code, label: item.label }));
 	items.unshift({ value: '__', label: 'All ' + label });
 
 	const template = function (column: GridColumn) {
 
-			return html`
+		return html`
 			<div id="proxy-filter" style="flex: 1; width:100%;" .path=${path}>
 			 <vaadin-select 
 			  aria-label="filter ${label}"

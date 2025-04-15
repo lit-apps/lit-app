@@ -1,9 +1,9 @@
-import { html } from 'lit';
 import {
- type	GridColumnHeaderLitRenderer
+	type GridColumnHeaderLitRenderer
 } from '@vaadin/grid/lit';
 import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
 import '@vaadin/text-field/vaadin-lit-text-field.js';
+import { html } from 'lit';
 
 
 type direction = 'asc' | 'desc' | null;
@@ -19,25 +19,24 @@ type getter = (value: string) => string;
  */
 
 export default function headerFilterText(
-  path: string, 
-  label: string, 
-  sort?: boolean, 
-  direction?: direction, 
-  valueGetter?: getter
+	path: string,
+	label: string,
+	sort?: boolean,
+	direction?: direction,
+	valueGetter?: getter
 ): GridColumnHeaderLitRenderer {
 	const onInput = (column: GridColumn) => (e: CustomEvent) => {
 		const target = e.target as HTMLInputElement
 		const filter = target.parentElement as HTMLInputElement;
 		let value = e.detail?.value || target.value;
-		if(valueGetter) { 
+		if (valueGetter) {
 			value = valueGetter(value);
 		}
 		filter.value = value;
-		column.dispatchEvent(new CustomEvent('grid-filter-input', { detail: value, bubbles: true, composed: true }));
 		filter.dispatchEvent(new CustomEvent('filter-changed', { bubbles: true }));
 	}
 	const template = (column: GridColumn) => {
-			return html`
+		return html`
 			<div id="proxy-filter" style="flex: 1; width:100%;" .path=${path}>
         <vaadin-text-field 
 					style="width:100%;" 
@@ -47,11 +46,11 @@ export default function headerFilterText(
 				></vaadin-text-field>
 			</div>
 			`
-		}
+	}
 
-	return (column: GridColumn) => sort ? 
+	return (column: GridColumn) => sort ?
 		html`<vaadin-grid-sorter aria-label="sort ${label}" .direction=${direction} .path=${path}>
 					${template(column)}
-				</vaadin-grid-sorter>` : 
+				</vaadin-grid-sorter>` :
 		template(column);
 }
