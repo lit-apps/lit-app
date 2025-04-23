@@ -45,7 +45,7 @@ export {
 export * from './types/communication';
 export * from './types/dataI';
 export { isCollection } from './types/dataI';
-export * from './types/entityAction';
+// export * from './types/entityAction';
 export * from './types/entityResource';
 export * from './types/resource';
 export {

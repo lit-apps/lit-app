@@ -36,7 +36,7 @@ export interface EntityActionDetail {
 
 export class BaseEvent<T extends { promise?: Promise<any> }> extends CustomEvent<T> {
   public action?: ActionT | undefined
-  public confirmed?: boolean // true when the action is confirmed by the user
+  public confirmed?: boolean | undefined// true when the action is confirmed by the user
   public processed?: boolean // true when the action was already processed
   public onActionProcessed?: boolean // true when an `onAction` function was already executed
   pushPromise(promise: Promise<any> | any) {
@@ -207,7 +207,7 @@ export class Edit extends BaseEvent<EntityDetail> {
 }
 
 class BaseAction<T> extends BaseEvent<T & { promise?: Promise<any> }> {
-  public bulkAction?: boolean
+  public bulkAction?: boolean | undefined
   override get shouldConfirm() {
     return !!(!this.confirmed && (this.action?.confirmDialog || (this.bulkAction && !this.action?.bulk?.skipConfirm)));
   }
@@ -237,8 +237,8 @@ export class EntityAction<T extends ActionI = ActionI> extends BaseAction<Action
     detail: ActionDetail<T['detail']>,
     public override readonly action: ActionEntityI<T['detail']> | ActionServerEntityI<T['detail']>,
     public readonly actionName: T['actionName'],
-    public override  confirmed?: boolean,
-    public override bulkAction?: boolean) {
+    public override confirmed?: boolean | undefined,
+    public override bulkAction?: boolean | undefined) {
     super(EntityAction.eventName, {
       bubbles: true,
       composed: true,
@@ -340,7 +340,7 @@ export class AppActionEmail extends BaseAction<ActionEmailDetail> {
     detail: ActionEmailDetail,
     public override readonly action: ActionT,
     public override  confirmed?: boolean,
-    public override bulkAction?: boolean) {
+    public override bulkAction?: boolean | undefined) {
     super(AppActionEmail.eventName, {
       bubbles: true,
       composed: true,

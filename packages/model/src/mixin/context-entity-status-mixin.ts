@@ -41,7 +41,7 @@ const statusInit: EntityStatus = {
 };
 
 const statusProcessedSymbol = Symbol('statusProcessed');
-type S<T> = T & { [statusProcessedSymbol]?: boolean };
+type S<T> = T & { [statusProcessedSymbol]?: boolean | undefined };
 /**
  * ProvideEntityStatusMixin 
  * A mixin to be applied to entities at root level. It set context providers for the entity status
@@ -72,7 +72,7 @@ export const ProvideEntityStatusMixin = <T extends MixinBase<ReactiveElement>>(
 		protected override firstUpdated(props: PropertyValues) {
 			// only process event that have not been processed by this mixin and that are the same entity
 
-			const canHandle = (event: BaseEvent<any> & { [statusProcessedSymbol]?: boolean }) => {
+			const canHandle = (event: BaseEvent<any> & { [statusProcessedSymbol]?: boolean | undefined }) => {
 				if (event[statusProcessedSymbol] || !event.canProcess) return false;
 				// TODO: event might need confirmation - this is not taken into account yet
 				const entityName = this.entityName || this.Entity?.entityName;

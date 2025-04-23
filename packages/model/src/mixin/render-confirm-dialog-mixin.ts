@@ -6,7 +6,7 @@ import('@material/web/button/outlined-button.js')
 import('@material/web/button/filled-button.js')
 
 import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
-import { LitElement, PropertyValues, html } from 'lit';
+import { LitElement, PropertyValues, html, nothing } from 'lit';
 import { queryAsync, state } from 'lit/decorators.js';
 import { AppAction, Create, Delete, EntityAction, isEntityAction } from '../events';
 
@@ -145,7 +145,7 @@ export const ConfirmDialogMixin = <T extends MixinBase<LitElement & { selectedIt
 				...action?.confirmDialog,
 				...((event as EntityAction).bulkAction ? action?.bulk : {})
 			};
-
+			const { confirmLabel, confirmIcon } = dialogConfig;
 
 			return html`
 
@@ -153,7 +153,7 @@ export const ConfirmDialogMixin = <T extends MixinBase<LitElement & { selectedIt
 					id="confirmDialog" 
 					@close=${onClose}>
 					<div slot="headline">${dialogConfig.heading}</div>
-						<form slot="content" method="dialog" id="form-confirm">
+						<form slot="content" method="dialog" id="form-confirm" novalidate="">
 							${dialogConfig.render.call(this, { data, selectedItems: this.selectedItems! })}
 						<md-linear-progress 
 							style="margin-top: var(--space-medium);" 
@@ -165,7 +165,7 @@ export const ConfirmDialogMixin = <T extends MixinBase<LitElement & { selectedIt
             value="close">Cancel</md-outlined-button>
 					<md-filled-button
 						.disabled=${dialogConfig.confirmDisabled?.call(this, data)}
-            @click=${processAction}>${dialogConfig?.confirmLabel}</md-filled-button>
+            @click=${processAction}>${confirmIcon ? html`<lapp-icon slot="icon">${confirmIcon}</lapp-icon>` : nothing}${confirmLabel}</md-filled-button>
 					</div>
 				</md-dialog>
 				`

@@ -59,6 +59,7 @@ export type GetEventT<D, E = any> = (
 type ConfigDialogT<D> = {
   heading: string;
   confirmLabel?: string;
+  confirmIcon?: string;
   confirmDisabled?: (data: any) => boolean; // whether to disable the confirm button
   render: ((d: { data: D, selectedItems?: Collection<D> }) => TemplateResult);
 };
