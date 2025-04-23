@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "es2020",
-    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "es2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -16,11 +20,15 @@
     "noImplicitThis": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "exactOptionalPropertyTypes": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": false,
     "noImplicitOverride": true,
-    "types": ["vite/client", "mocha"],
+    "types": [
+      "vite/client",
+      "mocha"
+    ],
     "plugins": [
       {
         "name": "ts-lit-plugin",
