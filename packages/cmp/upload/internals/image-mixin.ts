@@ -1,5 +1,5 @@
 import watch from '@lit-app/shared/decorator/watch.js';
-import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
+import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import '@vaadin/button/vaadin-lit-button.js';
 import { SlotController } from '@vaadin/component-base/src/slot-controller.js';
 import type { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';

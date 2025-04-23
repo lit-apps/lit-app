@@ -2,7 +2,7 @@ import '@material/web/button/filled-button';
 import '@material/web/button/outlined-button';
 import '@material/web/dialog/dialog';
 import type { MdDialog } from '@material/web/dialog/dialog';
-import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
+import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import { html, LitElement, nothing, PropertyValues, TemplateResult } from 'lit';
 import { query } from 'lit/decorators.js';
 

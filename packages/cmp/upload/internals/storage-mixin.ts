@@ -4,7 +4,7 @@
 
 import watch from '@lit-app/shared/decorator/watch.js';
 import { ToastEvent } from '@lit-app/shared/event/index.js';
-import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
+import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import { Upload } from '@vaadin/upload/src/vaadin-lit-upload';
 import type { UploadFile } from '@vaadin/upload/src/vaadin-upload.js';
 import { getApp } from "firebase/app";

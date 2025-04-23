@@ -2,7 +2,7 @@ import { consume, createContext, provide } from '@lit/context';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 // import type {EntityI} from '../types/entity';
-import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
+import type { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import type { EntityI } from '../types';
 
 // type Actions = Record<string, Action>;

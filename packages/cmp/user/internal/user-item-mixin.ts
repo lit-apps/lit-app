@@ -1,13 +1,10 @@
 
-import { MdListItem } from '@material/web/list/list-item.js';
-import { MdSelectOption } from '@material/web/select/select-option.js';
+import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import '@preignition/lit-firebase/span';
-import { LitElement, PropertyValues, TemplateResult } from 'lit';
-import { html } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import '../img.js';
 import userMixin from './user-mixin.js';
-import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 
 
 
@@ -37,13 +34,13 @@ export const UserItemMixin = <T extends MixinBase<BaseT>>(
 
 	abstract class UserItemMixinClass extends userMixin(superClass) {
 
-	declare listItemRoot: HTMLElement | undefined;
-	declare renderListItem: (template: TemplateResult) => TemplateResult;
-	declare renderRipple: () => TemplateResult;
-	declare renderFocusRing: () => TemplateResult;
-	// declare renderBody: () => TemplateResult;
-	
-	@property() supportingText!: string | undefined;
+		declare listItemRoot: HTMLElement | undefined;
+		declare renderListItem: (template: TemplateResult) => TemplateResult;
+		declare renderRipple: () => TemplateResult;
+		declare renderFocusRing: () => TemplateResult;
+		// declare renderBody: () => TemplateResult;
+
+		@property() supportingText!: string | undefined;
 		@property() headline!: string | undefined;
 
 		// Note(CG): we need this so as to make lapp-user-card work within lapp-content-observer

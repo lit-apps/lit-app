@@ -1,6 +1,6 @@
 import { createContext } from '@lit/context';
 import { LitElement, PropertyValues } from 'lit';
-import { MixinBase, MixinReturn } from '../types.js';
+import type { MixinBase, MixinReturn } from '../types.js';
 import { ContextMixinFactory } from './context-mixin-factory.js';
 
 

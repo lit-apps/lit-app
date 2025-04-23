@@ -19,8 +19,8 @@ export default function closestWithFilter<T = any>(
   filter: (element: Element & T) => boolean
 ): Element & T | null {
   while (element) {
-    if (filter(element)) {
-      return element;
+    if (filter(element as any)) {
+      return element as any;
     }
     // Navigate upward, crossing shadow DOM boundaries if needed
     element = element.parentElement || (element.getRootNode() as ShadowRoot).host;

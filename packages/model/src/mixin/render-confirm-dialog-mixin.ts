@@ -5,7 +5,7 @@ import('@material/web/dialog/dialog.js')
 import('@material/web/button/outlined-button.js')
 import('@material/web/button/filled-button.js')
 
-import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
+import type { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import { LitElement, PropertyValues, html, nothing } from 'lit';
 import { queryAsync, state } from 'lit/decorators.js';
 import { AppAction, Create, Delete, EntityAction, isEntityAction } from '../events';

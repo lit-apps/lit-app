@@ -1,4 +1,4 @@
-import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
+import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import pathReady from '@preignition/lit-firebase/src/pathReady.js';
 import { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';
 import { getApp } from 'firebase/app';
@@ -39,7 +39,7 @@ export const UploadDatabaseMixin = <T extends MixinBase<BaseT>>(
       }
       this._unsubscribe = onValue(ref(getDatabase(getApp(this.appName)), path), (snap: DataSnapshot) => {
         this.metaData = snap.val();
-        this.i18n = {...this.i18n};
+        this.i18n = { ...this.i18n };
       })
     }
 

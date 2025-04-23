@@ -1,9 +1,9 @@
-import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
+import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';
 import { getApp } from 'firebase/app';
 import { getDatabase, ref, set } from 'firebase/database';
-import { UploadFinishedEvent } from './storage-mixin.js';
 import { JSONMixinInterface } from './json-mixin.js';
+import { UploadFinishedEvent } from './storage-mixin.js';
 
 
 export declare class UploadJSONDatabaseMixinInterface {

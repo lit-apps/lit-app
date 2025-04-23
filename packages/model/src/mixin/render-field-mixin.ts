@@ -1,5 +1,5 @@
 import { NestedKeys } from '@lit-app/shared/types.js';
-import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
+import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import { LitElement, TemplateResult } from 'lit';
 import { EntityElement, entityI, EntityI, FieldConfig } from '../types.js';
 import { DefaultI } from '../types/entity.js';

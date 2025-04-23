@@ -1,5 +1,5 @@
 import DataHasChanged from '@lit-app/shared/event/data-has-changed';
-import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
+import type { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import { consume, ContextProvider, createContext, provide } from '@lit/context';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { PropertyValues, ReactiveElement } from 'lit';

@@ -4,7 +4,7 @@
 
 import { consume, createContext, provide } from "@lit/context";
 import { LitElement } from "lit";
-import { MixinBase, MixinReturn } from '../types.js';
+import type { MixinBase, MixinReturn } from '../types.js';
 
 /**
  * A factory function that creates mixins for consuming and providing context in LitElement components.

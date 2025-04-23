@@ -1,4 +1,4 @@
-import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
+import type { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import { consume, createContext, provide } from '@lit/context';
 import { PropertyValues, ReactiveElement } from 'lit';
 import { property } from 'lit/decorators.js';

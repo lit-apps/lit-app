@@ -1,10 +1,10 @@
 
-import { LitElement, PropertyValues } from 'lit';
-import { property, state } from 'lit/decorators.js'
-import { UserProfileT } from './types.js';
+import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import { FirestoreDocumentController } from '@preignition/lit-firebase';
 import { doc, getFirestore } from 'firebase/firestore';
-import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
+import { LitElement, PropertyValues } from 'lit';
+import { property, state } from 'lit/decorators.js';
+import { UserProfileT } from './types.js';
 
 
 declare global {

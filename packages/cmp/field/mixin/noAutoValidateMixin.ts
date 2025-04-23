@@ -1,6 +1,6 @@
-import { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
+import type { MixinBase, MixinReturn } from '@lit-app/shared/types.js';
 import { LitElement, PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js'
+import { property } from 'lit/decorators.js';
 
 type F = {
 	reportValidity: () => void

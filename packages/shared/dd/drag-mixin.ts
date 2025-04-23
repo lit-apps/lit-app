@@ -1,4 +1,4 @@
-import { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
+import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import { DragStore } from './drag-store.js';
 
 
