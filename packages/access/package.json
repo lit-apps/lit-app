@@ -21,18 +21,18 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@lit-app/cmp": "link:../cmp",
-    "@lit-app/model": "workspace:^",
-    "@lit-app/shared": "workspace:^",
-    "@lit-app/testing": "workspace:^",
-    "@lit/context": "^1.1.4",
+    "@lit-app/cmp": "workspace:*",
+    "@lit-app/model": "workspace:*",
+    "@lit-app/shared": "workspace:*",
+    "@lit-app/testing": "workspace:*",
+    "@lit/context": "^1.1.5",
     "@material/web": "link:../../../app-dependencies/material-web",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "firebase": "^10.7.1",
-    "lit": "^3.2.1"
+    "lit": "^3.3.0"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.8.2",

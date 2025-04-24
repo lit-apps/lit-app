@@ -21,12 +21,12 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@lit-app/shared": "*",
-    "@lit/context": "^1.1.2",
+    "@lit-app/shared": "workspace:*",
+    "@lit/context": "^1.1.5",
     "@material/web": "*",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
-    "lit": "^3.2.1"
+    "lit": "^3.3.0"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.3",

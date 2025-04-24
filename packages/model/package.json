@@ -43,17 +43,17 @@
   },
   "dependencies": {
     "@json2csv/plainjs": "^7.0.6",
-    "@lit-app/cmp": "link:../cmp",
-    "@lit-app/shared": "link:../shared",
-    "@lit-app/state": "workspace:^",
-    "@lit/context": "^1.1.4",
+    "@lit-app/cmp": "workspace:*",
+    "@lit-app/shared": "workspace:*",
+    "@lit-app/state": "workspace:*",
+    "@lit/context": "^1.1.5",
     "@material/web": "link:../../../app-dependencies/material-web",
     "@open-wc/dedupe-mixin": "^1.4.0",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
     "@preignition/pwi-input": "link:../../../packages/pwi-input",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/multi-select-combo-box": "link:../../../app-dependencies/web-components/packages/multi-select-combo-box",
-    "lit": "^3.2.1",
+    "lit": "^3.3.0",
     "xstate": "link:../../../app-dependencies/xstate/packages/core"
   },
   "overrides": {

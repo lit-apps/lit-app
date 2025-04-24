@@ -13,12 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@lit-app/model": "*",
-    "@lit-app/shared": "*",
-    "@lit-app/state": "*",
-    "@lit/context": "^1.1.2",
+    "@lit-app/model": "workspace:*",
+    "@lit-app/shared": "workspace:*",
+    "@lit-app/state": "workspace:*",
+    "@lit/context": "^1.1.5",
     "@material/web": "link:../../../app-dependencies/material-web",
-    "lit": "^3.2.1",
+    "lit": "^3.3.0",
     "xstate": "link:../../../app-dependencies/xstate/packages/core"
   },
   "overrides": {

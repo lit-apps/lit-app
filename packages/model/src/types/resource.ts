@@ -2,8 +2,9 @@
  * Base types for resource
  */
 
-import type { MetaData, Ref, DataI } from './dataI';
+import type { LanguageNativeT } from '@lit-app/shared/locale/language-native.js';
 import type { AccessT } from './access.js';
+import type { DataI, MetaData, Ref } from './dataI';
 
 
 
@@ -30,7 +31,7 @@ export interface ResourceUI {
 	/**
 	 * Primary language of the resource
 	 */
-	language: string
+	language: LanguageNativeT
 	/**
 	 * external name - when the resource is not localized
 	 */

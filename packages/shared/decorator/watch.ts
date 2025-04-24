@@ -18,7 +18,7 @@ import type { LitElement, PropertyValues } from 'lit';
  */
 export function watch(propName: string, waitUntilFirstUpdate = false) {
   return <T extends LitElement>(proto: T, functionName: string): void => {
-    // @ts-expect-error  - we are cheating
+    // @ts-expect-error  - willUpdate is protected
     const { willUpdate } = proto;
     if (propName in proto) {
       // @ts-expect-error  - we are cheating
