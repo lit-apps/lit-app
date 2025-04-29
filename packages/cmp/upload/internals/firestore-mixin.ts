@@ -99,7 +99,7 @@ export const UploadFirestoreMixin = <T extends MixinBase<BaseT>>(
         this.metaData = fieldPath ? doc.get(fieldPath) : doc.data();
         this.i18n = { ...this.i18n };
 
-        console.log("Current metaData: ", this.metaData, this.i18n.addFiles.one);
+        console.log("Current metaData: ", this.metaData, this.i18n.addFiles?.one);
       }, error => {
         console.error('Error getting document:', error);
       }

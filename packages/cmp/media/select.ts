@@ -70,4 +70,4 @@ declare global {
 
 
 
-const initImage = { mediaType: 'image' };
+const initImage = { mediaType: 'image', _tag: 'image' };

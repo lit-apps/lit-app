@@ -57,7 +57,7 @@
     "@vaadin/upload": "link:../../../app-dependencies/web-components/packages/upload",
     "@vaadin/vaadin-lumo-styles": "link:../../../app-dependencies/web-components/packages/vaadin-lumo-styles",
     "@vaadin/vaadin-themable-mixin": "link:../../../app-dependencies/web-components/packages/vaadin-themable-mixin",
-    "effect": "^2.4.0",
+    "effect": "^3.14.14",
     "firebase": "^11.6.0",
     "lit": "^3.3.0",
     "lite-youtube-embed": "^0.3.0",

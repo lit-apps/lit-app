@@ -27,7 +27,9 @@ import('@material/web/tabs/secondary-tab.js');
 export type CollectionType = 'illustration' | 'easyread'
 type mediaTypeT = 'image' | 'youtube' | 'video' | 'audio' | 'file' | 'other';
 type DataT = {
+  // @deprecated - we use this for old versions of the survey app. It is replaced by _tag
   mediaType: mediaTypeT;
+  _tag: mediaTypeT;
   url: string;
   videoId: string;
   alt: string;
@@ -61,8 +63,8 @@ declare global {
 }
 
 
-const initYoutube = { mediaType: 'youtube', playLabel: 'play', params: 'controls=0&modestbranding=2&rel=0&cc_load_policy=1' };
-const initImage = { mediaType: 'image' };
+const initYoutube = { mediaType: 'youtube', _tag: 'youtube', playLabel: 'play', params: 'controls=0&modestbranding=2&rel=0&cc_load_policy=1' };
+const initImage = { mediaType: 'image', _tag: 'image' };
 
 
 /**
@@ -172,7 +174,7 @@ export default abstract class MediaSelectBase extends LitElement {
   @query('lapp-media-gallery') gallery!: Gallery;
 
   get mediaType() {
-    return this.value?.mediaType;
+    return this.value?._tag || this.value?.mediaType;
   }
 
   get placehoder() {

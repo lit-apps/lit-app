@@ -1,22 +1,28 @@
+import { Schema } from "effect"
 import { TemplateResult } from "lit"
 
-export type MediaYoutube = {
-	mediaType: 'youtube'
-	videoId: string
-	playLabel?: string
-	params?: string
-}
-
-export type MediaImage = {
-	mediaType: 'image'
-	url: string
-}
-export type MediaIcon = {
-	mediaType: 'icon'
-	icon: string
-}
-
-export type Media = MediaImage | MediaYoutube | MediaIcon
+const MediaYoutube = Schema.TaggedStruct('youtube', {
+	videoId: Schema.String,
+	// mediaType: Schema.Literal('youtube'),
+	playLabel: Schema.optional(Schema.String),
+	params: Schema.optional(Schema.String),
+})
+const MediaImage = Schema.TaggedStruct('image', {
+	url: Schema.String,
+	// mediaType: Schema.Literal('image'),
+})
+const MediaIcon = Schema.TaggedStruct('icon', {
+	icon: Schema.String,
+	// mediaType: Schema.Literal('icon'),
+})
+export const Media = Schema.Union(
+	MediaYoutube,
+	MediaImage,
+	MediaIcon)
+export type Media = typeof Media.Type
+export type MediaYoutube = typeof MediaYoutube.Type
+export type MediaImage = typeof MediaImage.Type
+export type MediaIcon = typeof MediaIcon.Type
 
 type OptionBase = {
 	code: string

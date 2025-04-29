@@ -16,7 +16,7 @@ const toMediaItems = (obj: FirebaseUploadFile) => {
   return Object.entries(obj || {}).map(([_k, v]) => Object.assign({ src: v.url }, v));
 };
 
-const initImage = { mediaType: 'image' };
+const initImage = { mediaType: 'image', _tag: 'image' };
 
 
 /**

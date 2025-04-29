@@ -221,7 +221,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
 
       // Note(cg): really upload.
       const ini = Date.now();
-      file.status = this.i18n.uploading.status.connecting;
+      file.status = this.i18n.uploading?.status?.connecting || '';
       file.uploading = file.indeterminate = true;
       file.complete = file.abort = file.held = false;
       file.error = '';
@@ -240,7 +240,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
         file.error = message;
         return
       }
-      file.status = this.i18n.uploading.status.connecting;
+      file.status = this.i18n.uploading?.status?.connecting || '';
       file.uploading = file.indeterminate = true;
       file.complete = file.abort;
       file.error = '';
@@ -263,7 +263,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
             file.loaded = loaded;
             file.progress = progress;
             file.indeterminate = loaded <= 0 || loaded >= total;
-            file.status = this.i18n.uploading.status.processing;
+            file.status = this.i18n.uploading?.status?.processing || '';
 
             this.log && console.log('Upload is ' + progress + '% done');
             switch (snapshot.state) {
@@ -312,7 +312,7 @@ export const Storage = <T extends MixinBase<BaseT>>(
             this.log && console.log('uploaded, now storing at db level');
             file.loadedStr = file.totalStr;
             file.uploading = false;
-            file.status = this.i18n.uploading.status.processing;
+            file.status = this.i18n.uploading?.status?.processing || '';
             // this._setStatus(file, total, loaded, elapsed);
             this._renderFileList();
             this.dispatchEvent(new CustomEvent('upload-success', { detail: { file } }));

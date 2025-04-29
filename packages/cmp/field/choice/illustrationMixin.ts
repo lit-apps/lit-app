@@ -27,7 +27,7 @@ export const IllustrationMixin = <T extends Constructor<Choice>>(superClass: T) 
 
 		renderOptionIllustration(option: Option, slot: 'start' | 'end' = 'start') {
 			const { media, alt } = option
-			return html`${choose(media?.mediaType, [
+			return html`${choose(media?._tag, [
 				['image', () => {
 					const m = media as MediaImage
 					return html`

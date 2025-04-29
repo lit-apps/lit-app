@@ -281,6 +281,9 @@ export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles?: any }>(
     //   this.i18n.addFiles.one = label;
     // }
     @watch('dropLabel') dropLabelChanged(label: string) {
+      if (!this.i18n.dropFiles) {
+        this.i18n.dropFiles = {};
+      }
       this.i18n.dropFiles.one = label;
     }
 
