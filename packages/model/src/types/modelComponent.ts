@@ -103,9 +103,9 @@ export interface Lookup<T = string> {
 
 export interface ModelComponentSlider<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: SliderComponent
-	min: string
-	max: string
-	step?: string
+	min: number
+	max: number
+	step?: number
 	ticks?: boolean
 	labeled?: boolean
 }

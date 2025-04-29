@@ -24,8 +24,14 @@ export default class lappEntityGridProvider extends AbstractEntityElement {
     if (!this.entity) {
       await wait(50);
     }
-    this.items = await this.entity.getGridData(this.data, this.language);
     if (this.grid) {
+      // @ts-expect-error - for the time being, this is only nmplemented for  Option
+      if (!this.entity.getGridData) {
+        console.warn('getGridData not implemented for', this.entity);
+        return;
+      }
+      // @ts-expect-error - for the time being, this is only nmplemented for  Option
+      this.items = await (this.entity).getGridData(this.data, this.language);
       this.grid.items = this.items;
     }
   }
