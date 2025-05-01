@@ -1,7 +1,7 @@
 import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { PlayerI, SpeechConfigI } from './types';
 import { AudioController } from './audio-controller';
 import { SpeechController } from './speech-controller';
+import { PlayerI, SpeechConfigI } from './types';
 
 /**
  * A controller that manages the audio player. 
@@ -19,16 +19,16 @@ export class PlayerController implements ReactiveController, PlayerI {
 
 	private audioController: AudioController | undefined;
 	private speechController: SpeechController | undefined;
-	
+
 	get speaking() {
 		return !!this.controller?.speaking;
 	}
-	
+
 	get paused() {
 		return !!this.controller?.paused;
 	}
 
-	_error: string
+	_error!: string
 	_src: string | undefined
 	_speech: string | undefined
 	_speechConfig: SpeechConfigI | undefined
@@ -109,7 +109,10 @@ export class PlayerController implements ReactiveController, PlayerI {
 	pause() {
 		this.controller?.pause();
 	}
-	stop() 
+	stop() {
+		this.controller?.stop();
+	}
+
 	async restart() {
 		await this.controller?.restart();
 	}
