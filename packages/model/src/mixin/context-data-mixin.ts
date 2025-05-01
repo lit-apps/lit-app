@@ -51,6 +51,10 @@ export const ConsumeDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 
 	abstract class ContextConsumeDataMixinClass extends superClass {
 
+		/**
+		 * the data consumed from the context - we are not using `data` so that it is possible
+		 * to set data independently, via the `data` property, backed by `_data
+		 */
 		@consume({ context: dataContext, subscribe: true })
 		@state() contextData!: any;
 
