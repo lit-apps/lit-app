@@ -10,13 +10,21 @@ type ActionT = <T = any>(obj: unknown, id: string) => T;
  * @param keys - The path to the property in the object.
  * @returns The result of applying the action on the object.
  */
-export const deep = (action: ActionT, obj: unknown, keys: string | string[], id?: string[], key?: string) => {
-  keys = Array.isArray(keys) ? keys : keys.split('.');
-  id = keys.splice(-1, 1);
-  for (key in keys) obj = (obj as any)[keys[key]] = (obj as any)[keys[key]] || {};
-  // this works as a['b'] == a[['b']]
-  return action(obj, id as unknown as string);
+export const deep = (action: ActionT, obj: any, keys: string) => {
+  const k = keys.split('.');
+  const id = k.splice(-1, 1)[0];
+  for (const key in k)
+    obj = obj[k[key]] = obj[k[key]] || {};
+  return action(obj, id);
 };
+
+// export const deep = (action: ActionT, obj: unknown, keys: string | string[], id?: string[], key?: string) => {
+//   keys = Array.isArray(keys) ? keys : keys.split('.');
+//   id = keys.splice(-1, 1);
+//   for (key in keys) obj = (obj as any)[keys[key]] = (obj as any)[keys[key]] || {};
+//   // this works as a['b'] == a[['b']]
+//   return action(obj, id as unknown as string);
+// };
 
 
 /**
