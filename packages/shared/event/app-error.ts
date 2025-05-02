@@ -37,7 +37,7 @@ export default class AppErrorEvent extends CustomEvent<AppErrorDetail> {
 
     if (code instanceof BaseAppError) {
       errorDetail = {
-        code: code.code,
+        code: code.code as ErrorCodeT,
         message: code.message,
         data: code.data
       };
