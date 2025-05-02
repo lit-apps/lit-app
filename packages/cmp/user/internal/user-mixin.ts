@@ -1,4 +1,5 @@
 
+import { AppErrorEvent } from '@lit-app/shared/event/index.js';
 import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import { FirestoreDocumentController } from '@preignition/lit-firebase';
 import { doc, getFirestore } from 'firebase/firestore';
@@ -46,7 +47,7 @@ export const UserMixin = <T extends MixinBase<BaseT>>(
     override connectedCallback() {
       super.connectedCallback();
       // we have an error when we do not have the right to read the user profile
-      this.addEventListener('error', (e: Event) => {
+      this.addEventListener(AppErrorEvent.eventName, (e: AppErrorEvent) => {
         e.stopPropagation();
         this._hasError = true;
         this.setUserController();

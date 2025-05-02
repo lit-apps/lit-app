@@ -42,8 +42,8 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
 
   private recorder!: MediaRecorder;
   private chunks!: Blob[];
-  private timer!: number;
-  private messageTimeout!: number;
+  private timer!: number | NodeJS.Timeout;
+  private messageTimeout!: number | NodeJS.Timeout;
 
   /** @nocollapse */
   static override shadowRootOptions = {
@@ -242,7 +242,7 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
       if (!stream) { this.announce(this.getTranslate('announce.requestingPermission')); }
       stream = await getStream();
       this.supportingText = '';
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
       const message = e.name === 'NotAllowedError' ? `${e.message} - ${this.getTranslate('announce.blocked')}` : e.message;
       this.announce('Error: ' + message, 'alert');
