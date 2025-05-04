@@ -1,3 +1,5 @@
+import { AppErrorEvent } from "../event/index.js";
+
 /**
  * Common error codes used throughout the application
  */
@@ -161,4 +163,21 @@ export function createError(code: ErrorCodeT, optionsOrMessage: ErrorOptions | s
   } else {
     return new AppError(code.substring(4) as Substring<Extract<ErrorCodeT, `app/${string}`>, 'app/'>, optionsOrMessage, cause);
   }
+}
+
+/**
+ * Dispatches an AppErrorEvent if the error is an instance of BaseAppError,
+ * otherwise throws the error.
+ * 
+ * @param el - The HTML element that will dispatch the error event
+ * @param error - The error to be dispatched or thrown
+ * @throws {Error} If the error is not an instance of BaseAppError
+ */
+export function dispatchOrThrow(el: HTMLElement, error: ApplicationError | Error) {
+  if (error instanceof BaseAppError) {
+    const event = new AppErrorEvent(error);
+    el.dispatchEvent(event);
+    return
+  }
+  throw error
 }

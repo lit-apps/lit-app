@@ -31,6 +31,9 @@ const style: CSSResult = css`
   .m.auto {
 		--_m: auto
 	}
+	.m.xx-small {
+		--_m: var(--space-xx-small)
+	}
 	.m.x-small {
 		--_m: var(--space-x-small)
 	}

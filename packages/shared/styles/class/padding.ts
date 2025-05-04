@@ -31,6 +31,9 @@ const style: CSSResult = css`
 		--_p: var(--space-medium)
 	}
 
+	.p.xx-small {
+		--_p: var(--space-xx-small)
+	}
 	.p.x-small {
 		--_p: var(--space-x-small)
 	}
