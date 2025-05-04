@@ -19,32 +19,6 @@ import {
 import Registry from "./registry";
 import { type EventMetaT } from './types';
 
-/**
- * Remove undefined values from snapshot
- * 
- * refs from invoked ans spawned actors
- */
-// function getPersistedSnapshot<TContext extends MachineContext,
-//   TEvent extends EventObject,
-//   TChildren extends Record<string, AnyActorRef | undefined>,
-//   TStateValue extends StateValue,
-//   TTag extends string,
-//   TOutput>(snapshot: MachineSnapshot<
-//     TContext,
-//     TEvent,
-//     TChildren,
-//     TStateValue,
-//     TTag,
-//     TOutput, 
-//     any
-//   >
-//   ): Snapshot<unknown> {
-//   return JSON.parse(JSON.stringify(snapshot))
-// }
-
-/**
- * type for event meta data
- */
 
 const persistedSnapshotLogic = (actorLogic: any) => {
   // actorLogic.getPersistedSnapshot = getPersistedSnapshot

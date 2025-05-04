@@ -13,7 +13,7 @@ class ActorRegistry {
 	 * @param actor The actor to register.
 	 */
 	static register(actor: Actor) {
-		if(!actor.actorId) throw new Error('Actor must have an ID to be registered.');
+		if (!actor.actorId) throw new Error('Actor must have an ID to be registered.');
 		ActorRegistry.actors.set(actor.actorId, actor);
 	}
 
