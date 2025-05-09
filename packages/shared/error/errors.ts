@@ -64,10 +64,12 @@ export abstract class BaseAppError extends Error {
         cause: cause
       };
     }
+    // @ts-ignore TS2554 - does not exist on Node
     super(optionsOrMessage.message, { cause: optionsOrMessage.cause });
     this.name = this.constructor.name;
     this.code = code;
     this.data = optionsOrMessage.data;
+    // @ts-ignore TS2339 - does not exist on Node
     this.cause = optionsOrMessage.cause;
 
     // Maintains proper stack trace for where our error was thrown (only available on V8)

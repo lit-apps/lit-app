@@ -13,6 +13,7 @@ export const dataIsArrayContext = createContext<boolean>('data-is-array-context'
  */
 export declare class DataMixinInterface<D> {
 	data: D;
+	// contextData: D;
 	dataIsArray: boolean;
 }
 export declare class DataMixinConsumeInterface<D> extends DataMixinInterface<D> {
@@ -21,6 +22,7 @@ export declare class DataMixinConsumeInterface<D> extends DataMixinInterface<D> 
 	 * whether the data has changed for a given entity and path
 	 */
 	hasChanged(path: string, entityName: string): boolean;
+	contextData: D;
 }
 
 /**
@@ -136,7 +138,7 @@ export const ConsumeDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
  */
 export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<ReactiveElement>>(
 	superClass: T
-): MixinReturn<T, DataMixinInterface<D>> => {
+): MixinReturn<T, DataMixinInterface<D> & { parentData: D }> => {
 
 	// const [Symbol] = 
 

@@ -72,12 +72,12 @@ export type Role = {
 
 
 
-import { DocumentationKeysT } from './AbstractEntity.js';
-import { ActionsT } from './types/actionTypes.js';
-import { RenderInterface as ActionI, StaticEntityActionI } from './types/renderActionI.js';
-import { RenderInterface as CreateI } from './types/renderEntityCreateI.js';
-import { RenderInterface as FieldI, StaticEntityField } from './types/renderEntityFieldI.js';
-import { RenderInterface as RenderI } from './types/renderEntityI.js';
+import type { DocumentationKeysT } from './AbstractEntity.js';
+import type { ActionsT } from './types/actionTypes.js';
+import type { RenderInterface as ActionI, StaticEntityActionI } from './types/renderActionI.js';
+import type { RenderInterface as CreateI } from './types/renderEntityCreateI.js';
+import type { RenderInterface as FieldI, StaticEntityField } from './types/renderEntityFieldI.js';
+import type { RenderInterface as RenderI } from './types/renderEntityI.js';
 
 export interface StaticEntityI<D extends DefaultI = any, A extends ActionsT = ActionsT> {
 	actions: A

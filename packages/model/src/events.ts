@@ -2,6 +2,7 @@ import { CollectionReference, WriteBatch } from 'firebase/firestore'
 import { Collection } from './types.js'
 import { ActionEntityI, ActionServerEntityI, ActionT } from './types/actionTypes.js'
 
+type PromiseT<T = any> = Promise<T> | Promise<T>[]
 /**
  * Interface for global entity events
  */
@@ -9,7 +10,7 @@ import { ActionEntityI, ActionServerEntityI, ActionT } from './types/actionTypes
 export interface EntityDetail {
   id: string,
   entityName: string,
-  promise?: Promise<any>
+  promise?: PromiseT<any>
 }
 
 export interface EntityWriteDetail<T = any> extends EntityDetail {
@@ -21,11 +22,11 @@ export interface EntityCreateDetail<T = any> {
   collection?: CollectionReference, // a ref to the collection where the entity is created
   subCollection?: string, // a string representing the subCollection path relative to this.ref
   batch?: WriteBatch,
-  promise?: Promise<any>
+  promise?: PromiseT<any>
 }
 export interface EntityDirtyDetail {
   entityName: string
-  promise?: Promise<any>
+  promise?: PromiseT<any>
   dirty: boolean
   id: string
 }
@@ -34,7 +35,7 @@ export interface EntityActionDetail {
   action: string
 }
 
-export class BaseEvent<T extends { promise?: Promise<any> }> extends CustomEvent<T> {
+export class BaseEvent<T extends { promise?: PromiseT<any> }> extends CustomEvent<T> {
   public action?: ActionT | undefined
   public confirmed?: boolean | undefined// true when the action is confirmed by the user
   public processed?: boolean // true when the action was already processed
@@ -206,7 +207,7 @@ export class Edit extends BaseEvent<EntityDetail> {
   }
 }
 
-class BaseAction<T> extends BaseEvent<T & { promise?: Promise<any> }> {
+class BaseAction<T> extends BaseEvent<T & { promise?: PromiseT<any> }> {
   public bulkAction?: boolean | undefined
   override get shouldConfirm() {
     return !!(!this.confirmed && (this.action?.confirmDialog || (this.bulkAction && !this.action?.bulk?.skipConfirm)));

@@ -87,7 +87,7 @@ type BulkDialogT<D> = BulkDialogWithRenderT<D> | BulkDialogWithSkipConfirmT<D>;
 /**
  * used to group actions in the context menu
  */
-export const actionGroupType = ['addContent', 'moveContent', 'deleteContent', 'default'] as const
+export const actionGroupType = ['addContent', 'moveContent', 'deleteContent', 'contentValidation', 'default'] as const
 export type MenuConfigT<D> = {
   index: number
   group: typeof actionGroupType[number]
