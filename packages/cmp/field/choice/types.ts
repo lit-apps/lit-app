@@ -24,6 +24,7 @@ export type MediaYoutube = typeof MediaYoutube.Type
 export type MediaImage = typeof MediaImage.Type
 export type MediaIcon = typeof MediaIcon.Type
 
+
 type OptionBase = {
 	code: string
 	name?: string
