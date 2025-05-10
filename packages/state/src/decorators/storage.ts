@@ -4,7 +4,7 @@ import { parse } from './parse.js';
 import { functionValue } from '../functionValue.js';
 export type StorageOptions = {
 	key?: string,
-	prefix?: string
+	prefix?: string | null,
 }
 
 const defaultOptions: StorageOptions = {
@@ -53,7 +53,9 @@ export function storage(options?: StorageOptions) {
 		if (!descriptor) {
 			throw new Error('@local-storage decorator need to be called after @property')
 		}	
-		const key: string = `${options?.prefix || ''}_${options?.key || String(name)}`;
+		const key = options?.prefix
+			? `${options.prefix}_${options?.key || String(name)}`
+			: (options?.key || String(name));
 		const ctor = (proto).constructor as typeof State;
 		const definition = ctor.propertyMap.get(name);
 		const type = definition?.type
