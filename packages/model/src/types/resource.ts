@@ -35,7 +35,7 @@ export interface ResourceUI {
 	/**
 	 * external name - when the resource is not localized
 	 */
-	title?: string // external name
+	// title?: string // external name
 	shortDesc?: string
 }
 
