@@ -22,6 +22,7 @@ export type { RenderInterface, StaticEntityField } from './types/renderEntityFie
 
 export default function renderMixin<
 	D extends DefaultI = DefaultI,
+	C extends FieldConfig = FieldConfig
 >(
 	superclass: Constructor<AbstractEntity>,
 	model: Model<D>
@@ -30,7 +31,7 @@ export default function renderMixin<
 		/**
 		 * renders a data-entry field, depending on the model definition
 		 */
-		renderField(path: NestedKeys<D>, config?: FieldConfig, data?: D) {
+		renderField(path: NestedKeys<D>, config?: C, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
@@ -53,7 +54,7 @@ export default function renderMixin<
 		 * renders a data-entry field, depending on the model definition
 		 * and updates the data object on input
 		 */
-		renderFieldUpdate(path: NestedKeys<D>, config?: FieldConfig, data?: D) {
+		renderFieldUpdate(path: NestedKeys<D>, config?: C, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
@@ -74,7 +75,7 @@ export default function renderMixin<
 		}
 
 		@deprecated('use consumingMode on host instead')
-		renderFieldTranslate(path: NestedKeys<D>, config?: FieldConfig, data?: D) {
+		renderFieldTranslate(path: NestedKeys<D>, config?: C, data?: D) {
 			if (!this.host) {
 				throw new Error('Entity not bound to element');
 			}
@@ -96,6 +97,6 @@ export default function renderMixin<
 	}
 
 	Object.assign(R, staticApply);
-	return R as unknown as Constructor<RenderInterface<D>> & StaticEntityField<D> &
+	return R as unknown as Constructor<RenderInterface<D, C>> & StaticEntityField<D> &
 		typeof superclass;
 }

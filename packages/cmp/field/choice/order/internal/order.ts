@@ -1,3 +1,4 @@
+import { HTMLEvent } from '@lit-app/shared/types';
 import { animate } from '@lit-labs/motion';
 import '@material/web/icon/icon';
 import '@material/web/iconbutton/filled-tonal-icon-button';
@@ -8,11 +9,10 @@ import { repeat } from 'lit/directives/repeat.js';
 import { when } from 'lit/directives/when.js';
 import '../../../../list/list';
 import '../../../../list/list-item';
-import '../../list-item';
-import MultiChoiceMixin from '../../multiMixin';
-import { HTMLEvent } from '@lit-app/shared/types';
 import { Checkbox } from '../../checkbox/internal/checkbox';
 import IllustrationMixin from '../../illustrationMixin';
+import '../../list-item';
+import MultiChoiceMixin from '../../multiMixin';
 import type { Option } from '../../types';
 
 /**
@@ -61,7 +61,7 @@ export abstract class Order extends
     this.resetAnimation()
   }
 
-  override willUpdate(props: PropertyValues): void {
+  override willUpdate(props: PropertyValues<this>): void {
     if (props.has('animating') && this.input) {
       if (this.animating) {
         // fix the height of the list
@@ -109,7 +109,7 @@ export abstract class Order extends
   }
 
   protected override renderChoiceOptions(options: Option[] = []) {
-      if(options.length === 0) {
+    if (options.length === 0) {
       return this.renderEmptyOption()
     }
     // sort options so that selected options are at the top
@@ -193,7 +193,7 @@ export abstract class Order extends
     const up = () => html`
      <md-outlined-icon-button 
       slot="end" 
-      aria-label=${this.tr('order.moveUp', { label: option.innerTextLabel })}
+      aria-label=${this.tr('order.moveUp', { label: option.innerTextLabel! })}
       class="swap up" 
       @click=${onClick(index - 1)} >
       <lapp-icon>arrow_upward</lapp-icon></md-outlined-icon-button>
@@ -201,7 +201,7 @@ export abstract class Order extends
     const down = () => html`
     <md-outlined-icon-button 
      slot="end" 
-     aria-label=${this.tr('order.moveDown', { label: option.innerTextLabel })}
+     aria-label=${this.tr('order.moveDown', { label: option.innerTextLabel! })}
      class="swap down" 
      @click=${onClick(index + 1)} >
      <lapp-icon>arrow_downward</lapp-icon></md-outlined-icon-button>

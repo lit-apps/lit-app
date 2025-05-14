@@ -6,7 +6,8 @@ import { ModelComponent } from './modelComponent.js';
 
 export declare abstract class RenderInterface<
 	D extends DefaultI = DefaultI,
-	C extends RenderConfig = RenderConfig
+	C extends RenderConfig = RenderConfig,
+// A extends ActionsT = ActionsT
 > {
 	showMetaData: boolean
 	itemIdPath: string
@@ -47,6 +48,16 @@ export declare abstract class RenderInterface<
 	getCsvParser(renderConfig: C | undefined): Parser<any, any>;
 	renderTitle(data: D, config: C): TemplateResult | string;
 	getDefaultData(): Partial<D>;
+	// getActionEvent(actionName: ActionKeyT<A, unknown>,
+	// 	host: HostElementI<unknown>,
+	// 	data: unknown,
+	// 	isBulk?: boolean
+	// ): Promise<EntityAction | void>;
+	// styles: CSSResult | CSSResult[];
+	// getAccess: (data: D) => Promise<unknown>
+	// accessDataGetter: (data: D) => Promise<unknown>
+	// roles: Readonly<{ name: keyof ActionsT['user'], level: number }[]>
+	// documentationKeys: any
 }
 
 export interface StaticRenderEntity<

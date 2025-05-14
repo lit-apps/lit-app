@@ -6,7 +6,7 @@ import { DefaultI } from '../types/entity.js';
 
 
 export declare class RenderFieldMixinInterface<D extends DefaultI = DefaultI> {
-  renderField: (path: NestedKeys<D>, config?: FieldConfig, data?: D) => TemplateResult;
+  renderField: (path: NestedKeys<D>, config?: FieldConfig<D>, data?: D) => TemplateResult;
 }
 
 type BaseT<D extends DefaultI> = LitElement & Omit<EntityElement<D>, 'entity' | 'isFormValid' | 'consumingMode'>;

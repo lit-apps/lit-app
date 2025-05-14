@@ -103,7 +103,8 @@ export interface EntityI<
 	// documentationKeys: DocumentationKeysT
 	entityName: string,
 	icon: string,
-	new(cmp: EntityElement, realtime?: boolean): entityI<D, C, A>;
+	new(cmp: EntityElement, realtime?: boolean): entityI<D, C, A>
+	// renderForm(): string
 }
 
 export interface entityI<
@@ -114,7 +115,7 @@ export interface entityI<
 	Omit<AbstractEntity<D, A>, 'actions' | 'renderContent' | 'renderFieldUpdate'>,
 	ActionI<A>,
 	Omit<RenderI<D, C>, 'renderFieldUpdate'>,
-	FieldI<D>,
+	FieldI<D, C>,
 	CreateI<D> { }
 
 

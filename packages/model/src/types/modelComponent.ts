@@ -243,7 +243,7 @@ export type ModelComponent<T = any, TagsT = string> =
 	ModelComponentUploadImage<T, TagsT> |
 	ModelComponentStar<T, TagsT>
 
-export type FieldConfig<T = any> = Partial<ModelComponent<T>> & { renderConfig?: RenderConfig }
+export type FieldConfig<T = any, R = RenderConfig> = Partial<ModelComponent<T>> & { renderConfig?: R }
 
 export type Model<T, B = T, TagsT = string> = {
 	[key in keyof Partial<T>]: ModelComponent<B, TagsT> | Model<T[key], B, TagsT>

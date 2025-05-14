@@ -31,10 +31,15 @@ export {
 	ProvideUidMixin
 } from './src/mixin/context-uid-mixin';
 export {
+	ExtendHelperMixin,
+	type ExtendHelperMixinInterface
+} from './src/mixin/extend-helper-mixin.js';
+export {
 	ReactiveListMixin,
 	type ReactiveListMixinInterface
 } from './src/mixin/reactive-list-mixin';
 export { default as RenderFieldMixin } from './src/mixin/render-field-mixin.js';
+
 export {
 	RenderHeaderMixin
 } from './src/mixin/render-header-mixin';

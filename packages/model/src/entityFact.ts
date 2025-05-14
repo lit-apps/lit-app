@@ -104,7 +104,7 @@ export default function abstractEntityFact<
   return R as unknown as
     Constructor<AbstractEntity<D, A>> &
     Constructor<RenderI<D, C>> &
-    Constructor<FieldI<D>> &
+    Constructor<FieldI<D, C>> &
     Constructor<ActionI<A>> &
     Constructor<CreateI<D>> &
     StaticEntityActionI<A> &

@@ -1,8 +1,8 @@
+import { parse } from '@lit-app/shared/md/index.js';
 import { html, LitElement, nothing } from "lit";
 import { property } from 'lit/decorators.js';
-import { ConsumeAccessibilityMixin } from '../../mixin/context-accessibility-mixin';
-import { parse } from '@lit-app/shared/md/index.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ConsumeAccessibilityMixin } from '../../mixin/context-accessibility-mixin';
 import { MdConfigT } from './types';
 
 import 'lite-youtube-embed';
@@ -28,8 +28,8 @@ export default class lappMd extends ConsumeAccessibilityMixin(LitElement) {
 
 	override render() {
 		// we make md field tabbable if we detect accessible device
-		const tabindex = this.accessibility?.accessibleDevice ? 0 : nothing;
-		return html`<div tabindex="${tabindex}" class="markdown ${classMap(this.accessibilityClasses)}">${parse(this.md, this.mdConfig)}</div>`;
+		const tabindex = this.accessibility?.accessibleDevice ? 0 : nothing as any;
+		return html`<div tabindex=${tabindex} class="markdown ${classMap(this.accessibilityClasses)}">${parse(this.md, this.mdConfig)}</div>`;
 	}
 
 	// Used by readaloud to read text
