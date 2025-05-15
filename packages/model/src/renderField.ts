@@ -174,15 +174,15 @@ export function renderField<D extends DefaultI>(
         await this.updateComplete
       }
       set(path, v, data);
+      if (model.onInput) {
+        model.onInput(data, v, this);
+      }
       if (v !== value && entity.realTime) {
         this.dispatchEvent(
           // we send a copy of the data to storing prototype
-          new DataChanged({ entityName: entity.entityName, id, ...{ data } })
+          new DataChanged({ entityName: entity.entityName, ...{ data } })
         );
 
-      }
-      if (model.onInput) {
-        model.onInput(data, v, this);
       }
       if (update || model.requestUpdate) {
         this.requestUpdate('data');

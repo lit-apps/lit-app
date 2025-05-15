@@ -1,7 +1,7 @@
 import { ToastEvent } from '@lit-app/shared/event/index.js';
 import '@material/web/button/outlined-button.js';
 import { html } from "lit";
-import { customElement, property, query } from 'lit/decorators.js';
+import { property, query } from 'lit/decorators.js';
 import '../../entity-create-dialog.js';
 import { LappEntityCreateDialog } from "../../entity-create-dialog.js";
 import { entityI, RenderConfig } from '../types';
@@ -26,7 +26,6 @@ import { entityCreateDialogEvent } from "./entity-create-dialog.js";
  * ```
  */
 
-@customElement('lapp-entity-creator')
 export default class EntityCreator extends AbstractEntity {
   /**
    * Text to display on the create button

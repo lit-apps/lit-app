@@ -225,7 +225,7 @@ export default function renderMixin<
     }
 
     renderCardItem(_data: D, _config: C, _index?: number) {
-      return html``
+      return nothing as any
     }
 
     renderList(data: Collection<D>, config: C) {
@@ -245,7 +245,7 @@ export default function renderMixin<
     }
 
     renderEmptyArray(_config?: C) {
-      return html``
+      return nothing as any
     }
 
     renderGridEmptyState(config: C) {
@@ -267,7 +267,7 @@ export default function renderMixin<
         this.renderArrayTitle(data as Collection<D>, config) :
         this.renderTitle(data as D, config)
       if (!title) {
-        return html``;
+        return nothing as any
       }
       const icon = this.host.icon || this.icon
       return html`${choose(config?.level,
@@ -285,16 +285,16 @@ export default function renderMixin<
     }
 
     renderSubHeader(_data: D, _config: C) {
-      return html``
+      return nothing as any
     }
 
 
     renderFooter(_data: D, _config: C) {
-      return html``
+      return nothing as any
     }
 
     renderForm(_data: D, _config: C) {
-      return html`Form`
+      return nothing as any
     }
 
     renderFormNew(data: D, _config: C) {
@@ -304,8 +304,8 @@ export default function renderMixin<
 				${this.renderFieldUpdate('title', undefined, data)}
 			</div>`
     }
-    renderFieldUpdate(_name: string, _config: any, _data?: D): TemplateResult {
-      return html``
+    renderFieldUpdate(_name: string, _config: any, _data?: D) {
+      return nothing as any
     }
 
     protected getCsvParser(renderConfig: C | undefined) {
