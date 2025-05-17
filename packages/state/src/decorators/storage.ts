@@ -4,11 +4,17 @@ import { parse } from './parse.js';
 import { functionValue } from '../functionValue.js';
 export type StorageOptions = {
 	key?: string,
-	prefix?: string
+	prefix?: string,
+	/**
+	 * Whether to use `localStorage` or `sessionStorage` as the backing store.
+	 * @default 'local'
+	 */
+	store?: 'local' | 'session',
 }
 
 const defaultOptions: StorageOptions = {
-	prefix: '_ls'
+	prefix: '_ls',
+	store: 'local',
 }
 
 
@@ -53,20 +59,21 @@ export function storage(options?: StorageOptions) {
 		if (!descriptor) {
 			throw new Error('@local-storage decorator need to be called after @property')
 		}	
+		const store = options?.store === 'session' ? sessionStorage : localStorage;
 		const key: string = `${options?.prefix || ''}_${options?.key || String(name)}`;
 		const ctor = (proto).constructor as typeof State;
 		const definition = ctor.propertyMap.get(name);
 		const type = definition?.type
 		if(definition) {
 			const previousValue = definition.initialValue
-			definition.initialValue = () => parse(localStorage.getItem(key), type) ?? functionValue(previousValue);
+			definition.initialValue = () => parse(store.getItem(key), type) ?? functionValue(previousValue);
 			ctor.propertyMap.set(name, {...definition, ...options})
 		}
 		// const oldGetter = descriptor?.get;
 		const oldSetter = descriptor?.set;
 		const setter = function (this: State, value: unknown) {
 			if (value !== undefined) {
-				localStorage.setItem(key,
+				store.setItem(key,
 					(type === Object ||
 						type === Array) ? JSON.stringify(value) : value as string);
 			}
