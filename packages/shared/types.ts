@@ -140,6 +140,39 @@ export type NestedValue<T, Key extends string> = Key extends `${infer K}.${infer
   K extends keyof T ? NestedValue<T[K], Rest> : never :
   Key extends keyof T ? T[Key] : never;
 
+
+
+/**
+ * Prettifies how type `T` is displayed in the editor.
+ * Taken from https://www.youtube.com/watch?v=lraHlXpuhKs
+ */
+export type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+
+/**
+ * Converts a union type into a discriminated union type.
+ *  
+ * @Example: 
+ * ```typescript
+ * type Actions = {
+ *  login: { email: string,  password: string  },
+ *  logout: { reason: string },
+ *  update: { id: string, data: unknown  }
+ * }
+ *  
+ * type DiscUnion = AsDiscUnion<Actions>
+ * 
+ */
+export type AsDiscUnion<T> = {
+  [K in keyof T]: Prettify<
+    {
+      type: K;
+    } & T[K]>
+}[keyof T]
+
+
 // type Form = {
 //   a: { b: string, c: number }
 // }
