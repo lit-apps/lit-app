@@ -107,7 +107,6 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
    */
   renderAction<
     N extends ActionKeyT<typeof this['actions'], unknown>,
-    // N extends ActionKeyT<A, unknown>,
     // @-ts-expect-error - but this is working
     // D extends Parameters<this['actions'][N]['handler']>[1] 
     D extends this['actions'][N] extends ActionEntityI | ActionSimpleI ?
@@ -135,7 +134,7 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
    * @param config - Configuration for rendering bulk actions.
    * @returns TemplateResult for bulk actions.
    */
-  protected renderBulkAction(
+  renderBulkAction(
     actionName: ActionKeyT<A, unknown>,
     data: unknown,
     config: RenderConfig): TemplateResult

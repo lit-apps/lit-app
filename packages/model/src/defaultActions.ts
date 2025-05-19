@@ -161,7 +161,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
     restore: {
       kind: 'server',
       label: 'Restore',
-      icon: 'restore',
+      icon: 'restore_from_trash',
       pushHistory: true,
       meta: {
         label: 'Restored',

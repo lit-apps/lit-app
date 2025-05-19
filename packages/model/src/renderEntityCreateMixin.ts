@@ -22,7 +22,7 @@ export default function renderMixin<D extends DataI>(
 		entityName?: string,
 	} & StaticRenderInterface<D> = {
 
-		processCreateData(host: HostElementI<D>, data: RecursivePartial<D> = {}): Partial<D> {
+		processCreateData(host: HostElementI<D> | undefined, data: RecursivePartial<D> = {}): Partial<D> {
 			return {
 				...data,
 				metaData: this.processCreateMetaData(host, data.metaData),
@@ -30,7 +30,7 @@ export default function renderMixin<D extends DataI>(
 			} as Partial<D>;
 		},
 
-		processCreateMetaData(host: HostElementI<D>, metaData: Partial<D["metaData"]> = {}): MetaDataFromD<D> {
+		processCreateMetaData(host: HostElementI<D> | undefined, metaData: Partial<D["metaData"]> = {}): MetaDataFromD<D> {
 			// if (typeof metaData !== 'object' || metaData === null) {
 			// 	throw new Error('metaData must be an object');
 			// }
@@ -38,16 +38,16 @@ export default function renderMixin<D extends DataI>(
 				type: this.entityName,
 				deleted: false,
 				access: {
-					app: host.appID || null,
+					app: host?.appID || null,
 					status: 'private'
 				},
 				...metaData,
 			} as MetaDataFromD<D>;
 		},
 
-		processCreateRef(host: HostElementI<D>, ref: Partial<D["ref"]> = {}): RefFromD<D> {
+		processCreateRef(host: HostElementI<D> | undefined, ref: Partial<D["ref"]> = {}): RefFromD<D> {
 			return {
-				app: host.appID || null,
+				app: host?.appID || null,
 				...ref,
 			} as RefFromD<D>;
 		}

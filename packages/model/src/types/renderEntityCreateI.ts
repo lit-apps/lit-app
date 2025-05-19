@@ -8,11 +8,11 @@ export type RefFromD<D> = D extends { ref: any } ? D["ref"] : never;
 
 // type PD<D extends D> = Partial<D> & { metaData: D["metaData"], ref: D["ref"] };
 export interface StaticRenderInterface<D extends DefaultI> {
-	processCreateData(host: HostElementI, data: RecursivePartial<D>): Partial<D>
+	processCreateData(host: HostElementI | undefined, data: RecursivePartial<D>): Partial<D>
 	// processCreateMetaData(host: HostElementI, metaData: unknown): Partial<DataI["metaData"]>
 	// processCreateRef(host: HostElementI, ref: unknown): Partial<DataI["ref"]>
-	processCreateMetaData(host: HostElementI, metaData: unknown): MetaDataFromD<D>
-	processCreateRef(host: HostElementI, ref: unknown): RefFromD<D>
+	processCreateMetaData(host: HostElementI | undefined, metaData: unknown): MetaDataFromD<D>
+	processCreateRef(host: HostElementI | undefined, ref: unknown): RefFromD<D>
 	// renderTitle(data: any, config: any): any;
 }
 export declare class RenderInterface<D extends DefaultI> {
