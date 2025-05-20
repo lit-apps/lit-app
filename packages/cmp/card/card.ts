@@ -59,6 +59,12 @@ export default class lappCard extends Card {
         transform: scale(1.015);
         --vaadin-card-box-shadow: var(--lumo-box-shadow-m);
       }
+    :host([theme~="plain"]) {
+      --vaadin-card-border-width: 0px;
+        --vaadin-card-box-shadow: 0;
+      }
+
+
       ` ]
   }
 
