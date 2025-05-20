@@ -76,7 +76,7 @@ export class EntityAccess extends
 	@state() selected = 0
 
 	get path() {
-		// this is a temp hak to fetch the closest 'db-ref-entity' path
+		// this is a temp hack to fetch the closest 'db-ref-entity' path
 		// once stabilized, we would use @lit/context - but is needs to be in a @lit-app package (and not as firebase persistence)
 		const ref = closest(this, 'db-ref-entity, db-ref');
 		// @ts-expect-error - we know ref has path
