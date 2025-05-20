@@ -117,8 +117,17 @@ export const ProvideAccessMixin = <
 			async updateAccess(data: any) {
 				const accessDataGetter = this.Entity?.accessDataGetter || this.accessDataGetter;
 				const accessData = await accessDataGetter(data);
-				// console.info('AccessData', accessData)
+				console.info('AccessData', accessData)
 				if (!accessData) {
+					if (Array.isArray(data)) {
+						this.authorization = {
+							isOwner: false,
+							canEdit: true,
+							canView: false,
+							canDelete: false,
+						}
+						return;
+					}
 					this.authorization = {
 						isOwner: false,
 						canEdit: false,

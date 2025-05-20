@@ -51,6 +51,7 @@
     "@open-wc/dedupe-mixin": "^1.4.0",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
     "@preignition/pwi-input": "link:../../../packages/pwi-input",
+    "@vaadin/context-menu": "link:../../../app-dependencies/web-components/packages/context-menu",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/multi-select-combo-box": "link:../../../app-dependencies/web-components/packages/multi-select-combo-box",
     "lit": "^3.3.0",

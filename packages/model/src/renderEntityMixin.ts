@@ -1,6 +1,8 @@
 import { activeItemChanged } from '@lit-app/shared/grid';
 import { ensure } from '@lit-app/shared/types.js';
 import { get } from '@preignition/preignition-util/src/deep';
+import { ContextMenuLitRenderer, contextMenuRenderer } from '@vaadin/context-menu/lit.js';
+import '@vaadin/context-menu/vaadin-lit-context-menu.js';
 import {
   columnBodyRenderer,
   columnHeaderRenderer,
@@ -8,6 +10,7 @@ import {
 } from '@vaadin/grid/lit';
 import type { Grid } from '@vaadin/grid/vaadin-lit-grid.js';
 import { html, nothing, TemplateResult } from 'lit';
+import { join } from 'lit/directives/join.js';
 
 import('@vaadin/grid/lit-all-imports.js');
 
@@ -29,6 +32,7 @@ import { RenderInterface, StaticRenderEntity } from './types/renderEntityI';
 export type { RenderInterface } from './types/renderEntityI';
 
 import { Parser } from '@json2csv/plainjs';
+import { ActionKeyT, FilterActionKeyT, MenuConfigT } from './types/actionTypes.js';
 import { DefaultI } from './types/entity';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
@@ -83,7 +87,18 @@ export default function renderMixin<
   D extends DefaultI,
   C extends RenderConfig = RenderConfig
 >(
-  superclass: Constructor<AbstractEntity & { open: Open }>
+  superclass: Constructor<AbstractEntity & {
+    open: Open
+    filterActions: (
+      key: FilterActionKeyT, data: unknown
+    ) => ([string, number | MenuConfigT<any>])[]
+    actionHandler: (
+      actionName: ActionKeyT<any, unknown>,
+      data: unknown,
+      isBulk?: boolean
+    ) => (e: CustomEvent) => void
+
+  }>,
 ) {
   class R extends superclass {
     // class R extends superclass implements RenderInterfaceImpl<D, C> {
@@ -99,6 +114,70 @@ export default function renderMixin<
     //   return data;
     // }
 
+    getContextActions(
+      item: D,
+      config: C): TemplateResult {
+
+      const actions = this.filterActions('showInContextMenu', item);
+      const groupedActions = actions.reduce((acc, [key, config]) => {
+        const group = (config as MenuConfigT<any> & { disabled?: boolean }).group || 'default';
+        acc[group] = acc[group] || [];
+        acc[group].push([key, config as MenuConfigT<any>]);
+        return acc;
+      }, {} as Record<string, [string, MenuConfigT<unknown>][]>);
+
+      const actionItems = Object.entries(groupedActions).map(([group, groupActions]) => {
+        const groupActionsItems = groupActions.map(([key, config]) => {
+          let disabled = false;
+          if (this.actions[key].disabled !== undefined) {
+            disabled = this.actions[key].disabled(item)
+          }
+          return html`<md-list-item
+            type="button"
+            ?disabled=${disabled}
+            @click=${this.actionHandler(key, item)}>
+            ${config.label}
+            <lapp-icon slot="start" icon="${config.icon || ''}"></lapp-icon>
+          </md-list-item>`;
+        });
+        return groupActionsItems
+
+      });
+      return html`${join(
+        actionItems.filter(group => group.length > 0),
+        html`<md-divider></md-divider>`
+      )}`
+    }
+
+
+
+    renderContextMenu(data: Collection<D>, config: C): ContextMenuLitRenderer {
+      return (context, _menu) => {
+        const { sourceEvent } = context.detail as { sourceEvent: Event };
+        const grid = (sourceEvent.currentTarget as Element)?.firstElementChild as Grid<D>;
+        const eventContext = grid?.getEventContext(sourceEvent) || {};
+        const { item } = eventContext;
+        if (!item) {
+          return;
+        }
+
+        // const parentItem = this.getCache(item)?.parentItem;
+        // TODO: 'en' should be the language
+        const title = this.renderTitle(item, config);
+        const icon = this.icon || this.host.icon;
+        return html`
+          <md-list style="max-width:200px;">       
+            <md-list-item > 
+              <span slot="headline">${title}</span>
+              <lapp-icon slot="start" .icon=${icon}></lapp-icon>
+            </md-list-item>
+            <md-divider></md-divider>
+            ${this.getContextActions(item, config)}
+          </md-list>
+        `;
+      };
+    }
+
     renderGrid(data: Collection<D>, config: C) {
       // bring selection up to host 
       const onSelected = async (e: CustomEvent) => {
@@ -108,13 +187,20 @@ export default function renderMixin<
         await this.host.updateComplete;
         (this.host as EntityElementList).size = e.detail.value;
       }
+      const renderMenu = this.renderContextMenu(data, config);
 
       const onActiveItemChanged = (e: CustomEvent) => {
         this.onActiveItemChanged(e);
       }
+      const onContextMenu = (e: MouseEvent) => {
+        // Prevent opening context menu on header row.
+        if ((e.currentTarget as Grid).getEventContext(e).section === 'header') {
+          e.stopPropagation();
+        }
+      }
       const doc = this.constructor.documentationKeys?.grid
       // const dataProvider = this.getDataProvider(data, config)
-      return html`<vaadin-grid 
+      const grid = html`<vaadin-grid 
         accessible-name="grid for ${this.entityName}"
         id="grid"
         data-documentation="${doc ? (typeof doc === 'string' ? doc : 'grid') : nothing}"
@@ -126,6 +212,7 @@ export default function renderMixin<
           model: any,
           grid: any) => this.renderGridDetail(data, config, model, grid))
         }
+        @vaadin-contextmenu=${onContextMenu}
         @active-item-changed=${config?.gridConfig?.preventDetails ? null : onActiveItemChanged}
         @dblclick=${config?.gridConfig?.preventDblClick ? null : this.onGridDblClick.bind(this)}
         @selected-items-changed=${onSelected}
@@ -135,6 +222,12 @@ export default function renderMixin<
         ${this.renderGridEmptyState(config)}
         <slot name="grid-column"></slot>
       </vaadin-grid>`
+
+      // TODO: review if we should have a other authorization type (canViewContextMenu or similar) ?
+      return config.authorization?.canEdit && renderMenu ?
+        html`<vaadin-context-menu  style="display: contents;" ${contextMenuRenderer(renderMenu, [])}
+              >${grid}</vaadin-context-menu>` :
+        grid;
     }
 
     // protected getDataProvider(_data: Collection<D>, _config: C) {
@@ -441,3 +534,4 @@ export function getFieldsFromModel(
   }
   return getFields(model)
 }
+
