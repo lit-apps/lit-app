@@ -1,8 +1,8 @@
 import {
 	type GridColumnHeaderLitRenderer
 } from '@vaadin/grid/lit';
-import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
-import '@vaadin/text-field/vaadin-lit-text-field.js';
+import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
+import '@vaadin/text-field/vaadin-text-field.js';
 import { html } from 'lit';
 
 

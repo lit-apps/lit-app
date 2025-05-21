@@ -2,8 +2,8 @@ import '@preignition/lit-firebase/span';
 import {
 	type GridColumnBodyLitRenderer,
 } from '@vaadin/grid/lit';
-import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
-import { GridItemModel } from '@vaadin/grid/vaadin-lit-grid.js';
+import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
+import { GridItemModel } from '@vaadin/grid/vaadin-grid.js';
 import { html, TemplateResult } from 'lit';
 
 type value = Date | string | number;

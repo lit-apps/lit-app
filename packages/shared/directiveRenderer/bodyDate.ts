@@ -1,6 +1,6 @@
 import { html, TemplateResult } from 'lit';
-import {  GridItemModel } from '@vaadin/grid/vaadin-lit-grid.js';
-import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
+import { GridItemModel } from '@vaadin/grid/vaadin-grid.js';
+import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
 import '@lit-app/cmp/datetime/format';
 import {
 	type GridColumnBodyLitRenderer,
@@ -8,7 +8,7 @@ import {
 
 import type { Timestamp } from 'firebase/firestore';
 
-type value = Date | string | number | Timestamp ;
+type value = Date | string | number | Timestamp;
 type getter<T> = (item: T) => value | Promise<value>;
 
 export default function bodyDate<T = any>(

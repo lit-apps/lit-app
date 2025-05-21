@@ -20,7 +20,7 @@ interface UploadDocumentI extends lappUploadDocument {
 	_onDragleave(e: Event): void
 	_onDrop(e: Event): void
 }
-// import { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';
+// import { Upload } from '@vaadin/upload/src/vaadin-upload.js';
 
 type UploadStatusT = {
 	status: 'start' | 'finish' | 'progress' | 'success' | 'error'

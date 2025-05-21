@@ -16,7 +16,7 @@ import('../button/button.js')
 import('../youtube/youtube.js')
 import('../youtube/youtube-id.js')
 import('./image.js')
-import('@vaadin/button/vaadin-lit-button.js');
+import('@vaadin/button/vaadin-button.js');
 import('@material/web/button/filled-button.js');
 import('@material/web/button/outlined-button.js');
 import('@material/web/button/text-button.js');

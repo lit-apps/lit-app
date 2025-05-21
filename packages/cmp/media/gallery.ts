@@ -1,8 +1,8 @@
 import { LappImage } from '@lit-app/cmp/media/image';
 import { HTMLEvent } from '@lit-app/shared/types.js';
 import { MdDialog } from '@material/web/dialog/dialog.js';
-import '@vaadin/grid/lit-all-imports.js';
-import { Grid } from '@vaadin/grid/lit-all-imports.js';
+import '@vaadin/grid/all-imports.js';
+import { Grid } from '@vaadin/grid/all-imports.js';
 import { css, html, LitElement, nothing, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import('./image')

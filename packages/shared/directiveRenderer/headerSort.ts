@@ -2,8 +2,8 @@ import { html } from 'lit';
 import {
   type GridColumnHeaderLitRenderer
 } from '@vaadin/grid/lit';
-import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
-import '@vaadin/grid/vaadin-lit-grid-sorter.js';
+import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
+import '@vaadin/grid/vaadin-grid-sorter.js';
 
 
 type direction = 'asc' | 'desc' | null;

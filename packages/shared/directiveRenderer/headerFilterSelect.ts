@@ -1,9 +1,9 @@
-import '@vaadin/combo-box/vaadin-lit-combo-box';
+import '@vaadin/combo-box/vaadin-combo-box';
 import {
 	type GridColumnHeaderLitRenderer
 } from '@vaadin/grid/lit';
-import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
-import '@vaadin/select/vaadin-lit-select';
+import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
+import '@vaadin/select/vaadin-select';
 import { html, LitElement, TemplateResult } from 'lit';
 
 

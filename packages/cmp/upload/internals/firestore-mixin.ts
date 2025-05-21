@@ -2,7 +2,7 @@ import { ToastEvent } from '@lit-app/shared/event/index.js';
 import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import pathReady from '@preignition/lit-firebase/src/pathReady.js';
 import { OrderBy, Where } from '@preignition/lit-firebase/src/types.js';
-import { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';
+import { Upload } from '@vaadin/upload/src/vaadin-upload.js';
 import { getApp } from 'firebase/app';
 import { QueryConstraint, Unsubscribe, addDoc, collection, doc, getFirestore, limit, onSnapshot, orderBy, query, updateDoc, where } from 'firebase/firestore';
 import { property } from 'lit/decorators/property.js';

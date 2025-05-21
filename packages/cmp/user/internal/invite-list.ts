@@ -1,7 +1,7 @@
 
 import { css, html, LitElement } from "lit";
 import { property } from 'lit/decorators.js';
-import '@vaadin/grid/lit-all-imports.js'
+import '@vaadin/grid/all-imports.js'
 import { UserItem, UserItemRole, UserUidRoleT } from './types';
 
 import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';

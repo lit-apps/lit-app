@@ -1,6 +1,6 @@
 
 import { css, html, LitElement } from "lit";
-import '@vaadin/grid/lit-all-imports.js'
+import '@vaadin/grid/all-imports.js'
 import { property } from 'lit/decorators.js';
 import { UserItem, UserItemRole, UserUidRoleT } from './types';
 

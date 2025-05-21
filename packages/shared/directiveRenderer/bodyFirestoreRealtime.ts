@@ -1,6 +1,6 @@
 import { html, TemplateResult } from 'lit';
-import {  GridItemModel } from '@vaadin/grid/vaadin-lit-grid.js';
-import type { GridColumn } from '@vaadin/grid/vaadin-lit-grid-column.js';
+import { GridItemModel } from '@vaadin/grid/vaadin-grid.js';
+import type { GridColumn } from '@vaadin/grid/vaadin-grid-column.js';
 import '@preignition/lit-firebase/span-store';
 import {
 	type GridColumnBodyLitRenderer,

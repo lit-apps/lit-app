@@ -1,5 +1,5 @@
 import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
-import { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';
+import { Upload } from '@vaadin/upload/src/vaadin-upload.js';
 import { property } from 'lit/decorators.js';
 import { normalizeFile } from './normalizeFile.js';
 import { FirebaseUploadFile, UploadFinishedEvent } from './storage-mixin.js';

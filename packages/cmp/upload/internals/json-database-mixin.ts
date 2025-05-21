@@ -1,5 +1,5 @@
 import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
-import { Upload } from '@vaadin/upload/src/vaadin-lit-upload.js';
+import { Upload } from '@vaadin/upload/src/vaadin-upload.js';
 import { getApp } from 'firebase/app';
 import { getDatabase, ref, set } from 'firebase/database';
 import { JSONMixinInterface } from './json-mixin.js';

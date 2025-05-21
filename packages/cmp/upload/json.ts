@@ -1,5 +1,5 @@
-import { Upload } from "@vaadin/upload/src/vaadin-lit-upload.js";
-import '@vaadin/upload/vaadin-lit-upload.js';
+import { Upload } from "@vaadin/upload/src/vaadin-upload.js";
+import '@vaadin/upload/vaadin-upload.js';
 import { customElement } from 'lit/decorators.js';
 import UploadJSONFirestoreMixin from "./internals/json-firestore-mixin.js";
 import JSONMixin from "./internals/json-mixin.js";
