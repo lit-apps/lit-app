@@ -190,7 +190,7 @@ export function defaultActions<D>(): DefaultActionsT<D> {
       kind: 'entity',
       label: 'Invite',
       icon: 'person_add',
-      handler: (ref, data) => {
+      handler: (ref, data: { $id: string }) => {
         // this triggers a createActor invite machine 
         // TODO: we should create teh machine here, but issues with dependencies (actorStateServer do not belong here)
         console.log('invite', data);

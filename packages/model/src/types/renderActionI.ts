@@ -2,7 +2,9 @@ import { nothing, TemplateResult } from "lit";
 import { EntityAction, EntityCreateDetail } from "../events.js";
 import {
   ActionEntityI,
+  ActionEventI,
   ActionKeyT,
+  ActionMixinI,
   ActionSimpleI,
   ActionsT,
   FilterActionKeyT,
@@ -228,8 +230,16 @@ export interface StaticEntityActionI<
    */
   renderAction<
     N extends ActionKeyT<A, unknown>,
-    D extends this['actions'][N] extends ActionEntityI | ActionSimpleI ?
-    Parameters<this['actions'][N]['handler']>[1] : any
+    D extends Parameters<
+      (this['actions'][N] extends ActionEntityI | ActionSimpleI
+        ? (this['actions'][N]['handler'])
+        : this['actions'][N] extends ActionMixinI | ActionEventI
+        ? (this['actions'][N]['getEvent'])
+        : (
+          (...args: any) => any
+        )
+      )
+    >[this['actions'][N] extends ActionEntityI | ActionMixinI ? 1 : 0]
   >(
     actionName: N,
     host: HostElementI<unknown>,

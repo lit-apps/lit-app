@@ -32,7 +32,7 @@ import { RenderInterface, StaticRenderEntity } from './types/renderEntityI';
 export type { RenderInterface } from './types/renderEntityI';
 
 import { Parser } from '@json2csv/plainjs';
-import { ActionKeyT, FilterActionKeyT, MenuConfigT } from './types/actionTypes.js';
+import { ActionKeyT, ActionsT, FilterActionKeyT, MenuConfigT } from './types/actionTypes.js';
 import { DefaultI } from './types/entity';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
@@ -93,7 +93,7 @@ export default function renderMixin<
       key: FilterActionKeyT, data: unknown
     ) => ([string, number | MenuConfigT<any>])[]
     actionHandler: (
-      actionName: ActionKeyT<any, unknown>,
+      actionName: ActionKeyT<ActionsT, unknown>,
       data: unknown,
       isBulk?: boolean
     ) => (e: CustomEvent) => void
