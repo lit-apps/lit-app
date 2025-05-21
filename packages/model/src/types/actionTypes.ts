@@ -1,5 +1,5 @@
 import type { TemplateResult } from "lit";
-import type { Collection, CollectionI } from "./dataI.js";
+import type { Collection } from "./dataI.js";
 import type { EntityStatus, RenderConfig } from "./entity.js";
 // import { dbRefEntity } from "@lit-app/persistence-shell";
 import type { CollectionReference, DocumentReference } from "firebase/firestore";
@@ -43,14 +43,11 @@ type ButtonConfigT = {
   icon?: string
 }
 
-export type ActionDataT<D> = {
-  data: D | CollectionI<D>,
-  // selectedItems?: Collection<D>
-}
+
 
 export type GetEventT<D, E = any> = (
   entityName: string,
-  data: ActionDataT<D>,
+  data: D,
   host?: HostElementI,
   isBulk?: boolean,
   confirmed?: boolean
@@ -187,7 +184,7 @@ export interface ActionEventI<D = any> extends ActionBaseI<D>, ActionConfigT<D, 
  * Entity actions are actions that require an entityAction to be dispatched. There is no need to define a getEvent function
  * The handler is called on entity-action-handler 
  */
-export interface ActionEntityI<D = any, TData = any>
+export interface ActionEntityI<D = any, TData = D>
   extends ActionBaseI<D, TData>, ActionConfigT<D, TData, EntityAction> {
   kind: 'entity'
   handler: ActionHandlerT<D, TData, EntityAction>
@@ -215,7 +212,7 @@ export type ActionT<D = any> =
   | ActionSimpleI<D>
   | ActionEventI<D>
   | ActionMixinI<D>
-  | ActionEntityI<D>
+  | ActionEntityI<D, D>
   | ActionServerEntityI<D>
 
 export type ActionsT<D = any> = Record<string, ActionT<D>>
@@ -238,7 +235,7 @@ export type DefaultActionsT<D> = {
   setAccess: ActionT<D>,
   addAccess: ActionT<D>,
   removeAccess: ActionT<D>,
-  invite: ActionT<D>,
+  invite: ActionEntityI<D>,
 }
 
 /**

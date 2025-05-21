@@ -239,6 +239,7 @@ export interface StaticEntityActionI<
           (...args: any) => any
         )
       )
+    // >[1]
     >[this['actions'][N] extends ActionEntityI | ActionMixinI ? 1 : 0]
   >(
     actionName: N,

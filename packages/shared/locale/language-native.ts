@@ -37,4 +37,7 @@ export const native = {
 } as const
 
 export default native;
-export type LanguageNativeT = keyof typeof native;
+
+// We add & {} to allow extra properties to be added to the type
+export type LanguageNativeT = keyof typeof native & {};
+
