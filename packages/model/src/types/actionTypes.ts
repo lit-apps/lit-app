@@ -163,6 +163,32 @@ type ActionConfigT<D, TData = D, E extends CustomEvent = CustomEvent> = {
   }
 }
 
+// type Actions<D = any, TData = any> = {
+//   simple: ActionBaseI<D, TData>
+//   & {
+//     handler: (data: any) => void
+//   }
+//   event: ActionBaseI<D, TData>
+//   & ActionConfigT<D, CustomEvent>
+//   & {
+//     getEvent: GetEventT<D>
+//   }
+//   entity: ActionBaseI<D, TData>
+//   & ActionConfigT<D, TData, EntityAction>
+//   & {
+//     handler: ActionHandlerT<D, TData, EntityAction>
+//   }
+//   server: ActionBaseI<D, TData>
+//   & ActionConfigT<D, TData, EntityAction>
+//   mixin: ActionBaseI<D, TData>
+//   & {
+//     getEvent: GetEventT<D>
+//   }
+// }
+
+// export type ActionTypeT<D = any, TData = any> = AsDiscUnion<Actions<D, TData>>
+
+
 /**
  * simple actions are actions that do not require any event to be dispatched. 
  * Handler is called directly on click
