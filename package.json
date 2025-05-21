@@ -79,7 +79,6 @@
       "@vaadin/list-box": "link:../app-dependencies/web-components/packages/list-box",
       "@vaadin/multi-select-combo-box": "link:../app-dependencies/web-components/packages/multi-select-combo-box",
       "@vaadin/overlay": "link:../app-dependencies/web-components/packages/overlay",
-      "@vaadin/polymer-legacy-adapter": "link:../app-dependencies/web-components/packages/polymer-legacy-adapter",
       "@vaadin/progress-bar": "link:../app-dependencies/web-components/packages/progress-bar",
       "@vaadin/select": "link:../app-dependencies/web-components/packages/select",
       "@vaadin/text-field": "link:../app-dependencies/web-components/packages/text-field",

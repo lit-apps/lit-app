@@ -66,7 +66,6 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.8.2",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
-    "@polymer/polymer": "^3.5.2",
     "@vitest/browser": "^3.1.1",
     "@vitest/utils": "^3.1.1",
     "eslint": "^8.40.0",
