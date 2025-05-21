@@ -1,5 +1,5 @@
 import type { TemplateResult } from "lit";
-import type { Collection, CollectionI } from "./dataI.js";
+import type { Collection } from "./dataI.js";
 import type { EntityStatus, RenderConfig } from "./entity.js";
 // import { dbRefEntity } from "@lit-app/persistence-shell";
 import type { CollectionReference, DocumentReference } from "firebase/firestore";
@@ -43,14 +43,11 @@ type ButtonConfigT = {
   icon?: string
 }
 
-export type ActionDataT<D> = {
-  data: D | CollectionI<D>,
-  // selectedItems?: Collection<D>
-}
+
 
 export type GetEventT<D, E = any> = (
   entityName: string,
-  data: ActionDataT<D>,
+  data: D,
   host?: HostElementI,
   isBulk?: boolean,
   confirmed?: boolean

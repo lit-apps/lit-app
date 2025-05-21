@@ -28,7 +28,6 @@ import { Close, DataChanged, Dirty, Open } from "./events.js";
 import RenderEntityCreateMixin from "./renderEntityCreateMixin.js";
 import type { CollectionI, DataI, EntityAction } from "./types.js";
 import type {
-  ActionDataT,
   ActionEventI,
   ActionKeyT,
   ActionsT,
@@ -105,7 +104,7 @@ export default function renderMixin<A extends ActionsT>(
       this: StaticApplyT & { entityName: string },
       actionName: ActionKeyT<A, unknown>,
       host: HostElementI,
-      data: ActionDataT<unknown>,
+      data: unknown,
       isBulk: boolean = false
     ): Promise<EntityAction | void> {
       const action = this.actions[actionName]
@@ -118,7 +117,7 @@ export default function renderMixin<A extends ActionsT>(
         action.kind === 'mixin'
       ) {
         const event = (action.kind === 'event' || action.kind === 'mixin')
-          ? await action.getEvent(this.entityName!, { data }, host, isBulk)
+          ? await action.getEvent(this.entityName!, data, host, isBulk)
           : getEntityActionEvent(actionName as string, action)(
             this.entityName!, { data }, host, isBulk
           )
@@ -131,7 +130,7 @@ export default function renderMixin<A extends ActionsT>(
     actionHandler(
       actionName: ActionKeyT<A, unknown>,
       host: HostElementI,
-      data: ActionDataT<unknown>,
+      data: unknown,
       isBulk: boolean = false) {
       const action = this.actions[actionName]
       return async (e: CustomEvent) => {
