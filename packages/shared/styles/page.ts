@@ -23,7 +23,7 @@ const styles = [
   css`
   
   .content {
-    max-width: min(100vw, 1300px);
+    max-width: min(100vw, 1450px);
     
   }
   .secondary {

@@ -104,7 +104,7 @@ export const Layouts = css`
 
 export const Factors = css`
 	.flex {
-		${flexFactorAuto}
+		${flexFactor}
 	}
 	.flex-1 {
 		${flex1}
