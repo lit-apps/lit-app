@@ -3,6 +3,7 @@ import pathReady from '@preignition/lit-firebase/src/pathReady.js';
 import { Upload } from '@vaadin/upload/src/vaadin-upload.js';
 import { getApp } from 'firebase/app';
 import { DataSnapshot, getDatabase, onValue, push, ref, set, Unsubscribe } from 'firebase/database';
+import { LitElement } from 'lit';
 import { StorageInterface, UploadFinishedEvent } from './storage-mixin.js';
 
 
@@ -10,7 +11,7 @@ export declare class UploadDatabaseMixinInterface {
   // prop: string
 }
 
-type BaseT = Upload & StorageInterface;
+type BaseT = Upload & StorageInterface & LitElement;
 
 /**
  * UploadDatabaseMixin - a mixin that stores metadata in a database 

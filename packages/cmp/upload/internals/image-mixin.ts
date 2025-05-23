@@ -4,7 +4,7 @@ import '@vaadin/button/vaadin-button.js';
 import { SlotController } from '@vaadin/component-base/src/slot-controller.js';
 import type { Upload } from '@vaadin/upload/src/vaadin-upload.js';
 
-import { css, html } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import type { position, sizing } from '../../media/image.js';
@@ -102,7 +102,7 @@ export declare class UploadImageMixinInterface {
   noFileText: string
 }
 
-type BaseT = Upload & StorageInterface & UploadDatabaseMixinInterface;
+type BaseT = Upload & StorageInterface & UploadDatabaseMixinInterface & LitElement;
 /**
  * UploadImageMixin  
  */

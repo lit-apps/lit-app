@@ -10,7 +10,7 @@ import type { UploadFile } from '@vaadin/upload/src/vaadin-upload.js';
 import { getApp } from "firebase/app";
 import { DocumentReference } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, StorageReference, uploadBytesResumable, UploadTask } from 'firebase/storage';
-import { PropertyValues } from 'lit';
+import { LitElement, PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { normalizeFile } from './normalizeFile.js';
 
@@ -94,7 +94,7 @@ export declare class StorageInterface {
   subscribeMetaData(path: string, fieldPath?: string): void
 }
 
-type BaseT = Upload
+type BaseT = Upload & LitElement;
 
 export type FirebaseUploadFile = UploadFile & {
   /** storage reference */

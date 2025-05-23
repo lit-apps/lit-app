@@ -5,6 +5,7 @@ import { OrderBy, Where } from '@preignition/lit-firebase/src/types.js';
 import { Upload } from '@vaadin/upload/src/vaadin-upload.js';
 import { getApp } from 'firebase/app';
 import { QueryConstraint, Unsubscribe, addDoc, collection, doc, getFirestore, limit, onSnapshot, orderBy, query, updateDoc, where } from 'firebase/firestore';
+import { LitElement } from 'lit';
 import { property } from 'lit/decorators/property.js';
 import { FirebaseUploadFile, StorageInterface, UploadFinishedEvent } from './storage-mixin.js';
 
@@ -13,7 +14,7 @@ export declare class UploadFirestoreMixinInterface {
   // prop: string
 }
 
-type BaseT = Upload & StorageInterface;
+type BaseT = Upload & StorageInterface & LitElement;
 
 /**
  * UploadFirestoreMixin - a mixin that stores metadata in a database 
