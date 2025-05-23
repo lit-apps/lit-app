@@ -77,11 +77,13 @@ export function defaultActions<D>() {
         return new Reset({ id, entityName }, actions.cancel);
       },
     },
+    // @deprecated = use open instead
     edit: {
       kind: 'event',
       label: 'Edit',
       icon: 'edit',
       getEvent: (entityName, data, host) => {
+        console.warn('edit is deprecated, use open instead')
         const id = (data as CollectionI<D>).$id || host?.docId
         if (!id) {
           throw new Error('id is required for edit action')

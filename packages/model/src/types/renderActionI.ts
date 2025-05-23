@@ -110,9 +110,16 @@ export declare class RenderInterface<A extends ActionsT = ActionsT> {
   renderAction<
     N extends ActionKeyT<typeof this['actions'], unknown>,
     // @-ts-expect-error - but this is working
-    // D extends Parameters<this['actions'][N]['handler']>[1] 
-    D extends this['actions'][N] extends ActionEntityI | ActionSimpleI ?
-    Parameters<this['actions'][N]['handler']>[1] : any
+    D extends Parameters<
+      (this['actions'][N] extends ActionEntityI | ActionSimpleI
+        ? (this['actions'][N]['handler'])
+        : this['actions'][N] extends ActionMixinI | ActionEventI
+        ? (this['actions'][N]['getEvent'])
+        : (
+          (...args: any) => any
+        )
+      )
+    >[this['actions'][N] extends ActionEntityI | ActionMixinI ? 1 : 0]
   >(
     actionName: N,
     data: D, // we should derive D from actionName handler signature
@@ -239,7 +246,6 @@ export interface StaticEntityActionI<
           (...args: any) => any
         )
       )
-    // >[1]
     >[this['actions'][N] extends ActionEntityI | ActionMixinI ? 1 : 0]
   >(
     actionName: N,
