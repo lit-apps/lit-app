@@ -13,6 +13,7 @@ export { default as githubMd } from './class/github-md-css.js';
 export { default as grid } from './class/grid.js';
 export { default as label } from './class/label.js';
 export { default as layoutGrid } from './class/layout-grid.js';
+export { default as layoutSize } from './class/layout-size.js';
 export { default as liteYoutube } from './class/lite-youtube.js';
 export { default as margin } from './class/margin.js';
 export { default as outlined } from './class/outlined.js';

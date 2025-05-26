@@ -64,6 +64,7 @@ const style: CSSResult = css`
 	.m.left {
 		margin-left: var(--_m);	
 	}
+
 `
 
 export default style;
