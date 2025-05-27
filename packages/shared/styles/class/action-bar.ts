@@ -24,7 +24,6 @@ const styles: CSSResult = css`
   	/* we hard-code z-index because .mdc-drawer has an z-index of 6 */
 		z-index: 6;
 		flex-direction: row-reverse;
-		/* min-width: var(--container-layout-max-width, min(90vw,1280px)); */
 	}
 	
 	#actions .fab  {

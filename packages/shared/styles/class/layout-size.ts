@@ -21,25 +21,25 @@ import { CSSResult, css } from 'lit';
  */
 const style: CSSResult = css`
   .mw.s-x-small {
-    --_mw: var(--max-width-x-small);
+    --_mw: var(--size-x-small);
   }
   .mw.s-small {
-    --_mw: var(--max-width-small);
+    --_mw: var(--size-small);
   }
   .mw.s-medium {
-    --_mw: var(--max-width-medium);
+    --_mw: var(--size-medium);
   }
   .mw.s-large {
-    --_mw: var(--max-width-large);
+    --_mw: var(--size-large);
   }
   .mw.s-x-large {
-    --_mw: var(--max-width-x-large);
+    --_mw: var(--size-x-large);
   }
   .mw.s-xx-large {
-    --_mw: var(--max-width-xx-large);
+    --_mw: var(--size-xx-large);
   }
   .mw.s-xxx-large {
-    --_mw: var(--max-width-xxx-large);
+    --_mw: var(--size-xxx-large);
   }
   .mw {
     max-width: var(--_mw);	

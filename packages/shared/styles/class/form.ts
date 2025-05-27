@@ -8,8 +8,6 @@ import { CSSResult, css } from 'lit';
  * - `.layout.horizontal > .field`: Sets flex-grow to 1 for fields in horizontal layouts.
  * - `.field.textarea`, `.field.md`, `.field.checkbox`, `.field.fill`: Allows these fields to take full width.
  * - `.field.checkbox`, `.field.flex-0`: Prevents these fields from flexing.
- * - `.container.layout`: Sets max width for container layouts (should be deprecated).
- * - `.container.layout.margin`: Sets margin for container layouts.
  * - `.table`: Sets font size for tables.
  * - `.table td.label`: Sets font weight, vertical alignment, and width for table labels.
  * - `#grid.flex`: Ensures grid has a minimal height and avoids flex-basis and height issues.
@@ -23,7 +21,6 @@ const style: CSSResult = css`
 		max-width: var(--field-max-width, 400px);
 		min-width: var(--field-min-width, 200px);
 	}
-
 
 	/**
 	 This is used in Discussion app only - should be deprecated
@@ -44,15 +41,7 @@ const style: CSSResult = css`
 	 flex: none;
 	}
 
-		
-	/**  this sets size and margin of variant card container */
-	/* THIS SHOULD BE DEPRECATED */
-	.container.layout {
-		max-width: var(--container-layout-max-width, min(90vw,1200px));
-	}
-	.container.layout.margin {
-		margin: var(--container-layout-margin, 0 auto);
-	}
+
 
 	/** base entity render table */
 	.table {
@@ -69,7 +58,7 @@ const style: CSSResult = css`
 	#grid.flex {
 	 flex-basis: initial;
 	 height: unset;
-	 min-height: 400px;
+	 min-height: 500px;
 	}
 
 	/** we avoid fields breaking in print */
