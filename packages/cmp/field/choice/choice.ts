@@ -211,7 +211,9 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		}
 		const value = this.syncSelected(this.selected)
 		this.dispatchEvent(new CustomEvent('selected-changed', { detail: { value: value } }));
+		// we also re-dispatch an input event 
 		this._value = value; // Note(cg): get _value from the actual selection (dom query).
+		this.dispatchEvent(new Event('input'));
 		this.requestUpdate();
 		return
 	}

@@ -1,10 +1,10 @@
+import { HTMLEvent } from '@lit-app/shared/types';
 import '@material/web/focus/md-focus-ring';
 import '@material/web/icon/icon';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import '../../../../list/list';
 import '../../../../list/list-item';
-import { HTMLEvent } from '@lit-app/shared/types';
 
 import '../../../radio/radio';
 import '../../../text-field';
@@ -117,7 +117,7 @@ export abstract class Star extends
           ?disabled=${this.disabled}
           ?readonly=${this.readOnly}
           ?checked=${st + '' === this._value}
-          type="radio" name="${this.name}" class="sr-only"></input>
+          type="radio" name="${this.name}" class="sr-only">
           <label 
             for="star${st}"
             @click=${this.handleClick}
@@ -132,12 +132,28 @@ export abstract class Star extends
   }
 
   handleClick(e: HTMLEvent) {
-    const input = e.currentTarget.parentElement?.querySelector('input')
-    if (input && input !== e.target) {
-      e.stopPropagation()
-      input.checked = true
-      input.dispatchEvent(new Event('change', { bubbles: true }))
+    e.stopPropagation()
+    let labelTarget = e.target as HTMLElement
+    while (labelTarget.tagName !== 'LABEL') {
+      if (!labelTarget.parentElement) {
+        break;
+      }
+      labelTarget = labelTarget.parentElement as HTMLElement
     }
+    const _for = labelTarget?.getAttribute('for');
+    if (!_for) {
+      return;
+    }
+    const input = this.renderRoot.querySelector<HTMLInputElement>(`input#${_for}[type=radio]`);
+    if (!input) {
+      console.warn(`No input found for label with for="${_for}"`);
+      return;
+    }
+    this.items.forEach(item => {
+      item.checked = item === input;
+    })
+    // input.checked = true
+    input.dispatchEvent(new Event('change', { bubbles: true }))
   }
   protected override handleKeydown(event: KeyboardEvent) {
     const key = event.key;
