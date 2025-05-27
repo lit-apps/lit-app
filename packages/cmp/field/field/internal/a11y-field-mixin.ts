@@ -74,7 +74,7 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 
 		protected override renderLabel(isFloating: boolean) {
 			if (this.variant !== 'a11y') {
-				// @ts-expect-error
+				// @ts-expect-error = renderLabel is private in Field
 				return super.renderLabel(isFloating);
 			}
 
@@ -86,12 +86,12 @@ export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 			if (isFloating) {
 
 				// Floating label is visible when focused/populated or when animating.
-				// @ts-expect-error
+				// @ts-expect-error - isAnimating is private in Field
 				visible = this.focused || this.populated || this.isAnimating;
 			} else {
 				// Resting label is visible when unfocused. It is never visible while
 				// animating.
-				// @ts-expect-error
+				// @ts-expect-error - isAnimating is private in Field
 				visible = !this.focused && !this.populated && !this.isAnimating;
 			}
 
