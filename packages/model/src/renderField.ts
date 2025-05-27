@@ -202,6 +202,7 @@ export function renderField<D extends DefaultI>(
         .name=${path}
         type=${type}
         style=${ifDefined(model.style)}
+        targetHelper=${ifDefined(model.helper)}
         rows=${ifDefined(isComponentTextArea(model) && model.rows)}
         .readOnly=${disabled}
         .label=${label}
@@ -219,6 +220,7 @@ export function renderField<D extends DefaultI>(
         .rows=${3}
         .name=${path}
         style=${ifDefined(model.style)}
+        targetHelper=${ifDefined(model.helper)}
         rows=${model.rows || nothing as any}
         resize=${model.resize || nothing}
         .required=${!!model.required}
