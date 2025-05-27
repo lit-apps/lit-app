@@ -17,10 +17,10 @@ const style: CSSResult = css`
 
 	/* By default flex 1 with min and max size */
 	/* add unset class to avoid max and min width being set */
-	.field:not(.unset) {
+	/* .field:not(.unset) {
 		max-width: var(--field-max-width, 400px);
 		min-width: var(--field-min-width, 200px);
-	}
+	} */
 
 	/**
 	 This is used in Discussion app only - should be deprecated
@@ -33,9 +33,9 @@ const style: CSSResult = css`
 		flex: 1;
 	}
 	/** we let textarea, checkbox and .fill take full width */
-	.field.textarea, .field.md, .field.checkbox, .field.fill {
+	/* .field.textarea, .field.md, .field.checkbox, .field.fill {
 		max-width: unset;
-	}
+	} */
 
 	.field.checkbox, .field.flex-0 {
 	 flex: none;
