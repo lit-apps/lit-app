@@ -37,7 +37,6 @@ export default class lappSlotSwitch extends LitElement {
     const name = this.condition === true ? undefined : 'false'
     return html`
       <slot name=${ifDefined(name)}></slot>
-      <div>
       ${this.condition === false ?
         html`
         <md-text-button
@@ -52,7 +51,6 @@ export default class lappSlotSwitch extends LitElement {
           >${this.hideLabel}</md-text-button>` :
         nothing
       }
-      </div>
     `;
   }
 
