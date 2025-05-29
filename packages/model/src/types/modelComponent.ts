@@ -68,7 +68,7 @@ type RendererParamT<T = any> = {
 type RendererT<T = any> = (prop: RendererParamT<T>) => TemplateResult
 interface ModelComponentBase<T = any, TagsT = string> {
 	label?: string | TemplateResult
-	helper?: string
+	helper?: string | TemplateResult
 	required?: boolean
 	disabled?: boolean
 	readOnly?: boolean
