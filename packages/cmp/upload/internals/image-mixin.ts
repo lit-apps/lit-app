@@ -2,8 +2,9 @@ import watch from '@lit-app/shared/decorator/watch.js';
 import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import '@vaadin/button/vaadin-button.js';
 import { SlotController } from '@vaadin/component-base/src/slot-controller.js';
-import type { Upload } from '@vaadin/upload/src/vaadin-upload.js';
+import { Upload } from '@vaadin/upload/src/vaadin-upload.js';
 
+import { UploadMixinClass } from '@vaadin/upload/src/vaadin-upload-mixin.js';
 import { css, html, LitElement } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -14,7 +15,7 @@ import('@lit-app/cmp/media/image')
 
 // import('@material/web/progress/linear-progress.js')
 // import('@material/web/button/filled-button.js')
-type UploadControllerT = Upload & {
+type UploadControllerT = LitElement & Upload & {
   _addButton: HTMLElement,
   _onAddFilesClick: (e: Event) => void,
   _onAddFilesTouchEnd: (e: Event) => void
@@ -102,11 +103,11 @@ export declare class UploadImageMixinInterface {
   noFileText: string
 }
 
-type BaseT = Upload & StorageInterface & UploadDatabaseMixinInterface & LitElement;
+type BaseT = StorageInterface & UploadDatabaseMixinInterface & LitElement & UploadMixinClass;
 /**
  * UploadImageMixin  
  */
-export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles?: any }>(
+export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles: any }>(
   superClass: T
 ): MixinReturn<T, UploadImageMixinInterface> => {
 

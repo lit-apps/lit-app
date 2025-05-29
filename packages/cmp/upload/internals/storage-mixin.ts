@@ -5,7 +5,7 @@
 import watch from '@lit-app/shared/decorator/watch.js';
 import { ToastEvent } from '@lit-app/shared/event/index.js';
 import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
-import { Upload } from '@vaadin/upload/src/vaadin-upload';
+import { UploadMixinClass } from '@vaadin/upload/src/vaadin-upload-mixin.js';
 import type { UploadFile } from '@vaadin/upload/src/vaadin-upload.js';
 import { getApp } from "firebase/app";
 import { DocumentReference } from 'firebase/firestore';
@@ -94,7 +94,7 @@ export declare class StorageInterface {
   subscribeMetaData(path: string, fieldPath?: string): void
 }
 
-type BaseT = Upload & LitElement;
+type BaseT = UploadMixinClass & LitElement;
 
 export type FirebaseUploadFile = UploadFile & {
   /** storage reference */

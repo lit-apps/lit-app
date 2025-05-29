@@ -2,7 +2,7 @@ import { ToastEvent } from '@lit-app/shared/event/index.js';
 import type { MixinBase, MixinReturn } from '@material/web/labs/behaviors/mixin.js';
 import pathReady from '@preignition/lit-firebase/src/pathReady.js';
 import { OrderBy, Where } from '@preignition/lit-firebase/src/types.js';
-import { Upload } from '@vaadin/upload/src/vaadin-upload.js';
+import { UploadMixinClass } from '@vaadin/upload/src/vaadin-upload-mixin.js';
 import { getApp } from 'firebase/app';
 import { QueryConstraint, Unsubscribe, addDoc, collection, doc, getFirestore, limit, onSnapshot, orderBy, query, updateDoc, where } from 'firebase/firestore';
 import { LitElement } from 'lit';
@@ -14,7 +14,7 @@ export declare class UploadFirestoreMixinInterface {
   // prop: string
 }
 
-type BaseT = Upload & StorageInterface & LitElement;
+type BaseT = UploadMixinClass & StorageInterface & LitElement;
 
 /**
  * UploadFirestoreMixin - a mixin that stores metadata in a database 
