@@ -65,3 +65,7 @@ export type MixinReturn<MixinBase, MixinClass = object> =
   // Mixins must have a constructor with `...args: any[]`
   // tslint:disable-next-line:no-any
   (abstract new (...args: any[]) => MixinClass) & MixinBase;
+
+
+
+

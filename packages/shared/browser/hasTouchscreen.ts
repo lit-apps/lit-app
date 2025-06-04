@@ -1,5 +1,5 @@
 /**
- * used to knw if we are using a mobile device
+ * used to know if we are using a mobile device
  * code from https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent#mobile_device_detection
  */
 
