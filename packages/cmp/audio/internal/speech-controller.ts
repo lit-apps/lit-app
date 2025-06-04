@@ -25,7 +25,7 @@ const populateVoice = async () => {
 	return voices;
 };
 
-const setVoice = (locale) => {
+const setVoice = (locale: string) => {
 	voice = voices.find(v => v.lang === locale);
 	console.log('Voice', voice, locale);
 	if (!voice) {
@@ -132,7 +132,7 @@ export class SpeechController implements ReactiveController, PlayerI {
 			}
 			this._config = value;
 		} catch (e) {
-			this.error = e.message;
+			this.error = (e as any).message;
 
 		}
 	}

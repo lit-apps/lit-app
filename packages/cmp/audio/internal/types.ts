@@ -10,7 +10,7 @@ export interface PlayerI {
 }
 
 export interface SpeechConfigI {
-  pitch: number;
+  pitch?: number;
   rate: number;
   language: string;
 }

@@ -1,4 +1,5 @@
 import { MixinBase } from '@lit-app/shared/types.js';
+import { UploadMixinClass } from '@vaadin/upload/src/vaadin-upload-mixin.js';
 import { Upload } from "@vaadin/upload/src/vaadin-upload.js";
 import '@vaadin/upload/vaadin-upload.js';
 import { LitElement } from 'lit';
@@ -9,8 +10,8 @@ import { Storage } from './internals/storage-mixin.js';
 
 
 // vaadin-upload does not have a a LitElement base class, so we need to cast it
-type BaseT = Upload & LitElement;
-const litUpload = Upload as unknown as MixinBase<BaseT>;
+type BaseT = UploadMixinClass & LitElement;
+const litUpload = Upload as unknown as MixinBase<BaseT> & { style: any };
 
 
 /**

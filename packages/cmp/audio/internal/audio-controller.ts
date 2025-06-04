@@ -2,25 +2,25 @@
  * A controller that manages the speech synthesis.
  */
 
-import { ReactiveController, ReactiveControllerHost } from 'lit';
-import { PlayerI } from './types';
 import { ToastEvent } from '@lit-app/shared/event';
+import { ReactiveController, ReactiveControllerHost } from 'lit';
 import { cancelSynth } from './speech-controller';
+import { PlayerI } from './types';
 
 
 let pauseTimeout: NodeJS.Timeout;
 let activeAudio: HTMLAudioElement | null;
 
 export function cancelAudio() {
-	if(activeAudio) {
+	if (activeAudio) {
 		activeAudio.pause();
 	}
-	if(pauseTimeout) {
+	if (pauseTimeout) {
 		clearTimeout(pauseTimeout);
 	}
 }
-export class AudioController implements ReactiveController, PlayerI  {
-  audio!: HTMLAudioElement | null;
+export class AudioController implements ReactiveController, PlayerI {
+	audio!: HTMLAudioElement | null;
 	private _src!: string;
 
 	get speaking() {
@@ -42,32 +42,32 @@ export class AudioController implements ReactiveController, PlayerI  {
 	get src() {
 		return this._src;
 	}
-	set	src(value: string) {
+	set src(value: string) {
 		this._src = value;
 		console.log('Set Src', value);
-		if(this.audio && value) {
+		if (this.audio && value) {
 			const paused = this.paused;
 			this.pause();
 			this.createAudio(this.src)
-			if(!paused) {
+			if (!paused) {
 				this.play();
 			}
 		}
 	}
 
 	constructor(protected host: ReactiveControllerHost, src?: string) {
-    // Register for lifecycle updates
-    host.addController(this);
-		if(src) {
+		// Register for lifecycle updates
+		host.addController(this);
+		if (src) {
 			this.src = src;
 		}
-  }
+	}
 
-	private createAudio(src : string = this.src) {
+	private createAudio(src: string = this.src) {
 		try {
 			this.audio = new Audio(src);
 			this.audio.preload = 'auto';
-			this.audio.oncanplay =  (e) => {
+			this.audio.oncanplay = (e) => {
 				console.log('Audio Can Play', e, this.audio?.paused);
 				this.host.requestUpdate();
 			}
@@ -77,7 +77,7 @@ export class AudioController implements ReactiveController, PlayerI  {
 			this.audio.onloadeddata = (e) => {
 				console.log('Audio Loaded Data', e, this.audio?.paused);
 			}
-			this.audio.onplay =  (e) => {
+			this.audio.onplay = (e) => {
 				console.log('Audio Play', e);
 				this.host.requestUpdate();
 			}
@@ -85,13 +85,13 @@ export class AudioController implements ReactiveController, PlayerI  {
 				console.log('Audio Pause', e);
 				this.host.requestUpdate();
 			}
-			this.audio.onended =  (e) => {
+			this.audio.onended = (e) => {
 				console.log('Audio Ended', e);
 				this.host.requestUpdate();
 			}
 			this.audio.onerror = (e) => {
 				console.error('Audio Error', e);
-				const toastEvent = new ToastEvent(`Error while loading audio: ${e.message}`, 'error');
+				const toastEvent = new ToastEvent(`Error while loading audio: ${e}`, 'error');
 				(this.host as unknown as HTMLElement).dispatchEvent(toastEvent);
 				this.host.requestUpdate();
 			}
@@ -101,7 +101,7 @@ export class AudioController implements ReactiveController, PlayerI  {
 		}
 
 		// audio.play();
-	
+
 	}
 	pause() {
 		pauseTimeout = setTimeout(() => {
@@ -111,12 +111,12 @@ export class AudioController implements ReactiveController, PlayerI  {
 	}
 	async play() {
 		cancelSynth();
-	
-		if(!this.audio) {
+
+		if (!this.audio) {
 			this.createAudio(this._src);
 		}
 		activeAudio = this.audio;
-		if(pauseTimeout) {
+		if (pauseTimeout) {
 			clearTimeout(pauseTimeout);
 		}
 		this.audio!.play();
@@ -124,7 +124,7 @@ export class AudioController implements ReactiveController, PlayerI  {
 
 	async restart() {
 		cancelSynth();
-		if(pauseTimeout) {
+		if (pauseTimeout) {
 			clearTimeout(pauseTimeout);
 		}
 		activeAudio = this.audio;

@@ -107,7 +107,7 @@ type BaseT = StorageInterface & UploadDatabaseMixinInterface & LitElement & Uplo
 /**
  * UploadImageMixin  
  */
-export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles: any }>(
+export const UploadImageMixin = <T extends MixinBase<BaseT> & { styles?: any }>(
   superClass: T
 ): MixinReturn<T, UploadImageMixinInterface> => {
 

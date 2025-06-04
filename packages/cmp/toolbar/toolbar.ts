@@ -9,6 +9,8 @@ import { css, html, isServer, LitElement, nothing } from "lit";
 import { customElement, property, query, queryAssignedElements, state } from 'lit/decorators.js';
 const NAVIGABLE_KEY_SET = new Set<string>(Object.values(NavigableKeys));
 
+type OrientationT = 'horizontal' | 'vertical';
+
 interface ToolbarItem extends IconButton {
 }
 
@@ -46,9 +48,20 @@ export default class lappToolbar extends LitElement {
         margin-right: 35px;
       }
 
+      :host([orientation='vertical']) {
+        flex-direction: column;
+        width: 40px;
+        height: auto;
+      }
+
       #more {
         position: absolute;
         right: -35px;
+      }
+      
+      :host([orientation='vertical']) #more {
+        right: unset;
+        bottom: 0px;
       }
 
       ::slotted(.wrapped) { 
@@ -69,6 +82,7 @@ export default class lappToolbar extends LitElement {
   protected slotItems!: Array<ToolbarItem | (HTMLElement & { item?: ToolbarItem })>;
 
   @property({ reflect: true, type: Boolean }) wrapped = false;
+  @property({ reflect: true }) orientation: OrientationT = 'horizontal';
   @query('md-menu') menu!: MdMenu;
   @state() wrappedItems: string[] = [];
 
@@ -156,7 +170,11 @@ export default class lappToolbar extends LitElement {
 
     const firstItemTop = this.slotItems[0].offsetTop;
     let wrapped = false;
-
+    if (this.orientation === 'vertical') {
+      // TODO: handle vertical orientation
+      this.wrapped = wrapped
+      return;
+    }
     this.slotItems.forEach(item => {
       // we use a threshold of 16px because some items already have an offset, for instance align-self: center
       if (item.offsetTop - firstItemTop > 16) {

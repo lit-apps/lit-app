@@ -4,12 +4,13 @@ import { customElement } from 'lit/decorators.js';
 import { UploadFirestoreMixin } from './internals/firestore-mixin.js';
 
 import { MixinBase } from "@lit-app/shared/types.js";
+import { UploadMixinClass } from "@vaadin/upload/src/vaadin-upload-mixin.js";
 import { LitElement } from "lit";
 import UploadImageMixin from "./internals/image-mixin.js";
 import { Storage } from './internals/storage-mixin.js';
 
 // vaadin-upload does not have a a LitElement base class, so we need to cast it
-type BaseT = Upload & LitElement;
+type BaseT = UploadMixinClass & LitElement;
 const litUpload = Upload as unknown as MixinBase<BaseT>;
 
 
