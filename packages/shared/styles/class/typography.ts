@@ -108,7 +108,6 @@ code {
 .ellipsis {
   text-overflow: ellipsis;
   white-space: nowrap;
-  text-overflow: ellipsis;
   overflow: hidden;
   flex: 1;
   /**
