@@ -31,6 +31,20 @@ export type HTMLCustomEvent<
     currentTarget: CT;
   }
 
+export type HTMLInputValue<T extends string = string> = HTMLInputElement & {
+  value: T;
+}
+
+/**
+ * Represents an HTML event with a specific target and currentTarget type.
+ *
+ * @template T - The type of the input value, defaults to string.
+ */
+export type HTMLEventValue<T extends string = string> = HTMLEvent<HTMLInputElement, HTMLInputElement> & {
+  target: HTMLInputValue<T>;
+  currentTarget: HTMLInputValue<T>;
+}
+
 /**
  * A utility type that makes all properties of a given type `T` writable.
  * 
