@@ -44,6 +44,8 @@ export interface GenericI extends TextField {
 
   // syncValidity(): void
   getInputOrTextarea(): HTMLInputElement | null
+  handleFocusin(event: FocusEvent): void
+  handleFocusout(event: FocusEvent): void
 
 }
 

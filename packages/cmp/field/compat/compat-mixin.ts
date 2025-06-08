@@ -12,21 +12,21 @@ export declare class CompatMixinInterface {
  * allows to use MD2 property for MD3 fields
  */
 export const CompatMixin = <T extends Constructor<LitElement>>(superClass: T) => {
- 
-	abstract class CompatMixinClass extends superClass  {
-		 supportingText?: string | undefined;
+
+	abstract class CompatMixinClass extends superClass {
+		supportingText?: string | undefined;
 
 		/**
 		 * let us know that this is a MD3 field
 		 * this is useful when processing errors - which is done differently in MD3
 		 */
 		isMD3: boolean = true;
-	 
+
 		@property()
 		get helper() {
 			return this.supportingText;
 		}
-		set	helper(value) {
+		set helper(value) {
 			this.supportingText = value;
 		}
 
@@ -37,3 +37,34 @@ export const CompatMixin = <T extends Constructor<LitElement>>(superClass: T) =>
 
 export default CompatMixin;
 
+
+/**
+ * CompatMixin
+ */
+// export const CompatMixin = <D >() => <T extends MixinBase<BaseT>>(
+// 	superClass: T
+// ): MixinReturn<T , CompatMixinInterface & D> => {
+
+
+// 	abstract class CompatMixinClass extends superClass {
+
+// 		supportingText?: string | undefined;
+
+// 		/**
+// 		 * let us know that this is a MD3 field
+// 		 * this is useful when processing errors - which is done differently in MD3
+// 		 */
+// 		isMD3: boolean = true;
+
+// 		@property()
+// 		get helper() {
+// 			return this.supportingText;
+// 		}
+// 		set helper(value) {
+// 			this.supportingText = value;
+// 		}
+// 	};
+// 	return CompatMixinClass as unknown as MixinReturn<T , CompatMixinInterface & D>;
+// }
+
+// export default CompatMixin;
