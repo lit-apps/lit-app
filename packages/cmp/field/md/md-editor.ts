@@ -1,25 +1,25 @@
-import { html, css, LitElement, nothing } from "lit";
+import { githubHighlight, githubMd } from '@lit-app/shared/styles';
+import md from '@lit-app/shared/styles/md.js';
+import { css, html, LitElement, nothing } from "lit";
 import { property, query, state } from 'lit/decorators.js';
 import { cache } from 'lit/directives/cache.js';
 import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ConsumeAccessibilityMixin } from '../../mixin/context-accessibility-mixin';
-import md from '@lit-app/shared/styles/md.js';;
-import { githubMd } from '@lit-app/shared/styles'
-import { githubHighlight } from '@lit-app/shared/styles'
+;
 
 import('@lit-app/cmp/youtube/youtube.js');
 import('@preignition/gitbook-parser/src/gitbook-hint.js');
 
-import { parse } from '@lit-app/shared/md/index.js';
-import { MdFilledTextField } from '@material/web/textfield/filled-text-field';
 import '@github/markdown-toolbar-element';
+import '@lit-app/cmp/icon/icon.js';
 import '@lit-app/cmp/toolbar/toolbar.js';
 import '@lit-app/cmp/tooltip/tooltip.js';
-import '@lit-app/cmp/icon/icon.js';
+import { parse } from '@lit-app/shared/md/index.js';
 import { HTMLEvent } from "@lit-app/shared/types.js";
-import { MdTabs } from "@material/web/tabs/tabs.js";
 import { MdMenu } from "@material/web/menu/menu.js";
+import { MdTabs } from "@material/web/tabs/tabs.js";
+import { MdFilledTextField } from '@material/web/textfield/filled-text-field';
 // import '../../toolbar/toolbar.js';
 import('@material/web/tabs/tabs.js');
 import('@material/web/divider/divider.js');
@@ -115,7 +115,7 @@ const mdActions = {
 		format: '<lapp-icon no-fill>add_reaction</lapp-icon>',
 	},
 	contentTooltip: {
-		format: '<pwi-tooltip message="$2">$1</pwi-tooltip>',
+		format: '<lapp-tooltip text="$2">$1</lapp-tooltip>',
 		$1: 'label',
 		$2: 'tooltip message',
 	},
