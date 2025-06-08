@@ -1,4 +1,3 @@
-// import PwiTooltip from "@preignition/pwi-tooltip/src/pwi-tooltip.js";
 import '@vaadin/tooltip/vaadin-tooltip.js';
 import { customElement, property } from 'lit/decorators.js';
 
@@ -39,6 +38,7 @@ export const tooltipDefinitionsContext = createContext<TooltipDefinitionsMapT>(
  * A tooltip component. 
  * 
  * With Vaadin - this is the right approach when managing focus is important.
+ * We use lapp-tooltip in forms
  * 
  * @example 
  * ```html
