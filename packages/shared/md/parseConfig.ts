@@ -4,7 +4,7 @@ export default {
     'class',
     'width',
     'height',
-    'href', 
+    'href',
     'no-fill', /* lapp-icon */
     'videoid', /* lite-youtube */
     'playlabel', /* lite-youtube */
@@ -25,8 +25,9 @@ export default {
   ADD_TAGS: [
     'lite-youtube',
     'lapp-youtube',
-    'pwi-tooltip',
-    'pwi-form-tooltip',
+    'lapp-tooltip',
+    'pwi-tooltip', // @deprecated use lapp-tooltip
+    'pwi-form-tooltip', // @deprecated use lapp-tooltip
     'pfo-accessibility-settings',
     'pfo-accessibility-readaloud',
     'pfo-accessibility-signlanguage',
@@ -46,8 +47,8 @@ export default {
     'pfo-guidance-video',
     'pfo-guidance',
     'lapp-icon',
-    'md-filled-button', 
-    'md-outlined-button', 
+    'md-filled-button',
+    'md-outlined-button',
     'gitbook-hint',
     'md-text-button'
   ]
