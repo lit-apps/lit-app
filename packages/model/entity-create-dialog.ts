@@ -27,8 +27,12 @@ export class LappEntityCreateDialog extends CreateDialog {
 				 * For the time being, necessary to make sure the dialog is 
 				 * on top of the app layout
 				 */
-				z-index: var(--z-index-modal, 700)
+				z-index: var(--z-index-modal, 700);
 			}
+			md-dialog {
+				min-width: 560px;
+			}
+
 		`
 	]
 

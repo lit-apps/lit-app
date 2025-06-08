@@ -74,7 +74,7 @@ export default class EntityCreator extends AbstractEntity {
       const { data, entity } = e.detail
       title = entity.title || 'Item';
       const event = entity.create(data)
-      await event.detail.promise
+      await event.detail?.promise
       // console.log('promise', promise)
       this.dispatchEvent(new ToastEvent(`new ${title} created with success`));
       // TODO: redirect to new blog
