@@ -27,6 +27,7 @@ export { default as slotList } from './class/slot-list.js';
 export { default as srOnly } from './class/sr-only.js';
 export { default as sticky } from './class/sticky.js';
 export { default as tabVariant } from './class/tab-variant.js';
+export { default as table } from './class/table.js';
 export { default as toc } from './class/toc.js';
 export { default as tooltip } from './class/tooltip.js';
 export { default as topCard } from './class/top-card.js';

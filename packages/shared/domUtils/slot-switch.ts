@@ -19,8 +19,9 @@ export default class lappSlotSwitch extends LitElement {
   static override styles = css`
       :host {
         display: flex;
-        align-items: flex-end;
-        gap: var(--space-medium)
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-medium);
       }
     `;
 
