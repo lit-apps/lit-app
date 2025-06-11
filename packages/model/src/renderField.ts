@@ -229,7 +229,7 @@ export function renderField<D extends DefaultI>(
         .readOnly=${disabled}
         .showAccessibilityMenu=${model.showAccessibilityMenu!}
         .md=${origin} 
-        .mdtranslate=${origin} 
+        .mdtranslate=${value || ''} 
         @mdtranslate-changed=${onInputFact('mdtranslated')} 
         .maxLength=${model.maxLength!}
         .charCounter=${!!model.maxLength}></lapp-md-editor>
