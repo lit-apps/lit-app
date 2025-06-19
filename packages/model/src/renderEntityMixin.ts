@@ -219,7 +219,9 @@ export default function renderMixin<
         @size-changed=${onSizeChanged}>
         <slot name="grid-column-leading"></slot>
         ${this.renderGridColumns(config)}
-        ${this.renderGridEmptyState(config)}
+        <slot name="grid-empty-state" slot="empty-state">
+          ${this.renderGridEmptyState(config)}
+        </slot>
         <slot name="grid-column"></slot>
       </vaadin-grid>`
 
@@ -342,7 +344,7 @@ export default function renderMixin<
     }
 
     renderGridEmptyState(config: C) {
-      return html`<div slot="empty-state">No ${config?.heading || this.entityName} found</div>`
+      return html`<div >No ${config?.heading || this.entityName} found</div>`
     }
 
     renderTitle(_data: D, config: C) {

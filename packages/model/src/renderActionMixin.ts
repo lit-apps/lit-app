@@ -411,9 +411,9 @@ export default function renderMixin<A extends ActionsT>(
 
     create(data: unknown) {
       const event = (this.actions.create as ActionEventI<unknown>)
-        .getEvent(this.entityName, {
-          data: this.processCreateData(data as RecursivePartial<DataI>) as CollectionI<DataI>
-        }, this.host)
+        .getEvent(this.entityName,
+          this.processCreateData(data as RecursivePartial<DataI>) as CollectionI<DataI>
+          , this.host)
       this.host.dispatchEvent(event)
       return event
     }
