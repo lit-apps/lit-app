@@ -26,9 +26,9 @@ export abstract class Switch extends Generic {
   @property({ type: Boolean }) override disabled = false;
 
   /*
-   * `switchlabel` label of switch
+   * `switchLabel` label of switch
    */
-  @property() switchlabel!: string
+  @property() switchLabel!: string
 
   override renderInputOrTextarea() {
 
@@ -37,13 +37,13 @@ export abstract class Switch extends Generic {
       <lapp-switch
         touch-target="wrapper"
         .supportingOrErrorText=${this.supportingOrErrorText} 
-        aria-label="${this.label} ${this.switchlabel || ''}"
+        aria-label="${this.label} ${this.switchLabel || ''}"
         @change=${this.handleChange}
         .disabled=${this.disabled}
         .required=${this.required}
         .selected=${this.selected}>
       </lapp-switch>
-      ${this.switchlabel || ''}
+      ${this.switchLabel || ''}
     </label>
     
 		`

@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {customElement} from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 
-import {FilledField} from './internal/filled-field.js';
-import {MdFilledField} from '@material/web/field/filled-field.js'
+import { MdFilledField } from '@material/web/field/filled-field.js';
 import { css } from 'lit';
+import { FilledField } from './internal/filled-field.js';
 import supportingText from './internal/supporting-text-styles';
 
 const styles = css`
@@ -47,6 +47,15 @@ const styles = css`
   .supporting-text > span:first-child {
     display: flex;
     flex:1;
+  }
+
+
+  :host([wrapper]) {
+    margin-bottom: var(--space-small);  
+  }
+
+  :host([wrapper]) .content {
+    opacity: 1;
   }
 
 
