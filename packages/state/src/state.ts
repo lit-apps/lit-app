@@ -1,9 +1,9 @@
-import { functionValue } from './functionValue.js';
-import { StateEvent } from './state-event.js';
-import { Hook } from './hook.js';
 import { PropertyOptions } from './decorators/property.js';
-import { StorageOptions } from './decorators/storage.js';
 import { QueryOptions } from './decorators/query.js';
+import { StorageOptions } from './decorators/storage.js';
+import { functionValue } from './functionValue.js';
+import { Hook } from './hook.js';
+import { StateEvent } from './state-event.js';
 
 export interface HasChanged {
   (value: unknown, old: unknown): boolean;
@@ -161,6 +161,7 @@ export class State extends EventTarget {
    */
   subscribe(
     callback: Callback<this>,
+    // nameOrNames?: PropertyValues<this> | PropertyValues<this>[],
     nameOrNames?: string | string[],
     options?: AddEventListenerOptions
   ): Unsubscribe {
@@ -169,7 +170,7 @@ export class State extends EventTarget {
       nameOrNames = [nameOrNames]
     }
     const cb = (event: StateEvent) => {
-      if (!nameOrNames || (nameOrNames as string[]).includes(event.key)) {
+      if (!nameOrNames || (nameOrNames).includes(event.key)) {
         callback(event.key, event.value, this)
       }
     }
