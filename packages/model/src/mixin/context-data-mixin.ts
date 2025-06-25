@@ -187,7 +187,7 @@ export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 					if (this.data === null) {
 						this.data = {} as D
 					}
-					const activateParentChange = this.relayParentChange && prop.has('parentData') && !!prop.get('parentData');
+					const activateParentChange = this.relayParentChange && prop.has('parentData') //&& !!prop.get('parentData');
 					const force = Array.isArray(this.data) || activateParentChange;
 					if (activateParentChange && this.data) {
 						const d = { ...this.data }

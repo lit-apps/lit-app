@@ -202,7 +202,8 @@ export default function renderMixin<A extends ActionsT>(
       return (e: InputEvent) => {
         const target = e.target as HTMLInputElement
         const value = target[prop as keyof HTMLInputElement]
-        return this.update(host, { [path]: value })
+        const data = getNestedData(path, value)
+        return this.update(host, data)
       }
       // return this.host.dispatchEvent(new DataChanged({ path, value }))
     }
@@ -427,7 +428,9 @@ export default function renderMixin<A extends ActionsT>(
       return (e: InputEvent) => {
         const target = e.target as HTMLInputElement
         const value = target[prop as keyof HTMLInputElement]
-        return this.update({ [path]: value })
+        const data = getNestedData(path, value)
+        return this.update(data)
+
       }
       // return this.host.dispatchEvent(new DataChanged({ path, value }))
     }
@@ -463,3 +466,25 @@ function isRenderConfig(config: RenderConfig | FunctionOrButtonConfigT<any>): co
 //     return html`<p>You are about to revoke access. Please confirm.</p>`;
 //   }
 // }
+
+
+// We need this as we are using doc.set({ data}, {merge: true}) for the controller. Data cannot have '.' in this case.
+function getNestedData(path: string, value: any): DataI {
+  if (path.indexOf('.') === -1) {
+    return { [path]: value }
+  }
+  const parts = path.split('.')
+  const current: any = {}
+  let target = current
+
+  for (let i = 0; i < parts.length - 1; i++) {
+    const part = parts[i]
+    target[part] = {}
+    target = target[part]
+  }
+
+  const lastPart = parts[parts.length - 1]!
+  target[lastPart] = value
+
+  return current
+}

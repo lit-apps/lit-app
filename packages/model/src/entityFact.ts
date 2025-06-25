@@ -98,7 +98,6 @@ export default function abstractEntityFact<
     static declare actions: A
     static declare styles: CSSResult | CSSResult[]
     static declare documentationKeys: DocumentationKeysT
-
   }
 
   return R as unknown as

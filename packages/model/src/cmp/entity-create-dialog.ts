@@ -19,7 +19,7 @@ export class entityCreateDialogEvent extends CustomEvent<entityCreateDialogDetai
 	static readonly eventName = 'entity-create-ok';
 	constructor(detail: entityCreateDialogDetail) {
 		super(entityCreateDialogEvent.eventName, {
-			// bubbles: true,
+			bubbles: true,
 			composed: true,
 			detail: detail
 		});
@@ -94,12 +94,6 @@ export default class entityCreateDialog extends
 			canDelete: true
 		}
 	}
-	// get formReady() {
-	// 	return !!(this.data?.name);
-	// }
-	// get ready() {
-	// 	return this.formReady;
-	// }
 	protected get okDetail() {
 		return { data: this.data, entity: this.entity };
 	}
