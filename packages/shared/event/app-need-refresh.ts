@@ -4,7 +4,7 @@ export interface AppNeedRefreshDetail {
   /**
    * The reference or id of the item to refresh
    */
-  refOrId: DocumentReference | string;
+  refOrId: DocumentReference | string | null;
 
 }
 

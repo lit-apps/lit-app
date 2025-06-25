@@ -1,13 +1,16 @@
-import { LanguageNativeT } from "./language-native.js";
+import type { LanguageNativeT } from "./language-native.js";
 
 /**
  * List of all sign languages per spoken language.
+ * 
+ * TODO: When this file is updatated, also update the list of sign languages in app-survey functions
  * 
  * source: 
  * - https://evertype.com/standards/iso639/sgn.html (main source)
  * - https://en.wikipedia.org/wiki/List_of_sign_languages
  * - https://www.signwriting.org/archive/docs1/sw0033-Sign-Language-Codes.pdf
  */
+
 
 type NameT = string;
 type AcronymT = string;
