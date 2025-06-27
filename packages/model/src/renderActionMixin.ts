@@ -20,6 +20,7 @@ import { callFunctionOrValue } from "@lit-app/shared/callFunctionOrValue.js";
 import { ToastEvent } from "@lit-app/shared/event";
 import { RecursivePartial } from "@lit-app/shared/types.js";
 import '@material/web/iconbutton/filled-icon-button.js';
+import { tryCatch } from '@maxmorozoff/try-catch-tuple'; // Assuming tryCatch is imported from here or a similar path
 import { html, nothing, TemplateResult } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
 import AbstractEntity, { DocumentationKeysT } from "./AbstractEntity.js";
@@ -141,7 +142,8 @@ export default function renderMixin<A extends ActionsT>(
         if (button) {
           button.loading = true
         }
-        try {
+
+        const [event, error] = await tryCatch(async () => {
           const event = await this.getActionEvent(actionName, host, data, isBulk)
           if (!event) {
             // return early for simple events
@@ -153,19 +155,17 @@ export default function renderMixin<A extends ActionsT>(
             await action.afterResolved(event, host);
           }
           return event
+        });
 
-        }
-        catch (error) {
+        if (error) {
           console.error(error)
-          // TODO: centralize the way we handler errors (see stripe-web-sdk for inspiration)
-          // For the time being, we just dispatch Toast Event
           host?.dispatchEvent(new ToastEvent((error as Error).message, 'error'))
         }
-        finally {
-          if (button) {
-            button.loading = false
-          }
+
+        if (button) {
+          button.loading = false
         }
+        return event || undefined
       }
     },
 
@@ -469,7 +469,7 @@ function isRenderConfig(config: RenderConfig | FunctionOrButtonConfigT<any>): co
 
 
 // We need this as we are using doc.set({ data}, {merge: true}) for the controller. Data cannot have '.' in this case.
-function getNestedData(path: string, value: any): DataI {
+function getNestedData(path: string, value: any): Partial<DataI> {
   if (path.indexOf('.') === -1) {
     return { [path]: value }
   }

@@ -48,6 +48,7 @@
     "@lit-app/state": "workspace:*",
     "@lit/context": "^1.1.5",
     "@material/web": "link:../../../app-dependencies/material-web",
+    "@maxmorozoff/try-catch-tuple": "^0.1.2",
     "@open-wc/dedupe-mixin": "^1.4.0",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
     "@preignition/pwi-input": "link:../../../packages/pwi-input",
