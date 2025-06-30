@@ -2,7 +2,7 @@
 export interface UserPreferenceI {
 	theme?: string
 	language?: string
-	shortcut: {
+	shortcut?: {
 		team: string[]
 	}
 }
