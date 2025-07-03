@@ -78,6 +78,10 @@ export default class Actor extends State {
    * example to recast somme errors as exceptions
    */
   onError: ((error: any) => void) | undefined;
+
+  private _actorReadyPromise: Promise<XstateActor<ActorLogicFrom<this['machine']>>>;
+  private _resolveActorReady!: (actor: XstateActor<ActorLogicFrom<this['machine']>>) => void;
+
   constructor(
     public machine: AnyStateMachine,
     protected options: ActorOptions<AnyActorLogic>
@@ -85,6 +89,9 @@ export default class Actor extends State {
     actorId: ActorIdT,
     protected rootPath: string = 'actor') {
     super();
+    this._actorReadyPromise = new Promise((resolve) => {
+      this._resolveActorReady = resolve;
+    });
     this.actorId = actorId
     this.domHost = typeof options.domHost === 'function' ? options.domHost() : options.domHost;
     this.onError = options.onError;
@@ -198,7 +205,19 @@ export default class Actor extends State {
     this._actor = actor;
     this.dispatchEvent(new CustomEvent('actor-ready', { detail: { actor } }))
     this.subscribeActor(actor);
+    this._resolveActorReady(actor);
     // dispatch an event so that we know the actor is ready - thi sis useful when we want to add listeners to the actor itself
+  }
+
+  /**
+   * A promise that resolves when the actor is initialized.
+   * Useful for awaiting the actor before interacting with it.
+   * @example
+   * await actor.actorReady;
+   * actor.send({ type: 'SOME_EVENT' });
+   */
+  get actorReady(): Promise<XstateActor<ActorLogicFrom<this['machine']>>> {
+    return this._actorReadyPromise;
   }
 
   // protected subscribeActor(actor) {
