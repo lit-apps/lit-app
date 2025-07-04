@@ -7926,7 +7926,6 @@ snapshots:
   end-of-stream@1.4.5:
     dependencies:
       once: 1.4.0
-    optional: true
 
   enquirer@2.4.1:
     dependencies:
@@ -8495,7 +8494,7 @@ snapshots:
 
   get-stream@5.2.0:
     dependencies:
-      pump: 3.0.2
+      pump: 3.0.3
 
   get-stream@6.0.1: {}
 
@@ -9614,7 +9613,6 @@ snapshots:
     dependencies:
       end-of-stream: 1.4.5
       once: 1.4.0
-    optional: true
 
   punycode@2.3.1: {}
 
@@ -9986,7 +9984,7 @@ snapshots:
   tar-fs@3.0.4:
     dependencies:
       mkdirp-classic: 0.5.3
-      pump: 3.0.2
+      pump: 3.0.3
       tar-stream: 3.1.7
 
   tar-fs@3.0.9:
@@ -10469,7 +10467,7 @@ snapshots:
     optionalDependencies:
       '@types/debug': 4.1.12
       '@types/node': 22.15.30
-      '@vitest/browser': 3.2.2(msw@2.10.1(@types/node@22.15.30)(typescript@5.8.3))(vite@6.3.5(@types/node@22.15.30))(vitest@3.2.2)(webdriverio@8.44.1)
+      '@vitest/browser': 3.2.2(msw@2.10.1(@types/node@22.15.30)(typescript@5.8.3))(vite@6.3.5(@types/node@22.15.30))(vitest@3.2.2)(webdriverio@9.15.0(puppeteer-core@21.11.0))
       happy-dom: 17.6.3
     transitivePeerDependencies:
       - jiti
