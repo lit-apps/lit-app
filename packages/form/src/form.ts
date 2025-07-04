@@ -1,32 +1,11 @@
-import { html, css, LitElement } from "lit";
+import { css, html, LitElement } from "lit";
+import { customElement, property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { customElement, property, query, state } from 'lit/decorators.js';
+import { ProvideFormContextMixin } from './provide-form-context.js';
 import { FormFieldI, MimeTypesT } from './types.js';
-import './virtual-field.js';
-import { FormContext } from "./context-form.js";
-import { ContextProvider } from "@lit/context";
 
-
-export const BIND_FIELD_EVENT = 'a11y-bind-field';
-export const UNBIND_FIELD_EVENT = 'a11y-unbind-field';
 export const SUBMIT_EVENT = 'a11y-submit';
-
-interface BindFieldEventDetail {
-  field: FormFieldI;
-}
-
-export class BindFieldEvent extends CustomEvent<BindFieldEventDetail> {
-  constructor(field: FormFieldI) {
-    super(BIND_FIELD_EVENT, { detail: { field }, bubbles: true, composed: true });
-  }
-}
-
-export class UnbindFieldEvent extends CustomEvent<BindFieldEventDetail> {
-  constructor(field: FormFieldI) {
-    super(UNBIND_FIELD_EVENT, { detail: { field }, bubbles: true, composed: true });
-  }
-}
-
+export { BIND_FIELD_EVENT, UNBIND_FIELD_EVENT } from './provide-form-context.js';
 export class SubmitEvent extends CustomEvent<void> {
   constructor() {
     super(SUBMIT_EVENT, { bubbles: true, composed: true });
@@ -44,14 +23,14 @@ export class SubmitEvent extends CustomEvent<void> {
  */
 
 @customElement('a11y-form')
-export default class a11yForm extends LitElement {
+export default class a11yForm extends ProvideFormContextMixin(LitElement) {
 
   static override styles = css`
       :host {
         display: contents;
       }
     `;
-  formProvider = new ContextProvider(this, { context: FormContext });
+
 
   /**
    * The URL to which the form data will be submitted.
@@ -92,20 +71,11 @@ export default class a11yForm extends LitElement {
    */
   @property() submissionMode: 'default' | 'fetch' = 'default';
 
-  @state() boundFields: FormFieldI[] = [];
-
   @query('form') form!: HTMLFormElement;
   @query('button') submitButton!: HTMLButtonElement;
 
   constructor() {
     super();
-    this.formProvider.setValue(this)
-    this.addEventListener(BIND_FIELD_EVENT, (e: BindFieldEvent) => {
-      this.bindField(e.detail.field);
-    });
-    this.addEventListener(UNBIND_FIELD_EVENT, (e: UnbindFieldEvent) => {
-      this.unbindField(e.detail.field);
-    });
     this.addEventListener(SUBMIT_EVENT, () => {
       this.submit();
     })
@@ -116,16 +86,6 @@ export default class a11yForm extends LitElement {
     this.form.dispatchEvent(new SubmitEvent());
   }
 
-  private bindField(field: FormFieldI) {
-    if (!this.boundFields.includes(field)) {
-      // re reverse the order so that the first field is focused first
-      this.boundFields.unshift(field);
-      this.requestUpdate();
-    }
-  }
-  private unbindField(field: FormFieldI) {
-    this.boundFields = this.boundFields.filter(f => f !== field);
-  }
   override render() {
     const onClick = (e: Event) => {
       if (this.submissionMode === 'fetch') {
@@ -150,7 +110,11 @@ export default class a11yForm extends LitElement {
     </form>
     `;
   }
-
+  renderVirtualFields() {
+    return this.boundFields.map(field => {
+      return html`<a11y-virtual-field .field=${field} name="${field.name}"></a11y-virtual-field>`;
+    });
+  }
   private reportValidity() {
     // sync virtual fields validity first, 
     // then check form validity
@@ -170,11 +134,6 @@ export default class a11yForm extends LitElement {
     }
   }
 
-  private renderVirtualFields() {
-    return this.boundFields.map(field => {
-      return html`<a11y-virtual-field .field=${field} name="${field.name}"></a11y-virtual-field>`;
-    });
-  }
   override connectedCallback() {
     super.connectedCallback();
 
@@ -190,8 +149,6 @@ declare global {
     'a11y-form': a11yForm;
   }
   interface HTMLElementEventMap {
-    [BIND_FIELD_EVENT]: BindFieldEvent;
-    [UNBIND_FIELD_EVENT]: UnbindFieldEvent;
     [SUBMIT_EVENT]: SubmitEvent;
   }
 }

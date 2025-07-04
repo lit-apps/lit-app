@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
-import { describe, expect, it, afterEach } from 'vitest';
-import fixture, { fixtureCleanup } from '@lit-app/testing/fixture';
-import { literal } from 'lit/static-html.js';
-import { html } from 'lit';
-import './form.js';
-import { LappTextfield } from '@lit-app/cmp/field/text-field.js';
 import '@lit-app/cmp/field/text-field.js';
+import fixture, { fixtureCleanup } from '@lit-app/testing/fixture';
+import { html } from 'lit';
+import { afterEach, describe, expect, it } from 'vitest';
+import './form.js';
 
 // import type { a11yForm } from './form.js';
-import { default as a11yForm, BIND_FIELD_EVENT, UNBIND_FIELD_EVENT, SUBMIT_EVENT } from './form.js';
+import { default as a11yForm, BIND_FIELD_EVENT, UNBIND_FIELD_EVENT } from './form.js';
 import { FormFieldI } from './types.js';
 
 afterEach(fixtureCleanup);
@@ -78,7 +76,7 @@ describe('a11y-form', () => {
     await el.updateComplete;
     expect(form).to.exist;
     expect(el.boundFields).to.have.length(2);
-     
+
     // expect(el.boundFields).to.have.length(1);
 
   })

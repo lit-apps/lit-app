@@ -23,7 +23,7 @@
   "dependencies": {
     "@lit-app/shared": "workspace:*",
     "@lit/context": "^1.1.5",
-    "@material/web": "*",
+    "@material/web": "link:../../../app-dependencies/material-web",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
     "lit": "^3.3.0"

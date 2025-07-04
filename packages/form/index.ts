@@ -1,3 +1,3 @@
-export { ConsumeFormMixin, } from './src/context-form';
-export { BindFieldEvent, UnbindFieldEvent } from './src/form';
-import './src/form';
+export { ConsumeFormContextMixin } from './src/consume-form-context';
+export { BindFieldEvent, ProvideFormContextMixin, UnbindFieldEvent } from './src/provide-form-context';
+
