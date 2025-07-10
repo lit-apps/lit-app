@@ -411,15 +411,17 @@ export function renderField<D extends DefaultI>(
   }
 
   function renderUpload(model: OComponentUpload) {
+
+    // vaadin fields have `readonly` and not `readOnly`
     return html`
       <lapp-upload
-        class=${cls}
-        .name=${path}
-        style=${ifDefined(model.style)}
-        .readOnly=${disabled}
-        .writeLabel=${label}
-        .supportingText=${model.helper}
-        .required=${!!model.required}
+      class=${cls}
+      .name=${path}
+      style=${ifDefined(model.style)}
+      .readonly=${disabled}
+      .writeLabel=${label}
+      .supportingText=${model.helper}
+      .required=${!!model.required}
         .store=${model.store!}
         .path=${model.path!}
         .maxFiles=${model.maxFiles!}
@@ -427,11 +429,12 @@ export function renderField<D extends DefaultI>(
         .maxFileSize=${model.maxFileSize}
         .useFirestore=${!!model.useFirestore}
         .fieldPath=${model.fieldPath || path}
-      ></lapp-upload>
-      `;
+        ></lapp-upload>
+        `;
   }
 
   function renderUploadImage(model: OComponentUploadImage) {
+    // vaadin fields have `readonly` and not `readOnly`
     const image = html`<lapp-upload-image
       class=${cls}
       .name=${path}
