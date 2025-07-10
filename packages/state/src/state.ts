@@ -152,12 +152,12 @@ export class State extends EventTarget {
   }
 
   /**
-   * subscribe to state change event. The callback will be called anytime 
-   * a state property change if `nameOrNames` is undefined, or only for matching
-   * property values specified by `nameOrNames`
-   * @param callback the callback function to call
-   * @param nameOrNames 
-   * @returns a unsubscribe function. 
+   * Subscribes to state changes on the current instance.
+   *
+   * @param callback - A function to be called when the state changes. Receives the property key, new value, and the instance as arguments.
+   * @param nameOrNames - (Optional) A property name or an array of property names to listen for. If omitted, the callback is invoked for all property changes.
+   * @param options - (Optional) Options to configure the event listener.
+   * @returns An `Unsubscribe` function that removes the event listener when called.
    */
   subscribe(
     callback: Callback<this>,
