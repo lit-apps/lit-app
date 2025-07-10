@@ -152,7 +152,11 @@ export const Storage = <T extends MixinBase<BaseT>>(
 
     @watch('readonly') readonlyChanged(readonly: boolean, oldReadonly: boolean) {
       if (readonly) {
-        this._oldMaxFiles = this.maxFiles;
+        if (this.maxFiles > 0) {
+          // Note(cg): save old maxFiles to restore it when readonly is set to false
+          // never set maxFiles to 0, as it will prevent the user to upload files
+          this._oldMaxFiles = this.maxFiles;
+        }
         this.maxFiles = 0;
       }
       if (oldReadonly && !readonly) {

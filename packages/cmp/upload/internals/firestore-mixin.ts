@@ -36,12 +36,12 @@ export const UploadFirestoreMixin = <T extends MixinBase<BaseT>>(
       const isMultiple = e.detail.isMultiple;
       const firestore = getFirestore(getApp(this.appName));
       // when multiple, and no fieldpath, we store as individual documents
+      const fileName = e.detail.file.name;
       if (isMultiple && !this.fieldPath) {
         // only add doc if it is not already in the database
-        const fineName = e.detail.file.name;
-        const exists = Array.isArray(this.metaData) && this.metaData?.find((f: FirebaseUploadFile) => f.name === fineName);
+        const exists = Array.isArray(this.metaData) && this.metaData?.find((f: FirebaseUploadFile) => f.name === fileName);
         if (exists) {
-          console.warn('File already exists in database', fineName);
+          console.warn('File already exists in database', fileName);
           this.dispatchEvent(new ToastEvent('this image already exists in the database'));
           return e.detail.promise = Promise.resolve();
         }
@@ -49,7 +49,7 @@ export const UploadFirestoreMixin = <T extends MixinBase<BaseT>>(
         return e.detail.promise = addDoc(collection(firestore, this.path), { ...e.detail.file });
 
       }
-      const fieldPath = this.fieldPath + (isMultiple ? '.' + this.fileName.split('.')[0] : '');
+      const fieldPath = this.fieldPath + (isMultiple ? '.' + fileName.split('.')[0] : '');
       return e.detail.promise = updateDoc(doc(firestore, this.path), { [fieldPath]: { ...e.detail.file } });
     }
 
