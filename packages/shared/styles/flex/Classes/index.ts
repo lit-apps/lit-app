@@ -269,7 +269,7 @@ export const Alignment = css`
 
 	.self-start {
 	 ${selfStart}
-
+	}
 	.self-center {
 	 ${selfCenter}
 	}

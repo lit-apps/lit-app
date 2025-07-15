@@ -32,6 +32,7 @@ export { default as toc } from './class/toc.js';
 export { default as tooltip } from './class/tooltip.js';
 export { default as topCard } from './class/top-card.js';
 export { default as typography } from './class/typography.js';
+export { Alignment, Factors, Layouts } from './flex/index.js';
 
 export { getAdjustedColor, themeResetColors } from './utils/index.js';
 
