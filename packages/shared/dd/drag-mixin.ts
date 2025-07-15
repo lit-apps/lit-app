@@ -8,7 +8,7 @@ export declare class DragMixinInterface<D> {
   handleDrop: (e: DragEvent) => D | undefined
 }
 
-type BaseT = HTMLElement & {}
+type BaseT = any
 /**
  * DragMixin - a mixin that allows passing data between drag and drop events as the native  only allows text.
  */
