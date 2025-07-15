@@ -178,6 +178,9 @@ export default function renderMixin<
       };
     }
 
+    getDDconfig(config: C) {
+      return config?.gridConfig?.dd;
+    }
     renderGrid(data: Collection<D>, config: C) {
       // bring selection up to host 
       const onSelected = async (e: CustomEvent) => {
@@ -198,6 +201,9 @@ export default function renderMixin<
           e.stopPropagation();
         }
       }
+
+      const ddConfig = this.getDDconfig(config)
+      // console.log('renderGrid', this.entityName, ddConfig?.dropMode);
       const doc = this.constructor.documentationKeys?.grid
       // const dataProvider = this.getDataProvider(data, config)
       const grid = html`<vaadin-grid 
@@ -210,13 +216,22 @@ export default function renderMixin<
         ${gridRowDetailsRenderer(
         (data: CollectionI<D>,
           model: any,
-          grid: any) => this.renderGridDetail(data, config, model, grid))
-        }
+          grid: any) => this.renderGridDetail(data, config, model, grid),
+        [this])}
         @vaadin-contextmenu=${onContextMenu}
         @active-item-changed=${config?.gridConfig?.preventDetails ? null : onActiveItemChanged}
         @dblclick=${config?.gridConfig?.preventDblClick ? null : this.onGridDblClick.bind(this)}
         @selected-items-changed=${onSelected}
-        @size-changed=${onSizeChanged}>
+        @size-changed=${onSizeChanged}
+
+        .dropMode=${ddConfig?.dropMode || nothing}
+        .rowsDraggable=${ddConfig?.rowsDraggable || false}
+        .dragFilter=${ddConfig?.dragFilter || nothing}
+        .dropFilter=${ddConfig?.dropFilter || nothing}
+        @grid-dragend=${ddConfig?.dragEnd || nothing}
+        @grid-dragstart=${ddConfig?.dragStart || nothing}
+        @grid-drop=${ddConfig?.drop || nothing}
+        >
         <slot name="grid-column-leading"></slot>
         ${this.renderGridColumns(config)}
         <slot name="grid-empty-state" slot="empty-state">

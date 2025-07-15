@@ -32,10 +32,10 @@
     "@custom-elements-manifest/to-markdown": "^0.1.0",
     "chai-a11y-axe": "^1.4.0",
     "eslint": "^9.19.0",
-    "firebase": "^11.4.0",
+    "firebase": "^11.10.0",
     "happy-dom": "^16.7.3",
     "typescript": "^5.7.3",
-    "vite": "^6.2.2",
+    "vite": "^7.0.4",
     "vitest": "^3.0.9"
   },
   "publishConfig": {
@@ -46,7 +46,7 @@
     "@lit-app/cmp": "workspace:*",
     "@lit-app/shared": "workspace:*",
     "@lit-app/state": "workspace:*",
-    "@lit/context": "^1.1.5",
+    "@lit/context": "^1.1.6",
     "@material/web": "link:../../../app-dependencies/material-web",
     "@maxmorozoff/try-catch-tuple": "^0.1.2",
     "@open-wc/dedupe-mixin": "^1.4.0",
@@ -55,7 +55,7 @@
     "@vaadin/context-menu": "link:../../../app-dependencies/web-components/packages/context-menu",
     "@vaadin/grid": "link:../../../app-dependencies/web-components/packages/grid",
     "@vaadin/multi-select-combo-box": "link:../../../app-dependencies/web-components/packages/multi-select-combo-box",
-    "lit": "^3.3.0",
+    "lit": "^3.3.1",
     "xstate": "link:../../../app-dependencies/xstate/packages/core"
   },
   "overrides": {

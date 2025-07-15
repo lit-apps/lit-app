@@ -1,3 +1,4 @@
+import { GridDragStartEvent, GridDropEvent, GridItemModel } from '@vaadin/grid'
 import { LitElement, TemplateResult } from 'lit'
 import { entityI } from '../types'
 import { AuthorizationT } from './access.js'
@@ -59,9 +60,21 @@ export type ColumnsConfig = {
 	}
 }
 
-export type GridConfig = {
+export type GridDdConfig<T> = {
+	dragStart?: (e: GridDragStartEvent<T> & { originalEvent: DragEvent }) => T | undefined;
+	dragEnd?: (e: GridDragStartEvent<T>) => void;
+	drop?: (e: GridDropEvent<T>) => Promise<void> | void;
+	dragFilter?: (model: GridItemModel<T>, e: GridDragStartEvent<T>) => boolean;
+	dropFilter?: (model: GridItemModel<T>, e: GridDropEvent<T>) => boolean;
+	rowsDraggable?: boolean;
+	dropMode?: 'on-top' | 'between' | 'on-top-or-between';
+}
+
+
+export type GridConfig<T> = {
 	preventDetails?: boolean // when true, will not render grid details
 	preventDblClick?: boolean // when true, will not react to dbClick
+	dd?: GridDdConfig<T> // drag and drop configuration
 }
 
 type OptionsT = {
@@ -69,7 +82,7 @@ type OptionsT = {
 }
 export type RenderConfigOptional<O = OptionsT, T = any> = {
 	columnsConfig?: ColumnsConfig,
-	gridConfig?: GridConfig,
+	gridConfig?: GridConfig<T>,
 	cardConfig?: { [K in keyof Partial<T>]: T[K] }
 	level?: number, // level to render the entity
 	heading?: string // heading to render

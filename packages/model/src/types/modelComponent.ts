@@ -35,6 +35,7 @@ type TableConfig<T = any> = {
 	renderer?: (data: T) => TemplateResult | string
 }
 
+
 export type GridConfig<T = any> = {
 	index: number
 	header?: string
@@ -49,7 +50,10 @@ export type GridConfig<T = any> = {
 	condition?: (config: RenderConfig | undefined) => boolean
 	headerRenderer?: GridColumnHeaderLitRenderer
 	bodyRenderer?: GridColumnBodyLitRenderer<T>
+	// dd?: GridDdConfig<T>;
 }
+
+
 
 export type CsvConfig<T = any> = {
 	label?: string
