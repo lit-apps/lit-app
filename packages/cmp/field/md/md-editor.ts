@@ -300,6 +300,8 @@ Second Column
 
 } as const satisfies Record<string, MdActionT>
 
+const positioning = 'popover';
+
 function isMdAction(action: string): action is keyof typeof mdActions {
 	return action in mdActions;
 }
@@ -310,10 +312,11 @@ function isMdAction(action: string): action is keyof typeof mdActions {
  * TODO: 
  * - localize
  * - better handle link action (check whether the text is an url or not)
- * - there is bug with the positioning of menu. We have `positioning="fixed"` but it is making menu to 
- *   not scroll with the page. On the other hand, if we keep the default absolute positioning, the menu is
+ * - there is bug with the positioning of menu. We have `positioning=" fixed"` but it is making menu to 
+ *   not scroll with the page. On the other hand, if we keep the default absolute positioning, the menu
  *   does not appear next to the menu button. And if we add a `span.relative` to make positioning work, then 
  *   the toolbar focus is wrong.
+ *   `popover` positioning works better but it is not supported by Firefox.
  * 
  */
 export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) {
@@ -561,7 +564,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 			<md-icon-button @click=${onOpen('add-content-menu')} data-toolbar="menu-content" id="add-content-menu-button" aria-label="add Content" title="add content">
 				<lapp-icon no-fill>add_notes</lapp-icon>
 			</md-icon-button>
-			<md-menu style="min-width: 150px;" positioning="fixed" id="add-content-menu" anchor="add-content-menu-button" quick>
+			<md-menu style="min-width: 150px;" positioning="${positioning}" id="add-content-menu" anchor="add-content-menu-button" quick>
 				<md-menu-item data-toolbar="contentTable">
 					${contentTpl.table}
 				</md-menu-item>
@@ -595,7 +598,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 			<md-icon-button @click=${onOpen('layout-menu')} data-toolbar="menu-layout" id="layout-menu-button" aria-label="layout" title="layout">
 				<lapp-icon no-fill>space_dashboard</lapp-icon>
 			</md-icon-button>
-			<md-menu style="min-width: 150px;"  positioning="fixed" id="layout-menu" anchor="layout-menu-button" quick>
+			<md-menu style="min-width: 150px;"  positioning="${positioning}" id="layout-menu" anchor="layout-menu-button" quick>
 				<md-menu-item data-toolbar="layout2Col">
 					${layoutTpl.layout2Col}
 				</md-menu-item>
@@ -618,7 +621,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 			<md-icon-button @click=${onOpen('layout-color')} data-toolbar="menu-color" id="layout-color-button" aria-label="color" title="color">
 				<lapp-icon no-fill>palette</lapp-icon>
 			</md-icon-button>
-			<md-menu style="min-width: 150px;" positioning="fixed" id="layout-color" anchor="layout-color-button" quick>
+			<md-menu style="min-width: 150px;" positioning="${positioning}" id="layout-color" anchor="layout-color-button" quick>
 				<md-menu-item data-toolbar="colorPrimary">
 					${colorTpl.primary}
 				</md-menu-item>
@@ -659,7 +662,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 				<md-icon-button @click=${onOpen('accessibility-menu')} data-toolbar="menu-accessibility" id="accessibility-menu-button" aria-label="accessibility" title="accessibility">
 					<lapp-icon no-fill>accessibility_new</lapp-icon>
 				</md-icon-button>
-				<md-menu style="min-width: 150px" positioning="fixed" id="accessibility-menu" anchor="accessibility-menu-button" quick>
+				<md-menu style="min-width: 150px" positioning="${positioning}" id="accessibility-menu" anchor="accessibility-menu-button" quick>
 					<md-menu-item data-toolbar="a11yMenu">
 						${a11yTpl.menu}
 					</md-menu-item>
