@@ -402,6 +402,7 @@ export function renderField<D extends DefaultI>(
         .required=${!!model.required}
         .maxLength=${model.maxLength!}
         .minLength=${model.minLength!}
+        .showAccessibilityMenu=${model.showAccessibilityMenu!}
         rows=${ifDefined(model.rows) || nothing as any}
         resize=${ifDefined(model.resize) || undefined}
         .md=${md}
