@@ -110,9 +110,11 @@ export const PromiseEventDialogMixin = <D = any>() => <T extends MixinBase<BaseT
         @close=${onClose}
         id="promiseEventDialog">
         ${'template' in event.detail ? event.detail.template :
-          html`
-          <div slot="headline">${event.detail.title}</div>
-          <lapp-icon>${event.detail.icon || 'send'}</lapp-icon>
+          html`<span slot="headline">
+            <lapp-icon style="color: var(--color-primary); --md-icon-size: 42px;">${event.detail.icon || 'send'}</lapp-icon>
+            <span style="flex: 1;">${event.detail.title}</span>
+          </span>
+          
         `} 
         <form id="promise-event-dialog-form" method="dialog" slot="content" novalidate="">
           ${render(data, this)}
