@@ -159,7 +159,16 @@ export const ConsumeEntityStatusMixin = <T extends MixinBase<ReactiveElement>>(
 	abstract class ContextConsumeEntityStatusMixinClass extends superClass {
 		/** context storing document status*/
 		@consume({ context: entityStatusContext, subscribe: true })
-		@property({ attribute: false }) entityStatus!: EntityStatus;
+		@property({ attribute: false }) entityStatusContext!: EntityStatus;
+
+		private _entityStatus!: EntityStatus;
+		@property({ attribute: false })
+		set entityStatus(val: EntityStatus) {
+			this._entityStatus = val;
+		}
+		get entityStatus() {
+			return this._entityStatus !== undefined ? this._entityStatus : this.entityStatusContext;
+		}
 
 	};
 	return ContextConsumeEntityStatusMixinClass;
