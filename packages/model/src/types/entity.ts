@@ -93,6 +93,7 @@ export type RenderConfigOptional<O = OptionsT, T = any> = {
 	 * For instance, action buttons will not be fixed in a grid-detail context
 	 */
 	context?: 'default' | 'detail'
+	// @deprecated - this is not used anymore
 	baseURL?: string // base url for the entity
 	//isNew?: boolean // true when the entity is new
 	layout?: 'horizontal' | 'vertical' | 'grid' // set the layout for card variant

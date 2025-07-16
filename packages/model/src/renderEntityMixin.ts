@@ -530,7 +530,7 @@ export function getFieldsFromModel(
 
     for (const key in model) {
       const component = model[key];
-      if (!component) {
+      if (!component || key.startsWith('_') || Array.isArray(component)) {
         continue
       }
       const p = path ? `${path}.${key}` : key
