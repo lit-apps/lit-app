@@ -1,7 +1,7 @@
-import { HTMLTemplateResult, LitElement, render } from 'lit';
+import { HTMLTemplateResult, render } from 'lit';
 export const cachedWrappers: Node[] = [];
 const container = document.createElement('div');
-container.style.display = 'none';
+// container.style.display = 'none';
 document.body.appendChild(container);
 
 /**
@@ -30,11 +30,13 @@ export function fixtureCleanup() {
   cachedWrappers.length = 0; // reset it like this as we can't reassign it
 }
 
-const fixture = async <T extends LitElement>(template: HTMLTemplateResult) => {
+const fixture = async <T extends HTMLElement>(template: HTMLTemplateResult) => {
   const container = fixtureWrapper()
   render(template, container);
   const el = container.firstElementChild as T;
-  await el.updateComplete;
+  if ('updateComplete' in el) {
+    await el.updateComplete;
+  }
   return el as T;
 }
 

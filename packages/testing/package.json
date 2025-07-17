@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "keywords": [
     "lit",
@@ -18,5 +18,10 @@
   "license": "ISC",
   "dependencies": {
     "lit": "^3.3.0"
+  },
+  "devDependencies": {
+    "@vitest/browser": "^3.2.4",
+    "playwright": "^1.54.1",
+    "vitest": "^3.2.4"
   }
 }
