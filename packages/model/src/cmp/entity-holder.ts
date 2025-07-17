@@ -1,6 +1,6 @@
 import { adoptStyles, html, PropertyValues } from "lit";
 import { property } from 'lit/decorators.js';
-import {entityI, EntityI} from '../types';
+import { entityI, EntityI } from '../types';
 
 import { RenderConfig } from '../types/entity';
 
@@ -17,29 +17,29 @@ export default class EntityHolder extends AbstractEntity {
 	 */
 	@property() variant: RenderConfig['variant'] = 'default'
 	@property() layout: RenderConfig['layout'] = 'horizontal'
-	@property() context: RenderConfig['context'] = 'default'
-	@property({type: Boolean}) isNew: boolean = false
-	@property({attribute: 'base-url'}) baseURL: string = ''
+	@property({ reflect: true }) context: RenderConfig['context'] = 'default'
+	@property({ type: Boolean }) isNew: boolean = false
+	@property({ attribute: 'base-url' }) baseURL: string = ''
 
 	override get renderConfig(): RenderConfig {
 		return {
-			...super.renderConfig,			
+			...super.renderConfig,
 			context: this.context,
 			variant: this.variant,
 			layout: this.layout,
-			baseURL: this.baseURL, 
+			baseURL: this.baseURL,
 		}
 	}
 
 	protected override setEntity(E: EntityI) {
-		
+
 		super.setEntity(E)
-		
+
 		/** Handle Styles */
 		if (this.Entity?.styles) {
 			const root = this.renderRoot as ShadowRoot
-			const styles = Array.isArray(this.Entity.styles) 
-				? this.Entity.styles 
+			const styles = Array.isArray(this.Entity.styles)
+				? this.Entity.styles
 				: [this.Entity.styles]
 			adoptStyles(
 				root,
@@ -55,7 +55,7 @@ export default class EntityHolder extends AbstractEntity {
 		this.addEventListener(Edit.eventName, () => this.requestUpdate());
 		this.addEventListener(Write.eventName, () => this.requestUpdate());
 	}
-	
+
 	protected override renderEntity(entity: entityI, config?: RenderConfig) {
 		const isEmptyArray = Array.isArray(this.data) && this.data.length === 0
 		return html`
@@ -71,15 +71,15 @@ export default class EntityHolder extends AbstractEntity {
 			<slot name="footer">
 				${this.renderFooter(entity, config)}
 			</slot>
-			<slot name="footer-${isEmptyArray ? 'no-data': 'data'}"></slot>
+			<slot name="footer-${isEmptyArray ? 'no-data' : 'data'}"></slot>
 		`;
 	}
 
 	// entity holder might be focused in grid details. We need a way to pass focus to the first input
 	override focus(): void {
 		const focus = this.renderRoot.querySelector('*[focus-on-activate]') as HTMLInputElement;
-      if (focus) {
-        focus.focus();
-      }
+		if (focus) {
+			focus.focus();
+		}
 	}
 }

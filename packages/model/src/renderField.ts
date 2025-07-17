@@ -21,7 +21,7 @@ import type {
   ModelComponentUpload,
   ModelComponentUploadImage
 } from './types/modelComponent';
-import('@vaadin/multi-select-combo-box/vaadin-multi-select-combo-box');
+import('@vaadin/multi-select-combo-box/vaadin-multi-select-combo-box.js');
 
 import { NestedKeys } from '@lit-app/shared/types.js';
 import '../field-translate.js';
