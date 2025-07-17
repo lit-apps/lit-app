@@ -26,7 +26,8 @@
     "noImplicitOverride": true,
     "types": [
       "vite/client",
-      "mocha"
+      "mocha",
+      "@vitest/browser/matchers"
     ],
     "plugins": [
       {
