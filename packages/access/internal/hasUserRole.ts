@@ -7,7 +7,7 @@ import type { AccessT } from '@lit-app/model';
  * @param uid the user id to test
  */
 function hasUserRole<A extends AccessT>(role: keyof A['user'], access: A, uid: string): boolean {
-	const userRole = access.user?.[role as keyof typeof access.user];
+	const userRole = access?.user?.[role as keyof typeof access.user];
 	return uid && userRole === uid ||
 		(Array.isArray(userRole) && (userRole.indexOf(uid) >= 0))
 }
