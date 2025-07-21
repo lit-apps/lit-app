@@ -11,7 +11,7 @@ import('@material/web/list/list-item')
  *  
  */
 
-export default class EntityDangerZone  extends RenderHeaderMixin(AbstractEntity) {
+export default class EntityDangerZone extends RenderHeaderMixin(AbstractEntity) {
 
 	override icon: string = 'dangerous';
 	override heading: string = 'Danger Zone';
@@ -22,9 +22,7 @@ export default class EntityDangerZone  extends RenderHeaderMixin(AbstractEntity)
 
 	protected override renderEntity(entity: entityI) {
 		return html`
-			<slot name="header">
-				${this.renderHeader(this.data, this.renderConfig)}
-			</slot>
+			
 			<slot name="sub-header"></slot>
 			<slot name="body">
 				${this.renderBody(entity)}
