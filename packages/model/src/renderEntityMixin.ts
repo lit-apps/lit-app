@@ -2,7 +2,7 @@ import { activeItemChanged } from '@lit-app/shared/grid';
 import { ensure } from '@lit-app/shared/types.js';
 import { get } from '@preignition/preignition-util/src/deep';
 import { ContextMenuLitRenderer, contextMenuRenderer } from '@vaadin/context-menu/lit.js';
-import '@vaadin/context-menu/vaadin-context-menu.js';
+
 import {
   columnBodyRenderer,
   columnHeaderRenderer,
@@ -11,8 +11,6 @@ import {
 import type { Grid } from '@vaadin/grid/vaadin-grid.js';
 import { html, nothing, TemplateResult } from 'lit';
 import { join } from 'lit/directives/join.js';
-
-import('@vaadin/grid/all-imports.js');
 
 import { choose } from 'lit/directives/choose.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -182,6 +180,8 @@ export default function renderMixin<
       return config?.gridConfig?.dd;
     }
     renderGrid(data: Collection<D>, config: C) {
+      import('@vaadin/grid/all-imports.js');
+      import('@vaadin/context-menu/vaadin-context-menu.js');
       // bring selection up to host 
       const onSelected = async (e: CustomEvent) => {
         (this.host as EntityElementList).selectedItems = [...(e.target as Grid).selectedItems];
