@@ -118,6 +118,7 @@ export class Record extends ResizeControllerMixin(translate(LitElement, locale))
      `
     const renderProgress = () => html`
       <md-linear-progress 
+        aria-label="Recording progress"
         ?data-almost-complete=${this.almostComplete}
         .value=${this.currentDuration} 
         .buffer=${this.maxDuration} 

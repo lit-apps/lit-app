@@ -156,6 +156,7 @@ export const ConfirmDialogMixin = <T extends MixinBase<LitElement & { selectedIt
 						<form slot="content" method="dialog" id="form-confirm" novalidate="">
 							${dialogConfig.render.call(this, { data, selectedItems: this.selectedItems! })}
 						<md-linear-progress 
+							aria-label="Confirming action"
 							style="margin-top: var(--space-medium);" 
 							.indeterminate=${!this._resolved}></md-linear-progress>
 					</form>

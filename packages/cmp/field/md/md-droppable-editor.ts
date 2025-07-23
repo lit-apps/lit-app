@@ -1,15 +1,15 @@
 import lappMdEditor from './md-editor';
 
-import { html, css, PropertyValues, nothing } from "lit";
+import { css, html, nothing, PropertyValues } from "lit";
 import { property, query, state } from 'lit/decorators.js';
+import '../../upload/document';
+import lappUploadDocument from '../../upload/document';
+import '../../upload/document-firebase';
 import droppableStyles from './droppable-styles';
 import('@material/web/progress/linear-progress.js');
 import('@material/web/button/outlined-button.js');
 import('../../button/small-outlined-button')
 import('../../button/small-text-button')
-import '../../upload/document-firebase';
-import '../../upload/document';
-import lappUploadDocument from '../../upload/document';
 
 interface UploadDocumentI extends lappUploadDocument {
 	_onAddFilesClick(e: CustomEvent): void

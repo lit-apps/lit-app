@@ -1,14 +1,14 @@
-import { html, css, LitElement, PropertyValues } from "lit";
-import { when } from 'lit/directives/when.js';
-import { property, state, query } from 'lit/decorators.js';
-import { repeat } from 'lit/directives/repeat.js';
-import { HTMLEvent } from '@lit-app/shared/types'
-import '../../field/select-input'
-import type { LappSelectInput } from '../../field/select-input';
+import { HTMLEvent } from '@lit-app/shared/types';
 import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';
+import { css, html, LitElement, PropertyValues } from "lit";
+import { property, query, state } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
+import { when } from 'lit/directives/when.js';
+import '../../field/select-input';
+import type { LappSelectInput } from '../../field/select-input';
 // import '../card'
-import { Loader, UserItem } from './types';
 import { slotList } from '@lit-app/shared/styles';
+import { Loader, UserItem } from './types';
 
 import('@material/web/progress/linear-progress.js');
 import('@material/web/select/select-option.js');
@@ -75,7 +75,7 @@ export class UserSearch extends LitElement {
 		}
 
 		if (prop.has('inviteEmail') && this.inviteEmail && inputValidator.validity.valid) {
-					this.dispatchEvent(new CustomEvent('invite-email-changed', {composed: true }));
+			this.dispatchEvent(new CustomEvent('invite-email-changed', { composed: true }));
 		}
 		super.willUpdate(prop);
 	}
@@ -112,7 +112,7 @@ export class UserSearch extends LitElement {
 				@change=${onChange}
 				@input=${redispatch}
 				@search-input=${onSearchInput}
-				>${this.loading ? html`Loading ... <md-linear-progress style="width: 300px;" indeterminate></md-linear-progress>` :
+				>${this.loading ? html`Loading ... <md-linear-progress aria-label="Loading user search..." style="width: 300px;" indeterminate></md-linear-progress>` :
 				!this.items ?
 					this.renderNoItems() :
 					this.renderItems(this.items)}
@@ -134,8 +134,8 @@ export class UserSearch extends LitElement {
 
 		return html`<div style="padding: 10px;">
 			<p><strong>Find users by email or name.</strong></p>
-			<p>No users found. ${!isValidEmail ?  'Type a valid email address for invite...' : ''}</p>
-			${when(isValidEmail, () => html`<md-filled-button .disabled=${searchValue === this.inviteEmail} @click=${onInvite}>Set ${searchValue} as a User to Invite</md-filled-button>` )}
+			<p>No users found. ${!isValidEmail ? 'Type a valid email address for invite...' : ''}</p>
+			${when(isValidEmail, () => html`<md-filled-button .disabled=${searchValue === this.inviteEmail} @click=${onInvite}>Set ${searchValue} as a User to Invite</md-filled-button>`)}
 		</div>`
 	}
 
