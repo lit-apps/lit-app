@@ -2,7 +2,6 @@ import { html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { Generic } from '../../generic/generic';
 // import '@material/web/switch/switch.js';
-import { HTMLEvent } from '@lit-app/shared/types.js';
 import { MdSwitch } from '@material/web/switch/switch.js';
 import '../input-switch';
 
@@ -38,7 +37,7 @@ export abstract class Switch extends Generic {
         touch-target="wrapper"
         .supportingOrErrorText=${this.supportingOrErrorText} 
         aria-label="${this.label} ${this.switchLabel || ''}"
-        @change=${this.handleChange}
+        @input=${this.handleSwitchInput}
         .disabled=${this.disabled}
         .required=${this.required}
         .selected=${this.selected}>
@@ -49,9 +48,11 @@ export abstract class Switch extends Generic {
 		`
   }
 
-  async handleChange(e: HTMLEvent<MdSwitch>) {
-    const target = e.target;
-    await this.updateComplete;
+
+  private handleSwitchInput(e: InputEvent) {
+    // this.dirty = true;
+    const target = e.target as MdSwitch;
+    // await this.updateComplete;
     this.selected = target.selected;
   }
 
