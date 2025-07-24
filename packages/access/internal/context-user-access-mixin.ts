@@ -9,6 +9,8 @@ import usersFromData from './usersFromData';
 
 export const userAccessContext = createContext<UserUidRoleT[]>('user-access');
 
+const _previousTeam = Symbol('previousTeam');
+
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 /**
@@ -40,6 +42,7 @@ export const ProvideUserAccessMixin = <T extends Constructor<ReactiveElement & {
 
 	class ContextProvideUserAccessMixinClass extends superClass {
 
+		private [_previousTeam]?: string;
 		private accessUserProvider = new ContextProvider(this, { context: userAccessContext });
 		private accessUserController!: FirestoreDocumentController<ResourceI>;
 
@@ -48,35 +51,43 @@ export const ProvideUserAccessMixin = <T extends Constructor<ReactiveElement & {
 		async setupTeamID(teamID: string) {
 			console.log('setupTeamID', teamID);
 			if (teamID) {
-				this.accessUserController?.hostDisconnected();
-				// we set a reactive controller linking to the actor in the db
-				this.accessUserController = new FirestoreDocumentController<ResourceI>(
-					this,
-					doc(getFirestore(), `/app/customer/team/${teamID}`),
-					undefined,
-					(controller) => {
-						const data = controller.data;
-						if (this.isConnected && !data && controller.loading === false) {
-							throw new Error(`team ${teamID} not found`)
-						}
-						if (data) {
-							const users = usersFromData(data);
-							this.accessUserProvider.setValue(users);
-						}
+				const path = `app/customer/team/${teamID}`;
+				if (this.accessUserController) {
+					// prevent to set the same reference
+					if (this.accessUserController.ref.path === path) {
+						return;
 					}
-				)
-				// this will subscribe to remote
-				this.accessUserController.hostConnected();
+					this.accessUserController.ref = doc(getFirestore(), path);
+				} else {
+					// we set a reactive controller linking to the actor in the db
+					this.accessUserController = new FirestoreDocumentController<ResourceI>(
+						this,
+						doc(getFirestore(), path),
+						undefined,
+						(controller) => {
+							const data = controller.data;
+							if (this.isConnected && !data && controller.loading === false) {
+								throw new Error(`team ${teamID} not found`)
+							}
+							if (data) {
+								const users = usersFromData(data);
+								this.accessUserProvider.setValue(users);
+							}
+						}
+					)
+					// this will subscribe to remote
+					this.accessUserController.hostConnected();
+				}
 			}
 		}
 
 		override willUpdate(props: PropertyValues<this>) {
 			super.willUpdate(props);
 			if (props.has('data') || props.has('contextData')) {
-				const oldTeam = props.get('data')?.metaData?.access?.team || props.get('teamId');
 				const team = this.data?.metaData?.access?.team || this.teamId;
-				if (team && team !== oldTeam) {
+				if (team && team !== this[_previousTeam]) {
 					this.setupTeamID(team);
+					this[_previousTeam] = team;
 				}
 			}
 		}
