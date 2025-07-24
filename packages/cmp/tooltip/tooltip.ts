@@ -115,16 +115,11 @@ export default class lappTooltip extends LitElement {
   @property() term!: string;
   @watch('term') termChanged(term: string) {
     if (term && !this.definitionConsumer) {
-
       this.definitionConsumer = new ContextConsumer(
         this, {
         context: tooltipDefinitionsContext,
         subscribe: true,
-
-      }
-
-      );
-
+      });
     }
   }
 
