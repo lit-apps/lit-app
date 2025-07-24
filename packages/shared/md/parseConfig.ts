@@ -10,7 +10,8 @@ export default {
     'playlabel', /* lite-youtube */
     'params', /* lite-youtube */
     'term', /* pwi-form-tooltip */
-    'message', /* pwi-tooltip */
+    'text', /* pwi-form-tooltip */
+    'message', /* @deprecated pwi-tooltip */
     'position', /* pwi-tooltip */
     'tipWidth', /* pwi-tooltip */
     'all', /* pwi-accessibility-settings*/
