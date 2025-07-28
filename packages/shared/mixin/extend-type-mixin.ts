@@ -1,9 +1,8 @@
-import { LitElement } from 'lit';
 import { MixinBase, MixinReturn } from './types.js';
 
 export declare class ExtendTypeMixinInterface {
 }
-type BaseT = LitElement & {};
+type BaseT = {};
 
 /**
  * ## ExtendTypeMixin
