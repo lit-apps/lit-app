@@ -194,6 +194,28 @@ export class Open extends BaseEvent<EntityDetail> {
   }
 }
 
+type EntityNavigateDetail = EntityDetail & {
+  action: string
+  path?: string // the path to navigate to, if not set, the default path (action/entityName/id) is used
+}
+export class Navigate extends BaseEvent<EntityNavigateDetail> {
+  static readonly eventName = 'entity-navigate';
+  constructor(
+    detail: EntityNavigateDetail,
+    public override readonly action?: ActionT) {
+    super(Navigate.eventName, {
+      bubbles: true,
+      composed: true,
+      detail: detail
+    });
+  }
+}
+
+/**
+ * Edit is used to edit an entity.
+ * 
+ * It is different from Open in that it is used to edit an entity that is already open and make it editable.
+ */
 export class Edit extends BaseEvent<EntityDetail> {
   static readonly eventName = 'entity-edit';
   constructor(
@@ -354,11 +376,14 @@ export class AppActionEmail extends BaseAction<ActionEmailDetail> {
 }
 
 
-type AnyEntityEvent = Write | Update | Reset | Delete | Create | Dirty | Close | Open | Edit
+type AnyEntityEvent = Write | Update | Reset | Delete | Create | Dirty | Close | Open | Navigate | Edit
 type AnyAppEvent = EntityAction | AppAction | AppActionEmail
 // type AccessEvent = AddAccess | RemoveAccess | SetAccess | AccessInvite | AccessInviteRevoke;
 export type AnyEvent = AnyEntityEvent | AnyAppEvent
-export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset | typeof Delete | typeof Create | typeof Dirty | typeof Close | typeof Open | typeof Edit | typeof EntityAction<any> | typeof AppAction | typeof AppActionEmail;
+export type TypeofAnyEvent = typeof Write | typeof Update | typeof Reset
+  | typeof Delete | typeof Create | typeof Dirty
+  | typeof Close | typeof Open | typeof Edit | typeof Navigate
+  | typeof EntityAction<any> | typeof AppAction | typeof AppActionEmail;
 // export type TypeofAnyEvent = {new(detail: any, action: Action, confirmed?: boolean, bulkAction?: boolean): AnyEntityEvent} | 
 //   {new(detail: any, action: Action, actionName: string, confirmed?: boolean, bulkAction?: boolean): AnyAppEvent} |
 //   {new(detail: EntityAccessDetail | EntityAccessInviteRevokeDetail, action: Action): AccessEvent} 
@@ -374,6 +399,7 @@ declare global {
     'entity-dirty': Dirty, // mark entity as dirty (local changes)
     'entity-edit': Edit, // mark entity as editable
     'entity-open': Open, // open an entity (eg. from list)
+    'entity-navigate': Navigate, // navigate to an entity (eg. from list)
     'entity-close': Close, // close an entity (eg. from detail, or from top-menu like in survey-app)
     'entity-action': EntityAction, // perform an action on an entity (for instance, mark public or private). 
     'app-action': AppAction, // perform an action on action on app level 

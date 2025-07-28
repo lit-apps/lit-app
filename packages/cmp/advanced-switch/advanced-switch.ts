@@ -23,6 +23,7 @@ import { css, html, LitElement } from "lit";
 import { customElement, property } from 'lit/decorators.js';
 import('@material/web/switch/switch.js')
 import('@material/web/elevation/elevation.js')
+import('@vaadin/tooltip/vaadin-tooltip.js');
 /**
  *  A switch controller to set advanced mode
  * 
@@ -78,8 +79,9 @@ export default class AdvancedModeSwitch extends ConsumeAdvancedModeMixin(LitElem
   }
 
   private renderSwitch() {
-    return html`<md-switch 
-      title="toggle advanced mode"
+    return html`
+    <vaadin-tooltip text="toggle advanced mode" .target=${this}></vaadin-tooltip>
+    <md-switch 
       aria-label="toggle advanced mode" 
       .selected=${this.advancedMode} 
       @change=${this.onChange}></md-switch>`
