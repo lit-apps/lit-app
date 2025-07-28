@@ -13,7 +13,6 @@ export const dataIsArrayContext = createContext<boolean>('data-is-array-context'
  */
 export declare class DataMixinInterface<D> {
 	data: D;
-	// contextData: D;
 	dataIsArray: boolean;
 }
 export declare class DataMixinConsumeInterface<D> extends DataMixinInterface<D> {
@@ -87,31 +86,6 @@ export const ConsumeDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 			this.dispatchEvent(hasChangedEvent);
 			return !!hasChangedEvent.detail.hasChanged;
 		}
-
-		// private cachedData!: any;
-		// consumer = new ContextConsumer(this, {
-		// 	context: dataContext,
-		// 	subscribe: true,
-		// 	callback: (value: any) => {
-		// 		if (this.preventConsume) {
-		// 			this.cachedData = value;
-		// 			// this.requestUpdate();
-		// 		} else {
-		// 			this.contextData = value;
-		// 		}
-		// 	}
-		// });
-
-		// override willUpdate(prop: PropertyValues) {
-		// 	if (prop.has('preventConsume')) {
-		// 		const old = prop.get('preventConsume');
-		// 		if (old === false && this.preventConsume === true && this.cachedData) {
-		// 			this.data = this.cachedData;
-		// 		}
-		// 	}
-		// 	super.willUpdate(prop);
-		// }
-
 
 	};
 	return ContextConsumeDataMixinClass;
