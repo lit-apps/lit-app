@@ -1,0 +1,48 @@
+{
+  "name": "@lit-app/analytics",
+  "version": "1.0.0",
+  "description": "analytics module for lit-app",
+  "type": "module",
+  "scripts": {
+    "start": "vite --force",
+    "dev": "vite",
+    "test": "vitest",
+    "test:browser": "vitest --browser \"chrome\"",
+    "test:ui": "vitest --ui"
+  },
+  "keywords": [
+    "lit",
+    "vitejs",
+    "web-components"
+  ],
+  "authors": [
+    "christophe.geiser <christophe@preignition.org>"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@lit-app/app-survey": "link:../../../app/app-survey",
+    "@lit-app/base": "link:../../../app/app-base",
+    "@lit-app/shared": "*",
+    "@lit/context": "^1.1.2",
+    "@material/web": "*",
+    "@preignition/multi-verse": "link:../../../packages/multi-verse",
+    "@preignition/preignition-config": "link:../../../packages/preignition-config",
+    "@preignition/preignition-util": "link:../../../packages/preignition-util",
+    "@types/d3-time": "^3.0.4",
+    "d3-time": "^3.1.0",
+    "firebase": "^11.10.0",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.3",
+    "@custom-elements-manifest/to-markdown": "^0.1.0",
+    "@lit-app/testing": "link:../testing",
+    "@vitest/browser": "^3.2.4",
+    "@vitest/utils": "^3.2.4",
+    "eslint": "^9.32.0",
+    "typescript": "^5.5.4",
+    "vite": "^7.0.6",
+    "vitest": "^3.2.4",
+    "wireit": "^0.14.8"
+  }
+}

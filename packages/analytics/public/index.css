@@ -1,0 +1,11 @@
+body {
+  background: #fafafa;
+  margin: 0;
+}
+
+body,
+html {
+  font-family: 'Roboto', 'Noto', sans-serif;
+}
+
+:root {}
