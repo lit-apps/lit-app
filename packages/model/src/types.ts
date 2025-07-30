@@ -119,6 +119,14 @@ export interface entityI<
 	CreateI<D> { }
 
 
+/**
+ * Effect 
+ */
+export { Access, UserAccess } from './effect/Access.js';
+export { DataStructFact, ResourceStructFact } from './effect/DataM.js';
+export { LocaleUI, type LocaleI } from './effect/LocaleM.js';
+export { MetaDataSchema, RefSchema } from './effect/MetaData.js';
+
 // NOTE: we cannot use the following because it breaks TS. However, this 
 // would be the ideal way to define the interfaces
 //import abstractEntity from './entityFact.js';
