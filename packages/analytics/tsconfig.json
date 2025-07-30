@@ -4,7 +4,10 @@
     "paths": {
       "lit": [
         "./node_modules/lit"
-      ]
+      ],
+      "effect": [
+        "./node_modules/effect"
+      ],
     }
   },
   "include": [
