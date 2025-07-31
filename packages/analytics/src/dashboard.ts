@@ -46,18 +46,22 @@ import { getItemsOfType } from './types.js';
  * - [x] do we need to walk the view to get the fields?
  * - [ ] implement caching of data
  * - [ ] keep track  latest submission to know if we need to refetch data
- * - [ ] add table view
- * - [ ] implement see raw
- * - [ ] add timestamp to dataset
+ * - [x] add table view
+ * - [x] implement see raw
+ * - [x] add timestamp to dataset
  * - [ ] indications that behavior and settings not implemented yet
- * - [ ] add download button
+ * - [ ] implement download
  * - [ ] type event details
  * - [ ] add "specify" as a new chart
+ * - [ ] restore edit settings (`pan-edit-settings` event)
+ * - [ ] fix first paint on data table does not show data (reimport pan-data-table to lapp-analytics)
+ * - [ ] table should display lookup values for categories
  * 
  * 
  * TODO Later: 
- * - context for filters
- * - context for data passing between group and charts
+ * - [ ] context for filters
+ * - [ ] context for selection (`selected` / `selectedValues`)
+ * - [ ] context for data passing between group and charts
  */
 
 

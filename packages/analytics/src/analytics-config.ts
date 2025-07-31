@@ -16,7 +16,7 @@ export type QuestionFieldT = QuestionT & {
   ;
 }
 
-const charTypes = ['pie', 'bar', 'line', 'table', 'text', 'timeserie', 'map', 'histogram'] as const;
+const charTypes = ['pie', 'bar', 'line', 'table', 'text', 'timeseries', 'map', 'histogram'] as const;
 export const CharType = Schema.Literal(...charTypes);
 export type CharTypeT = Schema.Schema.Type<typeof CharType>;
 
@@ -86,29 +86,17 @@ const dataTypeAnalyticsConfig = {
 } as const satisfies Record<DataTypeT | 'none', ConfigAnalyticsT>;
 
 
-const defaultChartConfig = {
+const dataTypeToChart = {
   boolean: 'pie',
   categories: 'bar',
   nominal: 'pie',
   ordinal: 'bar',
   number: 'histogram',
-  date: 'timeserie',
+  date: 'timeseries',
   text: 'table',
   geo: 'map',
   none: 'table',
 } as const satisfies Record<DataTypeT | 'none', CharTypeT>;
-
-// type QuestTypeT = {
-//   items: any[]
-//   data: {
-//     props?: {
-//       isOrdinalScale?: boolean
-
-//     }
-//     subType: QuestionTypeT
-//     chartType?: CharTypeT
-//   }
-// }
 
 const getAnalyticsConfig = (question: QuestionFieldT): ConfigAnalyticsT => {
 
@@ -138,7 +126,7 @@ const getChartType = (question: QuestionFieldT): CharTypeT => {
   }
   const dataType = getDataType(question);
 
-  return defaultChartConfig[dataType];
+  return dataTypeToChart[dataType];
 
 };
 
@@ -155,6 +143,6 @@ const hasLookup = (question: QuestionFieldT): boolean => {
 };
 
 export {
-  defaultChartConfig, getAnalyticsConfig, getChartType, getDataType, hasLookup, hasSpecify
+  dataTypeToChart, getAnalyticsConfig, getChartType, getDataType, hasLookup, hasSpecify
 };
 

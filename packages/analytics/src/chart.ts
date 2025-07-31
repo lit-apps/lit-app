@@ -163,7 +163,7 @@ export class lappAnalyticsChart extends
         chartType === 'map' ? this.renderMap() :
           chartType === 'bar' ? this.renderBar() :
             chartType === 'histogram' ? this.renderHistogram(groupValue) :
-              chartType === 'timeserie' ? this.renderTimeserie() :
+              chartType === 'timeseries' ? this.renderTimeseries() :
                 html`<div>Chart type ${chartType} not yet implemented</div>`
       }
       </multi-group>
@@ -226,10 +226,7 @@ export class lappAnalyticsChart extends
         .leftPadding=${cfg('leftPadding')}
         .rightMargin=${cfg('rightMargin')}
         .leftMargin=${cfg('leftMargin')}
-        .leftTickFormat=${(key: string) => {
-        return key === missingKey ?
-          'blank' : getOptionLabel(this.options, key, 23) || key;
-      }}
+        .leftTickFormat=${(key: string) => key === missingKey ? 'blank' : getOptionLabel(this.options, key, 23) || key}
         .topMargin=${cfg('topMargin')}
         .bottomTicks=${cfg('bottomTicks')}
         .bottomText=${cfg('bottomText')}
@@ -237,7 +234,7 @@ export class lappAnalyticsChart extends
       </multi-verse-bar>`;
   }
 
-  renderTimeserie() {
+  renderTimeseries() {
     // TODO(cg): replace by pan-bar-time-seriew.
     return html`
       <multi-verse-bar

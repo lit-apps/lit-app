@@ -1,10 +1,12 @@
 import { showHover } from '@lit-app/shared/styles/index.js';
 import { ConsumeUniverse } from '@preignition/multi-verse/src/mixin/context-universe-mixin.js';
-import { css, html, LitElement } from "lit";
+import '@preignition/preignition-analytics/src/widget/pan-data-table.js';
+import { css, html, LitElement, nothing, PropertyValues } from "lit";
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { CharTypeT, getChartType, QuestionFieldT } from "./analytics-config.js";
 import './chart.js';
 import type { lappAnalyticsChart } from './chart.js';
+import { ConsumeViewMixin } from './context-view-mixin.js';
 
 type TabT = 'raw' | 'chart' | 'settings';
 type FilterT = string | { label: string, value: string }[];
@@ -89,7 +91,9 @@ const styles = css`
  */
 
 @customElement('lapp-analytics-question')
-export class lappAnalyticsQuestion extends ConsumeUniverse(LitElement) {
+export class lappAnalyticsQuestion extends
+  ConsumeUniverse(
+    ConsumeViewMixin(LitElement)) {
 
   static override styles = [showHover, styles];
 
@@ -97,55 +101,68 @@ export class lappAnalyticsQuestion extends ConsumeUniverse(LitElement) {
   @property() chartType?: CharTypeT | null = null;
 
   @state() selectedTab: TabT = 'chart';
-  @state() selected: string | null = null;
   @state() filter: FilterT[] | null = null;
+
+  // TODO: selected should be a context
+  @state() selected: string | null = null;
+  @state() selectedValues: string[] = [];
+
 
   @query('#tabs') tabs!: HTMLElement;
   @query('#chart') chart!: lappAnalyticsChart;
+  @query('.tab') tab!: HTMLElement;
 
   get _chartType() {
     return this.chartType || getChartType(this.field);
+  }
+
+  override firstUpdated(props: PropertyValues<this>) {
+    super.firstUpdated(props);
+    if (this._chartType === 'table') {
+      this.selectedTab = 'raw';
+    }
   }
 
   override render() {
     const type = this._chartType;
 
     return html`
-      ${type ? this.renderTabs(type) : ''}
+      ${type ? this.renderTabs(type) : nothing}
       <div class="container">
         ${this.selectedTab === 'raw' ? this.renderRaw() :
         this.selectedTab === 'chart' ? this.renderChart(type) :
-          ''}
+          nothing}
       </div>
       ${this.selectedTab === 'raw' ? html`
       <div class="footer" show-hover>
        <md-outlined-button dense  @click=${this.seeAll}>See All</md-outlined-button>
        <md-outlined-button dense  @click=${this.seeFiltered}>See Filtered</md-outlined-button>
-     </div>` : ''}`;
+     </div>` : nothing}`;
   }
 
-  private renderChart(type: CharTypeT) {
-    if (!type) {
+  private renderChart(chartType: CharTypeT) {
+    if (!chartType) {
       return html`<div>Chart Not build for this type of question (${this.field.data.subType})</div>`;
     }
 
     return html`
          <lapp-analytics-chart 
            id="chart"
-           .config=${this.config} 
            .field=${this.field} 
            .selected=${this.selected}
-           .chartType=${type}
+           .selectedValues=${this.selectedValues}
+           .chartType=${chartType}
             @filter-changed=${this._onFilter}></lapp-analytics-chart>
         `;
   }
 
   private renderRaw() {
+    const maxRows = this.view?.config?.chart?.table?.maxRows || 20;
     return html`
        <div class="flex">
            <pan-data-table 
-             .data="${this.universe && this.universe.data}" 
-             .maxRows=${this.config.chart.table && this.config.chart.table.maxRows}
+             .data=${this.universe && this.universe.data}
+             .maxRows=${maxRows}
              .key="${this.field.groupBy}" 
              .specify=${this.field.hasSpecify}></pan-data-table>
 
@@ -178,12 +195,12 @@ export class lappAnalyticsQuestion extends ConsumeUniverse(LitElement) {
     }
     return filter;
   }
+
   reset() {
-    const chartItem = this.renderRoot?.querySelector('pan-chart-item');
     if (this.chart) {
       this.chart.requestUpdate();
     } else {
-      (this.renderRoot?.querySelector('.tab') as HTMLElement)?.click();
+      this.tab.click()
     }
   }
 
