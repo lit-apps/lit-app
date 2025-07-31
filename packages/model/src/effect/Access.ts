@@ -8,7 +8,7 @@ export const app = Brand.nominal<app>()
 
 const Role = ['admin', 'guest', 'editor', 'owner'] as const;
 const RoleType = Schema.Literal(...Role);
-type RoleT = Schema.Schema.Type<typeof RoleType>
+// type RoleT = Schema.Schema.Type<typeof RoleType>
 const AccessType = Schema.Literal(...['public', 'private', 'protected']);
 
 export const UserAccess = Schema.Struct({
