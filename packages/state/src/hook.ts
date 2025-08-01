@@ -1,4 +1,4 @@
-import { State } from './state.js';
+import { PropertyMapOptions, State } from './state.js';
 const DONOTUSE: string = 'DONOTUSE'
 
 type Values = { [key: string]: unknown }
@@ -9,25 +9,34 @@ type Values = { [key: string]: unknown }
 export class Hook {
 	static hookName: string = DONOTUSE
 
-	unsubscribe: () => void
+	private _unsubscribe: () => void
+	state: State
 
-	constructor(public state: State) {
+	constructor(state: State) {
+		this.state = state
 		if (!(this.constructor as typeof Hook).hookName || (this.constructor as typeof Hook).hookName === DONOTUSE) {
 			throw new Error('hook subclass must have their own hookName')
 		}
-		this.unsubscribe = this.subscribe()
+		this._unsubscribe = this.subscribe()
 		state.hookMap.set((this.constructor as typeof Hook).hookName, this)
 	}
-
+	unsubscribe() {
+		this._unsubscribe()
+	}
 	subscribe() {
-		return this.state.subscribe(this.fromState.bind(this), this.hookedProps.map(([key]) => key))
+		return this.state.subscribe(this.fromState.bind(this), this.hookedProps.map(([key]) => key).filter((key): key is string => typeof key === 'string'))
 	}
 
-	get hookedProps() {
+	private _hookedProps?: Array<[string, PropertyMapOptions]>
+	get hookedProps(): Array<[string, PropertyMapOptions]> {
+		if (this._hookedProps) {
+			return this._hookedProps
+		}
 		const stateProto = Object.getPrototypeOf(this.state)
 		if (!stateProto.propertyMap) { stateProto.initPropertyMap() }
-		return [...stateProto.propertyMap].filter(([, definition]) => definition?.hook
+		this._hookedProps = [...stateProto.propertyMap].filter(([, definition]) => definition?.hook
 			&& definition?.hook[(this.constructor as typeof Hook).hookName])
+		return this._hookedProps
 	}
 
 	/**
@@ -36,7 +45,7 @@ export class Hook {
 	 * @returns boolean
 	 */
 	isHookedProp(key: string) {
-		return this.getDefinition(key)?.hook?.[(this.constructor as typeof Hook).hookName]
+		return this.hookedProps.some(([k]) => k === key)
 	}
 
 	getDefinition(key: string) {
