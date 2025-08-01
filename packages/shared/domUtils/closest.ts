@@ -6,10 +6,10 @@
  * @param selector - The CSS selector to match against.
  * @returns The closest ancestor element that matches the selector, or null if no match is found.
  */
-export default function closestWithShadow(element: Element, selector: string): Element | null {
+export default function closestWithShadow<T = Element>(element: Element, selector: string): T | null {
 	while (element) {
 		if (element.matches(selector)) {
-			return element;
+			return element as T;
 		}
 		element = element.parentElement || (element.getRootNode() as ShadowRoot).host;
 	}

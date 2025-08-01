@@ -51,7 +51,7 @@ const style: CSSResult = css`
   
   md-list[toc] {
     margin-bottom: 150px; /* adding a margin to make scroll work in fixed menu */
-    min-width: 100%;
+    /* min-width: 100%; */
   }
 
   /** this is the item */
