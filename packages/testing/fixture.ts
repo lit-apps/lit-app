@@ -1,4 +1,5 @@
 import { HTMLTemplateResult, render } from 'lit';
+import { afterEach } from 'vitest';
 export const cachedWrappers: Node[] = [];
 const container = document.createElement('div');
 // container.style.display = 'none';
@@ -53,11 +54,11 @@ try {
       fixtureCleanup();
     });
   }
-  if ('teardown' in window) {
-    teardown(() => {
-      fixtureCleanup();
-    });
-  }
+  // if ('teardown' in window) {
+  //   teardown(() => {
+  //     fixtureCleanup();
+  //   });
+  // }
 } catch (error) {
   /* do nothing */
 }
