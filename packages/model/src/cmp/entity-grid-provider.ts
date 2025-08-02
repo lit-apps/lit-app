@@ -11,7 +11,7 @@ import AbstractEntityElement from "./abstract-entity-element.js";
  *
  */
 @customElement('lapp-entity-grid-provider')
-export default class lappEntityGridProvider extends AbstractEntityElement {
+export class lappEntityGridProvider extends AbstractEntityElement {
 
   static override styles = css`
       :host {
