@@ -1,36 +1,35 @@
 // import '../../../checkbox/checkbox';
+import { HTMLEvent } from '@lit-app/shared/types';
+import '@material/web/checkbox/checkbox';
+import '@material/web/icon/icon';
+import { html, nothing } from 'lit';
+import { when } from 'lit/directives/when.js';
 import '../../../../list/list';
 import '../../../../list/list-item';
-import '@material/web/icon/icon';
-import '@material/web/checkbox/checkbox';
-import { html } from 'lit';
-import { when } from 'lit/directives/when.js';
 import { GenericI } from '../../../generic/generic';
 import '../../../text-field';
-import '../../list-item'
 import { Choice } from '../../choice';
 import IllustrationMixin from '../../illustrationMixin';
+import '../../list-item';
 import MultiChoiceMixin from '../../multiMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
-import { nothing } from 'lit';
 import type { Option, OptionLabelT, OptionMdT } from '../../types';
-import { HTMLEvent } from '@lit-app/shared/types';
 
 /**
  * Checkbox field 
  */
- export abstract class Checkbox extends 
+export abstract class Checkbox extends
   MultiChoiceMixin(
     IllustrationMixin(
       Choice)) {
-  
+
   protected fieldName = 'checkbox';
-  
+
   protected override renderChoiceOptions(options: Option[]) {
-    if(options.length === 0) {
+    if (options.length === 0) {
       return this.renderEmptyOption()
     }
-    return html `
+    return html`
         ${options.map((option, index) => html`
          <lapp-choice-list-item
             _type="button"
@@ -47,10 +46,10 @@ import { HTMLEvent } from '@lit-app/shared/types';
             ${when(option.supportingText, () => html`<div slot="supporting-text">${option.supportingText}</div>`)}
           </lapp-choice-list-item>
         `
-        )}
+    )}
     `
   }
- 
+
   protected isDisabled(option: Option) {
     return this.readOnly || option.disabled || (this.exclusiveIsSelected && !Checkbox.isCodeSelected(this._value, option.code))
   }
@@ -73,20 +72,21 @@ import { HTMLEvent } from '@lit-app/shared/types';
     `
   }
 
-   renderSpecify(option: Option, index: number) {
+  renderSpecify(option: Option, index: number) {
     const code = option.code || index + ''
     const onInput = (e: HTMLEvent<HTMLInputElement>) => {
-      if(!this.specify) {
+      e.stopPropagation();
+      if (!this.specify) {
         this.specify = {}
       }
-      {this.specify[code] = e.target.value}
-      const event = new specifyChangedEvent({...this.specify})
+      { this.specify[code] = e.target.value }
+      const event = new specifyChangedEvent({ ...this.specify })
       this.dispatchEvent(event)
     }
 
     return html`
     <md-filled-text-field 
-      style="width: 240px;"
+      style="min-width: 240px; flex: 1;"
       id="specify${index}" 
       data-role="specify"
       data-variant="specify"

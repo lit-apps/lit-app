@@ -68,13 +68,14 @@ export abstract class Radio extends
 
   renderSpecify(option: Option, index: number) {
     const onInput = (e: HTMLEvent<HTMLInputElement>) => {
+      e.stopPropagation();
       const event = new specifyChangedEvent(e.target.value)
       this.dispatchEvent(event)
     }
 
     return html`
     <md-filled-text-field 
-      style="width: 150px;"
+      style="min-width: 150px; flex: 1;"
       id="specify${index}" 
       data-role="specify"
       data-variant="specify"
