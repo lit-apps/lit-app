@@ -496,11 +496,14 @@ export class Dashboard extends ProvideBuildMixin(
     if (databaseId) {
       const q = query(collection(getFirestore(databaseId), `survey/${this.surveyId}/raw`));
       const snap = await getDocs(q);
+      const now = new Date();
       this.data = snap.docs.map((doc, i) => {
         const data = doc.data();
+        const ts = data.metaData?.timestamp;
+        const day = ts ? time.timeDay(ts.toDate()) : time.timeDay(now);
         data.$id = doc.id;
         data.$index = i;
-        data.$day = time.timeDay(data.metaData?.timestamp);
+        data.$day = day;
         return data;
       });
       this.errors = [];
