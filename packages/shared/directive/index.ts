@@ -1,1 +1,4 @@
-export { spread } from './spreadDirective';
+
+export { spread } from './spread.js';
+export { spread as spreadProps } from './spreadDirective.js';
+
