@@ -481,14 +481,14 @@ const style: CSSResult = css`
 .markdown-body code,
 .markdown-body samp {
   font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
-  font-size: 12px;
+  font-size: 0.875em;
 }
 
 .markdown-body pre {
   margin-top: 0;
   margin-bottom: 0;
   font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
-  font-size: 12px;
+  font-size: 0.875em;
   word-wrap: normal;
 }
 
@@ -903,7 +903,7 @@ const style: CSSResult = css`
 .markdown-body .csv-data th {
   padding: 5px;
   overflow: hidden;
-  font-size: 12px;
+  font-size: 0.875em;
   line-height: 1;
   text-align: left;
   white-space: nowrap;
@@ -935,7 +935,7 @@ const style: CSSResult = css`
 }
 
 .markdown-body .footnotes {
-  font-size: 12px;
+  font-size: 0.875em;
   color: var(--color-fg-muted);
   border-top: 1px solid var(--color-border-default);
 }
