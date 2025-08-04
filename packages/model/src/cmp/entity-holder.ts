@@ -77,7 +77,7 @@ export default class EntityHolder extends AbstractEntity {
 
 	// entity holder might be focused in grid details. We need a way to pass focus to the first input
 	override focus(): void {
-		const focus = this.renderRoot.querySelector('*[focus-on-activate]') as HTMLInputElement;
+		const focus = this.renderRoot.querySelector('*[focus-on-activate],*.focus-on-activate') as HTMLInputElement;
 		if (focus) {
 			focus.focus();
 		}

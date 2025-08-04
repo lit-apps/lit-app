@@ -69,6 +69,7 @@ export function ContextMixinFactory<I = any>(
           this[name] = defaultValue;
         }
       }
+
     };
 
     return ContextProvideAppIdMixinClass as unknown as MixinReturn<T, I>;
