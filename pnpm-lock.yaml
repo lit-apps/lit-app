@@ -762,6 +762,9 @@ importers:
       '@material/web':
         specifier: link:../../../app-dependencies/material-web
         version: link:../../../app-dependencies/material-web
+      '@open-wc/lit-helpers':
+        specifier: ^0.7.0
+        version: 0.7.0(lit@3.3.1)
       '@vaadin/component-base':
         specifier: link:../../../app-dependencies/web-components/packages/component-base
         version: link:../../../app-dependencies/web-components/packages/component-base
@@ -2479,6 +2482,11 @@ packages:
 
   '@open-wc/dedupe-mixin@1.4.0':
     resolution: {integrity: sha512-Sj7gKl1TLcDbF7B6KUhtvr+1UCxdhMbNY5KxdU5IfMFWqL8oy1ZeAcCANjoB1TL0AJTcPmcCFsCbHf8X2jGDUA==}
+
+  '@open-wc/lit-helpers@0.7.0':
+    resolution: {integrity: sha512-4NBlx5ve0EvZplCRJbESm0MdMbRCw16alP2y76KAAAwzmFFXXrUj5hFwhw55+sSg5qaRRx6sY+s7usKgnNo3TQ==}
+    peerDependencies:
+      lit: ^3
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -8157,6 +8165,10 @@ snapshots:
   '@open-draft/until@2.1.0': {}
 
   '@open-wc/dedupe-mixin@1.4.0': {}
+
+  '@open-wc/lit-helpers@0.7.0(lit@3.3.1)':
+    dependencies:
+      lit: 3.3.1
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
