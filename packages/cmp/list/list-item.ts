@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { customElement } from 'lit/decorators.js';
 import { css, nothing } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import { MdListItem } from '@material/web/list/list-item';
-import illustrationVariant from './internal/illustrationVariantStyles';
-import { literal, html as staticHtml, StaticValue } from 'lit/static-html.js';
 import { ARIAMixinStrict } from '@material/web/internal/aria/aria';
+import { MdListItem } from '@material/web/list/list-item';
 import { classMap } from 'lit/directives/class-map.js';
+import { literal, html as staticHtml, StaticValue } from 'lit/static-html.js';
+import illustrationVariant from './internal/illustrationVariantStyles';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -33,7 +33,11 @@ export class LappListItem extends MdListItem {
     css`
       :host(:not([disabled])) {
         cursor: pointer;
-      }`
+      }
+      md-item {
+        overflow: unset;
+      }
+      `
 
   ];
 
@@ -64,7 +68,7 @@ export class LappListItem extends MdListItem {
     const target = isAnchor && !!this.target ? this.target : nothing;
 
     // @ts-expect-error - isDisabled is private
-    const isDisabled = this.isDisabled 
+    const isDisabled = this.isDisabled
     const role = this.dataset.role || 'listitem';
     return staticHtml`
         <${tag}
