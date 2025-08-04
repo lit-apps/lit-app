@@ -1,4 +1,4 @@
-import {CSSResult, css} from 'lit';
+import { CSSResult, css } from 'lit';
 
 /**
  * CSS styles for GitHub Markdown rendering.
@@ -24,7 +24,7 @@ import {CSSResult, css} from 'lit';
  * The styles ensure that the markdown content is rendered consistently and accessibly
  * across different themes and devices.
  */
-const style:CSSResult = css`
+const style: CSSResult = css`
 @media (prefers-color-scheme: dark) {
   .markdown-body,
   [data-theme="dark"] {
@@ -143,8 +143,8 @@ const style:CSSResult = css`
   -webkit-text-size-adjust: 100%;
   margin: 0;
   /* font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"; */
-  font-size: 16px;
-  line-height: 1.5;
+  /* font-size: 16px; */
+  /* line-height: 1.5; */
   word-wrap: break-word;
 }
 
