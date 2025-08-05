@@ -8,6 +8,7 @@ import '../../../radio/radio';
 import '../../../text-field';
 import { Choice } from '../../choice';
 import IllustrationMixin from '../../illustrationMixin';
+import LabelAboveMixin from '../../labelAboveMixin.js';
 import '../../list-item';
 import SingleMixin from '../../singleMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
@@ -20,7 +21,8 @@ import { isOptionMdT, type Option } from '../../types';
 export abstract class Radio extends
   SingleMixin(
     IllustrationMixin(
-      Choice)) {
+      LabelAboveMixin(
+        Choice))) {
 
   protected fieldName = 'radio';
 
@@ -31,6 +33,7 @@ export abstract class Radio extends
     return html`
       ${options.map((option, index) => html`
         <lapp-choice-list-item
+          .labelAbove=${this.labelAbove}
           .selector=${this.choiceInputSelector}
           data-variant="horizontal"
           .listItemRole=${'presentation'}

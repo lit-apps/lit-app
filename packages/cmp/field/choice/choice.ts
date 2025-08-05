@@ -1,12 +1,10 @@
 import getInnerText from '@lit-app/shared/getInnerText.js';
 import { HTMLEvent } from '@lit-app/shared/types';
-import { NavigableKeys } from '@material/web/list/internal/list-controller.js';
 import translate from '@preignition/preignition-util/translate-mixin.js';
 import type { PropertyValues, TemplateResult } from 'lit';
 import { html, LitElement, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { when } from 'lit/directives/when.js';
 import '../../list/list';
 import '../../list/list-item';
 import type { LappListItem } from '../../list/list-item';
@@ -15,8 +13,8 @@ import { Checkbox } from './checkbox/internal/checkbox';
 import './list';
 import { AriaList, Option, OptionLabelT } from './types';
 
-const NAVIGABLE_KEY_SET = new Set<string>(Object.values(NavigableKeys));
-const isNavigableKey = (key: string) => NAVIGABLE_KEY_SET.has(key);
+// const NAVIGABLE_KEY_SET = new Set<string>(Object.values(NavigableKeys));
+// const isNavigableKey = (key: string) => NAVIGABLE_KEY_SET.has(key);
 
 // @ts-expect-error - not types
 import locale from './readaloud-locale.mjs';
@@ -55,9 +53,13 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 
 	/**
 	 * when true, show each option on their own line
+	 * @deprecated use `inline` instead
 	 */
 	@property({ type: Boolean, reflect: true })
-	dense = false
+	dense!: boolean;
+
+	@property({ type: Boolean, reflect: true })
+	inline: boolean = false;
 
 	/**
 	 * The options to render
@@ -126,6 +128,11 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 				option.innerTextLabel = getInnerText((option as OptionLabelT).label);
 			}
 		}
+		// TODO : remove this when inline is deprecated
+		if (props.has('dense')) {
+			console.warn('dense is deprecated, use inline instead');
+			this.inline = this.dense;
+		}
 		super.willUpdate(props);
 	}
 
@@ -158,7 +165,6 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 			@keydown=${this.handleKeydown}
 			>
 			${this.renderChoiceOptions((this.options || []).filter(this.filter))}
-			${when(this.dense, () => html`<md-list-item disabled style="display: flex; flex:1"></md-list-item>`)}			
 			<slot></slot>
 		</ul-choice>
 		`

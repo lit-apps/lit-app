@@ -7,6 +7,7 @@ import { ARIAMixinStrict } from '@material/web/internal/aria/aria.js';
 import type { ListItemType } from '@material/web/list/internal/listitem/list-item';
 import { literal, html as staticHtml, StaticValue } from 'lit/static-html.js';
 import { LappListItem } from '../../list/list-item';
+import LabelAboveMixin from './labelAboveMixin.js';
 
 /**
  * Supported behaviors for a list item.
@@ -20,15 +21,21 @@ export type A11yListItemType = ListItemType | 'a11y';
  */
 
 @customElement('lapp-choice-list-item')
-export default class lappChoiceListItem extends LappListItem {
+export default class lappChoiceListItem extends
+	LabelAboveMixin(LappListItem) {
 
 	static override styles = [
 		...LappListItem.styles as CSSResult[],
 		css`
+
+		:host([label-above]) md-item {
+			flex-direction: column-reverse;
+		}
 		/** This is to allow list text to wrap */
 		.label-text {
 			white-space: initial;
 		}
+
 		md-item {
 			gap: 4px;
 		}

@@ -49,10 +49,10 @@
   <script type="module" src="/field/choice-star"></script>
   <script type="module" src="/field/switch-field"></script>
   <script type="module" src="/tooltip/tooltip"></script>
+  <script type="module" src="/field/choice-radio"></script>
   <!-- <script type="module" src="/field/choice-order"></script> 
     <script type="module" src="/field/choice-checkbox"></script>
     <script type="module" src="/button/button-override"></script>
-    <script type="module" src="/field/choice-radio"></script>
     <script type="module" src="/field/select"></script>
     <script type="module" src="/field/select-input"></script>
     <script type="module" src="/field/record/record"></script>
@@ -89,7 +89,7 @@
       { code: '3', name: 'radio', label: 'three', specify: true },
     ]
     // document.querySelector('lapp-choice-checkbox').options = [...options];
-    // document.querySelector('lapp-choice-radio').options = [...options];
+    document.querySelector('lapp-choice-radio').options = [...options];
     // document.querySelector('lapp-choice-order').options = [...options];
 
     document.querySelectorAll('md-filled-text-field')
@@ -97,7 +97,7 @@
         e.target.reportValidity();
       }));  
   </script>
-  <div>
+  <!--div>
     <p>This is a test para with a<lapp-tooltip discrete text="I am the def">definition</lapp-tooltip>. test</p>
 
     <p style="width: 300px;">Testing how that works in a longer para. This is a test para with a<lapp-tooltip
@@ -105,7 +105,7 @@
     <p style="width: 300px;">Testing how that works in a longer para.This is a test para without a<span
         text="I am the def">DEFINITION</span>. test</p>
     <p>This is a test para with a DEFINITION. test</p>
-  </div>
+  </div-->
 
   <div>
     <lapp-upload-image fieldPath="logo" path="app/gds/organisation/neworg"></lapp-upload-image>
@@ -256,14 +256,11 @@
             </li>
           </ul>
         </fieldset>
-    <md-icon-button toggle><lapp-icon>settings</lapp-icon><lapp-icon slot="selected">close</lapp-icon></md-icon-button>
-     
-    <lapp-choice-radio
+    <md-icon-button toggle><lapp-icon>settings</lapp-icon><lapp-icon slot="selected">close</lapp-icon></md-icon-button-->
 
-      required
-      label="Radio box " 
-      supporting-text="this is supporting text" variant="a11y"></lapp-choice-radio>
-    <lapp-slider-field label="test slider field" required range max="50" supporting-text="Hey" _checked></lapp-slider-field>
+  <lapp-choice-radio required label="Radio box " inline label-above supporting-text="this is supporting text"
+    variant="a11y"></lapp-choice-radio>
+  <!--lapp-slider-field label="test slider field" required range max="50" supporting-text="Hey" _checked></lapp-slider-field>
     <lapp-slider label="test slider" required range supporting-text="Hey" _checked></lapp-slider>
     <lapp-checkbox-field label="test checkbox" required supporting-text="Hey" _checked></lapp-checkbox-field>
     <lapp-record></lapp-record>

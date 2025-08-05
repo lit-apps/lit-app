@@ -21,11 +21,26 @@ const styles: CSSResult = css`
 
 }
 
-/** dense */
-:host([dense]) #list { 
-	display: flex;
+/** inline */
+:host([inline]) #list { 
+	/* display: flex;
   flex-flow: row wrap;
-  align-items: center;
+  align-items: center; */
+  /* gap: 8px; */
+  align-items: flex-end;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+  
+}
+:host([inline]) #list [md-list-item] {
+  flex: 1;
+  min-width: 130px;
+  max-width: 280px;
+}
+:host([inline]) div[slot="headline"] { 
+  flex: 1;
+  text-align: center;
 }
 @media (max-width: 600px) {
   #list {
@@ -33,5 +48,6 @@ const styles: CSSResult = css`
     --md-list-item-trailing-space: 0px;
     min-width: unset;
   }
+}
 `
 export default styles;
