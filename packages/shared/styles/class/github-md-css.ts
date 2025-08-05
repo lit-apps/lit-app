@@ -133,6 +133,7 @@ const style: CSSResult = css`
 
 .markdown-body {
   --color-fg-default: var(--color-primary-text);
+  --color-fg-muted: var(--color-secondary-text);
   --color-canvas-default: var(--color-background);
   --color-canvas-subtle: var(--color-surface-container);
   --color-border-default: var(--color-outline);
