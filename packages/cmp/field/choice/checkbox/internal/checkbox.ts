@@ -10,7 +10,7 @@ import { GenericI } from '../../../generic/generic';
 import '../../../text-field';
 import { Choice } from '../../choice';
 import IllustrationMixin from '../../illustrationMixin';
-import { LabelAboveMixin } from '../../labelAboveMixin.js';
+import { LabelInlineMixin } from '../../labelInlineMixin.js';
 import '../../list-item';
 import MultiChoiceMixin from '../../multiMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
@@ -22,7 +22,7 @@ import type { Option, OptionLabelT, OptionMdT } from '../../types';
 export abstract class Checkbox extends
   MultiChoiceMixin(
     IllustrationMixin(
-      LabelAboveMixin(
+      LabelInlineMixin(
         Choice))) {
 
   protected fieldName = 'checkbox';
@@ -31,14 +31,15 @@ export abstract class Checkbox extends
     if (options.length === 0) {
       return this.renderEmptyOption()
     }
+    const variant = this.inline && !this.childLabelInline ? 'vertical' : 'horizontal'
     return html`
         ${options.map((option, index) => html`
          <lapp-choice-list-item
             _type="button"
-            .labelAbove=${this.labelAbove}
+            .childLabelInline=${this.childLabelInline}
             .isMulti=${true}
             .selector=${this.choiceInputSelector}
-            data-variant="horizontal"
+            data-variant=${variant}
             .disabled=${this.isDisabled(option)}
             .listItemRole=${'option'}
             @change=${this.onChange} 
