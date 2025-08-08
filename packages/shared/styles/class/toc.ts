@@ -77,7 +77,7 @@ const style: CSSResult = css`
 
    [narrow] [toc] [large] {
     width: 97px;
-    padding: 3px 1px;
+    padding: 3px 0px;
    }
   
   [toc] [emphasis] {
