@@ -52,14 +52,20 @@ export default class slotTransition extends LitElement {
         transition: var(--_transition);
         transition-property: opacity, transform;
       }
+
+      slot[name="previous"]::slotted(*), 
+      slot[name="next"]::slotted(*) {
+        opacity: 0;
+        max-height: 90vh; // this is to prevent invisible element to affect scrolling
+        overflow: hidden;
+      }
+
       slot[name=next]::slotted(*) {
         transition-delay: var(--_transition-delay);
-        opacity: 0;
         transform: var(--_transition-transform-next);
       }
       slot[name=previous]::slotted(*) {
         transition-delay: 0s; 
-        opacity: 0;
         transform: var(--_transition-transform-previous);
       }
 
