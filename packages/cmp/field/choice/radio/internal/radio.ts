@@ -58,6 +58,7 @@ export abstract class Radio extends
       data-role="radio"
       slot="start"
       .name=${name}
+      @blur=${(e: HTMLEvent) => e.stopPropagation()}
       .ariaLabel=${option.innerTextLabel}
       aria-description=${option.supportingText || nothing}
       .disabled=${this.readOnly || this.disabled || !!option.disabled}
