@@ -18,6 +18,7 @@ export { default as liteYoutube } from './class/lite-youtube.js';
 export { default as margin } from './class/margin.js';
 export { default as outlined } from './class/outlined.js';
 export { default as padding } from './class/padding.js';
+export { default as print } from './class/print.js';
 export { default as responsiveMedia } from './class/responsive-media.js';
 export { default as semanticLayout } from './class/semantic-layout.js';
 export { default as showHover } from './class/show-hover.js';

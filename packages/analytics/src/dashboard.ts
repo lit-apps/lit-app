@@ -15,7 +15,6 @@ import type { PropertyValues } from 'lit';
 // @ts-expect-error - multi-verse is not typed
 import('@preignition/multi-verse');
 
-
 import { css, html, nothing } from "lit";
 import { queryAll, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -339,7 +338,7 @@ export class Dashboard extends ProvideBuildMixin(
     });
     return routes;
   }
-
+  // _fetchData: () => Promise<void>;
   constructor() {
     super();
 
@@ -352,7 +351,11 @@ export class Dashboard extends ProvideBuildMixin(
     this.addEventListener('pan-clear-filter', e => this.clearFilter(e.detail.key));
     // this.addEventListener('pan-edit-settings', this.onEditSettings);
     this.addEventListener('filter-changed', e => this._onFilter(e));
+    // TODO: debounce 
+    // this._fetchData = debounce(async () => this._fetchDataImpl(), 300);
+
   }
+
   _onDataOverlay(e: Event): void {
     console.warn('onDataOverlay not implemented', e);
   }
@@ -406,7 +409,7 @@ export class Dashboard extends ProvideBuildMixin(
              </div> 
             </lapp-widget-container>
             ${repeat((this.view?.metaFields || []).filter(field => field.hidden !== true), (field) => field._key, (field, index) => html`
-              <lapp-widget-container style="${styleMap(getWidgetStyle(field))}" class="widget" .header="${field.locale.title}" >
+              <lapp-widget-container style="${styleMap(getWidgetStyle(field))}" class="widget" .header=${ellipsis(field.locale.title)}>
                 <vaadin-tooltip message="${field.locale.description || ''}" for="${field._key}"></vaadin-tooltip>
                 <md-filled-tonal-icon-button slot="action" class="info toggle" id="${field._key}">
                   <lapp-icon>info</lapp-icon>
@@ -415,7 +418,7 @@ export class Dashboard extends ProvideBuildMixin(
               </lapp-widget-container>
                `)}
              ${repeat((this.pinnedFields || []).map(key => this.fieldMap.get(key)), (field) => field._key, (field, index) => html`
-              <lapp-widget-container style="${styleMap(getWidgetStyle(field))}" class="widget" .header="${field.locale.title}">
+              <lapp-widget-container style="${styleMap(getWidgetStyle(field))}" class="widget" .header=${ellipsis(field.locale.title)}>
                 <lapp-icon-button-star
                   slot="action"
                   @click=${() => this._onUnpin(field, index)}
@@ -477,7 +480,7 @@ export class Dashboard extends ProvideBuildMixin(
         return html`
           <lapp-widget-container style="${styleMap(getWidgetStyle(field))}" 
             class="widget" 
-            question header="${field.locale.label}" >
+            question header=${ellipsis(field.locale.label)} >
           <lapp-icon-button-star
             slot="action"
             @click=${() => this._onPin(field, index)}

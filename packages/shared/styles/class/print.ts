@@ -9,9 +9,11 @@ import { CSSResult, css } from 'lit';
  * - .no-break : to avoid break inside element when printing
  */
 const style: CSSResult = css`
+  
   .print-only {
     display: none;
   }
+  
   @media print {
     .no-print {
       display: none;
@@ -19,9 +21,11 @@ const style: CSSResult = css`
     .print-only {
       display: block;
     }
-
     .no-break {
       break-inside: avoid;
+    }
+    .page {
+      page-break-after: always;
     }
   }
 `

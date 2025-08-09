@@ -56,7 +56,7 @@ export default class slotTransition extends LitElement {
       slot[name="previous"]::slotted(*), 
       slot[name="next"]::slotted(*) {
         opacity: 0;
-        max-height: 90vh; // this is to prevent invisible element to affect scrolling
+        max-height: 90vh;  
         overflow: hidden;
       }
 

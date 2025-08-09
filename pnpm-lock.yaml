@@ -393,6 +393,12 @@ importers:
       '@vaadin/input-container':
         specifier: link:../../../app-dependencies/web-components/packages/input-container
         version: link:../../../app-dependencies/web-components/packages/input-container
+      '@vaadin/item':
+        specifier: link:../../../app-dependencies/web-components/packages/item
+        version: link:../../../app-dependencies/web-components/packages/item
+      '@vaadin/list-box':
+        specifier: link:../../../app-dependencies/web-components/packages/list-box
+        version: link:../../../app-dependencies/web-components/packages/list-box
       '@vaadin/lit-renderer':
         specifier: link:../../../app-dependencies/web-components/packages/lit-renderer
         version: link:../../../app-dependencies/web-components/packages/lit-renderer
@@ -402,6 +408,9 @@ importers:
       '@vaadin/popover':
         specifier: link:../../../app-dependencies/web-components/packages/popover
         version: link:../../../app-dependencies/web-components/packages/popover
+      '@vaadin/progress-bar':
+        specifier: link:../../../app-dependencies/web-components/packages/progress-bar
+        version: link:../../../app-dependencies/web-components/packages/progress-bar
       '@vaadin/text-field':
         specifier: link:../../../app-dependencies/web-components/packages/text-field
         version: link:../../../app-dependencies/web-components/packages/text-field
@@ -3338,8 +3347,8 @@ packages:
     resolution: {integrity: sha512-OaLvZ8j4gCkLn048ypkZu29KX30r8/OfFF2w4Jo5WXFr+J04J+lzJ5TKZBVgFXhlvSkqNFQdfnY1Q8TMTCyBVA==}
     engines: {bun: '>=0.7.0', deno: '>=1.0.0', node: '>=16.5.0'}
 
-  '@zip.js/zip.js@2.7.69':
-    resolution: {integrity: sha512-7xNXayr/igXx590qFfCM8XYoyGO0Jazjnk9lJ99GSi1JzY5laq8RcgiE+ymVZTNqqqlrdQSLMr5SwuD1Cle0kw==}
+  '@zip.js/zip.js@2.7.72':
+    resolution: {integrity: sha512-3/A4JwrgkvGBlCxtItjxs8HrNbuTAAl/zlGkV6tC5Fb5k5nk4x2Dqxwl/YnUys5Ch+QB01eJ8Q5K/J2uXfy9Vw==}
     engines: {bun: '>=0.7.0', deno: '>=1.0.0', node: '>=16.5.0'}
 
   abort-controller@3.0.0:
@@ -3630,6 +3639,10 @@ packages:
 
   chalk@5.4.1:
     resolution: {integrity: sha512-zgVZuo2WcZgfUEmsn6eO3kINexW8RAE4maiQ8QNs8CtpPCSyMiYsULR3HQYkm3w8FIA3SberyMJMSldGsW+U3w==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+
+  chalk@5.5.0:
+    resolution: {integrity: sha512-1tm8DTaJhPBG3bIkVeZt1iZM9GfSX2lzOeDVZH9R9ffRHpmHvxZ/QhgQH/aDTkswQVt+YHdXAdS/In/30OjCbg==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
 
   character-entities-legacy@1.1.4:
@@ -5921,8 +5934,8 @@ packages:
     resolution: {integrity: sha512-gBLkYIlEnSp8pFbT64yFgGE6UIB9tAkhukC23PmMDCe5Nd+cRqKxSjw5y54MK2AZMgZfJWMaNE4nYUHgi1XEOw==}
     engines: {node: '>=18.17'}
 
-  undici@7.12.0:
-    resolution: {integrity: sha512-GrKEsc3ughskmGA9jevVlIOPMiiAHJ4OFUtaAH+NhfTUSiZ1wMPIQqQvAJUrJspFXJt3EBWgpAeoHEDVT1IBug==}
+  undici@7.13.0:
+    resolution: {integrity: sha512-l+zSMssRqrzDcb3fjMkjjLGmuiiK2pMIcV++mJaAc9vhjSGpvM7h43QgP+OAMb1GImHmbPyG2tBXeuyG5iY4gA==}
     engines: {node: '>=20.18.1'}
 
   unified@9.2.2:
@@ -8989,7 +9002,7 @@ snapshots:
 
   '@wdio/logger@9.15.0':
     dependencies:
-      chalk: 5.4.1
+      chalk: 5.5.0
       loglevel: 1.9.2
       loglevel-plugin-prefix: 0.8.4
       strip-ansi: 7.1.0
@@ -9063,7 +9076,7 @@ snapshots:
 
   '@zip.js/zip.js@2.7.62': {}
 
-  '@zip.js/zip.js@2.7.69':
+  '@zip.js/zip.js@2.7.72':
     optional: true
 
   abort-controller@3.0.0:
@@ -9339,6 +9352,9 @@ snapshots:
 
   chalk@5.4.1: {}
 
+  chalk@5.5.0:
+    optional: true
+
   character-entities-legacy@1.1.4: {}
 
   character-entities@1.2.4: {}
@@ -9372,7 +9388,7 @@ snapshots:
       parse5: 7.3.0
       parse5-htmlparser2-tree-adapter: 7.1.0
       parse5-parser-stream: 7.1.2
-      undici: 7.12.0
+      undici: 7.13.0
       whatwg-mimetype: 4.0.0
     optional: true
 
@@ -9785,7 +9801,7 @@ snapshots:
   edgedriver@6.1.2:
     dependencies:
       '@wdio/logger': 9.15.0
-      '@zip.js/zip.js': 2.7.69
+      '@zip.js/zip.js': 2.7.72
       decamelize: 6.0.0
       edge-paths: 3.0.5
       fast-xml-parser: 5.2.5
@@ -10507,7 +10523,7 @@ snapshots:
   geckodriver@5.0.0:
     dependencies:
       '@wdio/logger': 9.15.0
-      '@zip.js/zip.js': 2.7.69
+      '@zip.js/zip.js': 2.7.72
       decamelize: 6.0.0
       http-proxy-agent: 7.0.2
       https-proxy-agent: 7.0.6
@@ -12248,7 +12264,7 @@ snapshots:
   undici@6.21.3:
     optional: true
 
-  undici@7.12.0:
+  undici@7.13.0:
     optional: true
 
   unified@9.2.2:
@@ -12652,7 +12668,7 @@ snapshots:
     optionalDependencies:
       '@types/debug': 4.1.12
       '@types/node': 24.0.13
-      '@vitest/browser': 3.2.2(msw@2.10.1(@types/node@24.0.13)(typescript@5.8.3))(playwright@1.54.1)(vite@6.3.5(@types/node@24.0.13))(vitest@3.2.2)(webdriverio@9.15.0(puppeteer-core@21.11.0))
+      '@vitest/browser': 3.2.2(msw@2.10.1(@types/node@24.0.13)(typescript@5.8.3))(playwright@1.54.1)(vite@6.3.5(@types/node@24.0.13))(vitest@3.2.2)(webdriverio@8.44.1)
       happy-dom: 17.6.3
     transitivePeerDependencies:
       - jiti
