@@ -127,6 +127,7 @@ export class lappAnalyticsChart extends
         return 'blank';
       }
       const option = options.find(opt => opt.$id === key);
+      if (!option) return 'old (deleted) key';
       return ellipsis(option?.locale.label || key);
     });
     this.options = options
