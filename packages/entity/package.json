@@ -26,6 +26,7 @@
     "@material/web": "*",
     "@preignition/preignition-config": "link:../../../packages/preignition-config",
     "@preignition/preignition-util": "link:../../../packages/preignition-util",
+    "effect": "^3.16.10",
     "lit": "^3.3.0"
   },
   "devDependencies": {
