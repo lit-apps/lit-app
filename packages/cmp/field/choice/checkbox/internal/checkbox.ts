@@ -72,7 +72,6 @@ export abstract class Checkbox extends
       .ariaControls=${option.specify ? `specify${index}` : undefined}
       .value=${option.code}
       ?checked=${isChecked}
-       @blur=${(e: HTMLEvent) => e.stopPropagation()}
       ></md-checkbox>
     `
   }

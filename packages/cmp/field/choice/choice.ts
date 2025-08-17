@@ -94,7 +94,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 
 	get _selectedItems() {
 		return [...this._queryItems(this.choiceInputSelector) as NodeListOf<HTMLInputElement>]
-			.filter(item => item.checked);
+			.filter(item => item.checked || item.hasAttribute('checked'));
 	}
 
 	get _selectedValues() {
