@@ -93,8 +93,14 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	}
 
 	get _selectedItems() {
-		return [...this._queryItems(this.choiceInputSelector) as NodeListOf<HTMLInputElement>]
-			.filter(item => item.checked || item.hasAttribute('checked'));
+		const items = [...this._queryItems(this.choiceInputSelector) as NodeListOf<HTMLInputElement>]
+		const filteredItems = items.filter(item => item.checked)
+
+		return filteredItems;
+		// if (filteredItems.length > 0) {
+		// // this is necessary to avoid false positive empty fields when selecting with keyboard
+		// return items.filter(item => item.hasAttribute('checked'));
+
 	}
 
 	get _selectedValues() {
@@ -102,7 +108,6 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	}
 
 	getOptionEl(itemElement: Element): HTMLInputElement {
-		return itemElement.querySelector(this.choiceInputSelector) as HTMLInputElement
 	}
 	protected _queryItems(selector: string) {
 		return this.renderRoot?.querySelectorAll(selector) ?? []
