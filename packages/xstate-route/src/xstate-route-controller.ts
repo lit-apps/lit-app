@@ -3,20 +3,19 @@ import {
   ReactiveControllerHost
 } from 'lit';
 import {
-  RouterSlot,
-  GLOBAL_ROUTER_EVENTS_TARGET,
-  WillChangeStateEvent,
-  matchRoutes,
-  constructAbsolutePath,
   ChangeStateEvent,
+  GLOBAL_ROUTER_EVENTS_TARGET,
   IRouteMatch,
-  IRouterSlot
+  IRouterSlot,
+  WillChangeStateEvent,
+  constructAbsolutePath,
+  matchRoutes
 } from 'router-slot';
 import type {
-  AnyStateMachine,
   Actor,
-  StateNode,
-  AnyMachineSnapshot  
+  AnyMachineSnapshot,
+  AnyStateMachine,
+  StateNode
 } from 'xstate';
 
 import type { XstateDataT } from './types';
@@ -64,11 +63,11 @@ class RouteStateController implements ReactiveController {
       if (!this.routerSlot?.isConnected) {
         return false
       }
-      console.group('Route Controller - ConfirmNavigation')
+      // console.group('Route Controller - ConfirmNavigation')
 
       const match = getMatchedRoute(this.routerSlot, e.detail.url!);
 
-      console.log('match:', e.detail.url, match);
+      // console.log('match:', e.detail.url, match);
       // return early if the match is the same as the previous match to avoid unnecessary state changes
       if (!match || (match?.route &&
         this._previousMatch?.route === match?.route &&
@@ -76,10 +75,10 @@ class RouteStateController implements ReactiveController {
         JSON.stringify(match?.params) === JSON.stringify(this._previousMatch?.params)
       )) {
         console.info(' match is the same as previous match - not checking xstate', match)
-        console.groupEnd();
+        // console.groupEnd();
         return true
       }
-      
+
       const xstate = match?.route.data?.xstate;
       if (xstate) {
         try {
@@ -93,7 +92,7 @@ class RouteStateController implements ReactiveController {
           this._nextState = xstate;
           const actorId = this.actor.logic.id;
           const can = sn.matches(xstate) || sn.can({ type: `xstate.route.${actorId}.${xstate}` });
-          console.groupEnd();
+          // console.groupEnd();
           if (can) {
             this._previousMatch = match;
             return true
@@ -108,7 +107,7 @@ class RouteStateController implements ReactiveController {
         }
       }
       this._previousMatch = match;
-      console.groupEnd();
+      // console.groupEnd();
       return true
     }
 
@@ -118,8 +117,8 @@ class RouteStateController implements ReactiveController {
     // the convention is to add a `context.[key]` event that will assign the value 
     // of the route param to the actor state.
     const changeState = (e: ChangeStateEvent) => {
-      console.group('Route Controller - changestate')
-      console.log('detail:', e.detail);
+      // console.group('Route Controller - changestate')
+      // console.log('detail:', e.detail);
       const match = this.routerSlot.match;
 
       this._preventHistoryChange = true;
@@ -138,7 +137,7 @@ class RouteStateController implements ReactiveController {
         }
       }
       this._preventHistoryChange = false;
-      console.groupEnd();
+      // console.groupEnd();
     }
     this.routerSlot.addEventListener('changestate', changeState);
 
@@ -151,16 +150,16 @@ class RouteStateController implements ReactiveController {
         const route = this.routerSlot.routes
           .find(r => r.data?.xstate && snap.matches(r.data?.xstate))
         if (route) {
-          console.log('actorToURL, route:', route)
+          // console.log('actorToURL, route:', route)
           const path = constructAbsolutePath(
-            this.routerSlot, 
+            this.routerSlot,
             route.path.replace(/:(\w+)/g, (match, paramName) => {
               const contextValue = snap.context[paramName];
               return contextValue !== undefined ? String(contextValue) : match;
             })
           );
           this._preventSetState = true;
-          console.log('actorToURL, path:', path)
+          // console.log('actorToURL, path:', path)
           if (window.location.pathname !== path || this.routerSlot.match === null) {
             // we need to wait for the next frame to make sure URL has had time to update
             // otherwise matchRoutes will not work correctly
@@ -177,10 +176,10 @@ class RouteStateController implements ReactiveController {
       if (this._preventHistoryChange) {
         return
       }
-      console.group('Route Controller - subscribe')
+      // console.group('Route Controller - subscribe')
       // get routeConfig from _node
       actorToURL(snap);
-      console.groupEnd();
+      // console.groupEnd();
     })
 
     // if actor state is active, it takes precedence over the route
