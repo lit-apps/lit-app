@@ -249,7 +249,7 @@ export interface StaticEntityActionI<
     >[this['actions'][N] extends ActionEntityI | ActionMixinI ? 1 : 0]
   >(
     actionName: N,
-    host: HostElementI<unknown>,
+    host: HostElementI,
     data?: D,
     config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
     clickHandler?: (e: CustomEvent) => void): TemplateResult
@@ -257,7 +257,7 @@ export interface StaticEntityActionI<
 
   getActionEvent(
     actionName: ActionKeyT<A, unknown>,
-    host: HostElementI<unknown>,
+    host: HostElementI,
     data: unknown,
     isBulk?: boolean
   ): Promise<EntityAction | void>;
@@ -276,7 +276,7 @@ export interface StaticEntityActionI<
    */
   actionHandler(
     actionName: ActionKeyT<A, unknown>,
-    host: HostElementI<unknown>,
+    host: HostElementI,
     data: unknown,
     isBulk?: boolean
   ): (e: CustomEvent) => Promise<CustomEvent | void>

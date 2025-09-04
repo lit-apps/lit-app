@@ -17,19 +17,18 @@ import '../../youtube/youtube';
 export default class lappMd extends ConsumeAccessibilityMixin(LitElement) {
 
 	/**
-	 * markdown content to render
-	 */
+ 	* markdown content to render
+ 	*/
 	@property() md!: string;
 
 	/**
-	 * configuration for markdown parser
-	 */
+ 	* configuration for markdown parser
+ 	*/
 	@property({ attribute: false }) mdConfig!: MdConfigT;
 
 	override render() {
 		// we make md field tabbable if we detect accessible device
-		const tabindex = this.accessibility?.accessibleDevice ? 0 : nothing as any;
-		return html`<div tabindex=${tabindex} class="markdown ${classMap(this.accessibilityClasses)}">${parse(this.md, this.mdConfig)}</div>`;
+		return html`<div class="markdown ${classMap(this.accessibilityClasses)}">${parse(this.md, this.mdConfig)}</div>`;
 	}
 
 	// Used by readaloud to read text

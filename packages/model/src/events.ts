@@ -1,6 +1,6 @@
 import { CollectionReference, WriteBatch } from 'firebase/firestore'
 import { Collection } from './types.js'
-import { ActionEntityI, ActionServerEntityI, ActionT } from './types/actionTypes.js'
+import { ActionEntityI, ActionServerEntityI, ActionServerProcessEntityI, ActionT } from './types/actionTypes.js'
 
 type PromiseT<T = any> = Promise<T> | Promise<T>[]
 /**
@@ -41,7 +41,14 @@ export class BaseEvent<T extends { promise?: PromiseT<any> }> extends CustomEven
   public processed?: boolean // true when the action was already processed
   public onActionProcessed?: boolean // true when an `onAction` function was already executed
   pushPromise(promise: Promise<any> | any) {
-    this.detail.promise = Promise.all([this.detail.promise, promise])
+    this.detail.promise = Promise.all([
+      ...(Array.isArray(this.detail.promise) ? this.detail.promise : [this.detail.promise])
+      , promise])
+      .then(results => 
+        results
+          .flat()
+          .filter(p => !!p)
+      );
   }
   get canProcess() {
     return !this.shouldConfirm && !this.processed;
@@ -258,7 +265,7 @@ export class EntityAction<T extends ActionI = ActionI> extends BaseAction<Action
 
   constructor(
     detail: ActionDetail<T['detail']>,
-    public override readonly action: ActionEntityI<T['detail']> | ActionServerEntityI<T['detail']>,
+    public override readonly action: ActionEntityI<T['detail']> | ActionServerEntityI<T['detail']> | ActionServerProcessEntityI<T['detail']>,
     public readonly actionName: T['actionName'],
     public override confirmed?: boolean | undefined,
     public override bulkAction?: boolean | undefined) {
@@ -406,4 +413,4 @@ declare global {
     'app-email-action': AppActionEmail, // send message - we need a distinct event for this as some components might add content to the message sent
     'entity-data-changed': DataChanged, // dispatch data-changed when data has changed on a view and needs to be updated on a server
   }
-}
+} 

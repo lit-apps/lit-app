@@ -7,7 +7,7 @@ import { EntityAction } from "../events.js";
 import { AuthorizationT, EntityI } from "../types.js";
 export type FilterActionKeyT = 'showOnViewing' | 'showOnEditing' | 'showInContextMenu'
 
-export interface HostElementI<D = any> extends HTMLElement {
+export interface HostElementI extends HTMLElement {
   entityStatus?: EntityStatus
   authorization?: AuthorizationT
   consumingMode?: RenderConfig['consumingMode']
@@ -114,7 +114,8 @@ interface ActionBaseI<D = any, ConfirmT = any> {
   /**
    * Called after the action is handled or the event is dispatched and the action is resolved
    */
-  afterResolved?: (event: CustomEvent, host: HostElementI) => void
+  // @Deprecated
+  // afterResolved?: (event: CustomEvent, host: HostElementI) => void
 
   /**
    * Config for bulk Action. Bulk actions appear when a view has items selected
@@ -218,12 +219,21 @@ export interface ActionEntityI<D = any, TData = D>
 }
 
 /**
- * Entity actions are actions that require an entityAction to be dispatched. There is no need to define a getEvent function
- * The handler if it exists is either called on entity-action-handler, the action is run on the server
+ * ActionServerEntity are actions that are run on the server
  */
 export interface ActionServerEntityI<D = any, TData = any>
   extends ActionBaseI<D, TData>, ActionConfigT<D, TData, EntityAction> {
   kind: 'server'
+}
+
+/**
+ * ActionServerProcessEntity are similar to ActionServerEntity but they run a process on the server. 
+ * 
+ * Process is added to event.detail.promise.
+ */
+export interface ActionServerProcessEntityI<D = any, TData = any>
+  extends ActionBaseI<D, TData>, ActionConfigT<D, TData, EntityAction> {
+  kind: 'serverProcess'
 }
 
 export interface ActionMixinI<D = any> extends ActionBaseI<D> {
@@ -240,6 +250,7 @@ export type ActionT<D = any> =
   | ActionMixinI<D>
   | ActionEntityI<D, D>
   | ActionServerEntityI<D>
+  | ActionServerProcessEntityI<D>
 
 export type ActionsT<D = any> = Record<string, ActionT<D>>
 

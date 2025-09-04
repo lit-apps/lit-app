@@ -31,14 +31,14 @@
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
-    "@vitest/browser": "^3.0.6",
+    "@vitest/browser": "^3.2.4",
     "chai-a11y-axe": "^1.4.0",
-    "eslint": "^8.14.0",
-    "firebase": "^11.10.0",
+    "eslint": "^9.34.0",
+    "firebase": "^12.2.1",
     "happy-dom": "^17.1.1",
     "stripe": "^17.5.0",
     "typescript": "^5.7.3",
-    "vite": "^6.1.1",
+    "vite": "^7.1.4",
     "vitest": "^3.0.6"
   },
   "publishConfig": {
@@ -57,8 +57,8 @@
     "dompurify": "^3.2.5",
     "lit": "^3.3.1",
     "lit-html": "^3.3.1",
-    "marked": "^15.0.7",
-    "marked-gfm-heading-id": "^4.1.1",
-    "marked-mangle": "^1.1.10"
+    "marked": "^16.2.1",
+    "marked-gfm-heading-id": "^4.1.2",
+    "marked-mangle": "^1.1.11"
   }
 }

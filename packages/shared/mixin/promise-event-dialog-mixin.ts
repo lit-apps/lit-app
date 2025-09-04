@@ -97,7 +97,7 @@ export const PromiseEventDialogMixin = <D = any>() => <T extends MixinBase<BaseT
       const onClose = async () => {
         if (this._promiseEventDialog.returnValue === 'ok') {
           // TODO: we should be able to wait for resolve to resolved 
-          // TODO: we sould be able to add a process indicator - under action
+          // TODO: we should be able to add a process indicator - under action
           resolve(data);
         }
         else {

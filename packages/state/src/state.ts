@@ -142,7 +142,7 @@ export class State extends EventTarget {
 
     [...this.propertyMap]
       .filter(
-        ([key, definition]) => !(
+        ([_key, definition]) => !(
           definition.skipReset === true ||
           definition.resetValue === undefined)
       )

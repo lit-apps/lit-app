@@ -58,7 +58,7 @@ export default function renderMixin<A extends ActionsT>(
 
     renderAction(
       actionName: keyof A | keyof DefaultActionsT<unknown>,
-      host: HostElementI<unknown>,
+      host: HostElementI,
       data: unknown,
       config?: RenderConfig | FunctionOrButtonConfigT<unknown>,
       clickHandler?: (e: CustomEvent) => void
@@ -115,6 +115,7 @@ export default function renderMixin<A extends ActionsT>(
       } else if (action.kind === 'event' ||
         action.kind === 'entity' ||
         action.kind === 'server' ||
+        action.kind === 'serverProcess' ||
         action.kind === 'mixin'
       ) {
         const event = (action.kind === 'event' || action.kind === 'mixin')
@@ -151,9 +152,9 @@ export default function renderMixin<A extends ActionsT>(
           }
           host.dispatchEvent(event)
           await event.detail.promise
-          if (action.afterResolved) {
-            await action.afterResolved(event, host);
-          }
+          // if (action.afterResolved) {
+          //   await action.afterResolved(event, host);
+          // }
           return event
         });
 
@@ -487,4 +488,4 @@ function getNestedData(path: string, value: any): Partial<DataI> {
   target[lastPart] = value
 
   return current
-}
+} 

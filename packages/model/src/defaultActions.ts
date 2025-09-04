@@ -9,7 +9,7 @@ import {
   Reset,
   Write,
 } from "./events.js";
-import { ActionEntityI, ActionServerEntityI, DefaultActionsT, GetEventT } from "./types/actionTypes.js";
+import { ActionEntityI, ActionServerEntityI, DefaultActionsT, GetEventT, ActionServerProcessEntityI } from "./types/actionTypes.js";
 import { CollectionI } from "./types/dataI.js";
 
 
@@ -32,7 +32,7 @@ export function defaultActions<D>() {
     create: {
       label: 'Create',
       kind: 'event',
-      handler: (ref, data) => {
+      handler: (_ref, data) => {
         console.log('create', data);
       },
       getEvent: (entityName, data) => {
@@ -192,7 +192,7 @@ export function defaultActions<D>() {
       kind: 'entity',
       label: 'Invite',
       icon: 'person_add',
-      handler: (ref, data) => {
+      handler: (_ref, data) => {
         // this triggers a createActor invite machine 
         // TODO: we should create teh machine here, but issues with dependencies (actorStateServer do not belong here)
         console.log('invite', data);
@@ -216,7 +216,7 @@ const actions = defaultActions();
  * @throws {Error} If the entity ID is not provided or if the action is not found.
  */
 export function getEntityActionEvent<D>(
-  actionName: string, action?: ActionEntityI | ActionServerEntityI
+  actionName: string, action?: ActionEntityI | ActionServerEntityI | ActionServerProcessEntityI
 ): GetEventT<D> {
   return (entityName, data, host, isBulk?, confirmed?) => {
     action = action || (actions[actionName as keyof DefaultActionsT<D>] as ActionEntityI);
@@ -233,4 +233,4 @@ export function getEntityActionEvent<D>(
     }
     return new EntityAction({ id, entityName, data }, action, actionName, confirmed, isBulk);
   };
-}
+} 

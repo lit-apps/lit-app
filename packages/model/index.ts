@@ -1,6 +1,5 @@
 // import BaseDetailMixin from './mixin/base-detail-mixin';
 import mergeStatic from "./src/mergeStatic";
-import renderConfirmDialogMixin from './src/mixin/render-confirm-dialog-mixin';
 
 export { default as Entity } from './src/AbstractEntity';
 export { entityCreateDialogEvent } from './src/cmp/entity-create-dialog';
@@ -46,7 +45,6 @@ export {
 export { getFieldsFromModel } from './src/renderEntityMixin.js';
 export {
 	mergeStatic,
-	renderConfirmDialogMixin
 };
 
 export * from './src/types';
