@@ -397,20 +397,20 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 		`];
 
 	/**
-	 * markdown content to render
-	 */
+ 	* markdown content to render
+ 	*/
 	@property() md!: string;
 
 	/**
-	 * translation for markdown content
-	 */
+ 	* translation for markdown content
+ 	*/
 	@property() mdtranslate!: string;
 
 	// TODO: we should have another property for the translation as this is a native attribute. For instance `tr`
 	@property({ type: Boolean }) override translate = false;
 	/**
-	 * When true, the editor is in pure mode. In pure mode no HTML is allowed.
-	 */
+ 	* When true, the editor is in pure mode. In pure mode no HTML is allowed.
+ 	*/
 	@property({ type: Boolean }) pure = false;
 	@property() translateIcon = 'translate';
 	@property() writeLabel = 'Write';
@@ -430,8 +430,8 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	@property() storageKey!: string
 
 	/**
-	 * flavour of markdown to use for rendering
-	 */
+ 	* flavour of markdown to use for rendering
+ 	*/
 	@property() flavour!: 'github' | undefined;
 	@property({ type: Number }) cols = 3;
 	@property({ type: Number }) rows = 3;
@@ -440,16 +440,16 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 	@property({ type: Boolean, attribute: 'readonly' }) readOnly!: boolean;
 
 	/**
-	 * When true, tabs are hidden when the field is readonly and the preview is shown
-	 */
+ 	* When true, tabs are hidden when the field is readonly and the preview is shown
+ 	*/
 	@property({ type: Boolean, attribute: 'hide-tabs-on-read-only' }) hideTabsOnReadOnly!: boolean;
 	/**
-	 * When true, the toolbar is hidden
-	 */
+ 	* When true, the toolbar is hidden
+ 	*/
 	@property({ type: Boolean, attribute: 'hide-toolbar' }) hideToolbar: boolean = false;
 	/**
-	 * When true, the accessibility menu is displayed
-	 */
+ 	* When true, the accessibility menu is displayed
+ 	*/
 	@property({ type: Boolean, attribute: 'show-accessibility-menu' }) showAccessibilityMenu: boolean = false;
 
 	@property({ type: Number, attribute: 'maxlength' }) maxLength!: number;
@@ -821,7 +821,7 @@ export default class lappMdEditor extends ConsumeAccessibilityMixin(LitElement) 
 					<lapp-icon slot="start">format_list_numbered</lapp-icon>
 					<div  slot="headline">list Numbered</div>
 				</md-menu-item>
-				<md-menu-item  slot="list_check" data-toolbar="listCheck" aria-label="task list" title="taskl list checkbox">
+				<md-menu-item  slot="list_check" data-toolbar="listCheck" aria-label="task list" title="task list checkbox">
 					<lapp-icon slot="start">checklist</lapp-icon>
 					<div  slot="headline">Task List</div>
 				</md-menu-item>

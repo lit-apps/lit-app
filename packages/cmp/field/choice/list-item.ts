@@ -60,9 +60,9 @@ export default class lappChoiceListItem extends
 	@property({ type: Boolean }) isMulti: boolean = false;
 
 	/**
-	 * Sets the behavior of the list item, defaults to "text". Change to "link" or
-	 * "button" for interactive items.
-	 */
+		* Sets the behavior of the list item, defaults to "text". Change to "link" or
+		* "button" for interactive items.
+		*/
 	// @ts-expect-error - we are cheating with ListItemType
 	@property() override type: A11yListItemType = 'a11y';
 
@@ -77,7 +77,7 @@ export default class lappChoiceListItem extends
 	}
 
 
-	async handleClick(e: Event) {
+	async handleClick(_e: Event) {
 		const checkbox = this.inputElement
 		await checkbox.updateComplete
 		if (this.disabled) {
@@ -93,11 +93,11 @@ export default class lappChoiceListItem extends
 	}
 
 	/**
-	 * Renders the root list item.
-	 * We need an additional type to make the list item interactive but not focusable
-	 *
-	 * @param content the child content of the list item.
-	 */
+		* Renders the root list item.
+		* We need an additional type to make the list item interactive but not focusable
+		*
+		* @param content the child content of the list item.
+		*/
 	protected override renderListItem(content: unknown) {
 		const isAnchor = this.type === 'link';
 		let tag: StaticValue;
@@ -124,9 +124,11 @@ export default class lappChoiceListItem extends
 		const target = isAnchor && !!this.target ? this.target : nothing;
 		// @ts-expect-error - isDisabled is private
 		const isDisabled = this.isDisabled;
+		const role = this.dataset.role || this.listItemRole || 'listitem';
 		return staticHtml`
       <${tag}
         id="item"
+				role=${role}
         tabindex="${isDisabled || !isInteractive ? -1 : 0}"
         ?disabled=${isDisabled}
         aria-selected=${(this as ARIAMixinStrict).ariaSelected || nothing}

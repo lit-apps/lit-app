@@ -91,7 +91,7 @@ export abstract class Order extends
 
   }
 
-  private async moveOption(index: number, targetIndex: number, option: Option) {
+  private async moveOption(index: number, targetIndex: number, _option: Option) {
     const currentEl = this.items[index]
     const targetEl = this.items[targetIndex]
     // distance in px between e.target and targetEl
@@ -133,19 +133,20 @@ export abstract class Order extends
         if (this.isSelecting) {
           marginTop = (this.animating && index === this.movingIndex) ?
             (this.movingDistance - this.movingElHeight) : (this.animating && index === (this.movingIndex + 1)) ?
-              - (this.movingDistance) : (this.animating && index === this.targetIndex) ?
+              -(this.movingDistance) : (this.animating && index === this.targetIndex) ?
                 this.movingElHeight : 0
         } else {
           marginTop = (this.animating && index === this.movingIndex) ?
             (this.movingDistance) : (this.animating && index === (this.movingIndex + 1)) ?
-              - (this.movingDistance + this.movingElHeight) : this.animating && index === (this.targetIndex + 1) ?
+              -(this.movingDistance + this.movingElHeight) : this.animating && index === (this.targetIndex + 1) ?
                 this.movingElHeight : 0
         }
 
         // console.log('marginTop', this.animating, index, marginTop, this.movingDistance)
         return html`
            <lapp-choice-list-item
-           type="button"
+           aria-live="polite"
+           _type="button"
            .isMulti=${true}
            .selector=${this.choiceInputSelector}
             ${animate({
