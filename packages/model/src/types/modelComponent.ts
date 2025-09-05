@@ -25,12 +25,12 @@ type TableConfig<T = any> = {
 	label?: string
 	path?: string
 	/**
-	 * optional will not be rendered if value is undefined
-	 */
+ 	* optional will not be rendered if value is undefined
+ 	*/
 	optional?: boolean
 	/**
-	 * condition to render the column depending on renderConfig
-	 */
+ 	* condition to render the column depending on renderConfig
+ 	*/
 	condition?: (config: RenderConfig | undefined) => boolean
 	renderer?: (data: T) => TemplateResult | string
 }
@@ -45,8 +45,8 @@ export type GridConfig<T = any> = {
 	resizable?: boolean
 	sortable?: boolean
 	/**
-	 * condition to render the column depending on renderConfig
-	 */
+ 	* condition to render the column depending on renderConfig
+ 	*/
 	condition?: (config: RenderConfig | undefined) => boolean
 	headerRenderer?: GridColumnHeaderLitRenderer
 	bodyRenderer?: GridColumnBodyLitRenderer<T>
@@ -62,12 +62,13 @@ export type CsvConfig<T = any> = {
 	index?: number
 	condition?: (config: RenderConfig | undefined) => boolean
 }
+export type AllowedPropsChangeT = 'value' | 'selected' | 'selectedValue' | 'checked' | 'translated' | 'md' | 'mdtranslate';
 
 type RendererParamT<T = any> = {
 	model: ModelComponentBase<T>
 	value: string
 	data: T
-	onInputFact: (prop: string) => void
+	onInputFact: (prop: AllowedPropsChangeT) => void
 }
 type RendererT<T = any> = (prop: RendererParamT<T>) => TemplateResult
 interface ModelComponentBase<T = any, TagsT = string> {
@@ -159,8 +160,8 @@ export interface ModelComponentText<T = any, TagsT = string> extends ModelCompon
 	component?: TextComponent | DateComponent
 	placeholder?: string
 	/**
-	 * The key to local storage for local persistence
-	 */
+ 	* The key to local storage for local persistence
+ 	*/
 	storageKey?: string
 	maxLength?: number
 	minLength?: number
@@ -175,8 +176,8 @@ export interface ModelComponentTextArea<T = any, TagsT = string> extends ModelCo
 	rows?: number
 	placeholder?: string
 	/**
-	 * The key to local storage for local persistence
-	 */
+ 	* The key to local storage for local persistence
+ 	*/
 	storageKey?: string
 	maxLength?: number
 	minLength?: number
@@ -185,30 +186,30 @@ export interface ModelComponentTextArea<T = any, TagsT = string> extends ModelCo
 export interface ModelComponentMd<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: MdComponent
 	/**
-	 * flavour of the markdown editor
-	 */
+ 	* flavour of the markdown editor
+ 	*/
 	flavour?: 'github'
 	rows?: number
 	placeholder?: string
 	/**
-	 * The key to local storage for local persistence
-	 */
+ 	* The key to local storage for local persistence
+ 	*/
 	storageKey?: string
 	maxLength?: number
 	minLength?: number
 	showAccessibilityMenu?: boolean
 	/** 
-	 * When true, the editor is only displaying pure markdown format (no HTML)
-	 */
+ 	* When true, the editor is only displaying pure markdown format (no HTML)
+ 	*/
 	pure?: boolean
 	resize?: 'vertical' | 'horizontal' | 'auto'
 	/**
-	 * When true, tabs are hidden when the field is readonly and the preview is shown
-	 */
+ 	* When true, tabs are hidden when the field is readonly and the preview is shown
+ 	*/
 	hideTabsOnReadOnly?: boolean
 	/**
-	 * The value to display when readonly and the value is empty
-	 */
+ 	* The value to display when readonly and the value is empty
+ 	*/
 	defaultValueOnEmpty?: string
 }
 export interface ModelComponentMdDroppable<T = any, TagsT = string> extends ModelComponentMd<T, TagsT> {
@@ -221,8 +222,8 @@ export interface ModelComponentMdDroppable<T = any, TagsT = string> extends Mode
 export interface ModelComponentBoolean<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: BooleanComponent,
 	/**
-	 * the label to display when the checkbox is checked
-	 */
+ 	* the label to display when the checkbox is checked
+ 	*/
 	trueLabel?: string | TemplateResult
 
 }

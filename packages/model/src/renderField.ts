@@ -5,8 +5,6 @@ import AbstractEntity from './AbstractEntity.js';
 import { DataChanged, Dirty } from './events';
 import { DefaultI, EntityElement, RenderConfig } from './types/entity';
 import type {
-  FieldConfig,
-  Model,
   ModelComponent,
   ModelComponentBoolean,
   ModelComponentCheckboxGroup,
@@ -19,7 +17,8 @@ import type {
   ModelComponentText,
   ModelComponentTextArea,
   ModelComponentUpload,
-  ModelComponentUploadImage
+  ModelComponentUploadImage, 
+  AllowedPropsChangeT
 } from './types/modelComponent';
 import('@vaadin/multi-select-combo-box/vaadin-multi-select-combo-box.js');
 
@@ -157,7 +156,7 @@ export function renderField<D extends DefaultI>(
 
   // input handler
   const value = get(path, data);
-  const onInputFact = (property: string) => {
+  const onInputFact = (property: AllowedPropsChangeT) => {
     return async (e: CustomEvent) => {
       if (consumingMode === 'offline'
         || consumingMode === 'view'
@@ -230,7 +229,7 @@ export function renderField<D extends DefaultI>(
         .showAccessibilityMenu=${model.showAccessibilityMenu!}
         .md=${origin} 
         .mdtranslate=${value || ''} 
-        @mdtranslate-changed=${onInputFact('mdtranslated')} 
+        @mdtranslate-changed=${onInputFact('mdtranslate')} 
         .maxLength=${model.maxLength!}
         .charCounter=${!!model.maxLength}></lapp-md-editor>
       `
