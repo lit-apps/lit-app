@@ -66,10 +66,15 @@ export class LappProcess extends LitElement {
   @property({ attribute: false })
   ref!: DocumentReference<ProcessData>;
 
+  private _boundStateController?: StateController<ProcessState>;
+
   @watch('process')
-  async processChanged(process: ProcessState) {
-    if (this.process || !process) return;
-    new StateController(this, process);
+  async processChanged(process: ProcessState, old: ProcessState) {
+    if (!process) return;
+    if (old && this._boundStateController) {
+      this._boundStateController.dispose();
+    };
+    this._boundStateController = new StateController(this, process);
     await process.processCompleted;
     this.dispatchEvent(new ProcessCompletedEvent(process));
     this.process = undefined
