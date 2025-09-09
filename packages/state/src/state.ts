@@ -33,7 +33,7 @@ export type PropertyMapOptions = PropertyOptions &
 export type Callback<T = State> = (key: string, value: any, state: T) => void
 
 /**
- * A state, firing `lit-state-change` when any of it property changes
+ * A state, firing `lit-state-change` when any of its property changes
  *  
  */
 export class State extends EventTarget {

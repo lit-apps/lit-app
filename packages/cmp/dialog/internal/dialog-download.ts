@@ -8,6 +8,8 @@ import { LappChoiceRadio } from "../../field/choice-radio.js";
 import { DownloadEvent } from "../dialog-download.js";
 import downloadCSV from '../downloadCSV.js';
 import downloadJSON from '../downloadJSON.js';
+import { tokenState } from "@lit-app/base/state";
+
 import('@material/web/dialog/dialog.js')
 import('@material/web/button/text-button.js')
 import('@material/web/checkbox/checkbox.js');
@@ -114,8 +116,8 @@ export class DialogDownload extends LitElement {
   }
 
   get query() {
-    let paramsObj = { format: this.format };
-    let searchParams = new URLSearchParams(paramsObj);
+    const paramsObj = { format: this.format };
+    const searchParams = new URLSearchParams(paramsObj);
     return searchParams.toString()
   }
 
@@ -293,7 +295,7 @@ export class DialogDownload extends LitElement {
           }
           const headers = Object.keys(data[0])
           const csvRows = data.map(row =>
-            headers.map(header => JSON.stringify(row[header], (key, value) => value === null ? '' : value)).join(',')
+            headers.map(header => JSON.stringify(row[header], (_key, value) => value === null ? '' : value)).join(',')
           );
           return [headers.join(','), ...csvRows].join('\r\n');
         }
@@ -307,7 +309,12 @@ export class DialogDownload extends LitElement {
     // this.cc = this.to = this.text = this.subject = '';
   }
 
-  private async initiateDownload(url: string, downloadName: string) {
+  private async initiateDownload(url: string, downloadName: string, retry = 0) {
+    if (retry > 1) {
+      this.dispatchEvent(new ToastEvent(`Error downloading file: Authentication failed after retry`, 'error'));
+      console.error('Error downloading file: Authentication failed after retry');
+      return;
+    }
     try {
       // Pre-download check (e.g., using a HEAD request or a custom API call)
       const response = await fetch(url, { method: 'HEAD' });
@@ -325,7 +332,15 @@ export class DialogDownload extends LitElement {
         document.body.removeChild(downloadLink);
       } else {
         // Handle errors (e.g., invalid credentials, file not found)
-        console.error('Error downloading file:', response.statusText);
+        console.error('Error downloading file:', response.statusText, response);
+        if (response.status === 401 && response.statusText === 'Token expired') {
+          // specific case of token expired
+          await tokenState.doRefreshToken();
+          this.dispatchEvent(new ToastEvent(`Refreshed authentication token, retrying download...`, 'info'));
+          await this.initiateDownload(url, downloadName, retry + 1);
+          return;
+        }
+
         this.dispatchEvent(new ToastEvent(`Error downloading file: ${response.statusText} `, 'error'));
         // Here, you can dispatch an event or call a function to handle the error
       }
