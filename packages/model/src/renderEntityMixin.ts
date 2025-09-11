@@ -114,7 +114,7 @@ export default function renderMixin<
 
     getContextActions(
       item: D,
-      config: C): TemplateResult {
+      _config: C): TemplateResult {
 
       const actions = this.filterActions('showInContextMenu', item);
       const groupedActions = actions.reduce((acc, [key, config]) => {
@@ -124,7 +124,7 @@ export default function renderMixin<
         return acc;
       }, {} as Record<string, [string, MenuConfigT<unknown>][]>);
 
-      const actionItems = Object.entries(groupedActions).map(([group, groupActions]) => {
+      const actionItems = Object.entries(groupedActions).map(([_group, groupActions]) => {
         const groupActionsItems = groupActions.map(([key, config]) => {
           let disabled = false;
           if (this.actions[key].disabled !== undefined) {
@@ -149,7 +149,7 @@ export default function renderMixin<
 
 
 
-    renderContextMenu(data: Collection<D>, config: C): ContextMenuLitRenderer {
+    renderContextMenu(_data: Collection<D>, config: C): ContextMenuLitRenderer {
       return (context, _menu) => {
         const { sourceEvent } = context.detail as { sourceEvent: Event };
         const grid = (sourceEvent.currentTarget as Element)?.firstElementChild as Grid<D>;
@@ -268,7 +268,7 @@ export default function renderMixin<
     }
 
 
-    protected canRender(data: D, config: C) {
+    protected canRender(data: D, _config: C) {
       const consumingMode = this.host.consumingMode || 'edit';
       return consumingMode === 'print' || consumingMode === 'offline' || data !== undefined;
     }
@@ -365,7 +365,7 @@ export default function renderMixin<
     renderTitle(_data: D, config: C) {
       return html`${config.heading || this.entityName}`
     }
-    renderNoDataTitle(config: C) {
+    renderNoDataTitle(_config: C) {
       return html`No Data`
     }
     renderArrayTitle(_data: Collection<D>, config: C) {
