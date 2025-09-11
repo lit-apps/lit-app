@@ -491,14 +491,16 @@ export class Dashboard extends ProvideBuildMixin(
       }
     );
   }
-
+  private _fetching = false;
   private async _fetchData() {
-    if (!this.build) return;
+    if (!this.build || this._fetching) return;
     // this.ready = false;
     const { databaseId } = this.build;
     if (databaseId) {
       const q = query(collection(getFirestore(databaseId), `survey/${this.surveyId}/raw`));
+      this._fetching = true;
       const snap = await getDocs(q);
+      this._fetching = false;
       const now = new Date();
       this.data = snap.docs.map((doc, i) => {
         const data = doc.data();
@@ -523,12 +525,12 @@ export class Dashboard extends ProvideBuildMixin(
     Object.assign(this.view!, { pinnedFields: pinned });
     this.requestUpdate();
   }
-  private _onPin(field: QuestionFieldT, index: number) {
+  private _onPin(field: QuestionFieldT, _index: number) {
     const pinned = (this.view?.pinnedFields || []).concat(field.$id);
     this._activatePin(pinned);
   }
 
-  private _onUnpin(field: QuestionFieldT, index: number) {
+  private _onUnpin(field: QuestionFieldT, _index: number) {
     const pinned = this.pinnedFields.filter((key) => key !== field.$id);
     this._activatePin(pinned);
 
