@@ -39,7 +39,8 @@ export const UploadFirestoreMixin = <T extends MixinBase<BaseT>>(
       const fileName = e.detail.file.name;
       if (isMultiple && !this.fieldPath) {
         // only add doc if it is not already in the database
-        const exists = Array.isArray(this.metaData) && this.metaData?.find((f: FirebaseUploadFile) => f.name === fileName);
+        const exists = Array.isArray(this.metaData) && 
+          this.metaData?.find((f: FirebaseUploadFile) => f.name === fileName);
         if (exists) {
           console.warn('File already exists in database', fileName);
           this.dispatchEvent(new ToastEvent('this image already exists in the database'));

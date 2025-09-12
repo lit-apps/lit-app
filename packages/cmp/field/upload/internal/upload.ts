@@ -7,6 +7,7 @@ import { Generic, GenericI } from '../../generic/generic';
 import { UploadValidator } from './uploadValidator';
 import '../../../upload/document-firebase';
 import '../../../upload/document';
+import type { UploadFinishedEvent } from "../../../upload/internals/storage-mixin";
 
 
 /**
@@ -125,6 +126,15 @@ export abstract class Upload extends Generic {
    */
   @property({ type: Boolean }) noFileExtension!: boolean;
 
+  /* 
+   * `maxFileSize` max file size in bytes
+   */
+  @property({ type: Number }) maxFileSize!: number;
+
+  /*
+   * `accept` file types to accept ('application/pdf,.pdf,text/markdown,.md')
+   */
+  @property() accept!: string;
   constructor() {
     super()
     const t = this as unknown as GenericI
@@ -133,7 +143,17 @@ export abstract class Upload extends Generic {
   }
 
   override renderInputOrTextarea() {
-    
+    const onUploadFinished = (e: UploadFinishedEvent) => {
+      // we need to re-dispatch as the event does not bubble up
+      // and we want to be able to cancel persistent storage
+      const newEvent = Reflect.construct(
+        e.constructor,
+        [e.detail.file, e.detail.isMultiple, e.detail.data]
+      ) as Event;
+      if (!this.dispatchEvent(newEvent)) {
+        e.preventDefault();
+      }             
+    }
     const uploadFirebase = html`
     <lapp-upload-document-firebase
       ?inert=${this.disabled || this.readonly}
@@ -142,6 +162,8 @@ export abstract class Upload extends Generic {
       .appName=${this.appName}
       .metaData=${this.metaData}
       .store=${this.store}
+      .accept=${this.accept}
+      .maxFileSize=${this.maxFileSize}
       .fileName=${this.fileName}
       .maxFiles=${this.maxFiles}
       .readonly=${this.readonly}
@@ -149,6 +171,7 @@ export abstract class Upload extends Generic {
       .preventRead=${this.preventRead}
       .dropText=${this.dropText}
       .noFileExtension=${this.noFileExtension}
+      @upload-finished=${onUploadFinished}
       >
       ${this.buttonLabel ? html`<vaadin-button slot="add-button">${this.buttonLabel}</vaadin-button>` : ''}
       </lapp-upload-document-firebase>
@@ -162,6 +185,8 @@ export abstract class Upload extends Generic {
       .appName=${this.appName}
       .metaData=${this.metaData}
       .store=${this.store}
+      .accept=${this.accept}
+      .maxFileSize=${this.maxFileSize}
       .fileName=${this.fileName}
       .maxFiles=${this.maxFiles}
       .readonly=${this.readonly}
@@ -169,6 +194,7 @@ export abstract class Upload extends Generic {
       .preventRead=${this.preventRead}
       .dropText=${this.dropText}
       .noFileExtension=${this.noFileExtension}
+      @upload-finished =${onUploadFinished}
       >
       ${this.buttonLabel ? html`<vaadin-button slot="add-button">${this.buttonLabel}</vaadin-button>` : ''}
       </lapp-upload-document>
@@ -186,10 +212,10 @@ export abstract class Upload extends Generic {
   //   redispatchEvent(this, event)
   // }
 
-  override [createValidator](): Validator<unknown> {
-  	return new UploadValidator(() => this.inputOrTextarea as unknown as HTMLInputElement || { 
+  override[createValidator](): Validator<unknown> {
+    return new UploadValidator(() => this.inputOrTextarea as unknown as HTMLInputElement || { 
       required: this.required, 
-      value: this.value});
+      value: this.value });
   }
 
 }

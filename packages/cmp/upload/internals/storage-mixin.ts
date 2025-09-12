@@ -98,11 +98,13 @@ type BaseT = UploadMixinClass & LitElement;
 
 export type FirebaseUploadFile = UploadFile & {
   /** storage reference */
-  url: string | undefined,
-  thumbnail: string | undefined,
-  ref: DocumentReference | undefined,
+  url: string | undefined
+  bucket: string // the storage bucket
+  fullPath: string // full path in the bucket
+  thumbnail: string | undefined
+  ref: DocumentReference | undefined
   timestamp: string,
-  indeterminate: boolean | undefined,
+  indeterminate: boolean | undefined
 }
 
 // TODO: aria-described by for button
@@ -324,6 +326,9 @@ export const Storage = <T extends MixinBase<BaseT>>(
             try {
               const downloadURL = await getDownloadURL(fileRef);
               file.url = downloadURL;
+              file.bucket = fileRef.bucket;
+              file.fullPath = fileRef.fullPath;
+              
               // Try to get the thumbnail URL, fallback to empty string if it fails
               try {
                 // Create a thumbnail URL by inserting 'thumbnails/' before the last segment of the path
@@ -400,4 +405,4 @@ function getFileRef(appName: string, path: string, name: string, uniqueName: boo
   const storePath = `${path}${path.endsWith('/') ? '' : '/'}${fileName}`;
 
   return ref(getStorage(app), storePath)
-}
+} 
