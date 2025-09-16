@@ -59,8 +59,7 @@ export const ProvideFormContextMixin = <T extends MixinBase<BaseT>>(
 
     protected bindField(field: FormFieldI) {
       if (!this.boundFields.includes(field)) {
-        // re reverse the order so that the first field is focused first
-        this.boundFields.unshift(field);
+        this.boundFields.push(field);
         this.requestUpdate();
       }
     }
