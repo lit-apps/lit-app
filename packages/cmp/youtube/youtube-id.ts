@@ -3,7 +3,6 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import { LappTextfield } from '../field/text-field';
 import { ValueChangedEvent } from '@lit-app/shared/event';
 import { HTMLEvent } from '@lit-app/shared/types.js';
-import { V } from 'vitest/dist/chunks/reporters.D7Jzd9GS.js';
 import('../field/text-field')
 
 // source for regex: https://webapps.stackexchange.com/questions/54443/format-for-id-of-youtube-video/101153#101153
@@ -56,46 +55,67 @@ export class LappYoutubeId extends LitElement {
   @state() videoExists!: boolean | undefined | null
 
   @query('lapp-text-field') field!: FieldI;
+  @query('img') image!: HTMLImageElement;
 
-  get validity() {
-    return this.field?.validity || {};
-  }
-  
   get valid() {
-    return this.validity?.valid;
+    return this.field?.validity?.valid;
   }
+
+  // get videoExists() {
+  //  
+  //   return this.image?.naturalWidth !== 120;
+  // }
   override updated(props: PropertyValues<this>) {
     if (props.has('videoExists')) {
       this.dispatchEvent(new validIdChangedEvent(this.value, this.videoExists));
     }
     if (props.has('value')) {
-      if (this.field?.inputOrTextarea) {
-        if (!this.valid) {
-          this.videoExists = undefined;
-        }
-        if (this.valid) {
-          this.videoExists = this.value ? null : undefined;
-        }
+      this._checkVideoExists();
+    }
+    super.updated(props);
+  }
+
+  private async _checkVideoExists() {
+    const inputOrTextarea = this.field?.inputOrTextarea;
+    if (!inputOrTextarea && this.field) {
+      await this.field.updateComplete;
+    }
+    if (this.field?.inputOrTextarea) {
+      if (!this.valid) {
+        this.videoExists = undefined;
+      }
+      if (this.valid) {
+        this.videoExists = this.value ? null : undefined;
       }
     }
-    super.updated(props)
+  }
+
+  override firstUpdated(props: PropertyValues<this>) {
+    super.firstUpdated(props);
+    // force validity check
+    // this.videoExists = this.img?.naturalWidth !== 120;
+    console.log('first updated', props);
+    this._checkVideoExists();
   }
 
   override render() {
     const onLoad = (e: HTMLEvent<HTMLImageElement>) => {
-      // invalid video returns a 120px width image: https://gist.github.com/tonY1883/a3b85925081688de569b779b4657439b
+      console.log('loaded', e);
+      //  invalid video returns a 120px width image: https://gist.github.com/tonY1883/a3b85925081688de569b779b4657439b
       this.videoExists = e.target.naturalWidth !== 120;
-
     }
     const onInput = (e: HTMLEvent<FieldI>) => {
       this.value = e.target.value;
       this.dispatchEvent(new ValueChangedEvent(this.value));
     }
 
+    const supportingText = this.videoExists === true ? 
+      this.helperOk : 
+      (this.videoExists === false && this.value) ? this.helperNoVideo : this.helper;
     return html`
      <lapp-text-field 
       .label=${this.label}
-      .supportingText=${this.videoExists === true ? this.helperOk : (this.videoExists === false && this.value) ? this.helperNoVideo : this.helper}
+      .supportingText=${supportingText}
       .required=${this.required}
       .value=${this.value || ''}
       pattern=${videoReg} 
@@ -105,7 +125,7 @@ export class LappYoutubeId extends LitElement {
      ${this.videoExists === false && !!this.value ? html`<lapp-icon slot="trailing-icon">error</lapp-icon>` : ''} 
      ${this.videoExists === null ? html`<lapp-icon slot="trailing-icon">pending</lapp-icon>` : ''} 
     </lapp-text-field>
-     ${this.validity?.valid && this.value ? html`
+     ${this.valid && this.value ? html`
      <img style="display: none;"  src="https://i.ytimg.com/vi/${this.value}/hqdefault.jpg" @load=${onLoad}>` : ''}
     `;
   }
@@ -115,4 +135,4 @@ declare global {
   interface HTMLElementTagNameMap {
     'lapp-youtube-id': LappYoutubeId;
   }
-}
+} 
