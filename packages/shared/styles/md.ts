@@ -31,6 +31,7 @@ table {
   margin-bottom: var(--space-large);
 }
 
+/* This is for embedded content */
 iframe {
   border: none;
   width: 100%;
@@ -49,4 +50,4 @@ export default [
   responsiveMedia,
   Layouts, 
   Factors
- ];
+];

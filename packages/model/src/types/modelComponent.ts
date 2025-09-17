@@ -25,12 +25,12 @@ type TableConfig<T = any> = {
 	label?: string
 	path?: string
 	/**
- 	* optional will not be rendered if value is undefined
- 	*/
+		* optional will not be rendered if value is undefined
+		*/
 	optional?: boolean
 	/**
- 	* condition to render the column depending on renderConfig
- 	*/
+		* condition to render the column depending on renderConfig
+		*/
 	condition?: (config: RenderConfig | undefined) => boolean
 	renderer?: (data: T) => TemplateResult | string
 }
@@ -45,8 +45,8 @@ export type GridConfig<T = any> = {
 	resizable?: boolean
 	sortable?: boolean
 	/**
- 	* condition to render the column depending on renderConfig
- 	*/
+		* condition to render the column depending on renderConfig
+		*/
 	condition?: (config: RenderConfig | undefined) => boolean
 	headerRenderer?: GridColumnHeaderLitRenderer
 	bodyRenderer?: GridColumnBodyLitRenderer<T>
@@ -96,7 +96,17 @@ interface ModelComponentBase<T = any, TagsT = string> {
 	// Slots that can be passed to the component, for instance for translation icons
 	slots?: TemplateResult
 }
-export interface Lookup<T = string> {
+
+type LookupInfo = {
+	type: 'info' & string 
+	label: string | TemplateResult
+	supportingText?: string | TemplateResult
+}
+type LookupDivider = {
+	type: 'divider'
+}
+
+type LookupCode<T = string> = {
 	label: string | TemplateResult
 	code: T
 	key?: string
@@ -104,6 +114,18 @@ export interface Lookup<T = string> {
 	supportingText?: string
 	class?: string
 	media?: Media
+	type?: string // type of the item, can be used to filter items of a specific type
+}
+
+export type Lookup<T = string> = LookupCode<T> | LookupInfo | LookupDivider;
+export function isLookupCode<T = string>(item: Lookup<T>): item is LookupCode<T> {
+	return (item as LookupCode<T>).code !== undefined;
+}
+export function isLookupInfo<T = string>(item: Lookup<T>): item is LookupInfo {
+	return (item as LookupInfo).type === 'info';
+}
+export function isLookupSeparator<T = string>(item: Lookup<T>): item is LookupDivider {
+	return (item as LookupDivider).type === 'divider';
 }
 
 export interface ModelComponentSlider<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
@@ -160,8 +182,8 @@ export interface ModelComponentText<T = any, TagsT = string> extends ModelCompon
 	component?: TextComponent | DateComponent
 	placeholder?: string
 	/**
- 	* The key to local storage for local persistence
- 	*/
+		* The key to local storage for local persistence
+		*/
 	storageKey?: string
 	maxLength?: number
 	minLength?: number
@@ -176,8 +198,8 @@ export interface ModelComponentTextArea<T = any, TagsT = string> extends ModelCo
 	rows?: number
 	placeholder?: string
 	/**
- 	* The key to local storage for local persistence
- 	*/
+		* The key to local storage for local persistence
+		*/
 	storageKey?: string
 	maxLength?: number
 	minLength?: number
@@ -186,30 +208,30 @@ export interface ModelComponentTextArea<T = any, TagsT = string> extends ModelCo
 export interface ModelComponentMd<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: MdComponent
 	/**
- 	* flavour of the markdown editor
- 	*/
+		* flavour of the markdown editor
+		*/
 	flavour?: 'github'
 	rows?: number
 	placeholder?: string
 	/**
- 	* The key to local storage for local persistence
- 	*/
+		* The key to local storage for local persistence
+		*/
 	storageKey?: string
 	maxLength?: number
 	minLength?: number
 	showAccessibilityMenu?: boolean
 	/** 
- 	* When true, the editor is only displaying pure markdown format (no HTML)
- 	*/
+		* When true, the editor is only displaying pure markdown format (no HTML)
+		*/
 	pure?: boolean
 	resize?: 'vertical' | 'horizontal' | 'auto'
 	/**
- 	* When true, tabs are hidden when the field is readonly and the preview is shown
- 	*/
+		* When true, tabs are hidden when the field is readonly and the preview is shown
+		*/
 	hideTabsOnReadOnly?: boolean
 	/**
- 	* The value to display when readonly and the value is empty
- 	*/
+		* The value to display when readonly and the value is empty
+		*/
 	defaultValueOnEmpty?: string
 }
 export interface ModelComponentMdDroppable<T = any, TagsT = string> extends ModelComponentMd<T, TagsT> {
@@ -222,8 +244,8 @@ export interface ModelComponentMdDroppable<T = any, TagsT = string> extends Mode
 export interface ModelComponentBoolean<T = any, TagsT = string> extends ModelComponentBase<T, TagsT> {
 	component: BooleanComponent,
 	/**
- 	* the label to display when the checkbox is checked
- 	*/
+		* the label to display when the checkbox is checked
+		*/
 	trueLabel?: string | TemplateResult
 
 }

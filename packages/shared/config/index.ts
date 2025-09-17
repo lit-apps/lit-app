@@ -1,1 +1,1 @@
-export { databases } from './database.js';
+export { databases, databaseMulti } from './database.js';

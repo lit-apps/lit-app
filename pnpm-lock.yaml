@@ -430,7 +430,7 @@ importers:
         specifier: ^3.16.10
         version: 3.16.10
       firebase:
-        specifier: ^11
+        specifier: ^11.10.0
         version: 11.10.0
       lit:
         specifier: ^3
@@ -931,7 +931,7 @@ importers:
   packages/stateController:
     dependencies:
       '@lit-app/model':
-        specifier: link:../model
+        specifier: workspace:*
         version: link:../model
       '@lit-app/state':
         specifier: workspace:*
@@ -12241,7 +12241,7 @@ snapshots:
     optionalDependencies:
       '@types/debug': 4.1.12
       '@types/node': 24.3.0
-      '@vitest/browser': 3.2.4(msw@2.10.1(@types/node@24.3.0)(typescript@5.8.3))(playwright@1.54.1)(vite@7.1.4(@types/node@24.3.0))(vitest@3.2.4)(webdriverio@9.15.0(puppeteer-core@21.11.0))
+      '@vitest/browser': 3.2.4(msw@2.10.1(@types/node@24.3.0)(typescript@5.8.3))(playwright@1.54.1)(vite@7.1.4(@types/node@24.3.0))(vitest@3.2.4)(webdriverio@8.44.1)
       happy-dom: 17.6.3
     transitivePeerDependencies:
       - jiti

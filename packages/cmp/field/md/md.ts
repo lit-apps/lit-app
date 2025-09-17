@@ -1,5 +1,5 @@
 import { parse } from '@lit-app/shared/md/index.js';
-import { html, LitElement, nothing } from "lit";
+import { html, LitElement } from "lit";
 import { property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ConsumeAccessibilityMixin } from '../../mixin/context-accessibility-mixin';
@@ -17,13 +17,13 @@ import '../../youtube/youtube';
 export default class lappMd extends ConsumeAccessibilityMixin(LitElement) {
 
 	/**
- 	* markdown content to render
- 	*/
+		* markdown content to render
+		*/
 	@property() md!: string;
 
 	/**
- 	* configuration for markdown parser
- 	*/
+		* configuration for markdown parser
+		*/
 	@property({ attribute: false }) mdConfig!: MdConfigT;
 
 	override render() {

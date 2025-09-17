@@ -1,6 +1,6 @@
 import { AppDialogOkEventFactory } from '@lit-app/shared/event/app-dialog-ok.js';
 
-import { databases } from '@lit-app/shared/config/database.js';
+import { databases, databaseMulti } from '@lit-app/shared/config/database.js';
 import { alignIcon, typography } from "@lit-app/shared/styles/index.js";
 import { HTMLEvent } from "@lit-app/shared/types.js";
 import '@material/web/button/filled-button.js';
@@ -106,24 +106,38 @@ export default class cmpAppSurveyUpgrade extends LitElement {
           <p>
             You can still upgrade if you have existing live surveys in the legacy version. 
           </p>
-            Choose the storage location for your survey data with care as this cannot be changed once set.
-          </p>
+            Choose the storage location for your survey data with care as this cannot be changed once set. Multi-region databases are better suited for global surveys. Single-Country databases are better suited when it is important that data residency requirements are met. 
           <p>
             Migration of existing surveys will be be handled on demand.
           </p>
           <p>If you encounter any issues or have questions, please contact us at <a href="mailto:${APP_CONTACT}">${APP_CONTACT}</a></p>
           <md-filled-select 
 					quick
+          required
 					.label=${'Storage Location'}
 					.supportingText=${`Data Storage Location for respondent data. This cannot be changed once set for a Customer.`}
-					.value=${this.databaseId || ''} 
+					.value=${this.databaseId || 'multi-us-nam5'} 
           .disabled=${this.readonly || this.upgrading}
 					@input=${onInput}>
+          <md-item>
+						<div slot="headline">Multi-Region locations</div>
+						<div slot="supportingText">Data is replicated in multiple regions - best suited for when respondent are scattered across the globe.</div>
+					</md-item>
+					${databaseMulti.map(item => html`
+					<md-select-option value=${item[0]} ?selected=${item[0] === this.databaseId}>
+						<div slot="headline">${item[1]}</div>
+						<div slot="supportingText">${item[2]}</div>
+					</md-select-option>
+					`)}
+					<md-divider></md-divider>
+					<md-item>
+						<div slot="headline">Regional locations</div>
+						<div slot="supportingText">Data stays in a single location. Best suited for when respondents are located in a specific area.</div>
+					</md-item>
 					${databases.map(item => html`
 					<md-select-option value=${item[0]} ?selected=${item[0] === this.databaseId}>
 						<div slot="headline">${item[1]}</div>
-					</md-select-option>
-					`)}
+					</md-select-option>`)}
 				</md-filled-select>
         </form>
         <div slot="actions"> 

@@ -50,10 +50,10 @@
   <script type="module" src="/field/switch-field"></script>
   <script type="module" src="/tooltip/tooltip"></script>
   <script type="module" src="/field/choice-radio"></script>
+  <script type="module" src="/field/select"></script>
   <!-- <script type="module" src="/field/choice-order"></script> 
     <script type="module" src="/field/choice-checkbox"></script>
     <script type="module" src="/button/button-override"></script>
-    <script type="module" src="/field/select"></script>
     <script type="module" src="/field/select-input"></script>
     <script type="module" src="/field/record/record"></script>
     <script type="module" src="/field/record-field"></script>
@@ -76,8 +76,8 @@
   <script type="module">
 
 
-    // import '@material/web/select/select-option.js';
-    // import '@material/web/select/filled-select.js';
+    import '@material/web/select/select-option.js';
+    import '@material/web/select/filled-select.js';
     // import '@material/web/tabs/tabs.js';
     // import '@material/web/textfield/filled-text-field.js';
     import '@material/web/button/filled-button.js';
@@ -149,25 +149,23 @@
         custom-validity="custom validity"
         
         supporting-text="this is supporting text" variant="a11y"></lapp-choice-checkbox>
-      
-   <lapp-select 
-    label="lapp Select " 
-    quick
-    value="apple"
-    supporting-text="this is supporting text" 
-    variant="a11y">
-    <md-select-option ></md-select-option>
+-->
+  <lapp-select label="lapp Select " quick value="apple" supporting-text="this is supporting text" variant="a11y">
+    <div>TEST</div>
+    <md-divider></md-divider>
+    <md-select-option></md-select-option>
     <md-select-option value="apple" selected>
       <div slot="headline">Apple</div>
+      <div slot="supporting-text">an apple</div>
     </md-select-option>
-    <md-select-option value="banana" >
+    <md-select-option value="banana">
       <div slot="headline">Banana</div>
     </md-select-option>
-    <md-select-option value="kiwi" >
+    <md-select-option value="kiwi">
       <div slot="headline">Kiwi</div>
     </md-select-option>
   </lapp-select>
-  <lapp-select-input 
+  <!-- <lapp-select-input 
     label="lapp Select Input" 
     quick
     supporting-text="this is supporting text" 

@@ -42,4 +42,10 @@ export const databases = [
   ['johannesburg', 'Johannesburg'],
 ] as const;
 
-export type DatabaseIdT = (typeof databases)[number][0];
+export const databaseMulti = [
+  [ 'multi-eu-eur3', 'Europe', 'replicated in Belgium, Netherlands, Finland'],
+  [ 'multi-us-nam5', 'US', 'replicated in multiple locations across the US'],
+
+]
+
+export type DatabaseIdT = (typeof databases)[number][0] | (typeof databaseMulti)[number][0];

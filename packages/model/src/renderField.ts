@@ -39,7 +39,10 @@ import {
   isComponentText,
   isComponentTextArea,
   isComponentUpload,
-  isComponentUploadImage,
+  isComponentUploadImage, 
+  isLookupCode, 
+  isLookupInfo, 
+  isLookupSeparator,
 } from './types/modelComponent';
 
 
@@ -504,11 +507,28 @@ export function renderField<D extends DefaultI>(
         .required=${!!model.required}
         .value=${value || ''}
         @input=${onInputFact('value')}
-        >${(model.items || []).map(item => html`
-          <md-select-option .value=${item.code} ?selected=${item.code === value}>
-            <div slot="headline">${item.label}</div>
-          </md-select-option>`)}
-      </lapp-select >
+        >${(model.items || []).map(item => {
+      if (isLookupCode(item)) {
+        return html`
+            <md-select-option .value=${item.code} ?selected=${item.code === value}>
+              <div slot="headline">${item.label}</div>
+              ${item.supportingText ? html`<div slot="supporting-text">${item.supportingText}</div>` : nothing}
+            </md-select-option>`;
+      }
+      if (isLookupInfo(item)) {
+        return html`
+            <md-item>
+              <div slot="headline">${item.label}</div>
+              ${item.supportingText ? html`<div slot="supporting-text">${item.supportingText}</div>` : nothing}
+              </md-item>
+            `;
+      }
+      if (isLookupSeparator(item)) {
+        return html`<md-divider></md-divider>`;
+      }
+      return nothing;
+    })}
+        </lapp-select>
       `;
   }
 
@@ -519,7 +539,7 @@ export function renderField<D extends DefaultI>(
       .name=${path}
       style=${ifDefined(model.style)}
       .items=${model.items}
-      .selectedItems=${(model.items || []).filter(item => (value || []).indexOf(item.code) > -1)}
+      .selectedItems=${(model.items || []).filter(item => isLookupCode(item) && (value || []).indexOf(item.code) > -1)}
       @change=${onInputFact('selectedValue')}
       .itemLabelPath=${'label'}
       .itemIdPath=${'code'}
