@@ -22,7 +22,8 @@ import {
   GridConfig,
   Model,
   ModelComponent,
-  ModelComponentSelect
+  ModelComponentSelect, 
+  isLookupCode
 } from './types/modelComponent';
 
 
@@ -502,7 +503,8 @@ export default function renderMixin<
           display = m.table.renderer(data)
         }
         else if (component === 'select') {
-          const item = (m as ModelComponentSelect).items?.find(i => i.code === value)
+          const item = (m as ModelComponentSelect).items?.filter(i => isLookupCode(i))
+            .find(i => i.code === value)
           display = item?.label || key
         }
         return html`<tr class="${key}"><td class="label">${m.table?.label || m.label || key}</td><td>${display}</td></tr>`
