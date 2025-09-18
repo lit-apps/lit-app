@@ -116,7 +116,6 @@ const getDataType = (question: QuestionFieldT): DataTypeT | 'none' => {
   if (type === 'nominal' && question.data.props?.isOrdinalScale) {
     type = 'ordinal';
   }
-  const q = -question
   return type as DataTypeT | 'none';
 };
 

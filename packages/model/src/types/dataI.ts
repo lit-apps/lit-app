@@ -41,17 +41,17 @@ type DeletedMetaT = {
 export interface MetaData<A = AccessT, T = string> {
 	access: A
 	/**
- 	* timestamp is the time the data was created
- 	*/
+		* timestamp is the time the data was created
+		*/
 	timestamp: any
 	/**
- 	* timestampPublished is the time the data was last published
- 	*/
+		* timestampPublished is the time the data was last published
+		*/
 	timestampPublished?: any // timestamp
 	isTest?: boolean
 	version?: string
 	deleted: boolean
-	deletion: DeletedMetaT
+	deletion?: DeletedMetaT
 	type: T
 }
 

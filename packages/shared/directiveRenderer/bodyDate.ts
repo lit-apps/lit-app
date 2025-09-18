@@ -18,10 +18,8 @@ export default function bodyDate<T = any>(
 		const date = valueGetter(item);
 		if (key) {
 			if (date instanceof Promise) {
-				// @ts-expect-error - we know it is a promise
 				date.then(d => item[key] = d)
 			} else {
-				// @ts-expect-error - we know it is a date
 				item[key] = date;
 			}
 
