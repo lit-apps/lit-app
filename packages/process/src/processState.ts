@@ -1,4 +1,4 @@
-import type { DocumentReference } from 'firebase/firestore';
+import { type DocumentReference, doc } from 'firebase/firestore';
 import { State, property } from '@lit-app/state';
 import { FirestoreDocumentController } from '@preignition/lit-firebase';
 // import { LitElement } from 'lit';
@@ -42,11 +42,12 @@ export class ProcessState extends State {
 	private _processCompleted: (value: boolean) => void = () => { };
 	private _processCompletedPromise: Promise<boolean>;
 
-	constructor(ref: DocumentReference) {
+	constructor(ref: DocumentReference, actionName?: string) {
 		super();
 		this._processCompletedPromise = new Promise<boolean>((resolve) => {
 			this._processCompleted = resolve;
 		});
+		ref = actionName ? doc(ref, `internals/process_${actionName}`) : ref;
 		const controller = new FirestoreDocumentController<ProcessData>(
 			this as unknown as ReactiveElement, 
 			ref, 
