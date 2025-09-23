@@ -1,5 +1,5 @@
 import { FirestoreCollectionController, FirestoreDocumentController } from '@preignition/lit-firebase';
-import { type Query, DocumentReference } from 'firebase/firestore';
+import { type Query, DocumentReference, type DocumentData } from 'firebase/firestore';
 import { State } from '@lit-app/state';
 import { type ReactiveElement } from 'lit';
 import { type Collection } from "@lit-app/model";
@@ -25,14 +25,21 @@ import { type Collection } from "@lit-app/model";
 function createFirestoreCollectionHandler<T extends State, D>(
   state: T,
   stateProperty: keyof T | ((keyof T)[]),
-  queryBuilder: (state: T) => Query<D>,
+  queryBuilder: (state: T) => (Query<D> | undefined),
   callback: (data: Collection<D> | undefined, state: T) => void,
   run?: boolean 
 ) {
   let controller: FirestoreCollectionController<unknown> | undefined;
   const subscribe = (_key?: string, _value?: string | undefined) => {
-    const query = queryBuilder(state);
-    if (controller && query) {
+    let query = undefined;
+    try {
+      query = queryBuilder(state);
+    } catch (e) {
+      console.warn("Error building query:", e);
+      return
+    }
+    if (!query || !(query instanceof Query)) return;
+    if (controller) {
       controller.ref = query;
     } else {
       controller = new FirestoreCollectionController<D>(
@@ -66,18 +73,25 @@ function createFirestoreCollectionHandler<T extends State, D>(
  * @param {boolean} [run] An optional boolean to determine if the subscription should run immediately. Defaults to true if any of the state properties are defined.
  * @returns {() => void} A function to unsubscribe from the state.
  */
-function createFirestoreDocumentHandler<T extends State, D>(
+function createFirestoreDocumentHandler<T extends State, D extends DocumentData>(
   state: T,
   stateProperty: keyof T | ((keyof T)[]),
-  refBuilder: (state: T) => DocumentReference<D>,
+  refBuilder: (state: T) => (DocumentReference<D, D> | undefined),
   callback: (data: D | undefined, state: T) => void,
   fieldPath?: string,
   run?: boolean 
 ) {
   let controller: FirestoreDocumentController<unknown> | undefined;
   const subscribe = (_key?: string, _value?: string | undefined) => {
-    const ref = refBuilder(state);
-    if (controller && ref) {
+    let ref = undefined;
+    try {
+      ref = refBuilder(state);
+    } catch (e) {
+      console.warn("Error building document reference:", e);
+      return
+    }
+    if (!ref || !(ref instanceof DocumentReference)) return;
+    if (controller) {
       controller.ref = ref;
     } else {
       controller = new FirestoreDocumentController<D>(

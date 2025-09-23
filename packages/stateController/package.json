@@ -24,7 +24,7 @@
     "@lit-app/model": "link:../model",
     "@lit-app/state": "link:../state",
     "@preignition/lit-firebase": "link:../../../packages/lit-firebase",
-    "firebase": "^11.10.0",
+    "firebase": "^12.3.0",
     "lit": "^3.3.1"
   },
   "devDependencies": {
