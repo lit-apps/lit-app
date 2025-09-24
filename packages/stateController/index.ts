@@ -38,7 +38,7 @@ function createFirestoreCollectionHandler<T extends State, D>(
       console.warn("Error building query:", e);
       return
     }
-    if (!query || !(query instanceof Query)) return;
+    if (!query) return;
     if (controller) {
       controller.ref = query;
     } else {
@@ -76,7 +76,7 @@ function createFirestoreCollectionHandler<T extends State, D>(
 function createFirestoreDocumentHandler<T extends State, D extends DocumentData>(
   state: T,
   stateProperty: keyof T | ((keyof T)[]),
-  refBuilder: (state: T) => (DocumentReference<D, D> | undefined),
+  refBuilder: (state: T) => (DocumentReference | undefined),
   callback: (data: D | undefined, state: T) => void,
   fieldPath?: string,
   run?: boolean 

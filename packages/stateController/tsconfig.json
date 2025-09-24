@@ -4,6 +4,9 @@
     "paths": {
       "lit": [
         "./node_modules/lit"
+      ],
+      "firebase": [
+        "./node_modules/firebase"
       ]
     }
   },
