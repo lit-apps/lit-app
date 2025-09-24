@@ -1,5 +1,5 @@
 
-import {State } from '../state.js'
+import { State } from '../state.js'
 import { parse } from './parse.js';
 import { functionValue } from '../functionValue.js';
 export type StorageOptions = {
@@ -46,9 +46,9 @@ export function storage(options?: StorageOptions) {
 	options = { ...defaultOptions, ...options }
 	
 	return (
-    proto: State,
-    name: PropertyKey
-  ) => {
+		proto: State,
+		name: PropertyKey
+	) => {
 		const descriptor = Object.getOwnPropertyDescriptor(proto, name);
 		if (!descriptor) {
 			throw new Error('@local-storage decorator need to be called after @property')
@@ -57,15 +57,16 @@ export function storage(options?: StorageOptions) {
 		const ctor = (proto).constructor as typeof State;
 		const definition = ctor.propertyMap.get(name);
 		const type = definition?.type
-		if(definition) {
+		if (definition) {
 			const previousValue = definition.initialValue
 			definition.initialValue = () => parse(localStorage.getItem(key), type) ?? functionValue(previousValue);
-			ctor.propertyMap.set(name, {...definition, ...options})
+			ctor.propertyMap.set(name, { ...definition, ...options })
 		}
-		// const oldGetter = descriptor?.get;
 		const oldSetter = descriptor?.set;
-		const setter = function (this: State, value: unknown) {
-			if (value !== undefined) {
+		const setter = function(this: State, value: unknown) {
+			// we do not set localStorage when the tab is inactive 
+			// this leads to properties not being able to update when multiple tabs are open
+			if (value !== undefined && !document.hidden) {
 				localStorage.setItem(key,
 					(type === Object ||
 						type === Array) ? JSON.stringify(value) : value as string);
