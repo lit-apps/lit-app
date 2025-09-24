@@ -22,13 +22,13 @@ export function watch(propName: string, waitUntilFirstUpdate = false) {
     const { willUpdate } = proto;
     if (propName in proto) {
       // @ts-expect-error  - we are cheating
-      proto.willUpdate = function (this: T, changedProperties: PropertyValues) {
+      proto.willUpdate = function(this: T, changedProperties: PropertyValues) {
         if (changedProperties.has(propName)) {
           const oldValue = changedProperties.get(propName);
           const newValue = this[propName as keyof T];
 
           if (oldValue !== newValue) {
-            if (!waitUntilFirstUpdate || this.hasUpdated) {
+            if (!waitUntilFirstUpdate || (this.hasUpdated && waitUntilFirstUpdate)) {
               // @ts-expect-error  - we are cheating
               this[functionName](newValue, oldValue);
             }
