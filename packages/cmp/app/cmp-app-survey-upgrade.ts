@@ -121,7 +121,7 @@ export default class cmpAppSurveyUpgrade extends LitElement {
 					@input=${onInput}>
           <md-item>
 						<div slot="headline">Multi-Region locations</div>
-						<div slot="supportingText">Data is replicated in multiple regions - best suited for when respondent are scattered across the globe.</div>
+						<div slot="supporting-text">Data is replicated in multiple regions - best suited for when respondent are scattered across the globe.</div>
 					</md-item>
 					${databaseMulti.map(item => html`
 					<md-select-option value=${item[0]} ?selected=${item[0] === this.databaseId}>
@@ -132,7 +132,7 @@ export default class cmpAppSurveyUpgrade extends LitElement {
 					<md-divider></md-divider>
 					<md-item>
 						<div slot="headline">Regional locations</div>
-						<div slot="supportingText">Data stays in a single location. Best suited for when respondents are located in a specific area.</div>
+						<div slot="supporting-text">Data stays in a single location. Best suited for when respondents are located in a specific area.</div>
 					</md-item>
 					${databases.map(item => html`
 					<md-select-option value=${item[0]} ?selected=${item[0] === this.databaseId}>
