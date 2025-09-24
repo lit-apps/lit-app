@@ -5,9 +5,9 @@ const styles = css`
 		margin-inline-start: 4px;
 	}
 	/* :host([child-label-above]) [data-role="radio"] { */
-	:host([inline]) [data-role="radio"] {
+	:host([inline]:not([child-label-inline])) [data-role="radio"] {
 		margin-inline-end: 0;
 		margin-inline-start: 0;
 	}
 `;
-export default styles;	
+export default styles; 

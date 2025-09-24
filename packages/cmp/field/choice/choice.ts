@@ -37,8 +37,8 @@ import locale from './readaloud-locale.mjs';
 export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 
 	/** 
-	 * true to allow multiple selection
-	 */
+ 	* true to allow multiple selection
+ 	*/
 	protected abstract readonly isMulti: boolean;
 
 	protected abstract readonly choiceInputSelector: string;
@@ -52,9 +52,9 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	@query('#list') override readonly inputOrTextarea!: HTMLInputElement;
 
 	/**
-	 * when true, show each option on their own line
-	 * @deprecated use `inline` instead
-	 */
+ 	* when true, show each option on their own line
+ 	* @deprecated use `inline` instead
+ 	*/
 	@property({ type: Boolean, reflect: true })
 	dense!: boolean;
 
@@ -62,30 +62,30 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	inline: boolean = false;
 
 	/**
-	 * The options to render
-	 */
+ 	* The options to render
+ 	*/
 	@property({ attribute: false }) options!: Option[]
 
 
 	/**
-	 * true to auto validate on change
-	 */
+ 	* true to auto validate on change
+ 	*/
 	@property({ type: Boolean }) autoValidate = false
 
 	/**
-	 * `name` name for the input element
-	 */
+ 	* `name` name for the input element
+ 	*/
 	// @property({ reflect: true }) override name!: string;
 
 	/**
-	 * The tabindex of the underlying list.
-	 */
+ 	* The tabindex of the underlying list.
+ 	*/
 	@property({ type: Number }) listTabIndex = -1;
 
 	/**
-	 * A filter function to filter out options
-	 * 
-	 */
+ 	* A filter function to filter out options
+ 	* 
+ 	*/
 	@property({ attribute: false }) filter: (option: Option) => boolean = () => true;
 
 	get items() {
@@ -107,7 +107,7 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		return this?._selectedItems.map(item => item.value);
 	}
 
-	getOptionEl(itemElement: Element): HTMLInputElement {
+	getOptionEl(_itemElement: Element): HTMLInputElement {
 	}
 	protected _queryItems(selector: string) {
 		return this.renderRoot?.querySelectorAll(selector) ?? []
@@ -176,10 +176,10 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	}
 
 	/**
-	 * 
-	 * @param event render empty option - when not options	are available or all
-	 * have been filtered out
-	 */
+ 	* 
+ 	* @param event render empty option - when not options	are available or all
+ 	* have been filtered out
+ 	*/
 	protected renderEmptyOption(): TemplateResult {
 		return html`<md-list-item 
 			disabled >
@@ -210,10 +210,10 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		return value
 	}
 	/**	
-	 * React to a change event coming from the list
-	 * we call this method from list item directly as
-	 * change event is not composable
-	 */
+ 	* React to a change event coming from the list
+ 	* we call this method from list item directly as
+ 	* change event is not composable
+ 	*/
 	async onChange(e?: HTMLEvent<LitElement>) {
 		if (this.readOnly) { return }
 		await this.updateComplete;

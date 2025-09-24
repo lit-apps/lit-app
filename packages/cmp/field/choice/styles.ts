@@ -23,10 +23,6 @@ const styles: CSSResult = css`
 
 /** inline */
 :host([inline]) #list { 
-	/* display: flex;
-  flex-flow: row wrap;
-  align-items: center; */
-  /* gap: 8px; */
   align-items: flex-end;
   justify-content: flex-start;
   flex-direction: row;
@@ -38,7 +34,7 @@ const styles: CSSResult = css`
   min-width: 130px;
   max-width: 280px;
 }
-:host([inline]) div[slot="headline"] { 
+:host([inline]:not([child-label-inline])) div[slot="headline"] { 
   flex: 1;
   text-align: center;
 }
@@ -50,4 +46,4 @@ const styles: CSSResult = css`
   }
 }
 `
-export default styles;
+export default styles; 
