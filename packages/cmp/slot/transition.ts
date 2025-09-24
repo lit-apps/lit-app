@@ -42,6 +42,12 @@ export default class slotTransition extends LitElement {
         --_transition-transform-next: translateX(100%);
         --_transition-delay: 0s;
       }
+
+      :host-context([dir=rtl]):host([theme~=slide]) {
+        --_transition-transform-previous: translateX(100%);
+        --_transition-transform-next: translateX(-100%);
+      }
+
       :host([theme~=scale]) {
         --_transition-transform-previous: scale(0.7);
         --_transition-transform-next: scale(0.7);
