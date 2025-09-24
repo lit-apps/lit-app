@@ -18,8 +18,8 @@ export declare class DataMixinInterface<D> {
 export declare class DataMixinConsumeInterface<D> extends DataMixinInterface<D> {
 	// preventConsume: boolean;
 	/**
-	 * whether the data has changed for a given entity and path
-	 */
+ 	* whether the data has changed for a given entity and path
+ 	*/
 	hasChanged(path: string, entityName: string): boolean;
 	contextData: D;
 }
@@ -53,25 +53,19 @@ export const ConsumeDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 	abstract class ContextConsumeDataMixinClass extends superClass {
 
 		/**
-		 * the data consumed from the context - we are not using `data` so that it is possible
-		 * to set data independently, via the `data` property, backed by `_data
-		 */
+ 		* the data consumed from the context - we are not using `data` so that it is possible
+ 		* to set data independently, via the `data` property, backed by `_data
+ 		*/
 		@consume({ context: dataContext, subscribe: true })
 		@state() contextData!: any;
 
 		// TODO: check if we still need prevent-consume as having data and contextData as separate props should be enough
-		// @property({ type: Boolean, attribute: 'prevent-consume' }) preventConsume = false;
-
 		@consume({ context: dataIsArrayContext, subscribe: true })
 		@state() dataIsArray!: boolean;
 
 		private _data!: D;
 		@property()
 		set data(val: D) {
-			// if (val !== undefined) {
-			// if se set data, we should not consume context data
-			// this.preventConsume = true
-			// }
 			this._data = val;
 		}
 		get data() {
@@ -79,8 +73,8 @@ export const ConsumeDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 		}
 
 		/**
-		 * whether the data has changed for a given entity and path
-		 */
+ 		* whether the data has changed for a given entity and path
+ 		*/
 		hasChanged(path: string, entityName: string): boolean {
 			const hasChangedEvent = new DataHasChanged(path, entityName);
 			this.dispatchEvent(hasChangedEvent);
@@ -128,19 +122,19 @@ export const ProvideDataMixin = <D = any>() => dedupeMixin(<T extends MixinBase<
 		@state() dataIsArray!: boolean;
 
 		/**
-		 * Whether to relay changes in the parent data to the child data.
-		 * This is useful when components need to re-render when the parent data changes.
-		 */
+ 		* Whether to relay changes in the parent data to the child data.
+ 		* This is useful when components need to re-render when the parent data changes.
+ 		*/
 		@property({ type: Boolean }) relayParentChange = false;
 
 		provider = new ContextProvider(this, { context: dataContext, initialValue: this.data });
 
 		/**
-		 * A flag to know if we have a parent Provider
-		 * we only set provider values when: 
-		 * - we do not have parentData
-		 * - we have parentData and both data and parentData are set
-		 */
+ 		* A flag to know if we have a parent Provider
+ 		* we only set provider values when: 
+ 		* - we do not have parentData
+ 		* - we have parentData and both data and parentData are set
+ 		*/
 		// private _hasParentProvider = false;
 
 		override willUpdate(prop: PropertyValues) {
