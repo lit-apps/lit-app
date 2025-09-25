@@ -31,6 +31,7 @@ const _groupBy = (path: string, groupValue: number, defaultValue: string) => {
   return (d: any) => fl(get(path as "", d), groupValue, defaultValue);
 };
 
+type DataT = { key: string, values: any };
 /**
  *  
  */
@@ -42,15 +43,16 @@ export class lappAnalyticsChart extends
       ConsumeUniverse(LitElement))) {
 
   static override styles = css`
+  host {
       display: block;
       height: 100%;
-    `;
+   } `;
 
   @property({ attribute: false }) field!: QuestionFieldT;
   @property() chartType!: CharTypeT;
 
   @state() scale: any
-  @state() data!: any[]
+  @state() data!: DataT[]
   @state() _groupKeys!: string[]
   @state() options!: ReadonlyArray<OptionT>;
   @state() labels!: string[];
@@ -102,18 +104,18 @@ export class lappAnalyticsChart extends
     this.addEventListener('multi-select', this._onMultiSelect);
   }
 
-  override willUpdate(changedProperties: PropertyValues<this>) {
-    super.willUpdate(changedProperties);
-    if (changedProperties.has('scale') || changedProperties.has('field')) {
-      this.computeLabels(this.scale, this.field);
+  override willUpdate(props: PropertyValues<this>) {
+    super.willUpdate(props);
+    if (props.has('_groupKeys') || props.has('field')) {
+      this.computeLabels(this._groupKeys, this.field);
     }
   }
 
-  private computeLabels(scale: any, field: QuestionFieldT) {
+  private computeLabels(groupKeys: string[], field: QuestionFieldT) {
     // Compute labels based on scale and field
-    if (!scale || !field || !hasLookup(field)) return
+    if (!groupKeys || !field || !hasLookup(field)) return
     const options = getItemsOfType<OptionT>(field, 'option');
-    const domainKeys = scale.domain();
+    const domainKeys = groupKeys;
 
     // add option to the domainKeys if not already present
     options.forEach(option => {
@@ -122,6 +124,10 @@ export class lappAnalyticsChart extends
       }
     });
 
+    this.options = options
+
+    // reset the domain of the scale as it might have changed
+    this.scale.domain(domainKeys);
     this.labels = domainKeys.map((key: string) => {
       if (key === missingKey) {
         return 'blank';
@@ -130,10 +136,6 @@ export class lappAnalyticsChart extends
       if (!option) return 'old (deleted) key';
       return ellipsis(option?.locale.label || key);
     });
-    this.options = options
-
-    // reset the domain of the scale as it might have changed
-    scale.domain(domainKeys);
 
     // TODO: check if this is needed
     // this.dispatchEvent(new CustomEvent('multi-refresh', {detail: {}, bubbles: true, composed: true}));
@@ -178,7 +180,7 @@ export class lappAnalyticsChart extends
        <multi-verse-pie 
           id="chart"
           .data=${this.data}
-          .colorScale="${this.scale && this.scale.range(cfg('colorRange'))}"  
+          .colorScale=${this.scale && this.scale.range(cfg('colorRange'))}
           .selected="${this.selected}"
           .rightMargin="${cfg('rightMargin')}"
           .padAngle="${cfg('padAngle')}"
@@ -280,6 +282,7 @@ export class lappAnalyticsChart extends
   }
 
   renderLegend() {
+    if (!this.labels) return nothing;
     return html`
      <multi-legend 
         legend
@@ -349,12 +352,12 @@ export class lappAnalyticsChart extends
 
   _onMultiSelect(e: CustomEvent) {
     const { isRange, isMulti, selection } = e.detail;
-    const filter = this._getFitlerText(selection, isMulti, isRange);
+    const filter = this._getFilterText(selection, isMulti, isRange);
 
     this.dispatchEvent(new CustomEvent('filter-changed', { detail: Object.assign({ value: filter }, e.detail), bubbles: true, composed: true }));
   }
 
-  _getFitlerText(selection: any, isMulti: boolean, isRange: boolean) {
+  _getFilterText(selection: any, isMulti: boolean, isRange: boolean) {
     const isEmtpySelection = !selection || ((isMulti || isRange) && selection && selection.length === 0);
     if (isEmtpySelection) {
       return null;
