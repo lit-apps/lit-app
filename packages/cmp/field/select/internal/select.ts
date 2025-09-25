@@ -135,7 +135,7 @@ export abstract class Select extends
 
   // TODO: check if we can apply a11y-field mixin on select and if we need this
   getTextLabel() {
-    let label = this.field?.getTextLabel?.() || this.label
+    const label = this.field?.getTextLabel?.() || this.label
     return label
   }
 
