@@ -1,4 +1,5 @@
 import type { Parser } from "@json2csv/plainjs";
+import { tokenState } from "@lit-app/base/state";
 import { ToastEvent } from '@lit-app/shared/event';
 import { HTMLEvent } from '@lit-app/shared/types';
 import { MdDialog } from '@material/web/dialog/dialog';
@@ -8,7 +9,6 @@ import { LappChoiceRadio } from "../../field/choice-radio.js";
 import { DownloadEvent } from "../dialog-download.js";
 import downloadCSV from '../downloadCSV.js';
 import downloadJSON from '../downloadJSON.js';
-import { tokenState } from "@lit-app/base/state";
 
 import('@material/web/dialog/dialog.js')
 import('@material/web/button/text-button.js')
@@ -333,12 +333,20 @@ export class DialogDownload extends LitElement {
       } else {
         // Handle errors (e.g., invalid credentials, file not found)
         console.error('Error downloading file:', response.statusText, response);
-        if (response.status === 401 && response.statusText === 'Token expired') {
-          // specific case of token expired
-          await tokenState.doRefreshToken();
-          this.dispatchEvent(new ToastEvent(`Refreshed authentication token, retrying download...`, 'info'));
-          await this.initiateDownload(url, downloadName, retry + 1);
-          return;
+        if (response.status === 401) {
+          try {
+            const errorJson = await response.json();
+            if (errorJson.code === 'TOKEN_EXPIRED') {
+              // specific case of token expired
+              await tokenState.doRefreshToken();
+              this.dispatchEvent(new ToastEvent(`Refreshed authentication token, retrying download...`, 'info'));
+              await this.initiateDownload(url, downloadName, retry + 1);
+              return;
+            }
+          } catch (e) {
+            // not a json response, or other parsing error
+            console.error('Could not parse error response as JSON', e);
+          }
         }
 
         this.dispatchEvent(new ToastEvent(`Error downloading file: ${response.statusText} `, 'error'));
