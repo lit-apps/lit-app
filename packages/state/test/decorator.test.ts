@@ -68,6 +68,17 @@ describe("decorator", () => {
 		expect(localStorage.getItem('_ls_aa')).toBe(2)
   });
 
+	it("sync @property({value}) with session storage", () => {
+		class S extends State {
+			@storage({key: 'aa', store: 'session'})
+			@property({value: 1}) a;
+		}
+		const s = new S()
+		expect(sessionStorage.getItem('_ls_aa')).toBe(1)
+		s.a = 2
+		expect(sessionStorage.getItem('_ls_aa')).toBe(2)
+  });
+
 	it("sync @query({value}) ", async () => {
 		class S extends State {
 			@query({parameter: 'aa'})
