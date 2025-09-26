@@ -331,15 +331,17 @@ export class DialogDownload extends LitElement {
         downloadLink.click();
         document.body.removeChild(downloadLink);
       } else {
-        // Handle errors (e.g., invalid credentials, file not found)
-        console.error('Error downloading file:', response.statusText, response);
+        // this time without head to get response body 
+        const response = await fetch(url);
+        const errorJson = await response.json();
+        console.error('Error downloading file:', errorJson, response);
+
         if (response.status === 401) {
           try {
-            const errorJson = await response.json();
             if (errorJson.code === 'TOKEN_EXPIRED') {
               // specific case of token expired
-              await tokenState.doRefreshToken();
               this.dispatchEvent(new ToastEvent(`Refreshed authentication token, retrying download...`, 'info'));
+              await tokenState.doRefreshToken();
               await this.initiateDownload(url, downloadName, retry + 1);
               return;
             }
@@ -349,7 +351,7 @@ export class DialogDownload extends LitElement {
           }
         }
 
-        this.dispatchEvent(new ToastEvent(`Error downloading file: ${response.statusText} `, 'error'));
+        this.dispatchEvent(new ToastEvent(`Error downloading file: ${errorJson.error || errorJson.message} `, 'error'));
         // Here, you can dispatch an event or call a function to handle the error
       }
     } catch (error) {
