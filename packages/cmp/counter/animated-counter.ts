@@ -35,7 +35,7 @@ export class AnimatedCounter extends LitElement {
     }
 
     .counter {
-      font-size: var(--lapp-animated-counter-font-size, 4rem);;
+      font-size: var(--lapp-animated-counter-font-size, 4rem);
       font-weight: bold;
     }
   `;

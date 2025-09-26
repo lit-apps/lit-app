@@ -5,8 +5,8 @@ import translate  from '@preignition/preignition-util/translate-mixin.js';
 import locale from './feedback-locale.mjs';
 import './dialog';
 import './button';
-import FeedbackButton  from './button';;
-import FeedbackDialog  from './dialog';;
+import FeedbackButton  from './button';
+import FeedbackDialog  from './dialog';
 import { PropertyValues } from 'lit';
 import { APP_NAME } from '@preignition/preignition-config';
 

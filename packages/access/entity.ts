@@ -1,6 +1,6 @@
 import { css } from 'lit';
 import {customElement} from 'lit/decorators.js';
-import page from '@lit-app/shared/styles/page.js';;
+import page from '@lit-app/shared/styles/page.js';
 import { form } from '@lit-app/shared/styles';
 import { label } from '@lit-app/shared/styles';
 import { margin } from '@lit-app/shared/styles';

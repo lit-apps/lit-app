@@ -1,4 +1,4 @@
-import page from '@lit-app/shared/styles/page.js';;
+import page from '@lit-app/shared/styles/page.js';
 import { form } from '@lit-app/shared/styles';
 import { outlined } from '@lit-app/shared/styles';
 

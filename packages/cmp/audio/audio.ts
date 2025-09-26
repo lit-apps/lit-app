@@ -36,7 +36,7 @@ export default class lappAudio extends LitElement {
 	 */
 	@property() src: string = src[0];
 	@property() speech: string = 'this is some text to speech';
-	@property({ attribute: false }) speechConfig: SpeechConfig = { pitch: 1, rate: 1, language: 'en' };;
+	@property({ attribute: false }) speechConfig: SpeechConfig = { pitch: 1, rate: 1, language: 'en' };
 	@property() crossOrigin: 'anonymous' | 'use-credentials' = 'anonymous';
 
 	// override willUpdate(props: PropertyValues<this>) {

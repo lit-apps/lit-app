@@ -18,7 +18,7 @@ import('@material/web/checkbox/checkbox.js');
 import('@lit-app/cmp/field/text-field')
 import '@lit-app/cmp/field/choice-star';
 import feedbackState from './feedbackState';
-import { typography } from '@lit-app/shared/styles';;
+import { typography } from '@lit-app/shared/styles';
 import { StateController } from '@lit-app/state';
 import { HTMLEvent } from '@lit-app/shared/types';
 import { FeedbackSubmitEvent } from '../event.js';

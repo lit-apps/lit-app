@@ -93,7 +93,7 @@ const styles = css`
     }
 
     .grid-container {
-      padding: var(--space-x-small);;
+      padding: var(--space-x-small);
       display: grid;
       grid-flow: row dense;
       grid-template-columns: repeat(3, 1fr);
