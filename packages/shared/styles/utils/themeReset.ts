@@ -1,4 +1,5 @@
 import { unsafeCSS } from "lit";
+import { isSafari, safariVersion } from '../../browser/index.js';
 type SuffixT = `--${string}`
 
 const sysColorPrefix = '--md-sys-color'
@@ -127,10 +128,10 @@ const typescaleTokens = [
 ]
 
 function themeReset(suffix: SuffixT, withSuffix: SuffixT, tokens: readonly string[]) {
+  const inherit = isSafari && (safariVersion || 20) < 19 ? '' : ', inherit';
+  // console.log('IS SAFARI', isSafari, safariVersion);
   return unsafeCSS(
-    `:host{
-    ${tokens.map(token => `${suffix}-${token}: var(${withSuffix}-${token}, inherit);`).join('\n')}
-     }`
+    `:host{${tokens.map(token => `${suffix}-${token}: var(${withSuffix}-${token}${inherit});`).join('')}}`
   )
 }
 
@@ -139,4 +140,4 @@ function themeReset(suffix: SuffixT, withSuffix: SuffixT, tokens: readonly strin
  */
 export function themeResetColors(withSuffix: SuffixT) {
   return themeReset(sysColorPrefix, withSuffix, colorTokens)
-}
+} 
