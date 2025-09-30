@@ -1,29 +1,52 @@
 import { AppErrorEvent } from "../event/index.js";
 
+const validCodes = [
+  'auth/invalid-credentials',
+  'auth/user-not-found',
+  'auth/email-already-in-use',
+  'auth/weak-password',
+  'auth/requires-recent-login',
+  'network/offline',
+  'network/timeout',
+  'network/connection-error',
+  'data/not-found',
+  'data/invalid',
+  'data/permission-denied',
+  'data/already-exists',
+  'validation/required',
+  'validation/format',
+  'validation/constraint',
+  'api/rate-limit',
+  'api/server-error',
+  'api/bad-request',
+  'app/unknown',
+  'app/not-implemented'
+] as const;
+
 /**
  * Common error codes used throughout the application
  */
-export type ErrorCodeT =
-  | 'auth/invalid-credentials'     // Authentication errors
-  | 'auth/user-not-found'
-  | 'auth/email-already-in-use'
-  | 'auth/weak-password'
-  | 'auth/requires-recent-login'
-  | 'network/offline'              // Network-related errors
-  | 'network/timeout'
-  | 'network/connection-error'
-  | 'data/not-found'               // Data errors
-  | 'data/invalid'
-  | 'data/permission-denied'
-  | 'data/already-exists'
-  | 'validation/required'          // Form validation errors
-  | 'validation/format'
-  | 'validation/constraint'
-  | 'api/rate-limit'               // API errors
-  | 'api/server-error'
-  | 'api/bad-request'
-  | 'app/unknown'                  // Generic application errors
-  | 'app/not-implemented'
+export type ErrorCodeT = typeof validCodes[number];
+// | 'auth/invalid-credentials'     // Authentication errors
+// | 'auth/user-not-found'
+// | 'auth/email-already-in-use'
+// | 'auth/weak-password'
+// | 'auth/requires-recent-login'
+// | 'network/offline'              // Network-related errors
+// | 'network/timeout'
+// | 'network/connection-error'
+// | 'data/not-found'               // Data errors
+// | 'data/invalid'
+// | 'data/permission-denied'
+// | 'data/already-exists'
+// | 'validation/required'          // Form validation errors
+// | 'validation/format'
+// | 'validation/constraint'
+// | 'api/rate-limit'               // API errors
+// | 'api/server-error'
+// | 'api/bad-request'
+// | 'app/unknown'                  // Generic application errors
+// | 'app/not-implemented'
 
 
 /**
@@ -167,6 +190,10 @@ export function createError(code: ErrorCodeT, optionsOrMessage: ErrorOptions | s
   }
 }
 
+export function isErrorCode(code: string): code is ErrorCodeT {
+  return validCodes.includes(code as ErrorCodeT);
+} 
+
 /**
  * Dispatches an AppErrorEvent if the error is an instance of BaseAppError,
  * otherwise throws the error.
@@ -182,4 +209,4 @@ export function dispatchOrThrow(el: HTMLElement, error: ApplicationError | Error
     return
   }
   throw error
-}
+} 
