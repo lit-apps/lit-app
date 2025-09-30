@@ -116,7 +116,7 @@ class RouteStateController implements ReactiveController {
     // when the route changes, try to sync existing context ids to the actor state
     // the convention is to add a `context.[key]` event that will assign the value 
     // of the route param to the actor state.
-    const changeState = (e: ChangeStateEvent) => {
+    const changeState = (_e: ChangeStateEvent) => {
       // console.group('Route Controller - changestate')
       // console.log('detail:', e.detail);
       const match = this.routerSlot.match;
@@ -231,4 +231,4 @@ function getMatchedRoute(routerSlot: IRouterSlot, url?: string) {
 
 
 export { RouteStateController };
-export default RouteStateController;
+export default RouteStateController; 
