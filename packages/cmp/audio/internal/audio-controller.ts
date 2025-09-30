@@ -57,10 +57,11 @@ export class AudioController implements ReactiveController, PlayerI {
 
 	constructor(protected host: ReactiveControllerHost, src?: string) {
 		// Register for lifecycle updates
-		host.addController(this);
+		
 		if (src) {
 			this.src = src;
 		}
+		host.addController(this);
 	}
 
 	private createAudio(src: string = this.src) {
@@ -91,7 +92,7 @@ export class AudioController implements ReactiveController, PlayerI {
 			}
 			this.audio.onerror = (e) => {
 				console.error('Audio Error', e);
-				const toastEvent = new ToastEvent(`Error while loading audio: ${e}`, 'error');
+				const toastEvent = new ToastEvent(`Error while loading audio	`, 'error');
 				(this.host as unknown as HTMLElement).dispatchEvent(toastEvent);
 				this.host.requestUpdate();
 			}
@@ -151,4 +152,4 @@ export class AudioController implements ReactiveController, PlayerI {
 		this.dispose()
 	}
 
-}
+} 

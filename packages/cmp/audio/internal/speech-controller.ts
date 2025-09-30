@@ -86,7 +86,12 @@ const utter = (utterance: SpeechSynthesisUtterance, paused: boolean) => {
 		clear();
 		synthTimer()
 	}
-	paused ? synth.resume() : synth.speak(utterance);
+
+	if (paused) {
+		synth.resume();
+	} else {
+		synth.speak(utterance);
+	}
 }
 const applyConfig = (utterance: SpeechSynthesisUtterance, config: SpeechConfigI) => {
 	utterance.voice = voice || null
@@ -285,4 +290,4 @@ export class SpeechController implements ReactiveController, PlayerI {
 	hostDisconnected(): void {
 		this.dispose()
 	}
-}
+} 
