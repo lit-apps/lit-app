@@ -29,6 +29,7 @@ export default class lappChoiceListItem extends
 
 		:host([data-variant=vertical]) md-item {
 			flex-direction: column-reverse;
+			overflow: hidden; // this is needed for md images in options
 		}
 		/** This is to allow list text to wrap */
 		.label-text {

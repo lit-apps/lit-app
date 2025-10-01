@@ -170,7 +170,7 @@ export abstract class Order extends
             ${this.renderPriority(checked, index)}
             ${this.renderUpDown(checked, index, option)}
             ${this.renderCheckbox(option, index)}
-            <div slot="headline">${option.md || option.label}</div>
+            <div slot="headline">${option.label}</div>
             ${when(option.supportingText, () => html`<div slot="supportingText">${option.supportingText}</div>`)}
             </lapp-choice-list-item>`
       })}

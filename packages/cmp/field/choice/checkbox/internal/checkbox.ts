@@ -14,7 +14,7 @@ import { LabelInlineMixin } from '../../labelInlineMixin.js';
 import '../../list-item';
 import MultiChoiceMixin from '../../multiMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
-import type { Option, OptionLabelT, OptionMdT } from '../../types';
+import type { Option } from '../../types';
 
 /**
  * Checkbox field 
@@ -46,7 +46,7 @@ export abstract class Checkbox extends
             >
             ${this.renderOptionIllustration(option)}
             ${this.renderCheckbox(option, index)}
-            <div slot="headline">${(option as OptionMdT).md || (option as OptionLabelT).label}</div>
+            <div slot="headline">${option.label}</div>
             ${when(option.supportingText, () => html`<div slot="supporting-text">${option.supportingText}</div>`)}
           </lapp-choice-list-item>
         `

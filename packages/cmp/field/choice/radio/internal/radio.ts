@@ -12,7 +12,7 @@ import LabelInlineMixin from '../../labelInlineMixin.js';
 import '../../list-item';
 import SingleMixin from '../../singleMixin';
 import specifyChangedEvent from '../../specifyChangedDetail';
-import { isOptionMdT, type Option } from '../../types';
+import { type Option } from '../../types';
 
 /**
  * Radio group field
@@ -42,7 +42,7 @@ export abstract class Radio extends
           >
           ${this.renderOptionIllustration(option)}
           ${this.renderRadio(option, index)}
-          <div slot="headline">${isOptionMdT(option) ? option.md : option.label}</div>
+          <div slot="headline">${option.label}</div>
           ${when(option.supportingText, () => html`<div slot="supportingText">${option.supportingText}</div>`)}
         </lapp-choice-list-item>`
     )}`

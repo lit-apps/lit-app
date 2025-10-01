@@ -10,22 +10,22 @@ export type Variant = 'a11y'
 type Constructor<T = {}> = new (...args: any[]) => T;
 export declare class A11yFieldMixinInterface {
 	/**
-	 * a variant of the field. Variants are use to render field differently or augment them.
-	 */
+ 	* a variant of the field. Variants are use to render field differently or augment them.
+ 	*/
 	variant: Variant | undefined;
 	/**
-	 * whether to alway show the label above the field and disable animation
-	 */
+ 	* whether to alway show the label above the field and disable animation
+ 	*/
 	labelAbove: boolean | undefined;
 
 	/**
-	 * whether to persist supporting text 
-	 * @default false
-	 */
+ 	* whether to persist supporting text 
+ 	* @default false
+ 	*/
 	persistSupportingText: boolean | undefined;
 	/**
-	 * get the label as text - and parsed when it is markdown
-	 */
+ 	* get the label as text - and parsed when it is markdown
+ 	*/
 	getTextLabel(): string;
 
 }
@@ -35,7 +35,7 @@ export declare class A11yFieldMixinInterface {
  * - [x] disable label animation
  * - [x] allow label to wrap
  * - [x] larger label
- * - [ ] render markdown in label
+ * - [x] render markdown in label
  */
 export const A11yFieldMixin = <T extends Constructor<Field>>(superClass: T) => {
 

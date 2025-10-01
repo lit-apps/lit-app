@@ -12,6 +12,7 @@ import { Generic, GenericI } from '../generic/generic';
 import { Checkbox } from './checkbox/internal/checkbox';
 import './list';
 import { AriaList, Option, OptionLabelT } from './types';
+import { parseInline } from '@lit-app/shared/md/index.js';
 
 // const NAVIGABLE_KEY_SET = new Set<string>(Object.values(NavigableKeys));
 // const isNavigableKey = (key: string) => NAVIGABLE_KEY_SET.has(key);
@@ -37,8 +38,8 @@ import locale from './readaloud-locale.mjs';
 export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 
 	/** 
- 	* true to allow multiple selection
- 	*/
+		* true to allow multiple selection
+		*/
 	protected abstract readonly isMulti: boolean;
 
 	protected abstract readonly choiceInputSelector: string;
@@ -52,40 +53,43 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	@query('#list') override readonly inputOrTextarea!: HTMLInputElement;
 
 	/**
- 	* when true, show each option on their own line
- 	* @deprecated use `inline` instead
- 	*/
+		* when true, show each option on their own line
+		* @deprecated use `inline` instead
+		*/
 	@property({ type: Boolean, reflect: true })
 	dense!: boolean;
 
 	@property({ type: Boolean, reflect: true })
 	inline: boolean = false;
 
+	@property({ type: Boolean })
+	supportMd: boolean = false;
+
 	/**
- 	* The options to render
- 	*/
+		* The options to render
+		*/
 	@property({ attribute: false }) options!: Option[]
 
 
 	/**
- 	* true to auto validate on change
- 	*/
+		* true to auto validate on change
+		*/
 	@property({ type: Boolean }) autoValidate = false
 
 	/**
- 	* `name` name for the input element
- 	*/
+		* `name` name for the input element
+		*/
 	// @property({ reflect: true }) override name!: string;
 
 	/**
- 	* The tabindex of the underlying list.
- 	*/
+		* The tabindex of the underlying list.
+		*/
 	@property({ type: Number }) listTabIndex = -1;
 
 	/**
- 	* A filter function to filter out options
- 	* 
- 	*/
+		* A filter function to filter out options
+		* 
+		*/
 	@property({ attribute: false }) filter: (option: Option) => boolean = () => true;
 
 	get items() {
@@ -131,6 +135,10 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		if (props.has('options')) {
 			for (const option of this.options) {
 				option.innerTextLabel = getInnerText((option as OptionLabelT).label);
+				if (this.supportMd && typeof option.label === 'string') {
+					(option as any)._label = option.label
+					option.label = parseInline(option.label) as TemplateResult
+				}
 			}
 		}
 		// TODO : remove this when inline is deprecated
@@ -176,10 +184,10 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 	}
 
 	/**
- 	* 
- 	* @param event render empty option - when not options	are available or all
- 	* have been filtered out
- 	*/
+		* 
+		* @param event render empty option - when not options	are available or all
+		* have been filtered out
+		*/
 	protected renderEmptyOption(): TemplateResult {
 		return html`<md-list-item 
 			disabled >
@@ -210,10 +218,10 @@ export abstract class Choice extends translate(Generic, locale, 'readaloud') {
 		return value
 	}
 	/**	
- 	* React to a change event coming from the list
- 	* we call this method from list item directly as
- 	* change event is not composable
- 	*/
+		* React to a change event coming from the list
+		* we call this method from list item directly as
+		* change event is not composable
+		*/
 	async onChange(e?: HTMLEvent<LitElement>) {
 		if (this.readOnly) { return }
 		await this.updateComplete;
