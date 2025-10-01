@@ -39,27 +39,27 @@ type OptionBase = {
 	media?: Media
 	alt?: string
 	/**
-	 * The label as text (label can contain markdown)
-	 */
+ 	* The label as text (label can contain markdown)
+ 	*/
 	innerTextLabel?: string
 }
 export type OptionLabelT = OptionBase & {
-	md?: never
+	// md?: never
 	label: string | TemplateResult
 }
-export type OptionMdT = OptionBase & {
-	label?: never
-	md: string
-}
-export type Option = OptionLabelT | OptionMdT
+// export type OptionMdT = OptionBase & {
+// 	label?: never
+// 	md: string
+// }
+export type Option = OptionLabelT 
 
 export type OptionMulti = Option & {
 	exclusive?: boolean
 }
 
-export function isOptionMdT(option: Option): option is OptionMdT {
-	return (option as OptionMdT).md !== undefined
-}
+// export function isOptionMdT(option: Option): option is OptionMdT {
+// 	return (option as OptionMdT).md !== undefined
+// }
 
 export function isOptionLabelT(option: Option): option is OptionLabelT {
 	return (option as OptionLabelT).label !== undefined
