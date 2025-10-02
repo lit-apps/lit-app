@@ -20,7 +20,7 @@ import { getItemsOfType } from './types.js';
 const missingKey = '___';
 
 const fl = (val: string, groupValue = 10, defaultValue: string) =>
-  (val === undefined ? (defaultValue || Infinity) : Math.floor(Number(val) / groupValue) * groupValue);
+(val === undefined ? (defaultValue || Infinity) : Math.floor(Number(val) / groupValue) * groupValue);
 const _groupByBoolean = (path: string, defaultValue = 'missing') => {
   return (d: any) => {
     const v = get(path as "", d);
@@ -127,7 +127,7 @@ export class lappAnalyticsChart extends
     this.options = options
 
     // reset the domain of the scale as it might have changed
-    this.scale.domain(domainKeys);
+    this.scale?.domain(domainKeys);
     this.labels = domainKeys.map((key: string) => {
       if (key === missingKey) {
         return 'blank';
@@ -308,7 +308,7 @@ export class lappAnalyticsChart extends
       };
       if (axis.end) {
         const sel = axis.selection();
-        axis.on('end', function () {
+        axis.on('end', function() {
           doWrap(sel);
         });
         return;
