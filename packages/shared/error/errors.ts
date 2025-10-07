@@ -27,26 +27,7 @@ const validCodes = [
  * Common error codes used throughout the application
  */
 export type ErrorCodeT = typeof validCodes[number];
-// | 'auth/invalid-credentials'     // Authentication errors
-// | 'auth/user-not-found'
-// | 'auth/email-already-in-use'
-// | 'auth/weak-password'
-// | 'auth/requires-recent-login'
-// | 'network/offline'              // Network-related errors
-// | 'network/timeout'
-// | 'network/connection-error'
-// | 'data/not-found'               // Data errors
-// | 'data/invalid'
-// | 'data/permission-denied'
-// | 'data/already-exists'
-// | 'validation/required'          // Form validation errors
-// | 'validation/format'
-// | 'validation/constraint'
-// | 'api/rate-limit'               // API errors
-// | 'api/server-error'
-// | 'api/bad-request'
-// | 'app/unknown'                  // Generic application errors
-// | 'app/not-implemented'
+
 
 
 /**
