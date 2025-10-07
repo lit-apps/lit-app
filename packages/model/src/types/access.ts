@@ -23,8 +23,8 @@ export type AccessT<A = UserAccessT> = {
   app: app
   user: A
   // this is breaking tsoa  - hence the code below ... 
-  userById: { [uid: uid]: (keyof A)[] }
-  // userById: { [uid: string]: (keyof UserAccessT)[] }
+  // userById: { [uid: uid]: (keyof A)[] }
+  userById: { [uid: string]: (keyof UserAccessT)[] }
   status: StatusT
 }
 
