@@ -43,7 +43,7 @@ export abstract class Radio extends
           ${this.renderOptionIllustration(option)}
           ${this.renderRadio(option, index)}
           <div slot="headline">${option.label}</div>
-          ${when(option.supportingText, () => html`<div slot="supportingText">${option.supportingText}</div>`)}
+          ${when(option.supportingText, () => html`<div slot="supporting-text">${option.supportingText}</div>`)}
         </lapp-choice-list-item>`
     )}`
   }

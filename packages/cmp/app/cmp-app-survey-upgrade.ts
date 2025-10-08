@@ -126,7 +126,7 @@ export default class cmpAppSurveyUpgrade extends LitElement {
 					${databaseMulti.map(item => html`
 					<md-select-option value=${item[0]} ?selected=${item[0] === this.databaseId}>
 						<div slot="headline">${item[1]}</div>
-						<div slot="supportingText">${item[2]}</div>
+						<div slot="supporting-text">${item[2]}</div>
 					</md-select-option>
 					`)}
 					<md-divider></md-divider>

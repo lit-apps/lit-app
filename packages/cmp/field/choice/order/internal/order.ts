@@ -171,7 +171,7 @@ export abstract class Order extends
             ${this.renderUpDown(checked, index, option)}
             ${this.renderCheckbox(option, index)}
             <div slot="headline">${option.label}</div>
-            ${when(option.supportingText, () => html`<div slot="supportingText">${option.supportingText}</div>`)}
+            ${when(option.supportingText, () => html`<div slot="supporting-text">${option.supportingText}</div>`)}
             </lapp-choice-list-item>`
       })}
   `
